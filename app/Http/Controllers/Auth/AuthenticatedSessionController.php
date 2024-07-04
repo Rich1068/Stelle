@@ -29,12 +29,19 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerate();
 
         //user() is table, role_id is the column
-        if($request->user()->role_id === 1)
+        if($request->user()->role_id == 1)
         {
             return redirect('super_admin/dashboard');
+        } else if($request->user()->role_id == 2)
+        {
+            return redirect('admin/dashboard');
+        } else if($request->user()->role_id == 3)
+        {
+            return redirect('user/dashboard');
         }
-
+        else{
         return redirect()->intended(route('dashboard', absolute: false));
+    }
     }
 
     /**
