@@ -30,6 +30,11 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->foreignId('role_id')->constrained('roles');
+            $table->string('profile_picture')->nullable();
+            $table->enum('gender', ['male', 'female']);
+            $table->string('description')->nullable();
+            $table->string('contact_number')->nullable();
+            $table->foreignId('country_id')->nullable()->constrained('country');
             $table->timestamps();
         });
         DB::table('users')->insert([
@@ -37,6 +42,18 @@ return new class extends Migration
             'email' => 'rs106848@gmail.com',
             'password' => Hash::make('12345678'),
             'role_id' => DB::table('roles')->where('role_name', 'Super Admin')->first()->id,
+        ]);
+        DB::table('users')->insert([
+            'name' => 'Admin',
+            'email' => 'rich106848@gmail.com',
+            'password' => Hash::make('12345678'),
+            'role_id' => DB::table('roles')->where('role_name', 'Admin')->first()->id,
+        ]);
+        DB::table('users')->insert([
+            'name' => 'User',
+            'email' => 'sy.richarddarwin@auf.edu.ph',
+            'password' => Hash::make('12345678'),
+            'role_id' => DB::table('roles')->where('role_name', 'User')->first()->id,
         ]);
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

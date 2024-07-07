@@ -21,7 +21,9 @@
     <!-- Page Wrapper -->
     <div id="wrapper">
  
-    @include('super_admin.partials.sidebar') 
+    @if(isset($sidebar))
+        @include($sidebar)
+    @endif
  
 
   <!-- Content Wrapper -->
@@ -209,10 +211,14 @@
                         <!-- Dropdown - User Information -->
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                             aria-labelledby="userDropdown">
-                            <a class="dropdown-item" href="#">
+                            <!-- <a class="dropdown-item" href="#">
                                 <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Profile
-                            </a>
+                            </a> -->
+                            <x-dropdown-link :href="route('profile.edit')" class="dropdown-item">
+                                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                {{ __('Profile') }}
+                            </x-dropdown-link>
                             <a class="dropdown-item" href="#">
                                 <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Settings
@@ -241,7 +247,7 @@
              <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright © Your Website 2021</span>
+                        <span>Copyright © Stelle 2024</span>
                     </div>
                 </div>
             </footer>
@@ -273,7 +279,7 @@
                     <button type="submit" class="btn btn-primary" style="color: white;">
                         {{ __('Log Out') }}
                     </button>
-                </form>
+                    </form>
                 </div>
             </div>
         </div>

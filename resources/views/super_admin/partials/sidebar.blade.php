@@ -17,7 +17,7 @@
  
 <!-- Nav Item - Dashboard -->
 <li class="nav-item active">
-    <a href="{{route('dashboard')}}" class="nav-link">
+    <a href="{{route('super_admin.dashboard')}}" class="nav-link">
         <i class="fas fa-fw fa-tachometer-alt"></i>
         <span>Dashboard</span></a>
 </li>
@@ -26,16 +26,36 @@
 <hr class="sidebar-divider">
  
 <!-- Heading -->
-<div class="sidebar-heading">
-User Management
-</div>
  
 <li class="nav-item">
-  <a href="{{route('dashboard')}}" class="nav-link">
+  <a href="{{route('profile.profile')}}" class="nav-link">
         <i class="fas fa-fw fa-table"></i>
-        <span>Users</span></a>
+        <span>My Profile</span></a>
 </li>
- 
+<hr class="sidebar-divider">
+<li class="nav-item">
+  <a href="{{route('profile.edit')}}" class="nav-link">
+        <i class="fas fa-fw fa-table"></i>
+        <span>Events & Conferences</span></a>
+</li>
+<hr class="sidebar-divider">
+<li class="nav-item">
+  <a href="{{route('profile.edit')}}" class="nav-link">
+        <i class="fas fa-fw fa-table"></i>
+        <span>Create Events</span></a>
+</li>
+<hr class="sidebar-divider">
+<li class="nav-item">
+  <a href="{{route('profile.edit')}}" class="nav-link">
+        <i class="fas fa-fw fa-table"></i>
+        <span>Certificates</span></a>
+</li>
+<hr class="sidebar-divider">
+<li class="nav-item">
+  <a href="{{route('profile.edit')}}" class="nav-link">
+        <i class="fas fa-fw fa-table"></i>
+        <span>My Events</span></a>
+</li>
  
 </ul>
 <!-- End of Sidebar -->
