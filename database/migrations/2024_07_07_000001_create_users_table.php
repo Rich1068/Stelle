@@ -24,7 +24,9 @@ return new class extends Migration
 
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('first_name');
+            $table->string('last_name');
+            $table->string('middle_name')->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
@@ -38,19 +40,22 @@ return new class extends Migration
             $table->timestamps();
         });
         DB::table('users')->insert([
-            'name' => 'Super Admin',
+            'first_name' => 'Super',
+            'last_name' => 'Admin',
             'email' => 'rs106848@gmail.com',
             'password' => Hash::make('12345678'),
             'role_id' => DB::table('roles')->where('role_name', 'Super Admin')->first()->id,
         ]);
         DB::table('users')->insert([
-            'name' => 'Admin',
+            'first_name' => 'Admin',
+            'last_name' => 'Admin',
             'email' => 'rich106848@gmail.com',
             'password' => Hash::make('12345678'),
             'role_id' => DB::table('roles')->where('role_name', 'Admin')->first()->id,
         ]);
         DB::table('users')->insert([
-            'name' => 'User',
+            'first_name' => 'User',
+            'last_name' => 'User',
             'email' => 'sy.richarddarwin@auf.edu.ph',
             'password' => Hash::make('12345678'),
             'role_id' => DB::table('roles')->where('role_name', 'User')->first()->id,

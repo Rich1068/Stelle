@@ -18,8 +18,13 @@ class User extends Authenticatable implements CanResetPassword
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'first_name',
+        'middle_name',
+        'last_name',
         'email',
+        'role_id',
+        'gender',
+        'country_id',
         'password',
     ];
 
@@ -44,5 +49,9 @@ class User extends Authenticatable implements CanResetPassword
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+    public function country()
+    {
+        return $this->belongsTo(Country::class, 'country_id');
     }
 }

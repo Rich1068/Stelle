@@ -14,8 +14,12 @@ class ProfileController extends Controller
     //view own profile
     public function profile()
     {
-        $user = Auth::user();
-        return view('profile.profile', ['user' => $user]);
+        $user = Auth::user(); 
+        $user->load('country');
+        $countryTable = $user->country;
+
+    
+        return view('profile.profile', ['user' => $user, 'countryTable' => $countryTable]); 
     }
     /**
      * Display the user's profile form.
