@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use Illuminate\Support\Str;
 
 class RegisteredUserController extends Controller
 {
@@ -34,21 +35,31 @@ class RegisteredUserController extends Controller
         $request->validate([
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
-            'middle_name' => ['nullable', 'string', 'max:255'],
-            'gender' => ['required', 'string', 'in:male,female'],
+            // 'middle_name' => ['nullable', 'string', 'max:255'],
+            //'gender' => ['required', 'string', 'in:male,female'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'country_id' => ['required', 'int'],
+            //'profile_picture' => ['nullable', 'file', 'mimes:jpeg,png,jpg', 'max:2048'],
+            //'country_id' => ['required', 'int'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
+        // if ($request->hasFile('profile_picture')) {
+        //     $file = $request->file('profile_picture');
+        //     $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
+        //     $path = $file->move(public_path('assets/images/profile_pictures'), $filename);
+        //     $path = 'assets/images/profile_pictures/' . $filename;
+        // } else {
+        //     $path = null;
+        // }
 
         $user = User::create([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
-            'middle_name' => $request->middle_name,
+            //'middle_name' => $request->middle_name,
             'email' => $request->email,
-            'gender' => $request->gender,
+            //'profile_picture' => $path,
+            //'gender' => $request->gender,
             'password' => Hash::make($request->password),
-            'country_id' => $request->country_id,
+            //'country_id' => $request->country_id,
             'role_id' => 3,
         ]);
 

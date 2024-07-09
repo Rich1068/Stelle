@@ -31,7 +31,7 @@ User Management
 </div>
  
 <li class="nav-item">
-  <a href="{{route('dashboard')}}" class="nav-link">
+  <a href="{{route('profile.profile')}}" class="nav-link">
         <i class="fas fa-fw fa-table"></i>
         <span>Users</span></a>
 </li>
