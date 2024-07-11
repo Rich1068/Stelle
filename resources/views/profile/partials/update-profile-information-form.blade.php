@@ -12,7 +12,7 @@
         @csrf
     </form>
 
-    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
+    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6" enctype="multipart/form-data">
         @csrf
         @method('patch')
 
@@ -33,6 +33,8 @@
             <x-text-input id="last_name" name="last_name" type="text" class="mt-1 block w-full" :value="old('last_name', $user->last_name)" required autofocus autocomplete="last_name" />
             <x-input-error class="mt-2" :messages="$errors->get('last_name')" />
         </div>
+
+
 
         <div>
             <x-input-label for="email" :value="__('Email')" />
@@ -57,6 +59,17 @@
             @endif
         </div>
 
+        <div>
+        <x-input-label for="profile_picture" :value="__('Profile Picture')" />
+        <x-text-input id="profile_picture" name="profile_picture" type="file" class="mt-1 block w-full" accept="image/*" onchange="previewImage(event)" />
+        <x-input-error class="mt-2" :messages="$errors->get('profile_picture')" />
+
+        @if ($user->profile_picture)
+            <img id="image_preview" src="{{ asset($user->profile_picture) }}" alt="Profile Picture" class="mt-4" style="max-width: 200px;">
+        @else
+            <img id="image_preview" src="{{ asset('storage/images/profile_pictures/default.jpg') }}" alt="Default Profile Picture" class="mt-4" style="max-width: 200px;">
+        @endif
+        </div>
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Save') }}</x-primary-button>
 
@@ -72,3 +85,14 @@
         </div>
     </form>
 </section>
+<script>
+function previewImage(event) {
+    var reader = new FileReader();
+    reader.onload = function() {
+        var output = document.getElementById('image_preview');
+        output.src = reader.result;
+        output.style.display = 'block';
+    }
+    reader.readAsDataURL(event.target.files[0]);
+}
+</script>

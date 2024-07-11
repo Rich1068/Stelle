@@ -8,7 +8,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
-
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\File;
 class ProfileController extends Controller
 {
     //view own profile
@@ -44,7 +47,26 @@ class ProfileController extends Controller
             if ($user->isDirty('email')) {
                 $user->email_verified_at = null;
             }
-    
+
+            if ($request->hasFile('profile_picture')) {
+                $file = $request->file('profile_picture');
+                $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
+                $relativePath = 'storage/images/profile_pictures/' . $filename;
+                $oldfile = $user->profile_picture;
+                // Optionally, delete the old profile picture if it exists
+                if (!empty($user->profile_picture)) {
+                    
+                    if (File::exists($oldfile)) {
+                        File::delete($oldfile);
+                    }
+                }
+            
+                // Move the uploaded file to the desired directory
+                $file->move('storage/images/profile_pictures/', $filename);
+            
+                // Update the profile picture path
+                $user->profile_picture = $relativePath;
+            }
             $user->save();
         } catch (\Exception $e) {
             // Log the error or handle it as needed

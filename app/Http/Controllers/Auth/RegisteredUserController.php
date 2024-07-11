@@ -39,7 +39,7 @@ class RegisteredUserController extends Controller
             //'gender' => ['required', 'string', 'in:male,female'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             //'profile_picture' => ['nullable', 'file', 'mimes:jpeg,png,jpg', 'max:2048'],
-            //'country_id' => ['required', 'int'],
+            'country_id' => ['nullable', 'int'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
         // if ($request->hasFile('profile_picture')) {

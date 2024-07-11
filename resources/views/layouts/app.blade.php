@@ -205,8 +205,11 @@
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{auth()->user()->first_name}} {{auth()->user()->last_name}}</span>
-                            <img class="img-profile rounded-circle"
-                                src="img/undraw_profile.svg">
+                            @if($user->profile_picture == null)
+                            <img src="{{ asset('storage/images/profile_pictures/default.jpg') }}" alt="Profile pic" style="max-width: 50px; max-height: 50px;"> 
+                            @else 
+                            <img src="{{ asset("{$user->profile_picture}") }}" alt="Profile pic" style="max-width: 50px; max-height: 50px;">
+                            @endif
                         </a>
                         <!-- Dropdown - User Information -->
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -215,7 +218,7 @@
                                 <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Profile
                             </a> -->
-                            <x-dropdown-link :href="route('profile.edit')" class="dropdown-item">
+                            <x-dropdown-link :href="route('profile.profile')" class="dropdown-item">
                                 <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                 {{ __('Profile') }}
                             </x-dropdown-link>
