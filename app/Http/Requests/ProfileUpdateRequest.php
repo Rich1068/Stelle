@@ -20,7 +20,11 @@ class ProfileUpdateRequest extends FormRequest
             'last_name' => ['required', 'string', 'max:255'],
             'middle_name' => ['nullable', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($this->user()->id)],
-            'profile_picture' => ['nullable', 'image', 'mimes:jpeg,png,jpg', 'max:2048']
+            'profile_picture' => ['nullable', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
+            'gender' => ['nullable', 'string', 'in:male,female'],
+            'country_id' => ['nullable', 'int'],
+            'description' => ['nullable', 'string', 'max:255'],
+            'contact_number' => ['nullable', 'string', 'max:11', 'regex:/^\d+$/'],
         ];
     }
 }

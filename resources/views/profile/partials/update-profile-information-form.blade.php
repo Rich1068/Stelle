@@ -4,7 +4,7 @@
             {{ __('Profile Information') }}
         </h2>
         <p class="mt-1 text-sm text-gray-600">
-            {{ __("Update your account's profile information and email address.") }}
+            {{ __("Update your account's profile information") }}
         </p>
     </header>
 
@@ -16,18 +16,21 @@
         @csrf
         @method('patch')
 
+        <!-- firstname -->
         <div>
             <x-input-label for="first_name" :value="__('First Name')" />
             <x-text-input id="first_name" name="first_name" type="text" class="mt-1 block w-full" :value="old('first_name', $user->first_name)" required autofocus autocomplete="first_name" />
             <x-input-error class="mt-2" :messages="$errors->get('first_name')" />
         </div>
 
+        <!-- middlename -->
         <div>
             <x-input-label for="middle_name" :value="__('Middle Name')" />
             <x-text-input id="middle_name" name="middle_name" type="text" class="mt-1 block w-full" :value="old('middle_name', $user->middle_name)" autofocus autocomplete="middle_name" />
             <x-input-error class="mt-2" :messages="$errors->get('middle_name')" />
         </div>
 
+        <!-- lastname -->
         <div>
             <x-input-label for="last_name" :value="__('Last Name')" />
             <x-text-input id="last_name" name="last_name" type="text" class="mt-1 block w-full" :value="old('last_name', $user->last_name)" required autofocus autocomplete="last_name" />
@@ -35,7 +38,7 @@
         </div>
 
 
-
+        <!-- email -->
         <div>
             <x-input-label for="email" :value="__('Email')" />
             <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" required autocomplete="username" />
@@ -58,18 +61,57 @@
                 </div>
             @endif
         </div>
-
+        <!-- profilepicture -->
         <div>
         <x-input-label for="profile_picture" :value="__('Profile Picture')" />
         <x-text-input id="profile_picture" name="profile_picture" type="file" class="mt-1 block w-full" accept="image/*" onchange="previewImage(event)" />
         <x-input-error class="mt-2" :messages="$errors->get('profile_picture')" />
 
         @if ($user->profile_picture)
-            <img id="image_preview" src="{{ asset($user->profile_picture) }}" alt="Profile Picture" class="mt-4" style="max-width: 200px;">
+            <img id="image_preview" src="{{ asset($user->profile_picture) }}" alt="Profile Picture" class="mt-4" style="max-width: 75px;">
         @else
-            <img id="image_preview" src="{{ asset('storage/images/profile_pictures/default.jpg') }}" alt="Default Profile Picture" class="mt-4" style="max-width: 200px;">
+            <img id="image_preview" src="{{ asset('storage/images/profile_pictures/default.jpg') }}" alt="Default Profile Picture" class="mt-4" style="max-width: 75px;">
         @endif
         </div>
+
+        <!-- gender -->
+        <div class="mt-4">
+            <x-input-label for="gender" :value="__('Gender')" />
+            <select id="gender" name="gender" class="block mt-1 w-full">
+                <option value="">{{ __('Select Gender') }}</option>
+                <option value="male" {{ old('gender', $user->gender) == 'male' ? 'selected' : '' }}>{{ __('Male') }}</option>
+                <option value="female" {{ old('gender', $user->gender) == 'female' ? 'selected' : '' }}>{{ __('Female') }}</option>
+            </select>
+            <x-input-error :messages="$errors->get('gender')" class="mt-2" />
+        </div>
+
+        <div>
+            <x-input-label for="contact_number" :value="__('Contact Number')" />
+            <x-text-input id="contact_number" name="contact_number" type="text" class="mt-1 block w-full" :value="old('contact_number', $user->contact_number)" autofocus autocomplete="contact_number" />
+            <x-input-error class="mt-2" :messages="$errors->get('contact_number')" />
+        </div>
+
+        <!-- country -->
+        <div class="mt-4">
+            <x-input-label for="country" :value="__('Country')" />
+            <select id="country" name="country_id" class="block mt-1 w-full">
+                <option value="">{{ __('Select Country') }}</option>
+                @foreach($countries as $country)
+                    <option value="{{ $country->id }}" {{ old('country_id', $user->country_id) == $country->id ? 'selected' : '' }}>
+                        {{ $country->countryname }}
+                    </option>
+                @endforeach
+            </select>
+            <x-input-error :messages="$errors->get('country_id')" class="mt-2" />
+        </div>
+
+        <!-- description -->
+        <div>
+            <x-input-label for="description" :value="__('Description')" />
+            <x-text-input id="description" name="description" type="text" class="mt-1 block w-full" :value="old('description', $user->description)" autofocus autocomplete="description" />
+            <x-input-error class="mt-2" :messages="$errors->get('description')" />
+        </div>
+
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Save') }}</x-primary-button>
 

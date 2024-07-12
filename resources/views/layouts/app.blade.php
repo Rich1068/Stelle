@@ -205,10 +205,10 @@
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{auth()->user()->first_name}} {{auth()->user()->last_name}}</span>
-                            @if($user->profile_picture == null)
+                            @if(auth()->user()->profile_picture == null)
                             <img src="{{ asset('storage/images/profile_pictures/default.jpg') }}" alt="Profile pic" style="max-width: 50px; max-height: 50px;"> 
                             @else 
-                            <img src="{{ asset("{$user->profile_picture}") }}" alt="Profile pic" style="max-width: 50px; max-height: 50px;">
+                            <img src="{{ asset(auth()->user()->profile_picture) }}" alt="Profile pic" style="max-width: 50px; max-height: 50px;">
                             @endif
                         </a>
                         <!-- Dropdown - User Information -->

@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File;
+use App\Models\Country;
 class ProfileController extends Controller
 {
     //view own profile
@@ -29,7 +30,8 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
-        return view('profile.edit', [
+        $countries = Country::all();
+        return view('profile.edit', compact('countries'), [
             'user' => $request->user(),
         ]);
     }
@@ -39,6 +41,7 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
+        
         $user = $request->user();
     
         try {
@@ -73,7 +76,7 @@ class ProfileController extends Controller
             return Redirect::route('profile.edit')->with('error', 'Failed to update profile');
         }
     
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        return back()->with('status', 'profile-updated');
     }
 
     /**

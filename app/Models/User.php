@@ -26,6 +26,8 @@ class User extends Authenticatable implements CanResetPassword
         'gender',
         'country_id',
         'password',
+        'description',
+        'contact_number'
     ];
 
     /**
