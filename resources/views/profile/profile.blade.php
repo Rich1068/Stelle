@@ -7,7 +7,7 @@
     @if($user->profile_picture == null)
         <img src="{{ asset('storage/images/profile_pictures/default.jpg') }}" alt="Profile pic" style="max-width: 200px; max-height: 100px;"> 
     @else 
-        <img src="{{ asset("{$user->profile_picture}") }}" alt="Profile pic" style="max-width: 200px; max-height: 100px;"> 
+        <img src="{{ asset($user->profile_picture) }}" alt="Profile pic" style="max-width: 200px; max-height: 100px;"> 
     @endif {{ $user->first_name }} {{ $user->middle_name }} {{ $user->last_name }}
 </h2>
 <h3><b>About/Bio: </b><br> 

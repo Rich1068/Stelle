@@ -65,7 +65,7 @@ class ProfileController extends Controller
                 }
             
                 // Move the uploaded file to the desired directory
-                $file->move('storage/images/profile_pictures/', $filename);
+                $path = $file->storeAs('/images/profile_pictures', $filename);
             
                 // Update the profile picture path
                 $user->profile_picture = $relativePath;
