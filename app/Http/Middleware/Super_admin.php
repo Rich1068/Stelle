@@ -18,14 +18,7 @@ class Super_admin
     {
         if(Auth::user()->role_id != 1)
         {
-            if(Auth::user()->role_id === 2)
-            {
-            return redirect('admin/dashboard');
-            }
-            if(Auth::user()->role_id === 3)
-            {
-            return redirect('user/dashboard');
-            }
+            abort(403, 'Unauthorized action.');
         }
         return $next($request);
     }

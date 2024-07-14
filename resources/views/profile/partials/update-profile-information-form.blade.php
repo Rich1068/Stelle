@@ -108,7 +108,7 @@
         <!-- description -->
         <div>
             <x-input-label for="description" :value="__('Description')" />
-            <x-text-input id="description" name="description" type="text" class="mt-1 block w-full" :value="old('description', $user->description)" autofocus autocomplete="description" />
+            <textarea id="description" name="description" class="mt-1 block w-full" autofocus autocomplete="description" required>{{ old('description', $user->description) }}</textarea>
             <x-input-error class="mt-2" :messages="$errors->get('description')" />
         </div>
 

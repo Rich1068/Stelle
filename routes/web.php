@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\EventController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -32,7 +33,9 @@ route::get('admin/dashboard',[AdminController::class,'index'])->
 route::get('user/dashboard',[UserController::class,'index'])->
     middleware(['auth','user']);
 
-
+//event stuff
+Route::resource('events', EventController::class)->middleware('auth');
+route::get('/event/create', [EventController::class, 'create'])->name('event.create');
 //super admin stuff
 route::get('/super-admin/dashboard', [SuperAdminController::class, 'index'])->middleware(['auth','super_admin'])->name('super_admin.dashboard');
 
