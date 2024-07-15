@@ -11,9 +11,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
 
@@ -34,8 +31,12 @@ route::get('user/dashboard',[UserController::class,'index'])->
     middleware(['auth','user']);
 
 //event stuff
-Route::resource('events', EventController::class)->middleware('auth');
-route::get('/event/create', [EventController::class, 'create'])->name('event.create');
+Route::middleware('auth')->group(function () {
+    route::resource('events', EventController::class);
+    route::get('/events', [EventController::class, 'list'])->name('event.list');
+    route::get('/event/create', [EventController::class, 'create'])->name('event.create');
+    route::get('/event/{id}', [EventController::class, 'view'])->name('event.view');
+});
 //super admin stuff
 route::get('/super-admin/dashboard', [SuperAdminController::class, 'index'])->middleware(['auth','super_admin'])->name('super_admin.dashboard');
 

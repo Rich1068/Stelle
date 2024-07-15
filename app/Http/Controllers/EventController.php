@@ -20,6 +20,19 @@ class EventController extends Controller
         return view('event.create');
     }
 
+    public function list()
+    {
+    $events = Event::paginate(10); // Fetch 10 events per page
+
+    return view('event.eventlist', compact('events'));
+    }
+
+    public function view($id): View
+    {
+        $event = Event::findOrFail($id);
+        return view('event.event', ['event' => $event]);
+    }
+
     public function store(Request $request): RedirectResponse
     {
         $request->validate([

@@ -32,11 +32,20 @@
         <i class="fas fa-fw fa-table"></i>
         <span>My Profile</span></a>
 </li>
+
 <hr class="sidebar-divider">
 <li class="nav-item">
-  <a href="{{route('event.create')}}" class="nav-link">
-        <i class="fas fa-fw fa-table"></i>
-        <span>Events & Conferences</span></a>
+  <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseEvents" aria-expanded="true" aria-controls="collapseEvents">
+    <i class="fas fa-fw fa-table"></i>
+    <span>Events & Conferences</span>
+  </a>
+  <div id="collapseEvents" class="collapse" aria-labelledby="headingEvents" data-parent="#accordionSidebar">
+    <div class="bg-white py-2 collapse-inner rounded">
+      <h6 class="collapse-header">Event Management:</h6>
+      <a class="collapse-item" href="{{ route('event.list') }}">All Events</a>
+      <a class="collapse-item" href="{{ route('event.create') }}">Create Event</a>
+    </div>
+  </div>
 </li>
 <hr class="sidebar-divider">
 <li class="nav-item">
