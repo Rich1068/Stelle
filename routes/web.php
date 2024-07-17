@@ -34,6 +34,8 @@ route::get('user/dashboard',[UserController::class,'index'])->
 Route::middleware('auth')->group(function () {
     route::resource('events', EventController::class);
     route::get('/events', [EventController::class, 'list'])->name('event.list');
+    Route::get('/event/edit/{id}', [EventController::class, 'edit'])->name('event.edit');
+    Route::patch('/event/update/{id}', [EventController::class, 'update'])->name('event.update');
     route::get('/event/create', [EventController::class, 'create'])->name('event.create');
     route::get('/event/{id}', [EventController::class, 'view'])->name('event.view');
 });

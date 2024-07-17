@@ -21,7 +21,7 @@ return new class extends Migration
             $table->time('start_time');
             $table->time('end_time');
             $table->integer('capacity');
-            $table->string('event_banner'); 
+            $table->string('event_banner')->nullable();
             $table->timestamps();
         });
         Schema::create('user_events', function (Blueprint $table) {

@@ -20,7 +20,7 @@ Capacity: {{ $event->capacity }} <br>
 
 
 
-<a href="{{ route('event.edit') }}" class="btn btn-primary">
+<a href="{{ route('event.edit', $event->id) }}" class="btn btn-primary">
     <span>Edit</span>
 </a>
 @endsection
