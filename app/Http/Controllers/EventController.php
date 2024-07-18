@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Http\Requests\EventUpdateRequest;
 use App\Models\UserEvent;
+use App\Models\EventParticipant;
 use App\Models\Event;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -31,8 +32,9 @@ class EventController extends Controller
 
     public function view($id): View
     {
+        $userevent = UserEvent::where('event_id', $id)->firstOrFail();
         $event = Event::findOrFail($id);
-        return view('event.event', ['event' => $event]);
+        return view('event.event', ['event' => $event, 'userevent' => $userevent]);
     }
 
     public function store(Request $request): RedirectResponse
@@ -66,7 +68,7 @@ class EventController extends Controller
             'start_time' => $request->start_time,
             'end_time' => $request->end_time,
             'capacity' => $request->capacity,
-            'event_banner' => $relativePath,
+            'event_banner' => $relativePath ?? $request->event_banner,
             'mode' => $request->mode
         ]);
         $event->save();
@@ -137,4 +139,26 @@ class EventController extends Controller
         return back()->with('status', 'event-updated');
     }
 
+    public function join($id)
+    {
+        $event = Event::findOrFail($id);
+
+        // Check if the user is already a participant
+        $participant = EventParticipant::where('user_id', Auth::user()->id)
+            ->where('event_id', $event->id)
+            ->first();
+
+        if (!$participant) {
+            // Create new EventParticipant record with status 'Pending'
+            EventParticipant::create([
+                'user_id' => Auth::user()->id,
+                'event_id' => $event->id,
+                'status_id' => 3, // Assuming 'Pending' has an id of 3
+            ]);
+
+            return redirect()->route('event.show', $event->id)->with('success', 'You have requested to join the event!');
+        }
+
+        return redirect()->route('event.show', $event->id)->with('error', 'You have already requested to join this event.');
+    }
 }

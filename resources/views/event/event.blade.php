@@ -19,8 +19,16 @@ Duration: {{ $event->start_time }} to {{ $event->end_time }} <br>
 Capacity: {{ $event->capacity }} <br>
 
 
-
+@if($userevent->user_id == Auth::user()->id)
 <a href="{{ route('event.edit', $event->id) }}" class="btn btn-primary">
     <span>Edit</span>
 </a>
+
+@if($userevent->user_id != Auth::user()->id)
+<form action="{{ route('event.join', $event->id) }}" method="POST">
+    @csrf
+    <button type="submit" class="btn btn-success">Join Event</button>
+</form>
+@endif
+@endif
 @endsection

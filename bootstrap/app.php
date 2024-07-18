@@ -16,6 +16,8 @@ return Application::configure(basePath: dirname(__DIR__))
             'super_admin' => \App\Http\Middleware\Super_admin::class,
             'admin' => \App\Http\Middleware\Admin::class,
             'user' => \App\Http\Middleware\User::class,
+            'checkRole' => \App\Http\Middleware\CheckRole::class,
+            'checkEventCreator' => \App\Http\Middleware\CheckEventCreator::class,
         ]);
 
     })
