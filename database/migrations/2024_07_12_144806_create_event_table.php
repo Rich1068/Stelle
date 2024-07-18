@@ -27,7 +27,7 @@ return new class extends Migration
         Schema::create('user_events', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('event_id')->constrained('event')->onDelete('cascade');
+            $table->foreignId('event_id')->constrained('events')->onDelete('cascade');
             $table->timestamps();
         });
         Schema::create('participant_status', function (Blueprint $table) {
@@ -41,9 +41,9 @@ return new class extends Migration
         ]);
         Schema::create('event_participants', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('event_id')->constrained('event')->onDelete('cascade');
+            $table->foreignId('event_id')->constrained('events')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('id')->constrained('participant_status')->onDelete('cascade'); 
+            $table->foreignId('status_id')->constrained('participant_status')->onDelete('cascade'); 
             $table->timestamps();
         });
     }
@@ -53,7 +53,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('event');
+        Schema::dropIfExists('events');
         Schema::dropIfExists('user_events');
     }
 };

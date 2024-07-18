@@ -35,6 +35,12 @@ route::get('/unauthorized', function () {
     })->name('unauthorized');
 
 //event stuff
+
+Route::middleware(['auth', 'checkRole:1,2'])->group(function () {
+    route::get('/event/create', [EventController::class, 'create'])->name('event.create');
+    Route::get('/event/myEventlist', [EventController::class, 'myEventlist'])->name('event.myeventlist');
+});
+
 Route::middleware('auth')->group(function () {
     route::resource('events', EventController::class);
     route::get('/events', [EventController::class, 'list'])->name('event.list');
@@ -42,11 +48,10 @@ Route::middleware('auth')->group(function () {
     route::post('/event/join/{id}', [EventController::class, 'join'])->name('event.join');
 });
 
-Route::middleware(['auth', 'checkRole:1,2'])->group(function () {
-    route::get('/event/create', [EventController::class, 'create'])->name('event.create');
-});
+
 
 Route::middleware(['auth', 'checkEventCreator'])->group(function () {
+    
     route::get('/event/edit/{id}', [EventController::class, 'edit'])->name('event.edit');
     route::patch('/event/update/{id}', [EventController::class, 'update'])->name('event.update');
 });

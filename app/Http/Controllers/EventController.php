@@ -30,6 +30,19 @@ class EventController extends Controller
     return view('event.eventlist', compact('events'));
     }
 
+    public function myEventlist()
+    {
+        $userId = Auth::user()->id;
+
+        // Get event IDs where the user is the creator
+        $eventIds = UserEvent::where('user_id', $userId)->pluck('event_id');
+
+        // Fetch and paginate events using the retrieved event IDs
+        $events = Event::whereIn('id', $eventIds)->paginate(10);
+
+        return view('event.myeventlist', compact('events'));
+    }
+
     public function view($id): View
     {
         $userevent = UserEvent::where('event_id', $id)->firstOrFail();

@@ -44,6 +44,7 @@
       <h6 class="collapse-header">Event Management:</h6>
       <a class="collapse-item" href="{{ route('event.list') }}">All Events</a>
       <a class="collapse-item" href="{{ route('event.create') }}">Create Event</a>
+      <a class="collapse-item" href="{{ route('event.myeventlist') }}">My Events</a>
     </div>
   </div>
 </li>
