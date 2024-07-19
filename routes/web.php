@@ -45,7 +45,9 @@ Route::middleware('auth')->group(function () {
     route::resource('events', EventController::class);
     route::get('/events', [EventController::class, 'list'])->name('event.list');
     route::get('/event/{id}', [EventController::class, 'view'])->name('event.view');
-    route::post('/event/join/{id}', [EventController::class, 'join'])->name('event.join');
+    Route::post('/event/{id}/join', [EventController::class, 'join'])->name('event.join');
+    Route::get('/event/{id}/participants', [EventController::class, 'showParticipants'])->name('events.participants');
+    Route::post('/event/{id}/participants/{participant}/update', [EventController::class, 'updateParticipantStatus'])->name('participants.updateStatus');
 });
 
 

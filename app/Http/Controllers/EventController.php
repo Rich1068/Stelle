@@ -47,7 +47,8 @@ class EventController extends Controller
     {
         $userevent = UserEvent::where('event_id', $id)->firstOrFail();
         $event = Event::findOrFail($id);
-        return view('event.event', ['event' => $event, 'userevent' => $userevent]);
+        $eventParticipant = EventParticipant::where('event_id', $id)->paginate(10);
+        return view('event.event', ['event' => $event, 'userevent' => $userevent, 'participant' => $eventParticipant]);
     }
 
     public function store(Request $request): RedirectResponse
@@ -95,6 +96,8 @@ class EventController extends Controller
 
         return redirect()->route('profile.profile')->with('success', 'Event created successfully.');
     }
+
+    //main view of update
     public function edit(Request $request, $id): View
     {
         // Find the event by its ID or fail
@@ -106,6 +109,8 @@ class EventController extends Controller
         ]);
     }
 
+
+    //update event info
     public function update(EventUpdateRequest $request, $id): RedirectResponse
     {
         $event = Event::findOrFail($id);
@@ -152,6 +157,8 @@ class EventController extends Controller
         return back()->with('status', 'event-updated');
     }
 
+
+    //join event
     public function join($id)
     {
         $event = Event::findOrFail($id);
@@ -169,9 +176,43 @@ class EventController extends Controller
                 'status_id' => 3, // Assuming 'Pending' has an id of 3
             ]);
 
-            return redirect()->route('event.show', $event->id)->with('success', 'You have requested to join the event!');
+            return redirect()->route('event.view', $event->id)->with('success', 'You have requested to join the event!');
         }
 
-        return redirect()->route('event.show', $event->id)->with('error', 'You have already requested to join this event.');
+        return redirect()->route('event.view', $event->id)->with('error', 'You have already requested to join this event.');
+    }
+
+    public function showParticipants($id)
+    {
+        $event = UserEvent::findOrFail($id);
+
+        // Check if the logged-in user is the creator of the event
+        if ($event->user_id !== Auth::id()) {
+            return redirect()->route('unauthorized')->with('error', 'You do not have permission to view this page.');
+        }
+
+        $participants = EventParticipant::where('event_id', $id)->get();
+
+        return view('event.participants', compact('event', 'participants'));
+    }
+
+    public function updateParticipantStatus(Request $request, $eventId, $participantId)
+    {
+        $event = UserEvent::findOrFail($eventId);
+        $request->validate([
+            'status_id' => ['required', 'string'],
+        ]);
+        // Check if the logged-in user is the creator of the event
+        if ($event->user_id != Auth::id()) {
+            return redirect()->route('unauthorized')->with('error', 'You do not have permission to perform this action.');
+        }
+
+
+        $participant = EventParticipant::findOrFail($participantId);
+
+        // Update the participant's status
+        $participant->update(['status_id' => $request->status_id]);
+
+        return redirect()->route('event.participants', $eventId)->with('success', 'Participant status updated successfully.');
     }
 }

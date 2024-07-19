@@ -30,11 +30,11 @@ return new class extends Migration
             $table->foreignId('event_id')->constrained('events')->onDelete('cascade');
             $table->timestamps();
         });
-        Schema::create('participant_status', function (Blueprint $table) {
+        Schema::create('participant_statuses', function (Blueprint $table) {
             $table->id();
             $table->string('status');
         });
-        DB::table('participant_status')->insert([
+        DB::table('participant_statuses')->insert([
             ['status' => 'Accepted'],
             ['status' => 'Declined'],
             ['status' => 'Pending'],
@@ -43,7 +43,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('event_id')->constrained('events')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('status_id')->constrained('participant_status')->onDelete('cascade'); 
+            $table->foreignId('status_id')->constrained('participant_statuses')->onDelete('cascade'); 
             $table->timestamps();
         });
     }

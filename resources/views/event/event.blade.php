@@ -24,11 +24,15 @@ Capacity: {{ $event->capacity }} <br>
     <span>Edit</span>
 </a>
 
-@if($userevent->user_id != Auth::user()->id)
+<a href="{{ route('events.participants', $event->id) }}" class="btn btn-primary">
+    <span>View Participant</span>
+</a>
+@endif
+@if($userevent->user_id !== Auth::user()->id)
 <form action="{{ route('event.join', $event->id) }}" method="POST">
     @csrf
     <button type="submit" class="btn btn-success">Join Event</button>
 </form>
-@endif
+
 @endif
 @endsection

@@ -20,4 +20,5 @@ class Event extends Model
         'mode'
     ];
     use HasFactory;
+
 }
