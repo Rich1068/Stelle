@@ -46,9 +46,14 @@ class EventController extends Controller
     public function view($id): View
     {
         $userevent = UserEvent::where('event_id', $id)->firstOrFail();
+        $currentParticipants = EventParticipant::where('event_id', $id)
+            ->where('status_id', 1) // Assuming 'Accepted' has an id of 1
+            ->count();
         $event = Event::findOrFail($id);
-        $eventParticipant = EventParticipant::where('event_id', $id)->paginate(10);
-        return view('event.event', ['event' => $event, 'userevent' => $userevent, 'participant' => $eventParticipant]);
+        $eventParticipant = EventParticipant::where('event_id', $id)
+            ->where('user_id', Auth::user()->id)
+            ->first();
+        return view('event.event', ['event' => $event, 'userevent' => $userevent, 'participant' => $eventParticipant, 'currentParticipants' => $currentParticipants]);
     }
 
     public function store(Request $request): RedirectResponse
@@ -94,7 +99,7 @@ class EventController extends Controller
         
         
 
-        return redirect()->route('profile.profile')->with('success', 'Event created successfully.');
+        return redirect()->route('event.view', $event->id)->with('success', 'Event created successfully.');
     }
 
     //main view of update
@@ -160,40 +165,51 @@ class EventController extends Controller
 
     //join event
     public function join($id)
-    {
-        $event = Event::findOrFail($id);
+{
+    $event = Event::findOrFail($id);
 
-        // Check if the user is already a participant
-        $participant = EventParticipant::where('user_id', Auth::user()->id)
-            ->where('event_id', $event->id)
-            ->first();
+    // Check if the user is already a participant
+    $participant = EventParticipant::where('user_id', Auth::user()->id)
+        ->where('event_id', $event->id)
+        ->first();
 
-        if (!$participant) {
-            // Create new EventParticipant record with status 'Pending'
-            EventParticipant::create([
-                'user_id' => Auth::user()->id,
-                'event_id' => $event->id,
-                'status_id' => 3, // Assuming 'Pending' has an id of 3
-            ]);
+    if (!$participant) {
+        // Count the number of accepted participants
+        $acceptedParticipants = EventParticipant::where('event_id', $event->id)
+            ->where('status_id', 1) // Assuming 'Accepted' has an id of 1
+            ->count();
 
-            return redirect()->route('event.view', $event->id)->with('success', 'You have requested to join the event!');
+        // Check if the event capacity is reached
+        if ($acceptedParticipants >= $event->capacity) {
+            return redirect()->route('event.view', $event->id)->with('error', 'The event has reached its capacity.');
         }
 
-        return redirect()->route('event.view', $event->id)->with('error', 'You have already requested to join this event.');
+        // Create new EventParticipant record with status 'Pending'
+        EventParticipant::create([
+            'user_id' => Auth::user()->id,
+            'event_id' => $event->id,
+            'participant_status_id' => 3, // Assuming 'Pending' has an id of 3
+        ]);
+
+        return redirect()->route('event.view', $event->id)->with('success', 'You have requested to join the event!');
     }
+
+    return redirect()->route('event.view', $event->id)->with('error', 'You have already requested to join this event.');
+}
+
 
     public function showParticipants($id)
     {
-        $event = UserEvent::findOrFail($id);
-
+        $eventuser = UserEvent::findOrFail($id);
+        $event = Event::findOrFail($id);
         // Check if the logged-in user is the creator of the event
-        if ($event->user_id !== Auth::id()) {
+        if ($eventuser->user_id !== Auth::id()) {
             return redirect()->route('unauthorized')->with('error', 'You do not have permission to view this page.');
         }
 
         $participants = EventParticipant::where('event_id', $id)->get();
 
-        return view('event.participants', compact('event', 'participants'));
+        return view('event.participants', compact('eventuser', 'participants', 'event'));
     }
 
     public function updateParticipantStatus(Request $request, $eventId, $participantId)
@@ -208,11 +224,12 @@ class EventController extends Controller
         }
 
 
-        $participant = EventParticipant::findOrFail($participantId);
+        $participant = EventParticipant::where('user_id', $participantId);
 
         // Update the participant's status
         $participant->update(['status_id' => $request->status_id]);
 
-        return redirect()->route('event.participants', $eventId)->with('success', 'Participant status updated successfully.');
+        return back()->with('success', 'Participant status updated successfully.');
+
     }
 }

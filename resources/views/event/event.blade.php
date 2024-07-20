@@ -2,6 +2,13 @@
 @section('body')
 
 <h1>Event</h1>
+@if(session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
+    @endif
+
+    @if(session('error'))
+        <div class="alert alert-danger">{{ session('error') }}</div>
+    @endif
 
 <h2>
     <img src="{{ asset($event->event_banner) }}" alt="Event banner" style="max-width: 200px; max-height: 100px;">  
@@ -16,7 +23,7 @@ Date: {{ $event->date }} <br>
 Mode: {{ $event->mode }} <br> 
 Address: {{ $event->address }} <br>
 Duration: {{ $event->start_time }} to {{ $event->end_time }} <br>
-Capacity: {{ $event->capacity }} <br>
+Capacity: {{$currentParticipants}}/{{ $event->capacity }} <br>
 
 
 @if($userevent->user_id == Auth::user()->id)
@@ -28,11 +35,19 @@ Capacity: {{ $event->capacity }} <br>
     <span>View Participant</span>
 </a>
 @endif
-@if($userevent->user_id !== Auth::user()->id)
-<form action="{{ route('event.join', $event->id) }}" method="POST">
-    @csrf
-    <button type="submit" class="btn btn-success">Join Event</button>
-</form>
 
+@if ($currentParticipants < $event->capacity)
+    @if($userevent->user_id !== Auth::user()->id && $participant == null)
+            <form action="{{ route('event.join', $event->id) }}" method="POST">
+                @csrf
+                <button type="submit" class="btn btn-success">Join Event</button>
+            </form>
+        @elseif ($participant && $participant->status_id == 3) <!-- Assuming 'Pending' has an id of 3 -->
+            <button type="button" class="btn btn-secondary" disabled>Pending</button>
+        @elseif ($participant && $participant->status_id == 1) <!-- Assuming 'Accepted' has an id of 1 -->
+            <p>You have been accepted to this event.</p>
+    @endif
+@else
+    <button type="button" class="btn btn-secondary" disabled>Closed</button>
 @endif
 @endsection
