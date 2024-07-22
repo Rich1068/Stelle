@@ -56,4 +56,9 @@ class User extends Authenticatable implements CanResetPassword
     {
         return $this->belongsTo(Country::class, 'country_id');
     }
+
+    public function userEvents()
+    {
+        return $this->hasMany(UserEvent::class);
+    }
 }

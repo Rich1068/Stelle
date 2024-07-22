@@ -24,6 +24,8 @@ Mode: {{ $event->mode }} <br>
 Address: {{ $event->address }} <br>
 Duration: {{ $event->start_time }} to {{ $event->end_time }} <br>
 Capacity: {{$currentParticipants}}/{{ $event->capacity }} <br>
+By: {{ $userevent->user->first_name }} {{ $userevent->user->last_name }}<br>
+</h3>
 
 
 @if($userevent->user_id == Auth::user()->id)
@@ -37,7 +39,7 @@ Capacity: {{$currentParticipants}}/{{ $event->capacity }} <br>
 @endif
 
 @if ($currentParticipants < $event->capacity)
-    @if($userevent->user_id !== Auth::user()->id && $participant == null)
+    @if($participant == null && $userevent->user_id != Auth::user()->id)
             <form action="{{ route('event.join', $event->id) }}" method="POST">
                 @csrf
                 <button type="submit" class="btn btn-success">Join Event</button>
@@ -47,6 +49,7 @@ Capacity: {{$currentParticipants}}/{{ $event->capacity }} <br>
         @elseif ($participant && $participant->status_id == 1) <!-- Assuming 'Accepted' has an id of 1 -->
             <p>You have been accepted to this event.</p>
     @endif
+@elseif ($userevent->user_id == Auth::user()->id)
 @else
     <button type="button" class="btn btn-secondary" disabled>Closed</button>
 @endif

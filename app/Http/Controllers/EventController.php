@@ -45,7 +45,7 @@ class EventController extends Controller
 
     public function view($id): View
     {
-        $userevent = UserEvent::where('event_id', $id)->firstOrFail();
+        $userevent = UserEvent::with('user')->where('event_id', $id)->firstOrFail();
         $currentParticipants = EventParticipant::where('event_id', $id)
             ->where('status_id', 1) // Assuming 'Accepted' has an id of 1
             ->count();
@@ -53,7 +53,13 @@ class EventController extends Controller
         $eventParticipant = EventParticipant::where('event_id', $id)
             ->where('user_id', Auth::user()->id)
             ->first();
-        return view('event.event', ['event' => $event, 'userevent' => $userevent, 'participant' => $eventParticipant, 'currentParticipants' => $currentParticipants]);
+    
+        return view('event.event', [
+            'event' => $event,
+            'userevent' => $userevent,
+            'participant' => $eventParticipant,
+            'currentParticipants' => $currentParticipants,
+        ]);
     }
 
     public function store(Request $request): RedirectResponse
