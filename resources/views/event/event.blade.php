@@ -53,4 +53,9 @@ By: {{ $userevent->user->first_name }} {{ $userevent->user->last_name }}<br>
 @else
     <button type="button" class="btn btn-secondary" disabled>Closed</button>
 @endif
+
+<form action="{{ route('evaluation-forms.store', $event->id) }}" method="POST">
+    @csrf
+    <button type="submit">Create Evaluation Form</button>
+</form>
 @endsection
