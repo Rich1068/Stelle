@@ -11,10 +11,14 @@ class Event extends Model
     {
         return $this->hasMany(EventParticipant::class);
     }
+    public function evaluationForm()
+    {
+        return $this->hasOne(EvaluationForm::class);
+    }
 
     public function userEvent()
     {
-        return $this->hasMany(UserEvent::class);
+        return $this->hasOne(UserEvent::class);
     }
 
     protected $fillable = [

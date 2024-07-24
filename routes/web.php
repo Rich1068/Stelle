@@ -43,6 +43,8 @@ Route::middleware(['auth', 'checkRole:1,2'])->group(function () {
     //event creation and the users created event list
     route::get('/event/create', [EventController::class, 'create'])->name('event.create');
     Route::get('/event/myEventlist', [EventController::class, 'myEventlist'])->name('event.myeventlist');
+
+
 });
 
 Route::middleware('auth')->group(function () {
@@ -67,14 +69,18 @@ Route::middleware(['auth', 'checkEventCreator'])->group(function () {
     route::patch('/event/update/{id}', [EventController::class, 'update'])->name('event.update');
 
     //eval forms
-
     Route::post('/events/{id}/evaluation-form', [EvaluationFormController::class, 'store'])->name('evaluation-forms.store');
 
 });
-// Display form to add questions to the evaluation form
-Route::get('/event/evaluation-forms/{form}/questions/create', [QuestionController::class, 'create'])->name('questions.create');
-// Store new questions
-Route::post('/event/evaluation-forms/{form}/questions', [QuestionController::class, 'store'])->name('questions.store');
+
+Route::group(['middleware' => ['auth', 'checkFormOwner']], function() {
+    // Display form to add questions to the evaluation form
+    Route::get('/event/evaluation-forms/{form}/questions/create', [QuestionController::class, 'create'])->name('questions.create');
+    
+    // Store new questions
+    Route::post('/event/evaluation-forms/{form}/questions', [QuestionController::class, 'store'])->name('questions.store');
+});
+
 //super admin stuff
 route::get('/super-admin/dashboard', [SuperAdminController::class, 'index'])->middleware(['auth','super_admin'])->name('super_admin.dashboard');
 

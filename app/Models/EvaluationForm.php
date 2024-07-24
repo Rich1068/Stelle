@@ -13,4 +13,8 @@ class EvaluationForm extends Model
         'event_id',
         // Add other fillable attributes here if needed
     ];
+    public function event()
+    {
+        return $this->belongsTo(Event::class);
+    }
 }

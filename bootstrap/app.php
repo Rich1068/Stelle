@@ -18,6 +18,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'user' => \App\Http\Middleware\User::class,
             'checkRole' => \App\Http\Middleware\CheckRole::class,
             'checkEventCreator' => \App\Http\Middleware\CheckEventCreator::class,
+            'checkFormOwner' => \App\Http\Middleware\CheckFormOwner::class,
         ]);
 
     })
