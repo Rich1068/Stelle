@@ -11,6 +11,11 @@ class Question extends Model
     protected $fillable = [
         'form_id',
         'question',
+        'type_id'
         // Add other fillable attributes here if needed
     ];
+    public function evaluationForm()
+    {
+        return $this->hasOne(EvaluationForm::class);
+    }
 }

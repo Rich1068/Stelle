@@ -69,16 +69,21 @@ Route::middleware(['auth', 'checkEventCreator'])->group(function () {
     route::patch('/event/update/{id}', [EventController::class, 'update'])->name('event.update');
 
     //eval forms
-    Route::post('/events/{id}/evaluation-form', [EvaluationFormController::class, 'store'])->name('evaluation-forms.store');
-
+    Route::post('/event/{id}/evaluation-form', [EvaluationFormController::class, 'store'])->name('evaluation-forms.store');
+    Route::put('/event/{id}/evaluation-form/{form}', [EvaluationFormController::class, 'update'])->name('evaluation-forms.update');
 });
 
 Route::group(['middleware' => ['auth', 'checkFormOwner']], function() {
     // Display form to add questions to the evaluation form
-    Route::get('/event/evaluation-forms/{form}/questions/create', [QuestionController::class, 'create'])->name('questions.create');
+    Route::get('/event/evaluation-form/{form}/questions/create', [QuestionController::class, 'create'])->name('questions.create');
     
     // Store new questions
     Route::post('/event/evaluation-forms/{form}/questions', [QuestionController::class, 'store'])->name('questions.store');
+        // Route for displaying the form
+    Route::get('/event/{id}/evaluation-form/{form}/questions/edit', [QuestionController::class, 'edit'])->name('questions.edit');
+
+    // Route for processing the form submission
+    Route::put('/event/{id}/evaluation-form/{form}/questions/update', [QuestionController::class, 'update'])->name('questions.update');
 });
 
 //super admin stuff

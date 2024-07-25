@@ -17,4 +17,8 @@ class EvaluationForm extends Model
     {
         return $this->belongsTo(Event::class);
     }
+    public function questions()
+    {
+        return $this->hasMany(Question::class, 'form_id');
+    }
 }

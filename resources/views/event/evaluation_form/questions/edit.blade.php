@@ -2,26 +2,28 @@
 
 @section('body')
 
-<form action="{{ route('questions.store', $formId) }}" method="POST">
+<form action="{{ route('questions.update', ['id' => $id, 'form' => $form]) }}" method="POST">
+@method('PUT')
     @csrf
     <div id="questions">
-        <div class="form-group question-group">
-            <label for="question_type[]">Question Type:</label>
-            <select name="question_type[]" onchange="changeQuestionType(this)">
-                <option value="essay">Essay</option>
-                <option value="radio">Radio</option>
-            </select>
-            <div class="question-content">
-                <!-- Essay question by default -->
-                <label for="questions[]">Question:</label>
-                <input type="text" name="questions[]" required>
-                <div class="essay-underline" style="border-bottom: 1px solid #000; margin-top: 5px;"></div>
+        @foreach($questions as $question)
+            <div class="form-group question-group">
+                <label for="question_type[]">Question Type:</label>
+                <select name="question_type[]" onchange="changeQuestionType(this)">
+                    <option value="essay" {{ $question->type_id == 1 ? 'selected' : '' }}>Essay</option>
+                    <option value="radio" {{ $question->type_id == 2 ? 'selected' : '' }}>Radio</option>
+                </select>
+                <div class="question-content">
+                    <label for="questions[]">Question:</label>
+                    <input type="text" name="questions[]" value="{{ $question->question }}" required>
+                    <div class="essay-underline" style="border-bottom: 1px solid #000; margin-top: 5px;"></div>
+                </div>
+                <button type="button" class="remove-question" onclick="removeQuestion(this)">Remove</button>
             </div>
-            <button type="button" class="remove-question" onclick="removeQuestion(this)">Remove</button>
-        </div>
+        @endforeach
     </div>
     <button type="button" onclick="addQuestion()">Add Another Question</button>
-    <button type="submit">Save Questions</button>
+    <button type="submit">Update Questions</button>
 </form>
 
 <script>
