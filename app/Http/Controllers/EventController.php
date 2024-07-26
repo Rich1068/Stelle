@@ -5,6 +5,8 @@ use App\Http\Requests\EventUpdateRequest;
 use App\Models\UserEvent;
 use App\Models\EventParticipant;
 use App\Models\Event;
+use App\Models\Question;
+use App\Models\Answer;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
@@ -50,15 +52,23 @@ class EventController extends Controller
             ->where('status_id', 1) // Assuming 'Accepted' has an id of 1
             ->count();
         $event = Event::findOrFail($id);
+        $evaluationForm = $event->evaluationForm;
         $eventParticipant = EventParticipant::where('event_id', $id)
             ->where('user_id', Auth::user()->id)
             ->first();
-    
+
+        $questions = Question::where('form_id', $evaluationForm->id)->pluck('id');
+        
+        $answer = Answer::where('question_id', $questions)
+            ->where('user_id', Auth::user()->id)
+            ->exists();
+        
         return view('event.event', [
             'event' => $event,
             'userevent' => $userevent,
             'participant' => $eventParticipant,
             'currentParticipants' => $currentParticipants,
+            'answer' => $answer
         ]);
     }
 
@@ -194,7 +204,7 @@ class EventController extends Controller
         EventParticipant::create([
             'user_id' => Auth::user()->id,
             'event_id' => $event->id,
-            'participant_status_id' => 3, // Assuming 'Pending' has an id of 3
+            'status_id' => 3, // Assuming 'Pending' has an id of 3
         ]);
 
         return redirect()->route('event.view', $event->id)->with('success', 'You have requested to join the event!');

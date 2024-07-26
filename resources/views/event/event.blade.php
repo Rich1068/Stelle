@@ -36,37 +36,60 @@ By: {{ $userevent->user->first_name }} {{ $userevent->user->last_name }}<br>
 <a href="{{ route('events.participants', $event->id) }}" class="btn btn-primary">
     <span>View Participant</span>
 </a>
-@endif
+    @if($event->evaluationForm)
+        <form action="{{ route('evaluation-forms.update', ['id' => $event->id, 'form' => $event->evaluationForm->id]) }}" method="POST">
+            @method('PUT')
+            @csrf
+            <button type="submit">
+                    Update Evaluation Form
+            </button>
+        </form>
 
-@if ($currentParticipants < $event->capacity)
-    @if($participant == null && $userevent->user_id != Auth::user()->id)
-            <form action="{{ route('event.join', $event->id) }}" method="POST">
-                @csrf
-                <button type="submit" class="btn btn-success">Join Event</button>
-            </form>
-        @elseif ($participant && $participant->status_id == 3) <!-- Assuming 'Pending' has an id of 3 -->
-            <button type="button" class="btn btn-secondary" disabled>Pending</button>
-        @elseif ($participant && $participant->status_id == 1) <!-- Assuming 'Accepted' has an id of 1 -->
-            <p>You have been accepted to this event.</p>
+        <!-- Separate Form for Activating/Deactivating the Evaluation Form -->
+        <form action="{{ route('evaluation-forms.toggle', ['id' => $event->id, 'form' => $event->evaluationForm->id]) }}" method="POST" style="margin-top: 10px;">
+            @csrf
+            @method('PUT')
+
+            <div class="form-group">
+                <label for="is_active_toggle">Activate Evaluation Form:</label>
+                <input type="checkbox" name="is_active" id="is_active_toggle" onchange="this.form.submit()" {{ $event->evaluationForm->status_id == 1 ? 'checked' : '' }}>
+            </div>
+        </form>
+    @else
+        <form action="{{ route('evaluation-forms.store', $event->id) }}" method="POST">
+            @csrf
+            <button type="submit">Create Evaluation Form</button>
+        </form>
     @endif
-@elseif ($userevent->user_id == Auth::user()->id)
-@else
-    <button type="button" class="btn btn-secondary" disabled>Closed</button>
 @endif
 
-@if($event->evaluationForm)
-    <form action="{{ route('evaluation-forms.update', ['id' => $event->id, 'form' => $event->evaluationForm->id]) }}" method="POST">
-        @method('PUT')
-@else
-    <form action="{{ route('evaluation-forms.store', $event->id) }}" method="POST">
+@if($userevent->user_id != Auth::user()->id)
+
+    @if ($participant && $participant->status_id == 1)
+        <p>You have been accepted to this event.</p>
+    @elseif ($currentParticipants < $event->capacity && $participant == null)
+        <form action="{{ route('event.join', $event->id) }}" method="POST">
+            @csrf
+            <button type="submit" class="btn btn-success">Join Event</button>
+        </form>
+    @elseif ($participant && $participant->status_id == 3)
+        <button type="button" class="btn btn-secondary" disabled>Pending</button>
+    @else
+        <button type="button" class="btn btn-secondary" disabled>Closed</button>
+    @endif
+
+
+    @if($event->evaluationForm && $event->evaluationForm->status_id == 1)
+    <form action="{{ route('evaluation-form.take', ['id' => $event->id,'form' => $event->evaluationForm->id]) }}" method="GET">
+        @csrf
+        <button type="submit" class="btn btn-primary">Take Evaluation</button>
+    </form>
+    @elseif ($answer)
+        <button type="button" class="btn btn-secondary" disabled>Evaluation Form already answered</button>
+    @else
+        <button type="button" class="btn btn-secondary" disabled>Evaluation Not Yet Available</button>
+    @endif
 @endif
-    @csrf
-    <button type="submit">
-        @if($event->evaluationForm)
-            Update Evaluation Form
-        @else
-            Create Evaluation Form
-        @endif
-    </button>
-</form>
+
 @endsection
+

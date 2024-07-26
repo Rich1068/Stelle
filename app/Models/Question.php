@@ -12,7 +12,6 @@ class Question extends Model
         'form_id',
         'question',
         'type_id'
-        // Add other fillable attributes here if needed
     ];
     public function evaluationForm()
     {

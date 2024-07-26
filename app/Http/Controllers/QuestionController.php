@@ -7,12 +7,12 @@ use Illuminate\Http\Request;
 
 class QuestionController extends Controller
 {
-    public function create($formId)
+    public function create($id, $formId)
     {
-        return view('event.evaluation_form.questions.create', compact('formId'));
+        return view('event.evaluation_form.questions.create', compact('id','formId'));
     }
 
-    public function store(Request $request, $formId)
+    public function store(Request $request,$id, $formId)
     {
         $request->validate([
             'questions.*' => 'required|string',
@@ -35,9 +35,8 @@ class QuestionController extends Controller
 
     public function edit($id, $form)
     {
-        // Fetch the evaluation form and its associated questions
         $evaluationForm = EvaluationForm::findOrFail($form);
-        $questions = Question::where('form_id', $form)->get(); // Assume questions relationship is defined
+        $questions = Question::where('form_id', $form)->get(); 
 
         return view('event.evaluation_form.questions.edit', compact('id', 'form', 'questions','evaluationForm'), ['id'=> $id, 'form' => $evaluationForm, 'questions' =>$questions, 'evaluationForm' => $evaluationForm]);
     }

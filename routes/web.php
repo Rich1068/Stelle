@@ -58,31 +58,34 @@ Route::middleware('auth')->group(function () {
     //participant listview and acceptance
     Route::get('/event/{id}/participants', [EventController::class, 'showParticipants'])->name('events.participants');
     Route::post('/event/{id}/participants/{participant}/update', [EventController::class, 'updateParticipantStatus'])->name('participants.updateStatus');
+
+    //Answer event form
+    Route::get('/event/{id}/evaluation-form/{form}/take', [EvaluationFormController::class, 'take'])->name('evaluation-form.take');
+    Route::post('/event/{id}/submit-evaluation', [EvaluationFormController::class, 'submit'])->name('evaluation-form.submit');
 });
 
 
-
+//checks the creator of event
 Route::middleware(['auth', 'checkEventCreator'])->group(function () {
 
     //update event info
-    route::get('/event/edit/{id}', [EventController::class, 'edit'])->name('event.edit');
-    route::patch('/event/update/{id}', [EventController::class, 'update'])->name('event.update');
+    route::get('/event/{id}/edit', [EventController::class, 'edit'])->name('event.edit');
+    route::patch('/event/{id}/update', [EventController::class, 'update'])->name('event.update');
 
     //eval forms
     Route::post('/event/{id}/evaluation-form', [EvaluationFormController::class, 'store'])->name('evaluation-forms.store');
     Route::put('/event/{id}/evaluation-form/{form}', [EvaluationFormController::class, 'update'])->name('evaluation-forms.update');
+    Route::put('/events/{id}/evaluation-form/{form}/toggle', [EvaluationFormController::class, 'toggleActivation'])->name('evaluation-forms.toggle');
+
 });
-
+//check the event owner through form
 Route::group(['middleware' => ['auth', 'checkFormOwner']], function() {
-    // Display form to add questions to the evaluation form
-    Route::get('/event/evaluation-form/{form}/questions/create', [QuestionController::class, 'create'])->name('questions.create');
-    
-    // Store new questions
-    Route::post('/event/evaluation-forms/{form}/questions', [QuestionController::class, 'store'])->name('questions.store');
-        // Route for displaying the form
-    Route::get('/event/{id}/evaluation-form/{form}/questions/edit', [QuestionController::class, 'edit'])->name('questions.edit');
+    // create question
+    Route::get('/event/{id}/evaluation-form/{form}/questions/create', [QuestionController::class, 'create'])->name('questions.create');
+    Route::post('/event/{id}/evaluation-forms/{form}/questions', [QuestionController::class, 'store'])->name('questions.store');
 
-    // Route for processing the form submission
+    // update question
+    Route::get('/event/{id}/evaluation-form/{form}/questions/edit', [QuestionController::class, 'edit'])->name('questions.edit');
     Route::put('/event/{id}/evaluation-form/{form}/questions/update', [QuestionController::class, 'update'])->name('questions.update');
 });
 

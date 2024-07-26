@@ -11,9 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::create('form_statuses', function (Blueprint $table) {
+            $table->id();
+            $table->string('status');
+        });
+        DB::table('form_statuses')->insert([
+            ['status' => 'Active'],
+            ['status' => 'Inactive'],
+        ]);
         Schema::create('evaluation_forms', function (Blueprint $table) {
             $table->id();
             $table->foreignId('event_id')->constrained('events')->onDelete('cascade');
+            $table->foreignId('status_id')->constrained('form_statuses')->onDelete('cascade');
             $table->timestamps();
         });
         Schema::create('question_types', function (Blueprint $table) {
@@ -49,5 +58,6 @@ return new class extends Migration
         Schema::dropIfExists('questions');
         Schema::dropIfExists('question_types');
         Schema::dropIfExists('evaluation_forms');
+        Schema::dropIfExists('form_statuses');
     }
 };
