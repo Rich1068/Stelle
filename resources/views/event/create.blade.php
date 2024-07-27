@@ -1,5 +1,8 @@
 @extends('layouts.app')
 @section('body')
+@php
+    $today = date('Y-m-d');
+@endphp
 <section>
     <header>
         <h2 class="text-lg font-medium text-gray-900">
@@ -31,7 +34,7 @@
         <!-- Date -->
         <div>
             <x-input-label for="date" :value="__('Date')" />
-            <x-text-input id="date" name="date" type="date" class="mt-1 block w-full" :value="old('date')" required />
+            <x-text-input id="date" name="date" type="date" class="mt-1 block w-full" :value="old('date')" :min="$today" required />
             <x-input-error class="mt-2" :messages="$errors->get('date')" />
         </div>
 
@@ -78,6 +81,8 @@
             <x-input-label for="event_banner" :value="__('Event Banner')" />
             <x-text-input id="event_banner" name="event_banner" type="file" class="mt-1 block w-full" accept="image/*" onchange="previewImage(event)" />
             <x-input-error class="mt-2" :messages="$errors->get('event_banner')" />
+
+            <img id="image_preview" style="display: none; max-width: 50%; margin-top: 10px;" />
         </div>
 
         <div class="flex items-center gap-4">

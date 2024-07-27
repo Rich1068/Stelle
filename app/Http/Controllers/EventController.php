@@ -57,20 +57,32 @@ class EventController extends Controller
             ->where('user_id', Auth::user()->id)
             ->first();
 
-        $questions = Question::where('form_id', $evaluationForm->id)->pluck('id');
-        
-        $answer = Answer::where('question_id', $questions)
-            ->where('user_id', Auth::user()->id)
-            ->exists();
-        
+        $hasAnswered = false;
+        if ($evaluationForm) {
+            $questions = Question::where('form_id', $evaluationForm->id)->pluck('id');
+            
+            
+            foreach ($questions as $question) {
+                $answer = Answer::where('question_id', $question)
+                    ->where('user_id', Auth::user()->id)
+                    ->exists();
+                if ($answer) {
+                    $hasAnswered = true;
+                    break;
+                }
+            }
+        }
+
         return view('event.event', [
             'event' => $event,
             'userevent' => $userevent,
             'participant' => $eventParticipant,
+            'evaluationForm' => $evaluationForm,
             'currentParticipants' => $currentParticipants,
-            'answer' => $answer
+            'hasAnswered' => $hasAnswered
         ]);
     }
+
 
     public function store(Request $request): RedirectResponse
     {

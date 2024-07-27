@@ -65,6 +65,7 @@ class EvaluationFormController extends Controller
 
         foreach ($request->answers as $questionId => $answer) {
             Answer::create([
+                'form_id' => $event->evaluationForm->id,
                 'question_id' => $questionId,
                 'event_id' => $event->id,
                 'user_id' => $user->id,

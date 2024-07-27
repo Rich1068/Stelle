@@ -2,7 +2,7 @@
 
 @section('body')
 
-<form action="{{ route('questions.store', ['form' => $formId]) }}" method="POST">
+<form action="{{ route('questions.store', ['id' => $id, 'form' => $formId]) }}" method="POST">
     @csrf
     <div id="questions">
         <div class="form-group question-group">

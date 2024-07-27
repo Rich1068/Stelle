@@ -36,16 +36,17 @@ By: {{ $userevent->user->first_name }} {{ $userevent->user->last_name }}<br>
 <a href="{{ route('events.participants', $event->id) }}" class="btn btn-primary">
     <span>View Participant</span>
 </a>
+</br></br>
     @if($event->evaluationForm)
         <form action="{{ route('evaluation-forms.update', ['id' => $event->id, 'form' => $event->evaluationForm->id]) }}" method="POST">
             @method('PUT')
             @csrf
-            <button type="submit">
-                    Update Evaluation Form
+            <button type="submit" class="btn btn-primary">
+                Update Evaluation Form
             </button>
         </form>
 
-        <!-- Separate Form for Activating/Deactivating the Evaluation Form -->
+            <!-- Separate Form for Activating/Deactivating the Evaluation Form -->
         <form action="{{ route('evaluation-forms.toggle', ['id' => $event->id, 'form' => $event->evaluationForm->id]) }}" method="POST" style="margin-top: 10px;">
             @csrf
             @method('PUT')
@@ -58,7 +59,7 @@ By: {{ $userevent->user->first_name }} {{ $userevent->user->last_name }}<br>
     @else
         <form action="{{ route('evaluation-forms.store', $event->id) }}" method="POST">
             @csrf
-            <button type="submit">Create Evaluation Form</button>
+            <button type="submit" class="btn btn-primary">Create Evaluation Form</button>
         </form>
     @endif
 @endif
@@ -78,17 +79,21 @@ By: {{ $userevent->user->first_name }} {{ $userevent->user->last_name }}<br>
         <button type="button" class="btn btn-secondary" disabled>Closed</button>
     @endif
 
-
-    @if($event->evaluationForm && $event->evaluationForm->status_id == 1)
-    <form action="{{ route('evaluation-form.take', ['id' => $event->id,'form' => $event->evaluationForm->id]) }}" method="GET">
-        @csrf
-        <button type="submit" class="btn btn-primary">Take Evaluation</button>
-    </form>
-    @elseif ($answer)
-        <button type="button" class="btn btn-secondary" disabled>Evaluation Form already answered</button>
-    @else
-        <button type="button" class="btn btn-secondary" disabled>Evaluation Not Yet Available</button>
+    @if ($participant && $participant->status_id == 1)
+        @if($event->evaluationForm && $event->evaluationForm->status_id == 1)
+            @if($hasAnswered)
+                <button type="button" class="btn btn-secondary" disabled>Evaluation Form Already Answered</button>
+            @else
+                <form action="{{ route('evaluation-form.take', ['id' => $event->id, 'form' => $evaluationForm->id]) }}" method="GET">
+                    @csrf
+                    <button type="submit" class="btn btn-primary">Take Evaluation</button>
+                </form>
+            @endif
+        @else
+            <button type="button" class="btn btn-secondary" disabled>Evaluation Not Yet Available</button>
+        @endif
     @endif
+
 @endif
 
 @endsection

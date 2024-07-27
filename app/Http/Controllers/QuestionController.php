@@ -12,7 +12,7 @@ class QuestionController extends Controller
         return view('event.evaluation_form.questions.create', compact('id','formId'));
     }
 
-    public function store(Request $request,$id, $formId)
+    public function store(Request $request, $id, $formId)
     {
         $request->validate([
             'questions.*' => 'required|string',
