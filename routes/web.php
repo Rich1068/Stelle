@@ -8,6 +8,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\EvaluationFormController;
 use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\CertificateController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -62,6 +63,10 @@ Route::middleware('auth')->group(function () {
     //Answer event form
     Route::get('/event/{id}/evaluation-form/{form}/take', [EvaluationFormController::class, 'take'])->name('evaluation-form.take');
     Route::post('/event/{id}/submit-evaluation', [EvaluationFormController::class, 'submit'])->name('evaluation-form.submit');
+    //cert stuff 
+    Route::get('/event/certificate/create/{eventId}', [CertificateController::class, 'create'])->name('certificates.create');
+    Route::get('/templates/{templateName}', [CertificateController::class, 'loadTemplate']);
+    Route::post('/save-certificate', [CertificateController::class, 'saveCertificate']);
 });
 
 
@@ -76,6 +81,7 @@ Route::middleware(['auth', 'checkEventCreator'])->group(function () {
     Route::post('/event/{id}/evaluation-form', [EvaluationFormController::class, 'store'])->name('evaluation-forms.store');
     Route::put('/event/{id}/evaluation-form/{form}', [EvaluationFormController::class, 'update'])->name('evaluation-forms.update');
     Route::put('/events/{id}/evaluation-form/{form}/toggle', [EvaluationFormController::class, 'toggleActivation'])->name('evaluation-forms.toggle');
+    
 
 });
 //check the event owner through form

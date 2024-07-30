@@ -22,6 +22,9 @@ return new class extends Migration
             $table->string('path');
             $table->timestamps();
         });
+        DB::table('cert_templates')->insert([
+            ['path' => 'storage/images/certificates/cert_templates/template1.jpg'],
+        ]);
     }
 
     /**
