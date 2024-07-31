@@ -5,50 +5,57 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\Certificate;
 use App\Models\CertTemplate;
 use App\Models\Event;
-use Dompdf\Dompdf;
-use Intervention\Image\ImageManagerStatic as Image;
+use PDF;
 use Illuminate\Http\Request;
 
 class CertificateController extends Controller
 {
     public function create($eventId)
     {
-        // Fetch the event details if needed (assuming an Event model exists)
         $event = Event::findOrFail($eventId);
+        $templates = CertTemplate::where('id', 1)->get();
 
-        return view('certificate.create', compact('event'));
+        return view('certificate.create', compact('event', 'templates'));
     }
 
-    // Method to load a template image
-    public function loadTemplate($templateName)
+    public function saveTemplate(Request $request, $eventId)
     {
-        $templatePath = 'storage/images/event_banners/' . $templateName;
+        $templateHtml = $request->input('template_html');
 
-        if (file_exists($templatePath)) {
-            return response()->file($templatePath);
-        }
-
-        return response('Template not found', 404);
-    }
-
-    // Method to save the edited certificate
-    public function saveCertificate(Request $request)
-    {
-        $validatedData = $request->validate([
-            'html' => 'required|string',
-            'css' => 'required|string',
-            'event_id' => 'required|exists:events,id',
-        ]);
-
-        // Save the certificate details to the database
-        \DB::table('certificates')->insert([
-            'html' => $validatedData['html'],
-            'css' => $validatedData['css'],
-            'event_id' => $validatedData['event_id'],
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+        $certTemplate = new CertTemplate();
+        $certTemplate->event_id = $eventId;
+        $certTemplate->html = $templateHtml;
+        $certTemplate->save();
 
         return response()->json(['success' => true]);
+    }
+
+    public function downloadCertificate(Request $request, $eventId)
+    {
+        $templateHtml = $request->input('template_html');
+
+        // Generate PDF from HTML
+        $pdf = PDF::loadHTML($templateHtml);
+        return $pdf->download('certificate.pdf');
+    }
+
+    public function save(Request $request, $eventId)
+    {
+        $event = Event::findOrFail($eventId);
+
+        $certificate = Certificate::updateOrCreate(
+            ['event_id' => $event->id],
+            ['cert_path' => $request->template_json]
+        );
+
+        return response()->json(['success' => true, 'certificate' => $certificate]);
+    }
+
+    public function load($eventId)
+    {
+        $event = Event::findOrFail($eventId);
+        $certificate = Certificate::where('event_id', $event->id)->first();
+
+        return response()->json(['certificate' => $certificate]);
     }
 }

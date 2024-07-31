@@ -64,9 +64,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/event/{id}/evaluation-form/{form}/take', [EvaluationFormController::class, 'take'])->name('evaluation-form.take');
     Route::post('/event/{id}/submit-evaluation', [EvaluationFormController::class, 'submit'])->name('evaluation-form.submit');
     //cert stuff 
-    Route::get('/event/certificate/create/{eventId}', [CertificateController::class, 'create'])->name('certificates.create');
-    Route::get('/templates/{templateName}', [CertificateController::class, 'loadTemplate']);
-    Route::post('/save-certificate', [CertificateController::class, 'saveCertificate']);
+    Route::get('/event/certificates/create/{id}', [CertificateController::class, 'create'])->name('certificates.create');
+    Route::post('/event/certificates/download/{id}', [CertificateController::class, 'downloadCertificate'])->name('certificates.download');
+    Route::post('/event/certificates/save/{id}', [CertificateController::class, 'save'])->name('certificates.save');
+    Route::get('/event/certificates/load/{id}', [CertificateController::class, 'load'])->name('certificates.load');
 });
 
 
