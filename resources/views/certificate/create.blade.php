@@ -1,11 +1,8 @@
 @extends('layouts.app')
 
 @section('body')
-    <!-- Include Blueprint CSS (if needed) -->
-    <link href="https://unpkg.com/@blueprintjs/core@5/lib/css/blueprint.css" rel="stylesheet" />
-
-    <!-- Add Polotno Bundle (make sure this script is added to the body) -->
-    <script src="https://unpkg.com/polotno@2/polotno.bundle.js"></script>
+    <!-- Include Blueprint CSS via Vite -->
+    @vite(['resources/css/blueprint.css'])
 
     <!-- Set Styles for the Editor -->
     <style>
@@ -21,21 +18,13 @@
 
     <!-- Create Container for Editor -->
     <div id="container"></div>
+    <script src="resources/js/editor.jsx" type="module"></script>
+    <script>
+      window.onload = () => {
+        window.createEditor({ container: document.getElementById('container') });
+      };
+    </script>
 
     <!-- Initialize the Editor -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const { store } = createPolotnoApp({
-                // This is a demo key just for this project
-                // Please obtain your own API key from https://polotno.com/cabinet
-                key: 'nFA5H9elEytDyPyvKL7T',
-                showCredit: true, // Show Polotno credit
-                container: document.getElementById('container'),
-                // Optionally specify which side panels to show
-                // sections: ['photos', 'text', 'elements', 'upload', 'background', 'layers']
-            });
-
-            // You can use the full store API available here: https://polotno.com/docs/store-overview
-        });
-    </script>
+    @vite('resources/js/editor.jsx')
 @endsection
