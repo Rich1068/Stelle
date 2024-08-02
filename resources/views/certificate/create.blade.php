@@ -2,7 +2,7 @@
 
 @section('body')
     <!-- Include Blueprint CSS via Vite -->
-    @vite(['resources/css/blueprint.css'])
+    @vite(['resources/css/blueprint.css', 'resources/js/editor.jsx'])
 
     <!-- Set Styles for the Editor -->
     <style>
@@ -18,13 +18,4 @@
 
     <!-- Create Container for Editor -->
     <div id="container"></div>
-    <script src="resources/js/editor.jsx" type="module"></script>
-    <script>
-      window.onload = () => {
-        window.createEditor({ container: document.getElementById('container') });
-      };
-    </script>
-
-    <!-- Initialize the Editor -->
-    @vite('resources/js/editor.jsx')
 @endsection

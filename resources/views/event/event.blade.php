@@ -62,8 +62,12 @@ By: {{ $userevent->user->first_name }} {{ $userevent->user->last_name }}<br>
             <button type="submit" class="btn btn-primary">Create Evaluation Form</button>
         </form>
     @endif
-
+    </br>
+    @if ($certificate == null)
     <a href="{{ route('certificates.create', $event->id) }}" class="btn btn-primary">Create Certificate</a>
+    @else
+    <a href="{{ route('certificates.create', $event->id) }}" class="btn btn-primary">Update Certificate</a>
+    @endif
 @endif
 
 @if($userevent->user_id != Auth::user()->id)

@@ -20,56 +20,48 @@ class CertificateController extends Controller
         return view('certificate.create', compact('event', 'templates'));
     }
 
-    public function saveTemplate(Request $request, $eventId)
+    public function saveCanvas(Request $request, $id)
     {
-        $templateJson = $request->input('template_json');
-        $isUploaded = $request->input('is_uploaded', false);
+        $canvasData = $request->input('canvas');
 
-        $certTemplate = CertTemplate::create([
-            'event_id' => $eventId,
-            'json' => $templateJson,
-            'is_uploaded' => $isUploaded,
-        ]);
+        // Check if a certificate for the given event ID already exists
+        $certificate = Certificate::where('event_id', $id)->first();
 
-        return response()->json(['success' => true, 'template' => $certTemplate]);
+        if ($certificate === null) {
+            // Create a new certificate
+            $certificate = new Certificate();
+            $certificate->event_id = $id;
+            $certificate->design = json_encode($canvasData);
+            $certificate->save();
+            return response()->json(['message' => 'Certificate saved!', 'certificateId' => $certificate->id]);
+        } else {
+            // Update existing certificate
+            $certificate->design = json_encode($canvasData);
+            $certificate->save();
+            return response()->json(['message' => 'Certificate updated!']);
+        }
+    }
+    public function loadCanvas($id, $certId)
+    {
+        // Find the certificate by ID and get its design
+        $certificate = Certificate::where('event_id', $id)->where('id', $certId)->first();
+
+        if ($certificate) {
+            return response()->json(json_decode($certificate->design, true));
+        } else {
+            return response()->json(['message' => 'Certificate not found!'], 404);
+        }
     }
 
-    public function downloadCertificate(Request $request, $eventId)
+    public function getCertificateId($id)
     {
-        $event = Event::findOrFail($eventId);
-        $template = CertTemplate::where('event_id', $eventId)->firstOrFail();
+        // Find the certificate by event ID
+        $certificate = Certificate::where('event_id', $id)->first();
 
-        $templateHtml = $this->convertJsonToHtml($template->json);
-
-        $pdf = PDF::loadHTML($templateHtml);
-        return $pdf->download('certificate.pdf');
-    }
-
-    public function save(Request $request, $eventId)
-    {
-        $event = Event::findOrFail($eventId);
-        $certPath = $request->input('cert_path');
-
-        $certificate = Certificate::updateOrCreate(
-            ['event_id' => $event->id],
-            ['cert_path' => $certPath]
-        );
-
-        return response()->json(['success' => true, 'certificate' => $certificate]);
-    }
-
-    public function load($eventId)
-    {
-        $event = Event::findOrFail($eventId);
-        $certificate = Certificate::where('event_id', $event->id)->first();
-
-        return response()->json(['certificate' => $certificate]);
-    }
-
-    private function convertJsonToHtml($json)
-    {
-        $templateData = json_decode($json, true);
-        $html = '<div>Your HTML content based on JSON goes here</div>';
-        return $html;
+        if ($certificate) {
+            return response()->json(['certificateId' => $certificate->id]);
+        } else {
+            return response()->json(['certificateId' => null]);
+        }
     }
 }

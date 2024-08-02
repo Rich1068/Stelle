@@ -12,8 +12,7 @@ class Certificate extends Model
     protected $fillable = [
         'event_id',
         'cert_path',
-        'content',
-        'template_id',
+        'design',
     ];
 
     public function event()

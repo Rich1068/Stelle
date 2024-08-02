@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('certificates', function (Blueprint $table) {
             $table->id();
             $table->foreignId('event_id')->constrained('events')->onDelete('cascade');
-            $table->json('design');
-            $table->string('cert_path');
+            $table->text('design')->nullable();
+            $table->string('cert_path')->nullable();
             $table->timestamps();
         });
         Schema::create('cert_templates', function (Blueprint $table) {

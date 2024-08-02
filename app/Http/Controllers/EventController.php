@@ -5,6 +5,7 @@ use App\Http\Requests\EventUpdateRequest;
 use App\Models\UserEvent;
 use App\Models\EventParticipant;
 use App\Models\Event;
+use App\Models\Certificate;
 use App\Models\Question;
 use App\Models\Answer;
 use Illuminate\View\View;
@@ -52,6 +53,7 @@ class EventController extends Controller
             ->where('status_id', 1) // Assuming 'Accepted' has an id of 1
             ->count();
         $event = Event::findOrFail($id);
+        $certificate = Certificate::where('event_id', $id)->firstOrFail();
         $evaluationForm = $event->evaluationForm;
         $eventParticipant = EventParticipant::where('event_id', $id)
             ->where('user_id', Auth::user()->id)
@@ -79,7 +81,8 @@ class EventController extends Controller
             'participant' => $eventParticipant,
             'evaluationForm' => $evaluationForm,
             'currentParticipants' => $currentParticipants,
-            'hasAnswered' => $hasAnswered
+            'hasAnswered' => $hasAnswered,
+            'certificate' => $certificate
         ]);
     }
 
