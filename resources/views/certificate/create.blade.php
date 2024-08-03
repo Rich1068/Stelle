@@ -17,5 +17,6 @@
     </style>
 
     <!-- Create Container for Editor -->
-    <div id="container"></div>
+    <div id="container" data-event-id="{{ $event->id }}"></div>
+
 @endsection

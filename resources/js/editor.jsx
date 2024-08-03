@@ -43,8 +43,6 @@ const store = createStore({
 
 store.addPage();
 
-const eventId = 1; // Replace with the actual event ID
-
 export const PhotosPanel = observer(({ store }) => {
   const [images, setImages] = React.useState([]);
 
@@ -118,12 +116,32 @@ const sections = [
 
 const saveDesign = async (eventId, setCertificateId) => {
   const canvasData = store.toJSON();
+
   try {
+    // Convert the current canvas design to a base64 image (returns a Promise)
+    const dataURLPromise = store.toDataURL();
+
+    // Await the Promise to get the actual dataURL
+    const dataURL = await dataURLPromise;
+
     console.log('Saving design...', canvasData); // Debug log
-    const response = await axios.post(`/event/${eventId}/certificates/save`, { canvas: canvasData });
+    console.log('Image Data URL:', dataURL); // Debug log
+
+    // Check if dataURL is a string
+    if (typeof dataURL !== 'string') {
+      console.error('dataURL is not a string:', dataURL);
+      return;
+    }
+
+    const response = await axios.post(`/event/${eventId}/certificates/save`, {
+      canvas: canvasData,
+      image: dataURL,
+    });
+    alert('Design saved successfully!');
     console.log(response.data.message);
+
     if (response.data.certificateId) {
-      setCertificateId(response.data.certificateId); // Update certificateId with the newly created certificate's ID
+      setCertificateId(response.data.certificateId);
     }
   } catch (error) {
     console.error('Error saving design:', error);
@@ -141,8 +159,8 @@ const loadDesign = async (eventId, certId) => {
 };
 
 export const App = () => {
+  const eventId = document.getElementById('container').getAttribute('data-event-id');
   const [certificateId, setCertificateId] = useState(null);
-  const eventId = 1; // Replace with your actual event ID
 
   useEffect(() => {
     const fetchCertificateId = async () => {
@@ -162,7 +180,6 @@ export const App = () => {
   }, []);
 
   useEffect(() => {
-    console.log('Certificate ID:', certificateId);
     if (certificateId) {
       loadDesign(eventId, certificateId);
     }
@@ -178,10 +195,10 @@ export const App = () => {
         <Workspace store={store} style={{ width: '100%', height: '100%' }} />
         <ZoomButtons store={store} />
         <PagesTimeline store={store} />
-      </WorkspaceWrap>
-      <Button onClick={() => saveDesign(eventId, setCertificateId)} style={{ position: 'absolute', top: 10, right: 10 }}>
+        <Button onClick={() => saveDesign(eventId, setCertificateId)} style={{top: 10, right: -100 }}>
         Save Design
       </Button>
+      </WorkspaceWrap>
     </PolotnoContainer>
   );
 };

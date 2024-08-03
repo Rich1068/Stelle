@@ -53,12 +53,11 @@ class EventController extends Controller
             ->where('status_id', 1) // Assuming 'Accepted' has an id of 1
             ->count();
         $event = Event::findOrFail($id);
-        $certificate = Certificate::where('event_id', $id)->firstOrFail();
+        $certificate = Certificate::where('event_id', $id)->first();
         $evaluationForm = $event->evaluationForm;
         $eventParticipant = EventParticipant::where('event_id', $id)
             ->where('user_id', Auth::user()->id)
             ->first();
-
         $hasAnswered = false;
         if ($evaluationForm) {
             $questions = Question::where('form_id', $evaluationForm->id)->pluck('id');

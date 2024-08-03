@@ -68,6 +68,12 @@ By: {{ $userevent->user->first_name }} {{ $userevent->user->last_name }}<br>
     @else
     <a href="{{ route('certificates.create', $event->id) }}" class="btn btn-primary">Update Certificate</a>
     @endif
+
+    @if ($certificate)
+    <button id="viewCertificateButton" data-image-url="{{ asset($certificate->cert_path) }}" class="btn btn-primary">
+        View Certificate
+    </button>
+@endif
 @endif
 
 @if($userevent->user_id != Auth::user()->id)
@@ -99,8 +105,40 @@ By: {{ $userevent->user->first_name }} {{ $userevent->user->last_name }}<br>
             <button type="button" class="btn btn-secondary" disabled>Evaluation Not Yet Available</button>
         @endif
     @endif
-
 @endif
+<!-- Modal HTML -->
+<div class="modal fade" id="certificateModal" tabindex="-1" aria-labelledby="certificateModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="certificateModalLabel">Certificate</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <img id="certificateImage" src="" alt="Certificate Image" class="img-fluid">
+            </div>
+        </div>
+    </div>
+</div>
 
+<!-- JavaScript to handle the button click and display the modal -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const viewCertificateButton = document.querySelector('#viewCertificateButton');
+        if (viewCertificateButton) {
+            viewCertificateButton.addEventListener('click', function (event) {
+                event.preventDefault();
+                const imageUrl = event.target.dataset.imageUrl;
+                const certificateImage = document.querySelector('#certificateImage');
+                if (certificateImage) {
+                    certificateImage.src = imageUrl;
+                    $('#certificateModal').modal('show');
+                }
+            });
+        }
+    });
+</script>
 @endsection
 
