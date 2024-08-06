@@ -18,6 +18,7 @@ Route::get('/', function () {
 Route::middleware('auth')->group(function () {
 
     route::get('/profile', [ProfileController::class, 'profile'])->name('profile.profile');
+    Route::get('/profile/{id}', [ProfileController::class, 'view'])->name('profile.view');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile/destroy', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -45,7 +46,6 @@ Route::middleware(['auth', 'checkRole:1,2'])->group(function () {
     route::get('/event/create', [EventController::class, 'create'])->name('event.create');
     Route::get('/event/myEventlist', [EventController::class, 'myEventlist'])->name('event.myeventlist');
 
-
 });
 
 Route::middleware('auth')->group(function () {
@@ -55,10 +55,9 @@ Route::middleware('auth')->group(function () {
     route::get('/events', [EventController::class, 'list'])->name('event.list');
     route::get('/event/{id}', [EventController::class, 'view'])->name('event.view');
     Route::post('/event/{id}/join', [EventController::class, 'join'])->name('event.join');
-
+    Route::post('/event/{id}/participants/send-certificates', [EventController::class, 'sendCertificates'])->name('sendCertificates');
     //participant listview and acceptance
-    Route::get('/event/{id}/participants', [EventController::class, 'showParticipants'])->name('events.participants');
-    Route::post('/event/{id}/participants/{participant}/update', [EventController::class, 'updateParticipantStatus'])->name('participants.updateStatus');
+    
 
     //Answer event form
     Route::get('/event/{id}/evaluation-form/{form}/take', [EvaluationFormController::class, 'take'])->name('evaluation-form.take');
@@ -79,6 +78,11 @@ Route::middleware(['auth', 'checkEventCreator'])->group(function () {
     //update event info
     route::get('/event/{id}/edit', [EventController::class, 'edit'])->name('event.edit');
     route::patch('/event/{id}/update', [EventController::class, 'update'])->name('event.update');
+
+    Route::get('/event/{id}/pending-participants', [EventController::class, 'showParticipants'])->name('events.participants');
+    Route::get('/event/{id}/participants', [EventController::class, 'showParticipantslist'])->name('events.participantslist');
+    Route::post('/event/{id}/participants/{participant}/update', [EventController::class, 'updateParticipantStatus'])->name('participants.updateStatus');
+    
 
     //eval forms
     Route::post('/event/{id}/evaluation-form', [EvaluationFormController::class, 'store'])->name('evaluation-forms.store');

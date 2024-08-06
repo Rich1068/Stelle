@@ -25,7 +25,11 @@
         <tbody>
             @foreach($participants as $participant)
                 <tr>
-                    <td>{{ $participant->user->first_name }} {{ $participant->user->last_name }}</td>
+                    <td>
+                        <a href="{{ route('profile.view', $participant->user->id) }}">
+                            {{ $participant->user->first_name }} {{ $participant->user->last_name }}
+                        </a>
+                    </td>
                     <td>{{ $participant->status->status }}</td>
                     <td>
                         <form action="{{ route('participants.updateStatus', [$eventuser->id, $participant->user_id]) }}" method="POST" style="display: inline-block;">

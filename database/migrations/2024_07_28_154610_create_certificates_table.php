@@ -28,6 +28,12 @@ return new class extends Migration
             'user_id' => '1',
             'path' => 'storage/images/certificates/cert_templates/template1.jpg'
         ]);
+        Schema::create('cert_users', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('cert_id')->constrained('certificates')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->timestamps();
+        });
     }
 
     /**
@@ -35,6 +41,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('cert_users');
         Schema::dropIfExists('cert_templates');
         Schema::dropIfExists('certificates');
     }

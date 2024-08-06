@@ -32,9 +32,11 @@ By: {{ $userevent->user->first_name }} {{ $userevent->user->last_name }}<br>
 <a href="{{ route('event.edit', $event->id) }}" class="btn btn-primary">
     <span>Edit</span>
 </a>
-
-<a href="{{ route('events.participants', $event->id) }}" class="btn btn-primary">
+<a href="{{ route('events.participantslist', $event->id) }}" class="btn btn-primary">
     <span>View Participant</span>
+</a>
+<a href="{{ route('events.participants', $event->id) }}" class="btn btn-primary">
+    <span>View Requesting Participant</span>
 </a>
 </br></br>
     @if($event->evaluationForm)
@@ -73,7 +75,7 @@ By: {{ $userevent->user->first_name }} {{ $userevent->user->last_name }}<br>
     <button id="viewCertificateButton" data-image-url="{{ asset($certificate->cert_path) }}" class="btn btn-primary">
         View Certificate
     </button>
-@endif
+    @endif
 @endif
 
 @if($userevent->user_id != Auth::user()->id)

@@ -8,6 +8,7 @@ use App\Models\Event;
 use App\Models\Certificate;
 use App\Models\Question;
 use App\Models\Answer;
+use App\Models\CertUser;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
@@ -241,6 +242,22 @@ class EventController extends Controller
 
         return view('event.participants', compact('eventuser', 'participants', 'event'));
     }
+    public function showParticipantslist($id)
+    {
+        $eventuser = UserEvent::findOrFail($id);
+        $event = Event::findOrFail($id);
+        // Check if the logged-in user is the creator of the event
+        if ($eventuser->user_id !== Auth::id()) {
+            return redirect()->route('unauthorized')->with('error', 'You do not have permission to view this page.');
+        }
+
+        
+        $participants = EventParticipant::where('event_id', $id)
+                                ->where('status_id', 1)
+                                ->get();
+
+        return view('event.participantlist', compact('eventuser', 'participants', 'event'));
+    }
 
     public function updateParticipantStatus(Request $request, $eventId, $participantId)
     {
@@ -261,5 +278,35 @@ class EventController extends Controller
 
         return back()->with('success', 'Participant status updated successfully.');
 
+    }
+    public function sendCertificates(Request $request, $id)
+    {
+        $request->validate([
+            'participants' => 'required|array',
+            'participants.*' => 'exists:users,id', // Ensure each participant ID exists in the users table
+        ]);
+    
+        $participantIds = $request->input('participants', []);
+    
+        $certificate = Certificate::where('event_id', $id)->first();
+        if (!$certificate) {
+            return redirect()->back()->with('error', 'Certificate not found for this event.');
+        }
+    
+        $certificateId = $certificate->id;
+    
+        foreach ($participantIds as $participantId) {
+            $this->connectUserToCertificate($participantId, $certificateId);
+        }
+    
+        return redirect()->back()->with('success', 'Certificates sent successfully.');
+    }
+
+    private function connectUserToCertificate($userId, $certificateId)
+    {
+        CertUser::create([
+            'user_id' => $userId,
+            'cert_id' => $certificateId,
+        ]);
     }
 }

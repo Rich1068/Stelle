@@ -13,6 +13,8 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File;
 use App\Models\Country;
+use App\Models\User;
+
 class ProfileController extends Controller
 {
     //view own profile
@@ -99,4 +101,12 @@ class ProfileController extends Controller
 
         return Redirect::to('/');
     }
+    //view someones profile
+    public function view($id)
+    {
+        $user = User::findOrFail($id);
+        return view('profile.view', compact('user'));
+    }
+    
+
 }
