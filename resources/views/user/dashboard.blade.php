@@ -1,7 +1,18 @@
 @extends('layouts.app')
 @section('body')
 <div class="container-fluid">
-
+@if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
+<div>
+    Want to be organize events? Be an admin now!
+    <form id="registerAdminForm" action="{{ route('register.admin') }}" method="POST">
+            @csrf
+            <button type="button" class="btn btn-success" onclick="confirmSubmission()">Register</button>
+    </form>
+</div>
 <!-- Page Heading -->
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
@@ -328,4 +339,14 @@
 </div>
 
 </div>
+<script>
+    function confirmSubmission() {
+        // Show confirmation dialog
+        if (confirm('Are you sure you want to register as an event admin?')) {
+            // If confirmed, submit the form
+            document.getElementById('registerAdminForm').submit();
+        }
+        // If not confirmed, do nothing
+    }
+</script>
 @endsection

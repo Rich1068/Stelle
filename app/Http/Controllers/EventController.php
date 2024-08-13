@@ -196,37 +196,37 @@ class EventController extends Controller
 
     //join event
     public function join($id)
-{
-    $event = Event::findOrFail($id);
+    {
+        $event = Event::findOrFail($id);
 
-    // Check if the user is already a participant
-    $participant = EventParticipant::where('user_id', Auth::user()->id)
-        ->where('event_id', $event->id)
-        ->first();
+        // Check if the user is already a participant
+        $participant = EventParticipant::where('user_id', Auth::user()->id)
+            ->where('event_id', $event->id)
+            ->first();
 
-    if (!$participant) {
-        // Count the number of accepted participants
-        $acceptedParticipants = EventParticipant::where('event_id', $event->id)
-            ->where('status_id', 1) // Assuming 'Accepted' has an id of 1
-            ->count();
+        if (!$participant) {
+            // Count the number of accepted participants
+            $acceptedParticipants = EventParticipant::where('event_id', $event->id)
+                ->where('status_id', 1) // Assuming 'Accepted' has an id of 1
+                ->count();
 
-        // Check if the event capacity is reached
-        if ($acceptedParticipants >= $event->capacity) {
-            return redirect()->route('event.view', $event->id)->with('error', 'The event has reached its capacity.');
+            // Check if the event capacity is reached
+            if ($acceptedParticipants >= $event->capacity) {
+                return redirect()->route('event.view', $event->id)->with('error', 'The event has reached its capacity.');
+            }
+
+            // Create new EventParticipant record with status 'Pending'
+            EventParticipant::create([
+                'user_id' => Auth::user()->id,
+                'event_id' => $event->id,
+                'status_id' => 3, // Assuming 'Pending' has an id of 3
+            ]);
+
+            return redirect()->route('event.view', $event->id)->with('success', 'You have requested to join the event!');
         }
 
-        // Create new EventParticipant record with status 'Pending'
-        EventParticipant::create([
-            'user_id' => Auth::user()->id,
-            'event_id' => $event->id,
-            'status_id' => 3, // Assuming 'Pending' has an id of 3
-        ]);
-
-        return redirect()->route('event.view', $event->id)->with('success', 'You have requested to join the event!');
+        return redirect()->route('event.view', $event->id)->with('error', 'You have already requested to join this event.');
     }
-
-    return redirect()->route('event.view', $event->id)->with('error', 'You have already requested to join this event.');
-}
 
 
     public function showParticipants($id)

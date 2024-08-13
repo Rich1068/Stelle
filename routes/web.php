@@ -56,6 +56,8 @@ Route::middleware('auth')->group(function () {
     route::get('/event/{id}', [EventController::class, 'view'])->name('event.view');
     Route::post('/event/{id}/join', [EventController::class, 'join'])->name('event.join');
     Route::post('/event/{id}/participants/send-certificates', [EventController::class, 'sendCertificates'])->name('sendCertificates');
+    Route::post('/register-admin', [ProfileController::class, 'registerAdmin'])->name('register.admin');
+
     //participant listview and acceptance
     
 

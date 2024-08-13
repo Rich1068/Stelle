@@ -44,5 +44,6 @@ return new class extends Migration
         Schema::dropIfExists('cert_users');
         Schema::dropIfExists('cert_templates');
         Schema::dropIfExists('certificates');
+
     }
 };

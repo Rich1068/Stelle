@@ -61,6 +61,22 @@ return new class extends Migration
             'role_id' => DB::table('roles')->where('role_name', 'User')->first()->id,
         ]);
 
+        Schema::create('participant_statuses', function (Blueprint $table) {
+            $table->id();
+            $table->string('status');
+        });
+        DB::table('participant_statuses')->insert([
+            ['status' => 'Accepted'],
+            ['status' => 'Declined'],
+            ['status' => 'Pending'],
+        ]);
+        Schema::create('register_admins', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->onstrained('users')->onDelete('cascade');
+            $table->foreignId('status_id')->constrained('participant_statuses')->onDelete('cascade'); 
+            $table->timestamps();
+        });
+
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
             $table->string('token');
@@ -75,6 +91,8 @@ return new class extends Migration
             $table->longText('payload');
             $table->integer('last_activity')->index();
         });
+
+
     }
 
     /**
@@ -86,5 +104,7 @@ return new class extends Migration
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('users');
         Schema::dropIfExists('roles');
+        Schema::dropIfExists('register_admins');
+        Schema::dropIfExists('participant_statuses');
     }
 };

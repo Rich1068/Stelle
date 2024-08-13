@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File;
 use App\Models\Country;
 use App\Models\User;
+use App\Models\RegisterAdmin;
 
 class ProfileController extends Controller
 {
@@ -108,5 +109,18 @@ class ProfileController extends Controller
         return view('profile.view', compact('user'));
     }
     
+
+    //users to become admins
+    public function registerAdmin(Request $request)
+    {
+        // Insert into the database
+        RegisterAdmin::create([
+            'user_id' => Auth::user()->id,
+            'status_id' => 3, 
+        ]);
+
+        // Redirect or return a response
+        return back()->with('success', 'You have registered to be an Event Admin, Please wait for approval!');
+    }
 
 }
