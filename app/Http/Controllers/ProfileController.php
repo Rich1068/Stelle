@@ -33,6 +33,7 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
+        
         $countries = Country::all();
         return view('profile.edit', compact('countries'), [
             'user' => $request->user(),

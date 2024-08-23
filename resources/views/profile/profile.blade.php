@@ -25,7 +25,7 @@ Contact Number: @if ($user->contact_number == null) N/A @else {{ $user->contact_
 
 
 
-<a href="{{ route('profile.edit') }}" class="btn btn-primary">
+<a href="{{route('profile.edit')}}" class="btn btn-primary">
     <span>Edit</span>
 </a>
 @endsection

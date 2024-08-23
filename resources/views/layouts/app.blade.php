@@ -16,7 +16,7 @@
         rel="stylesheet">
     <!-- Custom styles for this template-->
     <link rel="stylesheet" href="https://polotno.com/style.css">
-    <link href="{{asset('assets/css/sb-admin-2.min.css')}}" rel="stylesheet">
+    <link href="{{asset('assets/css/sb-admin-2.css')}}" rel="stylesheet">
 </head>
  
 <div id="page-top">
@@ -36,7 +36,7 @@
         <div id="content">
 
             <!-- Topbar -->
-            <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+            <nav class="navbar navbar-expand navbar-light mb-3 bg-white topbar static-top shadow">
 
                 <!-- Sidebar Toggle (Topbar) -->
                 <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
@@ -244,7 +244,8 @@
                 </ul>
 
             </nav>
-            <!-- content??-->
+            <!-- content-->
+            
             @yield('body')
         </div>
 

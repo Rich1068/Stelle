@@ -52,6 +52,7 @@ html {
   line-height: 1.15;
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  
 }
 
 article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
@@ -6411,7 +6412,7 @@ a.close.disabled {
 }
 
 .bg-primary {
-  background-color: #4e73df !important;
+  background-color: #fff !important;
 }
 
 a.bg-primary:hover, a.bg-primary:focus,
@@ -9797,7 +9798,7 @@ a:focus {
 }
 
 #wrapper #content-wrapper {
-  background-color: #f8f9fc;
+  background: linear-gradient(to bottom right, #f8d7e8, #b0dffb);
   width: 100%;
   overflow-x: hidden;
 }
@@ -10307,21 +10308,23 @@ a:focus {
   color: #fff;
 }
 
+/* notif icons */
 .topbar.navbar-light .navbar-nav .nav-item .nav-link {
-  color: #d1d3e2;
+  color: #000;
 }
 
 .topbar.navbar-light .navbar-nav .nav-item .nav-link:hover {
-  color: #b7b9cc;
+  color: #000;
 }
 
 .topbar.navbar-light .navbar-nav .nav-item .nav-link:active {
-  color: #858796;
+  color: #000;
 }
 
 .sidebar {
   width: 6.5rem;
   min-height: 100vh;
+  border-right: 1px solid darkgray;
 }
 
 .sidebar .nav-item {
@@ -10626,7 +10629,7 @@ a:focus {
 }
 
 .sidebar-light .sidebar-brand {
-  color: #6e707e;
+  color: #000;
 }
 
 .sidebar-light hr.sidebar-divider {
@@ -10638,31 +10641,31 @@ a:focus {
 }
 
 .sidebar-light .nav-item .nav-link {
-  color: #858796;
+  color: #000;
 }
 
 .sidebar-light .nav-item .nav-link i {
-  color: #d1d3e2;
+  color: #000;
 }
 
 .sidebar-light .nav-item .nav-link:active, .sidebar-light .nav-item .nav-link:focus, .sidebar-light .nav-item .nav-link:hover {
-  color: #6e707e;
+  color: #000;
 }
 
 .sidebar-light .nav-item .nav-link:active i, .sidebar-light .nav-item .nav-link:focus i, .sidebar-light .nav-item .nav-link:hover i {
-  color: #6e707e;
+  color: #000;
 }
 
 .sidebar-light .nav-item .nav-link[data-toggle="collapse"]::after {
-  color: #b7b9cc;
+  color: #000;
 }
 
 .sidebar-light .nav-item.active .nav-link {
-  color: #6e707e;
+  color: #000;
 }
 
 .sidebar-light .nav-item.active .nav-link i {
-  color: #6e707e;
+  color: #000;
 }
 
 .sidebar-light #sidebarToggle {
