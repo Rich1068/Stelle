@@ -62,7 +62,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   display: flex;
   flex-direction: column;
   padding: 10px;
-  border-radius: 15px; /* More rounded corners */
+  border-radius: 15px; 
   max-width: 1920px;
   margin: 10;
   
@@ -74,7 +74,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   justify-content: flex-start;
   background: #fff;
   padding: 30px;
-  border-radius: 15px; /* More rounded corners */
+  border-radius: 15px;
   margin-bottom: 20px;
   box-shadow: 0 2px 10px #0000001a;
   width: 100%;
@@ -194,7 +194,128 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 
 .fas {
   margin-right: 10px; /* Space between icon and text */
+  
 }
+/* Align the profile edit section to the left */
+.profile-edit-section {
+  padding: 20px;
+  border-radius: 15px;
+  background-color: #f9f9f9;
+  max-width: 600px;
+  /* Float to the left to ensure it's not overlapping the footer */
+  float: left;
+}
+
+/* Additional container to ensure alignment */
+.profile-edit-container-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* Ensure the description is styled properly */
+.profile-edit-description {
+  font-size: 0.875rem;
+  color: #6b7280; /* Gray color for text */
+  margin-bottom: 10px;
+}
+
+/* Other existing styles */
+.profile-edit-header {
+  margin-bottom: 20px;
+}
+
+.profile-edit-container {
+  display: flex; /* Display container items horizontally */
+  flex-wrap: wrap; /* Allow items to wrap if needed */
+  gap: 20px; /* Space between items */
+  padding: 20px;
+}
+
+.profile-edit-item {
+  flex: 1 1 calc(50% - 20px); /* Adjust width for side-by-side display */
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding-bottom: 10px;
+}
+
+.profile-edit-row {
+  display: flex;
+  flex-wrap: wrap; /* Allow items to wrap if they exceed the width */
+  gap: 20px; /* Space between items */
+}
+
+.profile-edit-item-full {
+  flex: 1 1 100%; /* Full width for items in this row */
+}
+
+.profile-edit-label {
+  font-weight: bold;
+  color: #054d94; /* Dark Blue Color */
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.profile-edit-input,
+.profile-edit-textarea,
+.profile-edit-select {
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 8px 12px;
+  color: #555;
+  font-weight: bold;
+  box-shadow: none; /* Remove shadow */
+}
+
+.profile-edit-input::placeholder,
+.profile-edit-textarea::placeholder {
+  color: #4a4a4a;
+  font-weight: bold;
+}
+
+.profile-edit-error {
+  color: red;
+  font-size: 0.875rem;
+}
+
+.profile-edit-image-preview {
+  margin-top: 10px;
+  border-radius: 10px;
+  max-width: 75px;
+}
+
+.profile-edit-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Center align the actions */
+  gap: 10px;
+  margin-top: 20px; /* Adjust this value as needed for more separation */
+}
+
+
+.profile-edit-save-button {
+  background-color: #003d80 !important; /* Darker blue */
+  color: #fff;
+  border-radius: 25px; /* Rounded corners */
+  padding: 10px 20px;
+  transition: background-color 0.3s;
+  border: none; /* Remove default border */
+  display: flex;
+  align-items: center;
+}
+
+.profile-edit-save-button:hover {
+  background-color: #002a60 !important; /* Even darker blue for hover */
+}
+
+.profile-edit-save-message {
+  color: #28a745;
+}
+
+
 
 body {
   margin: 0;
@@ -10113,9 +10234,6 @@ a:focus {
   background-color: #6e707e !important;
 }
 
-.bg-gray-800 {
-  background-color: #5a5c69 !important;
-}
 
 .bg-gray-900 {
   background-color: #3a3b45 !important;
@@ -10126,7 +10244,8 @@ a:focus {
 }
 
 .text-xs {
-  font-size: .7rem;
+  font-size: 16px;
+  font-weight: bold;
 }
 
 .text-lg {
@@ -10158,7 +10277,7 @@ a:focus {
 }
 
 .text-gray-700 {
-  color: #6e707e !important;
+  color: #003366
 }
 
 .text-gray-800 {
@@ -10166,7 +10285,8 @@ a:focus {
 }
 
 .text-gray-900 {
-  color: #3a3b45 !important;
+  color: #003366 !important; /* Dark Blue Color */
+  font-weight: bold; /* Make text bold */
 }
 
 .icon-circle {
