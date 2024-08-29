@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File;
 use App\Models\Country;
 use App\Models\User;
+use App\Models\Roles;
 use App\Models\RegisterAdmin;
 
 class ProfileController extends Controller
@@ -23,9 +24,9 @@ class ProfileController extends Controller
     {
         $user = Auth::user(); 
         $user->load('country');
+        $user->load('role');
         $countryTable = $user->country;
 
-    
         return view('profile.profile', ['user' => $user, 'countryTable' => $countryTable]); 
     }
     /**

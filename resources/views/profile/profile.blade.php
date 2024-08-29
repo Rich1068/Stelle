@@ -8,13 +8,12 @@
             @if($user->profile_picture == null)
                 <img src="{{ asset('storage/images/profile_pictures/default.jpg') }}" alt="Default profile picture"> 
             @else 
-                <img src="{{ asset('storage/' . $user->profile_picture) }}" alt="Profile picture of {{ $user->first_name }}"> 
+                <img src="{{ asset($user->profile_picture) }}" alt="Profile picture of {{ $user->first_name }}"> 
             @endif
         </div>
         <div class="profile-info">
             <h2 class="name-bold">{{ $user->first_name }} {{ $user->middle_name }} {{ $user->last_name }}</h2>
-            <p class="bold-blue">Super Admin</p>
-            <p>Tarlac, Bamban</p>
+            <p class="bold-blue">{{$user->role->role_name}}</p>
         </div>
         <a href="{{ route('profile.edit') }}" class="btn-edit">
             <i class="fas fa-pencil-alt"></i> <span>Edit</span>

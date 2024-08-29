@@ -86,7 +86,7 @@
         </div>
 
         <div class="flex items-center gap-4">
-            <x-primary-button>{{ __('Create Event') }}</x-primary-button>
+            <x-primary-button id="createEventButton" type="submit" onclick="disableAfterClick(this)">{{ __('Create Event') }}</x-primary-button>
         </div>
     </form>
 </section>
@@ -101,5 +101,16 @@ function previewImage(event) {
     }
     reader.readAsDataURL(event.target.files[0]);
 }
+function disableAfterClick(button) {
+        // Temporarily disable the button
+        button.disabled = true;
+        button.innerHTML = 'Processing...';
+
+        // Add a delay to simulate server processing time
+        setTimeout(() => {
+            button.disabled = false;
+            button.innerHTML = 'Create Event'; // Change back the button text to original
+        }, 2000); // Adjust delay as needed
+    }
 </script>
 @endsection
