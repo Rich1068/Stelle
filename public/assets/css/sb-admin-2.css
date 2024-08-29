@@ -196,14 +196,20 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   margin-right: 10px; /* Space between icon and text */
   
 }
-/* Align the profile edit section to the left */
+
+.side-by-side-container {
+  display: flex; /* Align child elements horizontally */
+  gap: 20px; /* Space between the sections */
+  padding: 20px; /* Optional: Add padding around the container */
+}
+
+/* Existing styles for profile edit section */
 .profile-edit-section {
   padding: 20px;
   border-radius: 15px;
   background-color: #f9f9f9;
   max-width: 600px;
-  /* Float to the left to ensure it's not overlapping the footer */
-  float: left;
+  flex: 1; /* Allow section to grow and fill available space */
 }
 
 /* Additional container to ensure alignment */
@@ -314,7 +320,111 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 .profile-edit-save-message {
   color: #28a745;
 }
+.password-input-container {
+  position: relative;
+}
 
+.password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #555;
+}
+
+.password-toggle:hover {
+  color: #054d94; /* Dark Blue Color */
+}
+
+
+.password-update-section {
+  padding: 20px;
+  border-radius: 15px;
+  background-color: #f9f9f9;
+  max-width: 600px;
+
+}
+
+.password-update-header {
+  margin-bottom: 20px;
+}
+
+.password-update-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.password-update-description {
+  color: #555;
+}
+
+.password-update-form {
+  padding: 20px;
+}
+
+.password-update-item {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding-bottom: 10px;
+}
+
+.password-update-label {
+  font-weight: bold;
+  color: #054d94; /* Dark Blue Color */
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.password-update-input {
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 8px 12px;
+  color: #555;
+  font-weight: bold;
+  box-shadow: none; /* Remove shadow */
+}
+
+.password-update-input::placeholder {
+  color: #4a4a4a;
+  font-weight: bold;
+}
+
+.password-update-error {
+  color: red;
+  font-size: 0.875rem;
+}
+
+.password-update-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Center align the actions */
+  gap: 10px;
+  margin-top: 20px; /* Add margin above the button */
+}
+
+.password-update-save-button {
+  background-color: #003d80 !important; /* Darker blue */
+  color: #fff;
+  border-radius: 25px; /* Rounded corners */
+  padding: 10px 20px;
+  transition: background-color 0.3s;
+  border: none; /* Remove default border */
+  display: flex;
+  align-items: center;
+}
+
+.password-update-save-button:hover {
+  background-color: #002a60 !important; /* Even darker blue for hover */
+}
+
+.password-update-save-message {
+  color: #28a745;
+}
 
 
 body {
