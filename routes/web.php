@@ -14,7 +14,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
+//check if logged in
 Route::middleware('auth')->group(function () {
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     route::get('/profile', [ProfileController::class, 'profile'])->name('profile.profile');
@@ -28,8 +28,10 @@ require __DIR__.'/auth.php';
 
 route::get('super_admin/dashboard',[SuperAdminController::class,'index'])->
     middleware(['auth','super_admin']);
+
 route::get('admin/dashboard',[AdminController::class,'index'])->
     middleware(['auth','admin']);
+    
 route::get('user/dashboard',[UserController::class,'index'])->
     middleware(['auth','user']);
 
@@ -38,7 +40,7 @@ route::get('/unauthorized', function () {
     })->name('unauthorized');
 
 
-//event stuff
+//check role if super admin or admin
 Route::middleware(['auth', 'checkRole:1,2'])->group(function () {
 
     //event creation and the users created event list
@@ -46,6 +48,12 @@ Route::middleware(['auth', 'checkRole:1,2'])->group(function () {
     Route::get('/event/myEventlist', [EventController::class, 'myEventlist'])->name('event.myeventlist');
 
 });
+
+//check role if user
+Route::middleware(['auth', 'checkRole:3'])->group(function () {
+    Route::post('/register-admin', [ProfileController::class, 'registerAdmin'])->name('register.admin');
+});
+
 
 Route::middleware('auth')->group(function () {
 
@@ -55,14 +63,9 @@ Route::middleware('auth')->group(function () {
     route::get('/event/{id}', [EventController::class, 'view'])->name('event.view');
     Route::post('/event/{id}/join', [EventController::class, 'join'])->name('event.join');
     Route::post('/event/{id}/participants/send-certificates', [EventController::class, 'sendCertificates'])->name('sendCertificates');
-    Route::post('/register-admin', [ProfileController::class, 'registerAdmin'])->name('register.admin');
-
-    //participant listview and acceptance
+    
     
 
-    //Answer event form
-    Route::get('/event/{id}/evaluation-form/{form}/take', [EvaluationFormController::class, 'take'])->name('evaluation-form.take');
-    Route::post('/event/{id}/submit-evaluation', [EvaluationFormController::class, 'submit'])->name('evaluation-form.submit');
     //cert stuff 
     Route::get('/event/{id}/certificates/create', [CertificateController::class, 'create'])->name('certificates.create');
     Route::post('/event/{id}/certificates/save', [CertificateController::class, 'saveCanvas']);
@@ -72,6 +75,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/event/{id}/certificates/{certId}/show', [CertificateController::class, 'showCertificateImage'])->name('certificates.show');
 });
 
+//check if user joined the event
+Route::middleware(['auth','checkUserJoinedEvent'])->group(function () {
+    //Answer event form
+    Route::get('/event/{id}/evaluation-form/{form}/take', [EvaluationFormController::class, 'take'])->name('evaluation-form.take');
+    Route::post('/event/{id}/submit-evaluation', [EvaluationFormController::class, 'submit'])->name('evaluation-form.submit');
+
+});
 
 //checks the creator of event
 Route::middleware(['auth', 'checkEventCreator'])->group(function () {

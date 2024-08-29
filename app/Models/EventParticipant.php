@@ -25,5 +25,13 @@ class EventParticipant extends Model
     {
         return $this->belongsTo(ParticipantStatus::class, 'status_id');
     }
+
+    public static function hasJoinedEvent(int $userId, int $eventId, int $statusId): bool
+    {
+        return self::where('user_id', $userId)
+            ->where('event_id', $eventId)
+            ->where('status_id', $statusId)
+            ->exists();
+    }
 }
 
