@@ -68,6 +68,120 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   
 }
 
+.event-list-container {
+  margin-top: 30px; /* Space above the container */
+}
+
+.event-list-item {
+  display: flex;
+  background: rgba(255, 255, 255, 0.75); /* Transparent white background */
+  border-radius: 30px; /* Increased corner radius for a more rounded look */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden; /* Ensures the content stays within rounded corners */
+  transition: transform 0.3s; /* Adds a smooth transform effect */
+  position: relative; /* For absolute positioning of the View Button */
+  margin-bottom: 20px; /* Space between items */
+}
+
+.event-list-item:hover {
+  transform: scale(1.02); /* Slightly enlarges on hover for a subtle effect */
+}
+
+.event-list-date {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #003366; /* Dark blue background */
+  color: #fff;
+  padding: 20px; /* Smaller padding */
+  min-width: 100px; /* Adjusted width */
+  border-radius: 0; /* No rounding on the date section */
+}
+
+.event-list-day {
+  font-size: 20px; /* Smaller font size */
+  font-weight: bold;
+}
+
+.event-list-month {
+  font-size: 12px; /* Smaller font size */
+  text-transform: uppercase;
+}
+
+.event-list-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 15px; /* Smaller padding */
+}
+
+.event-list-title {
+  margin: 0;
+  font-size: 16px; /* Smaller font size */
+  font-weight: bold;
+  color: #003366;
+}
+
+.event-list-description {
+  margin: 5px 0;
+  color: #666;
+  font-size: 12px; /* Smaller font size */
+}
+
+.event-list-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* Reduced gap */
+  font-size: 12px; /* Smaller font size */
+}
+
+.event-list-meta .meta-item {
+  display: flex;
+  align-items: center;
+  color: #003366; /* Dark blue color */
+}
+
+.event-list-meta .meta-item i {
+  color: #003366; /* Dark blue color */
+  margin-right: 5px;
+}
+
+.event-list-meta .meta-item .meta-text {
+  font-weight: bold; /* Bold text for time, location, and capacity values */
+}
+
+.event-list-view-btn {
+  position: absolute;
+  right: 20px; /* Aligns the button to the right */
+  bottom: 20px; /* Adds some space from the bottom */
+  background: #003366; /* Dark blue background */
+  color: #fff;
+  padding: 8px 16px; /* Adjusted padding for rounded look */
+  border-radius: 20px; /* More rounded corners */
+  text-decoration: none;
+  text-align: center;
+  font-weight: bold; /* Bold text */
+  font-size: 13px; /* Bold text */
+  transition: background 0.3s;
+}
+
+.event-list-view-btn:hover {
+  background: #7dff03; /* Darker shade on hover */
+}
+
+/* Header styling */
+.event-list-header {
+  font-size: 24px; /* Adjust font size */
+  font-weight: bold; /* Bold text */
+  color: #fff; /* White color */
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6), 0 0 5px rgba(0, 0, 0, 0.4); /* Enhanced shadow effect */
+  margin-bottom: 20px; /* Space below the header */
+}
+
+
+
 .profile-header {
   display: flex;
   align-items: center;
