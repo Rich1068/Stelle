@@ -13,7 +13,7 @@
         </p>
     </header>
 
-    <form method="post" action="{{ route('events.store') }}" class="mt-6 space-y-6" enctype="multipart/form-data">
+    <form method="post" action="{{ route('events.store') }}" class="mt-6 space-y-6" enctype="multipart/form-data" id="eventForm">
         @csrf
         @method('POST')
 
@@ -86,7 +86,9 @@
         </div>
 
         <div class="flex items-center gap-4">
-            <x-primary-button id="createEventButton" type="submit" onclick="disableAfterClick(this)">{{ __('Create Event') }}</x-primary-button>
+        <button id="createEventButton" type="submit" class="inline-flex items-center px-4 py-2 bg-blue-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:bg-blue-900 transition ease-in-out duration-150">
+            {{ __('Create Event') }}
+        </button>
         </div>
     </form>
 </section>
@@ -101,16 +103,22 @@ function previewImage(event) {
     }
     reader.readAsDataURL(event.target.files[0]);
 }
-function disableAfterClick(button) {
-        // Temporarily disable the button
-        button.disabled = true;
-        button.innerHTML = 'Processing...';
+ // JavaScript to prevent multiple submissions
+    document.getElementById('eventForm').addEventListener('submit', function(event) {
+        var button = document.getElementById('createEventButton');
+        if (button.disabled) {
+            event.preventDefault(); // Prevent form from submitting
+        } else {
+            button.disabled = true; // Disable button to prevent multiple clicks
+            button.textContent = 'Submitting...'; // Change button text
+        }
+    });
 
-        // Add a delay to simulate server processing time
-        setTimeout(() => {
-            button.disabled = false;
-            button.innerHTML = 'Create Event'; // Change back the button text to original
-        }, 2000); // Adjust delay as needed
-    }
+    // Prevent form submission when pressing Enter key inside text fields
+    document.getElementById('eventForm').addEventListener('keydown', function(event) {
+        if (event.key === 'Enter' && event.target.tagName === 'INPUT' && event.target.type !== 'submit') {
+            event.preventDefault();
+        }
+    });
 </script>
 @endsection
