@@ -177,77 +177,38 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 
 
 
-.event-field-container {
-  display: flex;
-  flex-direction: column; /* Align items vertically */
-  gap: 20px; /* Increased space between the containers */
-  margin-bottom: 10px; /* Reduced space below the container */
-}
-/* Adjust the width of the capacity input specifically */
-#capacity {
-  max-width: 150px; /* Set a maximum width suitable for numerical input */
-  width: 100%; /* Full width within its container */
-}
-
-/* Optionally adjust other event fields for consistency */
-.event-field {
-  display: flex;
-  flex-direction: column; /* Stack label and input vertically */
-  padding: 15px; /* Padding inside the field */
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Slightly softer box shadow */
-  background-color: #ffffff; /* White background for entry fields */
-}
-
-.event-field input,
-.event-field textarea {
-  border: 1px solid #ddd;
-  border-radius: 12px; /* More rounded corners */
-  padding: 10px; /* Padding inside input fields */
-  background-color: #f0f0f0; /* Grey background for input fields */
-  /* Ensure other inputs are unaffected */
-}
-
-.event-field.capacity-field {
-  padding: 10px; /* Adjust padding to reduce height */
-  margin-bottom: 20px; /* Add margin below for spacing */
-}
-
-/* Ensure consistency with other fields */
-.event-field.mode-field {
-  padding: 10px; /* Consistent padding */
-  margin-bottom: 20px; /* Margin below for spacing */
-}
-
-
 /* Header Styling */
+.header-section {
+  border-radius: 15px; /* Rounded corners for consistency */
+  padding: 15px; /* Padding for spacing */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Slight box shadow */
+  background-color: #ffffff; /* White background for consistency */
+}
 
 
 .event-form {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px; /* Adjust gap between columns */
-  border-radius: 15px;
-  padding: 20px;
-  margin: 0; /* Remove margin to allow full-width coverage */
-  max-width: 100vw; /* Full viewport width */
-  box-sizing: border-box;
-  width: 100%; /* Full width */
-  position: relative;
-  left: 0; /* Align to the left of the page */
+  grid-template-columns: 1fr 1fr; /* Two equal columns */
+  gap: 20px; /* Space between columns */
+  border-radius: 15px; /* Rounded corners */
+  padding: 20px; /* Padding inside the form container */
+  margin: 20px;
+  max-width: 1000px; /* Max width to constrain the form size */
+  box-sizing: border-box; /* Ensure padding is included in width calculation */
 }
 
 .event-field {
   display: flex;
   flex-direction: column; /* Stack label and input vertically */
-  padding: 15px; /* Adjust padding for better spacing */
-  border-radius: 10px;
+  padding: 15px; /* Adjusted padding for more spacing */
+  border-radius: 15px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Slightly softer box shadow */
   background-color: #ffffff; /* White background for entry fields */
 }
 
 .event-field label {
   color: #003d80; /* Dark blue text color */
+  font-size: 20px;
   margin-bottom: 5px; /* Space below label */
   font-weight: bold; /* Bold text for labels */
 }
@@ -261,70 +222,31 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 }
 
 .event-datetime {
+  grid-column: 2 / ; /* Place on the right side */
   display: flex;
-  gap: 20px;
-  justify-content: space-between; /* Ensure the date and time fields are evenly spaced */
+  flex-direction: column; /* Stack date and time fields vertically */
+  gap: 20px; /* Space between date and time containers */
 }
 
 .event-datetime > div {
-  flex: 1; /* Allow the divs to resize but not take too much space */
-  max-width: 200px; /* Set a max-width to prevent the containers from being too wide */
-  padding: 15px;
-  border-radius: 12px;
-  background-color: #ffffff;
+  padding: 15px; /* Adjusted padding for better spacing */
+  border-radius: 12px; /* More rounded corners for time field containers */
+  background-color: #ffffff; /* White background for time field containers */
   display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-}
-
-.event-datetime label {
-  margin-bottom: 5px; /* Space between label and input */
+  flex-direction: column; /* Stack label and input vertically */
+  box-sizing: border-box; /* Ensure padding is included in width calculation */
 }
 
 .event-datetime .event-input {
   background-color: #f0f0f0; /* Grey background for input fields */
+  width: 100%; /* Full width of the container */
+  box-sizing: border-box; /* Ensure padding and border are included in width calculation */
 }
 
 .event-image-preview {
   display: none;
   max-width: 100%;
   margin-top: 10px;
-}
-
-/* Capacity Field Adjustment */
-.event-field.capacity-field {
-  padding: 10px; /* Reduce padding to make the field less tall */
-  margin-bottom: 10px; /* Reduced bottom margin for compact spacing */
-}
-.event-field-container {
-  display: flex;
-  flex-direction: column; /* Align items vertically */
-  gap: 20px; /* Increased space between the containers */
-  margin-bottom: 10px; /* Reduced space below the container */
-}
-
-/* Ensure consistent spacing for individual fields */
-.event-field.capacity-field,
-.event-field.mode-field {
-  padding: 10px; /* Adjust padding for a more compact appearance */
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Consistent box shadow */
-  background-color: #ffffff; /* White background for consistency */
-}
-
-
-.event-field.capacity-field label {
-  margin-bottom: 5px; /* Space between label and input */
-}
-
-.event-field.capacity-field input {
-  padding: 8px; /* Adjust padding for better input appearance */
-}
-
-/* Mode Field Adjustment */
-.event-field.mode-field {
-  padding: 10px; /* Reduce padding for consistency */
-  margin-bottom: 10px; /* Reduced space below */
 }
 
 .event-submit {
@@ -354,6 +276,7 @@ label {
 h2 {
   color: #003d80; /* Dark blue text color for headings */
 }
+
 
 
 .profile-header {
