@@ -68,10 +68,6 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   
 }
 
-.event-list-container {
-  margin-top: 30px; /* Space above the container */
-}
-
 .event-list-item {
   display: flex;
   background: rgba(255, 255, 255, 0.75); /* Transparent white background */
@@ -171,7 +167,6 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   background: #7dff03; /* Darker shade on hover */
 }
 
-/* Header styling */
 .event-list-header {
   font-size: 24px; /* Adjust font size */
   font-weight: bold; /* Bold text */
@@ -179,6 +174,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6), 0 0 5px rgba(0, 0, 0, 0.4); /* Enhanced shadow effect */
   margin-bottom: 20px; /* Space below the header */
 }
+
 
 
 .event-field-container {
