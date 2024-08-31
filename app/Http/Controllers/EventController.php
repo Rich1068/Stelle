@@ -190,7 +190,7 @@ class EventController extends Controller
         }
 
         // Redirect to a route, for example, the event view page
-        return back()->with('status', 'event-updated');
+        return back()->with('status', 'event-updated')->with('success', 'Event updated successfully');
     }
 
 
@@ -240,7 +240,7 @@ class EventController extends Controller
 
         $participants = EventParticipant::where('event_id', $id)->get();
 
-        return view('event.participants', compact('eventuser', 'participants', 'event'));
+        return view('event.pendingparticipants', compact('eventuser', 'participants', 'event'));
     }
     public function showParticipantslist($id)
     {

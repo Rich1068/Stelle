@@ -14,23 +14,26 @@ class QuestionController extends Controller
 
     public function store(Request $request, $id, $formId)
     {
-        $request->validate([
-            'questions.*' => 'required|string',
-            'question_type.*' => 'required|string|in:essay,radio',
+    $request->validate([
+        'questions.*' => 'required|string',
+    ]);
+
+    // Loop through all questions 
+    foreach ($request->input('questions') as $index => $question) {
+        // Determine question type based on if there is radio
+        $isRadio = (strpos($question, 'radio_') !== false); 
+
+        // Set typeId 
+        $typeId = $isRadio ? 2 : 1; // 1 for 'essay', 2 for 'radio'
+
+        Question::create([
+            'form_id' => $formId,
+            'question' => $question,
+            'type_id' => $typeId,
         ]);
+    }
 
-        foreach ($request->input('questions') as $index => $question) {
-            $type = $request->input('question_type')[$index];
-            $typeId = ($type === 'essay') ? 1 : 2;
-
-            Question::create([
-                'form_id' => $formId,
-                'question' => $question,
-                'type_id' => $typeId,
-            ]);
-        }
-
-        return redirect()->route('event.view', ['id' => EvaluationForm::find($formId)->event_id]);
+    return redirect()->route('event.view', ['id' => EvaluationForm::find($formId)->event_id]);
     }
 
     public function edit($id, $form)

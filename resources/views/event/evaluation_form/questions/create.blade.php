@@ -5,41 +5,49 @@
 <form action="{{ route('questions.store', ['id' => $id, 'form' => $formId]) }}" method="POST">
     @csrf
     <div id="questions">
-        <div class="form-group question-group">
-            <label for="question_type[]">Question Type:</label>
-            <select name="question_type[]" onchange="changeQuestionType(this)">
-                <option value="essay">Essay</option>
-                <option value="radio">Radio</option>
-            </select>
-            <div class="question-content">
-                <!-- Essay question by default -->
-                <label for="questions[]">Question:</label>
-                <input type="text" name="questions[]" required>
-                <div class="essay-underline" style="border-bottom: 1px solid #000; margin-top: 5px;"></div>
-            </div>
-            <button type="button" class="remove-question" onclick="removeQuestion(this)">Remove</button>
-        </div>
+        <!-- Questions will be appended here -->
     </div>
-    <button type="button" onclick="addQuestion()">Add Another Question</button>
+    <!-- Buttons to add Essay or Radio questions -->
+    <button type="button" onclick="addEssayQuestion()">Add Essay Question</button>
+    <button type="button" onclick="addRadioQuestion()">Add Radio Question</button>
     <button type="submit">Save Questions</button>
 </form>
 
 <script>
-function addQuestion() {
+function addEssayQuestion() {
     const questionsDiv = document.getElementById('questions');
     const newQuestionDiv = document.createElement('div');
     newQuestionDiv.classList.add('form-group', 'question-group');
     newQuestionDiv.innerHTML = `
-        <label for="question_type[]">Question Type:</label>
-        <select name="question_type[]" onchange="changeQuestionType(this)">
-            <option value="essay">Essay</option>
-            <option value="radio">Radio</option>
-        </select>
         <div class="question-content">
-            <!-- Essay question by default -->
-            <label for="questions[]">Question:</label>
+            <label for="questions[]">Essay Question:</label>
             <input type="text" name="questions[]" required>
             <div class="essay-underline" style="border-bottom: 1px solid #000; margin-top: 5px;"></div>
+        </div>
+        <button type="button" class="remove-question" onclick="removeQuestion(this)">Remove</button>
+    `;
+    questionsDiv.appendChild(newQuestionDiv);
+}
+
+function addRadioQuestion() {
+    const questionsDiv = document.getElementById('questions');
+    const newQuestionDiv = document.createElement('div');
+    newQuestionDiv.classList.add('form-group', 'question-group');
+    const uniqueRadioName = `radio_${Date.now()}`; // Unique name for each set of radio buttons
+    newQuestionDiv.innerHTML = `
+        <div class="question-content">
+            <label for="questions[]">Radio Question:</label>
+            <input type="text" name="questions[]" required>
+            <div class="radio-options">
+                <label>Options:</label>
+                <div>
+                    <input type="radio" name="${uniqueRadioName}" value="1" disabled> 1
+                    <input type="radio" name="${uniqueRadioName}" value="2" disabled> 2
+                    <input type="radio" name="${uniqueRadioName}" value="3" disabled> 3
+                    <input type="radio" name="${uniqueRadioName}" value="4" disabled> 4
+                    <input type="radio" name="${uniqueRadioName}" value="5" disabled> 5
+                </div>
+            </div>
         </div>
         <button type="button" class="remove-question" onclick="removeQuestion(this)">Remove</button>
     `;
@@ -49,34 +57,6 @@ function addQuestion() {
 function removeQuestion(button) {
     const questionDiv = button.parentElement;
     questionDiv.remove();
-}
-
-function changeQuestionType(select) {
-    const questionContentDiv = select.nextElementSibling;
-    questionContentDiv.innerHTML = '';
-
-    if (select.value === 'essay') {
-        questionContentDiv.innerHTML = `
-            <label for="questions[]">Question:</label>
-            <input type="text" name="questions[]" required>
-            <div class="essay-underline" style="border-bottom: 1px solid #000; margin-top: 5px;"></div>
-        `;
-    } else if (select.value === 'radio') {
-        questionContentDiv.innerHTML = `
-            <label for="questions[]">Question:</label>
-            <input type="text" name="questions[]" required>
-            <div class="radio-options">
-                <label>Options:</label>
-                <div>
-                    <input type="radio" name="radio_${Date.now()}" value="1" disabled> 1
-                    <input type="radio" name="radio_${Date.now()}" value="2" disabled> 2
-                    <input type="radio" name="radio_${Date.now()}" value="3" disabled> 3
-                    <input type="radio" name="radio_${Date.now()}" value="4" disabled> 4
-                    <input type="radio" name="radio_${Date.now()}" value="5" disabled> 5
-                </div>
-            </div>
-        `;
-    }
 }
 </script>
 
