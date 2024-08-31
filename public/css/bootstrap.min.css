@@ -1,1 +1,149 @@
+/* Apply the gradient to the entire page */
+body {
+    background: linear-gradient(to bottom right, #F99C9C, #ACDFF6);
+    min-height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+}
+
+/* Main container for login */
+.main-container {
+    display: flex;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    max-height: 720px; /* Increased height to make the container taller */
+    width: 100%;
+    overflow: hidden;
+}
+
+/* Image section */
+.image-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Center the content vertically */
+    padding: 20px;
+    position: relative;
+}
+
+.image-section img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 15px;
+    margin-bottom: 20px; /* Adds spacing below the image */
+}
+
+/* Divider line */
+.divider-line {
+    width: 2px;
+    background: #d9d9d9;
+    height: 100%; /* Ensures the divider reaches the top and bottom of the container */
+    position: relative;
+}
+
+/* Login form container */
+.login-container {
+    flex: 1;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Align items to the top */
+    position: relative;
+}
+
+/* Login title */
+.login-title {
+    color: #001f60;
+    font-size: 1.75rem; /* Adjusted font size */
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+/* Input fields */
+.login-container input[type="email"],
+.login-container input[type="password"] {
+    background-color: #f0f0f0;
+    border: 1px solid #D9D9D9;
+    border-radius: 10px;
+    padding: 12px 15px;
+    font-size: 1rem;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+/* Labels */
+.login-container label {
+    color: #001f60;
+    font-weight: bold;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+/* Remember me checkbox */
+.remember-me {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.remember-me input {
+    margin-right: 0.5rem;
+}
+
+/* Forgot password link */
+.forgot-password {
+    font-size: 0.875rem;
+    color: #001f60;
+    font-weight: bold;
+    text-decoration: underline;
+    margin-bottom: 1rem; /* Space between the link and the button */
+    display: block;
+    cursor: pointer;
+}
+
+/* Sign Up Text */
+.signup-text {
+    font-size: 0.875rem;
+    color: #001f60;
+    font-weight: bold;
+    margin-top: 10px;
+    text-align: center;
+}
+
+/* Sign Up Link */
+.signup-link a {
+    color: #001f60;
+    font-weight: bold;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+/* Login Button */
+.login-button {
+    background-color: #001f60;
+    color: white;
+    border-radius: 10px;
+    padding: 12px 0;
+    font-size: 1rem;
+    width: 70%; /* Adjust width for better alignment */
+    margin: auto;
+    cursor: pointer;
+    border: none;
+}
+
+/* Container to align forgot-password and login button vertically */
+.actions-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; /* Align items to the bottom */
+    gap: 10px; /* Space between forgot password link and login button */
+    margin-top: 20px; /* Space above the actions container */
+}
 
