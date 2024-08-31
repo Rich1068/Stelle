@@ -408,131 +408,218 @@ h2 {
   
 }
 
-.side-by-side-container {
-  display: flex; /* Align child elements horizontally */
-  gap: 20px; /* Space between the sections */
-  padding: 20px; /* Optional: Add padding around the container */
-}
+  .profile-edit-section {
+    padding: 20px;
+    border-radius: 15px;
+    background-color: #f9f9f9;
+    max-width: 600px;
+    flex: 1; /* Allow section to grow and fill available space */
+  }
+  
 
-/* Existing styles for profile edit section */
-.profile-edit-section {
+  /* Additional container to ensure alignment */
+  .profile-edit-container-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  /* Ensure the description is styled properly */
+  .profile-edit-description {
+    font-size: 0.875rem;
+    color: #6b7280; /* Gray color for text */
+    margin-bottom: 10px;
+  }
+
+  /* Other existing styles */
+  .profile-edit-header {
+    margin-bottom: 20px;
+  }
+
+  .profile-edit-container {
+    display: flex; /* Display container items horizontally */
+    flex-wrap: wrap; /* Allow items to wrap if needed */
+    gap: 20px; /* Space between items */
+    padding: 20px;
+  }
+
+  .profile-edit-item {
+    flex: 1 1 calc(50% - 20px); /* Adjust width for side-by-side display */
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding-bottom: 10px;
+  }
+
+  .profile-edit-row {
+    display: flex;
+    flex-wrap: wrap; /* Allow items to wrap if they exceed the width */
+    gap: 20px; /* Space between items */
+  }
+
+  .profile-edit-item-full {
+    flex: 1 1 100%; /* Full width for items in this row */
+  }
+
+  .profile-edit-label {
+    font-weight: bold;
+    color: #054d94; /* Dark Blue Color */
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .profile-edit-input,
+  .profile-edit-textarea,
+  .profile-edit-select {
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 8px 12px;
+    color: #555;
+    font-weight: bold;
+    box-shadow: none; /* Remove shadow */
+  }
+
+  .profile-edit-input::placeholder,
+  .profile-edit-textarea::placeholder {
+    color: #4a4a4a;
+    font-weight: bold;
+  }
+
+  .profile-edit-error {
+    color: red;
+    font-size: 0.875rem;
+  }
+
+  .profile-edit-image-preview {
+    margin-top: 10px;
+    border-radius: 10px;
+    max-width: 75px;
+  }
+
+  .profile-edit-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Center align the actions */
+    gap: 10px;
+    margin-top: 20px; /* Adjust this value as needed for more separation */
+  }
+
+
+  .profile-edit-save-button {
+    background-color: #003d80 !important; /* Darker blue */
+    color: #fff;
+    border-radius: 25px; /* Rounded corners */
+    padding: 10px 20px;
+    transition: background-color 0.3s;
+    border: none; /* Remove default border */
+    display: flex;
+    align-items: center;
+  }
+
+  .profile-edit-save-button:hover {
+    background-color: #002a60 !important; /* Even darker blue for hover */
+  }
+
+  .profile-edit-save-message {
+    color: #28a745;
+  }
+.password-input-container {
+  position: relative;
+}
+/* Container and Section Styles */
+.delete-profile-section {
   padding: 20px;
   border-radius: 15px;
   background-color: #f9f9f9;
   max-width: 600px;
-  flex: 1; /* Allow section to grow and fill available space */
+  flex: 1;
+  margin-top: 20px; /* Add margin on top for more space */
 }
 
-/* Additional container to ensure alignment */
-.profile-edit-container-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+/* Header Styles */
+.delete-profile-header {
+    margin-bottom: 20px;
 }
 
-/* Ensure the description is styled properly */
-.profile-edit-description {
-  font-size: 0.875rem;
-  color: #6b7280; /* Gray color for text */
-  margin-bottom: 10px;
+/* Title Styles */
+.delete-profile-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #054d94; /* Dark Blue */
 }
 
-/* Other existing styles */
-.profile-edit-header {
-  margin-bottom: 20px;
+/* Description Styles */
+.delete-profile-description {
+    font-size: 0.875rem;
+    color: #6b7280; /* Gray color for text */
+    margin-bottom: 10px;
 }
 
-.profile-edit-container {
-  display: flex; /* Display container items horizontally */
-  flex-wrap: wrap; /* Allow items to wrap if needed */
-  gap: 20px; /* Space between items */
-  padding: 20px;
+/* Input Container Styles */
+.delete-profile-password-container {
+    position: relative;
+    margin-top: 20px;
 }
 
-.profile-edit-item {
-  flex: 1 1 calc(50% - 20px); /* Adjust width for side-by-side display */
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  padding-bottom: 10px;
+/* Input Styles */
+.delete-profile-input {
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 8px 12px;
+    color: #555;
+    font-weight: bold;
+    box-shadow: none;
+    width: 100%;
 }
 
-.profile-edit-row {
-  display: flex;
-  flex-wrap: wrap; /* Allow items to wrap if they exceed the width */
-  gap: 20px; /* Space between items */
+.delete-profile-input::placeholder {
+    color: #4a4a4a;
+    font-weight: bold;
 }
 
-.profile-edit-item-full {
-  flex: 1 1 100%; /* Full width for items in this row */
+/* Error Message Styles */
+.delete-profile-error {
+    color: red;
+    font-size: 0.875rem;
+    margin-top: 5px;
 }
 
-.profile-edit-label {
-  font-weight: bold;
-  color: #054d94; /* Dark Blue Color */
-  display: flex;
-  align-items: center;
-  gap: 8px;
+/* Action Button Styles */
+.delete-profile-action-button {
+    background-color: #ac0101;
+    color: #fff;
+    border-radius: 25px;
+    padding: 10px 20px;
+    border: none;
+    transition: background-color 0.3s;
+    display: flex;
+    align-items: center;
+    margin: auto;
 }
 
-.profile-edit-input,
-.profile-edit-textarea,
-.profile-edit-select {
-  background-color: #f0f0f0;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  padding: 8px 12px;
-  color: #555;
-  font-weight: bold;
-  box-shadow: none; /* Remove shadow */
+.delete-profile-action-button:hover {
+    background-color: #002a60;
 }
 
-.profile-edit-input::placeholder,
-.profile-edit-textarea::placeholder {
-  color: #4a4a4a;
-  font-weight: bold;
+.delete-profile-secondary-button {
+    background-color: #962f00;
+    color: #555;
+    border-radius: 25px;
+    padding: 10px 20px;
+    border: none;
+    display: flex;
+    align-items: center;
 }
 
-.profile-edit-error {
-  color: red;
-  font-size: 0.875rem;
-}
-
-.profile-edit-image-preview {
-  margin-top: 10px;
-  border-radius: 10px;
-  max-width: 75px;
-}
-
-.profile-edit-actions {
-  display: flex;
-  align-items: center;
-  justify-content: center; /* Center align the actions */
-  gap: 10px;
-  margin-top: 20px; /* Adjust this value as needed for more separation */
-}
-
-
-.profile-edit-save-button {
-  background-color: #003d80 !important; /* Darker blue */
-  color: #fff;
-  border-radius: 25px; /* Rounded corners */
-  padding: 10px 20px;
-  transition: background-color 0.3s;
-  border: none; /* Remove default border */
-  display: flex;
-  align-items: center;
-}
-
-.profile-edit-save-button:hover {
-  background-color: #002a60 !important; /* Even darker blue for hover */
-}
-
-.profile-edit-save-message {
-  color: #28a745;
-}
-.password-input-container {
-  position: relative;
+.delete-profile-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
 }
 
 .password-toggle {
