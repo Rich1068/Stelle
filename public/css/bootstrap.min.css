@@ -1,4 +1,5 @@
 /* Apply the gradient to the entire page */
+
 body {
     background: linear-gradient(to bottom right, #F99C9C, #ACDFF6);
     min-height: 100vh;
@@ -147,3 +148,69 @@ body {
     margin-top: 20px; /* Space above the actions container */
 }
 
+.register-account {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.21);
+    padding: 40px;
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+}
+
+/* Back to Login link */
+.back-to-login {
+    color: #001f60;
+    font-weight: bold;
+    text-decoration: underline;
+    display: block;
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+/* Labels */
+.register-label {
+    color: #001f60;
+    font-weight: bold;
+    font-size: 1rem;
+    margin-bottom: 10px;
+    display: block;
+    text-align: center;
+}
+
+/* Input fields */
+.register-input {
+    background-color: #f0f0f0;
+    border: 1px solid #D9D9D9;
+    border-radius: 10px;
+    padding: 12px 15px;
+    font-size: 1rem;
+    width: 100%;
+    margin-bottom: 60px; /* Increased space between input fields */
+    font-weight: bold; /* Make input text bold */
+}
+
+/* Placeholder styling */
+.register-input::placeholder {
+    font-weight: bold; /* Make placeholder text bold */
+    font-size: 0.9rem; /* Slightly smaller placeholder text */
+}
+
+/* Sign Up Button */
+.register-button {
+    background-color: #001f60;
+    color: white;
+    border-radius: 15px;
+    padding: 12px 0;
+    font-size: 1rem;
+    
+    width: 40%; /* Reduced button width for better alignment */
+    cursor: pointer;
+    border: none;
+    margin-top: 10px; /* Increased space above the button */
+}
+
+/* Additional spacing between each div (form group) */
+.form-group {
+    margin-bottom: 50px; /* Extra space between each div for a longer form appearance */
+}
