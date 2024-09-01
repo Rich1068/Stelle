@@ -198,6 +198,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   margin: 20px;
   max-width: 1000px; /* Max width to constrain the form size */
   box-sizing: border-box; /* Ensure padding is included in width calculation */
+  margin: auto;
 }
 
 .event-field {
