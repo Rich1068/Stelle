@@ -58,6 +58,220 @@ html {
 article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   display: block;
 }
+/* Container Styling */
+/* Main Form Container Styling */
+.form-question-container {
+  padding: 30px;
+  margin: 20px auto;
+  max-width: 80%;
+  border-radius: 20px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+/* Divider between input field and buttons */
+.divider {
+  display: flex;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  border-top: 1px solid #ddd; /* Light grey line */
+}
+
+.divider-text {
+  padding: 0 15px;
+  font-weight: bold;
+  color: #003d80; /* Dark Blue */
+}
+
+/* Header Text with Icon */
+.header-text {
+  color: #003d80; /* Dark Blue */
+  font-size: 24px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.header-text i {
+  margin-right: 10px; /* Space between icon and text */
+}
+
+/* Input Field for Question */
+.input-container {
+  margin-bottom: 20px;
+}
+
+.question-input {
+  padding: 12px 16px;
+  border: 1px solid #ddd;
+  border-radius: 15px;
+  width: 100%;
+  background-color: #f1f1f5;
+  color: #333;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+/* Buttons Container */
+.button-container {
+  display: flex;
+  gap: 30px; /* Increased spacing between buttons */
+  justify-content: center;
+}
+
+/* Add and Remove Question Buttons */
+.add-question-btn {
+  padding: 12px 20px;
+  background-color: #003d80; /* Dark Blue */
+  color: #fff;
+  border: none;
+  border-radius: 25px; /* Rounded edges */
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* Hover and Active States for Add Question Buttons */
+.add-question-btn:hover {
+  background-color: #002a63;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.add-question-btn:active {
+  transform: scale(0.98);
+}
+
+/* Save Button Styling */
+.save-questions-btn {
+  padding: 10px 18px;
+  background-color: #002a63; /* Darker Blue */
+  color: #fff;
+  border: none;
+  border-radius: 25px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: block;
+  margin: 20px auto 0; /* Centered and positioned at the bottom */
+}
+
+/* Hover and Active States for Save Button */
+.save-questions-btn:hover {
+  background-color: #001e40;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.save-questions-btn:active {
+  transform: scale(0.98);
+}
+
+/* Remove Question Button Styling */
+.remove-question {
+  padding: 8px 15px;
+  background-color: #e53935; /* Red */
+  color: #fff;
+  border: none;
+  border-radius: 25px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: block;
+  margin: 10px auto;
+}
+
+/* Hover and Active States for Remove Button */
+.remove-question:hover {
+  background-color: #c62828;
+}
+
+.remove-question:active {
+  transform: scale(0.98);
+}
+
+/* Styling for Individual Questions */
+.question-group {
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 15px;
+  margin: 10px auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  width: 70%; /* Smaller width compared to the main container */
+}
+
+/* Question Header Styling */
+.question-header {
+  background-color: #003d80; /* Dark Blue */
+  color: #ffffff; /* White Text */
+  padding: 15px;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* Question Content */
+.question-content {
+  padding: 15px;
+  text-align: center;
+}
+
+.question-text {
+  font-size: 16px;
+  color: #333;
+  font-weight: bold;
+}
+
+/* Radio Button Styles */
+.radio-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px; /* Increased spacing between radio buttons */
+  margin-top: 10px;
+}
+
+.radio-buttons input[type="radio"] {
+  accent-color: #003d80; /* Dark Blue */
+  transform: scale(1.2); /* Slightly larger for visibility */
+}
+
+/* Label for Options */
+.options-label {
+  font-weight: bold;
+  color: #003d80;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .form-question-container {
+      padding: 15px;
+      max-width: 100%;
+  }
+
+  .button-container {
+      flex-direction: column;
+  }
+
+  .add-question-btn,
+  .save-questions-btn {
+      width: 100%;
+      margin: 5px 0;
+  }
+}
+
+
 .profile-container {
   display: flex;
   flex-direction: column;
