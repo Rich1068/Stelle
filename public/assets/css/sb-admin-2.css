@@ -63,8 +63,8 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   flex-direction: column;
   padding: 10px;
   border-radius: 15px; 
-  max-width: 1920px;
-  margin: 10;
+  max-width: 100%;
+  margin: auto;
   
 }
 
