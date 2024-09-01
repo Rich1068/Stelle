@@ -64,8 +64,12 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   padding: 10px;
   border-radius: 15px; 
   max-width: 1920px;
-  margin: 10;
+  margin: 10;s
   
+}
+
+.event-list-container {
+  margin-top: 30px; /* Space above the container */
 }
 
 .event-list-item {
@@ -174,7 +178,6 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6), 0 0 5px rgba(0, 0, 0, 0.4); /* Enhanced shadow effect */
   margin-bottom: 20px; /* Space below the header */
 }
-
 
 
 /* Header Styling */
@@ -408,6 +411,15 @@ h2 {
   
 }
 
+
+.side-by-side-container {
+  display: flex; /* Align child elements horizontally */
+  gap: 20px; /* Space between the sections */
+  padding: 20px; /* Optional: Add padding around the container */
+  margin: 0 auto; /* Center the container horizontally */
+}
+
+/* Existing styles for profile edit section */
   .profile-edit-section {
     padding: 20px;
     border-radius: 15px;
@@ -723,6 +735,10 @@ h2 {
 .password-update-save-message {
   color: #28a745;
 }
+
+
+here is teh fixed version of the old file can you see what modified and fix it?
+
 
 
 body {
