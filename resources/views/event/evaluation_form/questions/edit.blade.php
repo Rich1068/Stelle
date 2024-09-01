@@ -3,7 +3,7 @@
 @section('body')
 
 <!-- Main Form Container -->
-<form action="{{ route('questions.update', ['id' => $id, 'form' => $form]) }}" method="POST" class="form-question-container">
+<form action="{{ route('questions.update', ['id' => $id, 'form' => $form]) }}" method="POST" class="form-question-container" onsubmit="return validateForm()">
     @method('PUT')
     @csrf
 
@@ -28,10 +28,10 @@
         @foreach($questions as $question)
             <div class="form-group question-group">
                 <div class="question-content">
-                    <label for="questions[]">
+                    <label>
                         {{ $question->type_id == 1 ? 'Essay Question:' : 'Radio Question:' }}
                     </label>
-                    <input type="text" name="questions[]" value="{{ $question->question }}" required>
+                    <input type="text" name="questions[{{ $loop->index }}][text]" value="{{ $question->question }}" required>
                     @if($question->type_id == 1)
                         <div class="essay-underline"></div>
                     @else
@@ -48,15 +48,20 @@
                     @endif
                 </div>
                 <button type="button" class="remove-question" onclick="removeQuestion(this)">Remove</button>
-                <input type="hidden" name="question_type[]" value="{{ $question->type_id == 1 ? 'essay' : 'radio' }}">
+                <input type="hidden" name="questions[{{ $loop->index }}][type]" value="{{ $question->type_id == 1 ? 'essay' : 'radio' }}">
             </div>
         @endforeach
     </div>
 
     <!-- Buttons to add Essay or Radio questions -->
     <div class="button-container">
-        <button type="button" class="add-question-btn" onclick="addEssayQuestion()">Add Essay Question</button>
-        <button type="button" class="add-question-btn" onclick="addRadioQuestion()">Add Radio Question</button>
+        <button type="button" class="add-question-btn" onclick="addEssayQuestion()">Add Question</button>
+        <button type="button" class="add-question-btn" onclick="addRadioQuestion()">Add Comment</button>
+    </div>
+
+    <!-- Error Message Container -->
+    <div id="error-message" class="error-message" style="color: red; display: none;">
+        Please add at least one question.
     </div>
 
     <!-- Save Button -->
@@ -69,20 +74,22 @@ function addEssayQuestion() {
     if (questionInput.trim() === "") return; // Do nothing if the input is empty
 
     const questionsDiv = document.getElementById('questions');
+    const questionIndex = questionsDiv.children.length; // Generate a unique index for each question
     const newQuestionDiv = document.createElement('div');
     newQuestionDiv.classList.add('form-group', 'question-group');
     newQuestionDiv.innerHTML = `
         <div class="question-content">
-            <label for="questions[]">Essay Question:</label>
-            <input type="text" name="questions[]" value="${questionInput}" required>
+            <label>Essay Question:</label>
+            <input type="text" name="questions[${questionIndex}][text]" value="${questionInput}" required>
             <div class="essay-underline"></div>
         </div>
         <button type="button" class="remove-question" onclick="removeQuestion(this)">Remove</button>
-        <input type="hidden" name="question_type[]" value="essay">
+        <input type="hidden" name="questions[${questionIndex}][type]" value="essay">
     `;
     questionsDiv.appendChild(newQuestionDiv);
 
     document.getElementById('question-input').value = ""; // Clear the input field
+    document.getElementById('error-message').style.display = 'none'; // Hide the error message if displayed
 }
 
 function addRadioQuestion() {
@@ -90,13 +97,14 @@ function addRadioQuestion() {
     if (questionInput.trim() === "") return; // Do nothing if the input is empty
 
     const questionsDiv = document.getElementById('questions');
+    const questionIndex = questionsDiv.children.length; // Generate a unique index for each question
+    const uniqueRadioName = `radio_${Date.now()}`; // Unique name for each set of radio buttons
     const newQuestionDiv = document.createElement('div');
     newQuestionDiv.classList.add('form-group', 'question-group');
-    const uniqueRadioName = `radio_${Date.now()}`; // Unique name for each set of radio buttons
     newQuestionDiv.innerHTML = `
         <div class="question-content">
-            <label for="questions[]">Radio Question:</label>
-            <input type="text" name="questions[]" value="${questionInput}" required>
+            <label>Radio Question:</label>
+            <input type="text" name="questions[${questionIndex}][text]" value="${questionInput}" required>
             <div class="radio-options">
                 <label>Options:</label>
                 <div>
@@ -109,16 +117,26 @@ function addRadioQuestion() {
             </div>
         </div>
         <button type="button" class="remove-question" onclick="removeQuestion(this)">Remove</button>
-        <input type="hidden" name="question_type[]" value="radio">
+        <input type="hidden" name="questions[${questionIndex}][type]" value="radio">
     `;
     questionsDiv.appendChild(newQuestionDiv);
 
     document.getElementById('question-input').value = ""; // Clear the input field
+    document.getElementById('error-message').style.display = 'none'; // Hide the error message if displayed
 }
 
 function removeQuestion(button) {
     const questionDiv = button.parentElement;
     questionDiv.remove();
+}
+
+function validateForm() {
+    const questionsDiv = document.getElementById('questions');
+    if (questionsDiv.children.length === 0) {
+        document.getElementById('error-message').style.display = 'block'; // Show error message
+        return false; // Prevent form submission
+    }
+    return true; // Allow form submission
 }
 </script>
 

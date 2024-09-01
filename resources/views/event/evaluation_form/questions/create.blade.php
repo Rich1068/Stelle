@@ -3,7 +3,7 @@
 @section('body')
 
 <!-- Main Form Container -->
-<form action="{{ route('questions.store', ['id' => $id, 'form' => $formId]) }}" method="POST" class="form-question-container">
+<form action="{{ route('questions.store', ['id' => $id, 'form' => $formId]) }}" method="POST" class="form-question-container" onsubmit="return validateForm()">
     @csrf
 
     <!-- Header Text with Icon -->
@@ -23,18 +23,23 @@
 
     <!-- Buttons to add Essay or Radio questions -->
     <div class="button-container">
-        <button type="button" class="add-question-btn" onclick="addEssayQuestion()">Add Essay Question</button>
-        <button type="button" class="add-question-btn" onclick="addRadioQuestion()">Add Radio Question</button>
+        <button type="button" class="add-question-btn" onclick="addRadioQuestion()">Add Question</button>
+        <button type="button" class="add-question-btn" onclick="addEssayQuestion()">Add Comment</button>
+    </div>
+
+    <!-- Container for the questions -->
+    <div id="questions" class="questions-container">
+        <!-- Questions will be appended here -->
+    </div>
+
+    <!-- Error Message Container -->
+    <div id="error-message" class="error-message" style="color: red; display: none;">
+        Please add at least one question.
     </div>
 
     <!-- Save Button -->
     <button type="submit" class="save-questions-btn">Save Questions</button>
 </form>
-
-<!-- Container for the questions -->
-<div id="questions" class="questions-container">
-    <!-- Questions will be appended here -->
-</div>
 
 <script>
 function addEssayQuestion() {
@@ -57,6 +62,7 @@ function addEssayQuestion() {
     questionsDiv.appendChild(newQuestionDiv);
 
     document.getElementById('question-input').value = ""; // Clear the input field
+    document.getElementById('error-message').style.display = 'none'; // Hide the error message if displayed
 }
 
 function addRadioQuestion() {
@@ -65,7 +71,6 @@ function addRadioQuestion() {
 
     const questionsDiv = document.getElementById('questions');
     const questionIndex = questionsDiv.children.length; // Generate a unique index for each question
-    const uniqueRadioName = `radio_${Date.now()}`; // Unique name for each set of radio buttons
     const newQuestionDiv = document.createElement('div');
     newQuestionDiv.classList.add('form-group', 'question-group');
     newQuestionDiv.innerHTML = `
@@ -75,11 +80,11 @@ function addRadioQuestion() {
             <div class="radio-options">
                 <label class="options-label">Options:</label>
                 <div class="radio-buttons">
-                    <input type="radio" name="questions[${questionIndex}][${uniqueRadioName}]" value="1" disabled> 1
-                    <input type="radio" name="questions[${questionIndex}][${uniqueRadioName}]" value="2" disabled> 2
-                    <input type="radio" name="questions[${questionIndex}][${uniqueRadioName}]" value="3" disabled> 3
-                    <input type="radio" name="questions[${questionIndex}][${uniqueRadioName}]" value="4" disabled> 4
-                    <input type="radio" name="questions[${questionIndex}][${uniqueRadioName}]" value="5" disabled> 5
+                    <input type="radio" name="questions[${questionIndex}][options]" value="1" disabled> 1
+                    <input type="radio" name="questions[${questionIndex}][options]" value="2" disabled> 2
+                    <input type="radio" name="questions[${questionIndex}][options]" value="3" disabled> 3
+                    <input type="radio" name="questions[${questionIndex}][options]" value="4" disabled> 4
+                    <input type="radio" name="questions[${questionIndex}][options]" value="5" disabled> 5
                 </div>
             </div>
         </div>
@@ -90,11 +95,21 @@ function addRadioQuestion() {
     questionsDiv.appendChild(newQuestionDiv);
 
     document.getElementById('question-input').value = ""; // Clear the input field
+    document.getElementById('error-message').style.display = 'none'; // Hide the error message if displayed
 }
 
 function removeQuestion(button) {
     const questionDiv = button.parentElement;
     questionDiv.remove();
+}
+
+function validateForm() {
+    const questionsDiv = document.getElementById('questions');
+    if (questionsDiv.children.length === 0) {
+        document.getElementById('error-message').style.display = 'block'; // Show error message
+        return false; // Prevent form submission
+    }
+    return true; // Allow form submission
 }
 </script>
 
