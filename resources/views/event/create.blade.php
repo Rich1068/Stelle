@@ -4,7 +4,7 @@
 @php
     $today = date('Y-m-d');
 @endphp
-<div class="event-form-container">
+<section class="event-form-container">
     <div class="event-form">
         <!-- Header Section -->
         <div class="event-field header-section">
@@ -16,13 +16,15 @@
                     <i class="fas fa-info-circle"></i> {{ __("Fill out the form below to create a new event.") }}
                 </p>
             </header>
-        </div>
 
-        <!-- Form Start -->
-        <form method="post" action="{{ route('events.store') }}" class="mt-6 space-y-6" enctype="multipart/form-data" id="eventForm">
+            
+        <!-- Form Section -->
+        <form method="post" action="{{ route('events.store') }}" enctype="multipart/form-data" id="eventForm">
             @csrf
             @method('POST')
+        </div>
 
+            
             <!-- Title -->
             <div class="event-field">
                 <label for="title" class="flex items-center">
@@ -31,6 +33,34 @@
                 </label>
                 <x-text-input id="title" name="title" type="text" class="mt-1 block w-full event-input" :value="old('title')" required autofocus autocomplete="off" />
                 <x-input-error class="mt-2" :messages="$errors->get('title')" />
+            </div>
+
+            <!-- Date & Time -->
+            <div class="event-field event-datetime">
+                <div class="event-date">
+                    <label for="date" class="flex items-center">
+                        <i class="fas fa-calendar-day mr-2"></i>
+                        <span class="font-bold">{{ __('Date') }}</span>
+                    </label>
+                    <x-text-input id="date" name="date" type="date" class="mt-1 block w-full event-input" :value="old('date')" :min="$today" required />
+                    <x-input-error class="mt-2" :messages="$errors->get('date')" />
+                </div>
+                <div class="event-time">
+                    <label for="start_time" class="flex items-center">
+                        <i class="fas fa-clock mr-2"></i>
+                        <span class="font-bold">{{ __('Start Time') }}</span>
+                    </label>
+                    <x-text-input id="start_time" name="start_time" type="time" class="mt-1 block w-full event-input" :value="old('start_time')" required />
+                    <x-input-error class="mt-2" :messages="$errors->get('start_time')" />
+                </div>
+                <div class="event-time">
+                    <label for="end_time" class="flex items-center">
+                        <i class="fas fa-clock mr-2"></i>
+                        <span class="font-bold">{{ __('End Time') }}</span>
+                    </label>
+                    <x-text-input id="end_time" name="end_time" type="time" class="mt-1 block w-full event-input" :value="old('end_time')" required />
+                    <x-input-error class="mt-2" :messages="$errors->get('end_time')" />
+                </div>
             </div>
 
             <!-- Description -->
@@ -43,16 +73,6 @@
                 <x-input-error class="mt-2" :messages="$errors->get('description')" />
             </div>
 
-            <!-- Date -->
-            <div class="event-field">
-                <label for="date" class="flex items-center">
-                    <i class="fas fa-calendar-day mr-2"></i>
-                    <span class="font-bold">{{ __('Date') }}</span>
-                </label>
-                <x-text-input id="date" name="date" type="date" class="mt-1 block w-full event-input" :value="old('date')" :min="$today" required />
-                <x-input-error class="mt-2" :messages="$errors->get('date')" />
-            </div>
-
             <!-- Address -->
             <div class="event-field">
                 <label for="address" class="flex items-center">
@@ -61,26 +81,6 @@
                 </label>
                 <x-text-input id="address" name="address" type="text" class="mt-1 block w-full event-input" :value="old('address')" required />
                 <x-input-error class="mt-2" :messages="$errors->get('address')" />
-            </div>
-
-            <!-- Start Time -->
-            <div class="event-field">
-                <label for="start_time" class="flex items-center">
-                    <i class="fas fa-clock mr-2"></i>
-                    <span class="font-bold">{{ __('Start Time') }}</span>
-                </label>
-                <x-text-input id="start_time" name="start_time" type="time" class="mt-1 block w-full event-input" :value="old('start_time')" required />
-                <x-input-error class="mt-2" :messages="$errors->get('start_time')" />
-            </div>
-
-            <!-- End Time -->
-            <div class="event-field">
-                <label for="end_time" class="flex items-center">
-                    <i class="fas fa-clock mr-2"></i>
-                    <span class="font-bold">{{ __('End Time') }}</span>
-                </label>
-                <x-text-input id="end_time" name="end_time" type="time" class="mt-1 block w-full event-input" :value="old('end_time')" required />
-                <x-input-error class="mt-2" :messages="$errors->get('end_time')" />
             </div>
 
             <!-- Capacity -->
@@ -115,7 +115,7 @@
                 </label>
                 <x-text-input id="event_banner" name="event_banner" type="file" class="mt-1 block w-full event-input" accept="image/*" onchange="previewImage(event)" />
                 <x-input-error class="mt-2" :messages="$errors->get('event_banner')" />
-                <img id="image_preview" style="display: none; max-width: 50%; margin-top: 10px;" />
+                <img id="image_preview" class="event-image-preview" style="display: none; max-width: 50%; margin-top: 10px;" />
             </div>
 
             <!-- Submit Button -->
@@ -126,7 +126,7 @@
             </div>
         </form>
     </div>
-</div>
+</section>
 
 <script>
 function previewImage(event) {
@@ -138,17 +138,18 @@ function previewImage(event) {
     };
     reader.readAsDataURL(event.target.files[0]);
 }
-function disableButton(button) {
-        button.disabled = true; // Disable the button
-        button.innerText = 'Submitting...'; // Change button text
-        button.form.submit(); // Submit the form
-    }
 
-    // Prevent form submission when pressing Enter key inside text fields
-    document.getElementById('eventForm').addEventListener('keydown', function(event) {
-        if (event.key === 'Enter' && event.target.tagName === 'INPUT' && event.target.type !== 'submit') {
-            event.preventDefault();
-        }
-    });
+function disableButton(button) {
+    button.disabled = true;
+    button.innerText = 'Submitting...';
+    button.form.submit();
+}
+
+// Prevent form submission when pressing Enter key inside text fields
+document.getElementById('eventForm').addEventListener('keydown', function(event) {
+    if (event.key === 'Enter' && event.target.tagName === 'INPUT' && event.target.type !== 'submit') {
+        event.preventDefault();
+    }
+});
 </script>
 @endsection

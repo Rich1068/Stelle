@@ -64,8 +64,12 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   padding: 10px;
   border-radius: 15px; 
   max-width: 1920px;
-  margin: 10;
+  margin: 10;s
   
+}
+
+.event-list-container {
+  margin-top: 30px; /* Space above the container */
 }
 
 .event-list-item {
@@ -176,7 +180,6 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 }
 
 
-
 /* Header Styling */
 .header-section {
   border-radius: 15px; /* Rounded corners for consistency */
@@ -195,6 +198,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   margin: 20px;
   max-width: 1000px; /* Max width to constrain the form size */
   box-sizing: border-box; /* Ensure padding is included in width calculation */
+  margin: auto;
 }
 
 .event-field {
@@ -408,321 +412,332 @@ h2 {
   
 }
 
-  .profile-edit-section {
-    padding: 20px;
-    border-radius: 15px;
-    background-color: #f9f9f9;
-    max-width: 600px;
-    flex: 1; /* Allow section to grow and fill available space */
-  }
-  
 
-  /* Additional container to ensure alignment */
-  .profile-edit-container-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-  }
+        .side-by-side-container {
+          display: flex; /* Align child elements horizontally */
+          gap: 20px; /* Space between the sections */
+          padding: 20px; /* Optional: Add padding around the container */
+          margin: 0 auto; /* Center the container horizontally */
+        }
 
-  /* Ensure the description is styled properly */
-  .profile-edit-description {
-    font-size: 0.875rem;
-    color: #6b7280; /* Gray color for text */
-    margin-bottom: 10px;
-  }
+        /* Existing styles for profile edit section */
+          .profile-edit-section {
+            padding: 20px;
+            border-radius: 15px;
+            background-color: #f9f9f9;
+            max-width: 600px;
+            flex: 1; /* Allow section to grow and fill available space */
+          }
+          
 
-  /* Other existing styles */
-  .profile-edit-header {
-    margin-bottom: 20px;
-  }
+          /* Additional container to ensure alignment */
+          .profile-edit-container-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+          }
 
-  .profile-edit-container {
-    display: flex; /* Display container items horizontally */
-    flex-wrap: wrap; /* Allow items to wrap if needed */
-    gap: 20px; /* Space between items */
-    padding: 20px;
-  }
+          /* Ensure the description is styled properly */
+          .profile-edit-description {
+            font-size: 0.875rem;
+            color: #6b7280; /* Gray color for text */
+            margin-bottom: 10px;
+          }
 
-  .profile-edit-item {
-    flex: 1 1 calc(50% - 20px); /* Adjust width for side-by-side display */
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    padding-bottom: 10px;
-  }
+          /* Other existing styles */
+          .profile-edit-header {
+            margin-bottom: 20px;
+          }
 
-  .profile-edit-row {
-    display: flex;
-    flex-wrap: wrap; /* Allow items to wrap if they exceed the width */
-    gap: 20px; /* Space between items */
-  }
+          .profile-edit-container {
+            display: flex; /* Display container items horizontally */
+            flex-wrap: wrap; /* Allow items to wrap if needed */
+            gap: 20px; /* Space between items */
+            padding: 20px;
+          }
 
-  .profile-edit-item-full {
-    flex: 1 1 100%; /* Full width for items in this row */
-  }
+          .profile-edit-item {
+            flex: 1 1 calc(50% - 20px); /* Adjust width for side-by-side display */
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            padding-bottom: 10px;
+          }
 
-  .profile-edit-label {
-    font-weight: bold;
-    color: #054d94; /* Dark Blue Color */
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
+          .profile-edit-row {
+            display: flex;
+            flex-wrap: wrap; /* Allow items to wrap if they exceed the width */
+            gap: 20px; /* Space between items */
+          }
 
-  .profile-edit-input,
-  .profile-edit-textarea,
-  .profile-edit-select {
-    background-color: #f0f0f0;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 8px 12px;
-    color: #555;
-    font-weight: bold;
-    box-shadow: none; /* Remove shadow */
-  }
+          .profile-edit-item-full {
+            flex: 1 1 100%; /* Full width for items in this row */
+          }
 
-  .profile-edit-input::placeholder,
-  .profile-edit-textarea::placeholder {
-    color: #4a4a4a;
-    font-weight: bold;
-  }
+          .profile-edit-label {
+            font-weight: bold;
+            color: #054d94; /* Dark Blue Color */
+            display: flex;
+            align-items: center;
+            gap: 8px;
+          }
 
-  .profile-edit-error {
-    color: red;
-    font-size: 0.875rem;
-  }
+          .profile-edit-input,
+          .profile-edit-textarea,
+          .profile-edit-select {
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 8px 12px;
+            color: #555;
+            font-weight: bold;
+            box-shadow: none; /* Remove shadow */
+          }
 
-  .profile-edit-image-preview {
-    margin-top: 10px;
-    border-radius: 10px;
-    max-width: 75px;
-  }
+          .profile-edit-input::placeholder,
+          .profile-edit-textarea::placeholder {
+            color: #4a4a4a;
+            font-weight: bold;
+          }
 
-  .profile-edit-actions {
-    display: flex;
-    align-items: center;
-    justify-content: center; /* Center align the actions */
-    gap: 10px;
-    margin-top: 20px; /* Adjust this value as needed for more separation */
-  }
+          .profile-edit-error {
+            color: red;
+            font-size: 0.875rem;
+          }
 
+          .profile-edit-image-preview {
+            margin-top: 10px;
+            border-radius: 10px;
+            max-width: 75px;
+          }
 
-  .profile-edit-save-button {
-    background-color: #003d80 !important; /* Darker blue */
-    color: #fff;
-    border-radius: 25px; /* Rounded corners */
-    padding: 10px 20px;
-    transition: background-color 0.3s;
-    border: none; /* Remove default border */
-    display: flex;
-    align-items: center;
-  }
-
-  .profile-edit-save-button:hover {
-    background-color: #002a60 !important; /* Even darker blue for hover */
-  }
-
-  .profile-edit-save-message {
-    color: #28a745;
-  }
-.password-input-container {
-  position: relative;
-}
-/* Container and Section Styles */
-.delete-profile-section {
-  padding: 20px;
-  border-radius: 15px;
-  background-color: #f9f9f9;
-  max-width: 600px;
-  flex: 1;
-  margin-top: 20px; /* Add margin on top for more space */
-}
-
-/* Header Styles */
-.delete-profile-header {
-    margin-bottom: 20px;
-}
-
-/* Title Styles */
-.delete-profile-title {
-    font-size: 1.25rem;
-    font-weight: bold;
-    color: #054d94; /* Dark Blue */
-}
-
-/* Description Styles */
-.delete-profile-description {
-    font-size: 0.875rem;
-    color: #6b7280; /* Gray color for text */
-    margin-bottom: 10px;
-}
-
-/* Input Container Styles */
-.delete-profile-password-container {
-    position: relative;
-    margin-top: 20px;
-}
-
-/* Input Styles */
-.delete-profile-input {
-    background-color: #f0f0f0;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 8px 12px;
-    color: #555;
-    font-weight: bold;
-    box-shadow: none;
-    width: 100%;
-}
-
-.delete-profile-input::placeholder {
-    color: #4a4a4a;
-    font-weight: bold;
-}
-
-/* Error Message Styles */
-.delete-profile-error {
-    color: red;
-    font-size: 0.875rem;
-    margin-top: 5px;
-}
-
-/* Action Button Styles */
-.delete-profile-action-button {
-    background-color: #ac0101;
-    color: #fff;
-    border-radius: 25px;
-    padding: 10px 20px;
-    border: none;
-    transition: background-color 0.3s;
-    display: flex;
-    align-items: center;
-    margin: auto;
-}
-
-.delete-profile-action-button:hover {
-    background-color: #002a60;
-}
-
-.delete-profile-secondary-button {
-    background-color: #962f00;
-    color: #555;
-    border-radius: 25px;
-    padding: 10px 20px;
-    border: none;
-    display: flex;
-    align-items: center;
-}
-
-.delete-profile-actions {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 10px;
-    margin-top: 20px;
-}
-
-.password-toggle {
-  position: absolute;
-  top: 50%;
-  right: 10px;
-  transform: translateY(-50%);
-  cursor: pointer;
-  color: #555;
-}
-
-.password-toggle:hover {
-  color: #054d94; /* Dark Blue Color */
-}
+          .profile-edit-actions {
+            display: flex;
+            align-items: center;
+            justify-content: center; /* Center align the actions */
+            gap: 10px;
+            margin-top: 20px; /* Adjust this value as needed for more separation */
+          }
 
 
-.password-update-section {
-  padding: 20px;
-  border-radius: 15px;
-  background-color: #f9f9f9;
-  max-width: 600px;
+          .profile-edit-save-button {
+            background-color: #003d80 !important; /* Darker blue */
+            color: #fff;
+            border-radius: 25px; /* Rounded corners */
+            padding: 10px 20px;
+            transition: background-color 0.3s;
+            border: none; /* Remove default border */
+            display: flex;
+            align-items: center;
+          }
 
-}
+          .profile-edit-save-button:hover {
+            background-color: #002a60 !important; /* Even darker blue for hover */
+          }
 
-.password-update-header {
-  margin-bottom: 20px;
-}
+          .profile-edit-save-message {
+            color: #28a745;
+          }
+        .password-input-container {
+          position: relative;
+        }
+        /* Container and Section Styles */
+        .delete-profile-section {
+          padding: 20px;
+          border-radius: 15px;
+          background-color: #f9f9f9;
+          max-width: 600px;
+          flex: 1;
+          margin-top: 20px; /* Add margin on top for more space */
+        }
 
-.password-update-title {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
+        /* Header Styles */
+        .delete-profile-header {
+            margin-bottom: 20px;
+        }
 
-.password-update-description {
-  color: #555;
-}
+        /* Title Styles */
+        .delete-profile-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #054d94; /* Dark Blue */
+        }
 
-.password-update-form {
-  padding: 20px;
-}
+        /* Description Styles */
+        .delete-profile-description {
+            font-size: 0.875rem;
+            color: #6b7280; /* Gray color for text */
+            margin-bottom: 10px;
+        }
 
-.password-update-item {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  padding-bottom: 10px;
-}
+        /* Input Container Styles */
+        .delete-profile-password-container {
+            position: relative;
+            margin-top: 20px;
+        }
 
-.password-update-label {
-  font-weight: bold;
-  color: #054d94; /* Dark Blue Color */
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
+        /* Input Styles */
+        .delete-profile-input {
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 8px 12px;
+            color: #555;
+            font-weight: bold;
+            box-shadow: none;
+            width: 100%;
+        }
 
-.password-update-input {
-  background-color: #f0f0f0;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  padding: 8px 12px;
-  color: #555;
-  font-weight: bold;
-  box-shadow: none; /* Remove shadow */
-}
+        .delete-profile-input::placeholder {
+            color: #4a4a4a;
+            font-weight: bold;
+        }
 
-.password-update-input::placeholder {
-  color: #4a4a4a;
-  font-weight: bold;
-}
+        /* Error Message Styles */
+        .delete-profile-error {
+            color: red;
+            font-size: 0.875rem;
+            margin-top: 5px;
+        }
 
-.password-update-error {
-  color: red;
-  font-size: 0.875rem;
-}
+        /* Action Button Styles */
+        .delete-profile-action-button {
+            background-color: #ac0101;
+            color: #fff;
+            border-radius: 25px;
+            padding: 10px 20px;
+            border: none;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            margin: auto;
+        }
 
-.password-update-actions {
-  display: flex;
-  align-items: center;
-  justify-content: center; /* Center align the actions */
-  gap: 10px;
-  margin-top: 20px; /* Add margin above the button */
-}
+        .delete-profile-action-button:hover {
+            background-color: #002a60;
+        }
 
-.password-update-save-button {
-  background-color: #003d80 !important; /* Darker blue */
-  color: #fff;
-  border-radius: 25px; /* Rounded corners */
-  padding: 10px 20px;
-  transition: background-color 0.3s;
-  border: none; /* Remove default border */
-  display: flex;
-  align-items: center;
-}
+        .delete-profile-secondary-button {
+            background-color: #962f00;
+            color: #555;
+            border-radius: 25px;
+            padding: 10px 20px;
+            border: none;
+            display: flex;
+            align-items: center;
+        }
 
-.password-update-save-button:hover {
-  background-color: #002a60 !important; /* Even darker blue for hover */
-}
+        .delete-profile-actions {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
 
-.password-update-save-message {
-  color: #28a745;
-}
+        .password-toggle {
+          position: absolute;
+          top: 50%;
+          right: 10px;
+          transform: translateY(-50%);
+          cursor: pointer;
+          color: #555;
+        }
+
+        .password-toggle:hover {
+          color: #054d94; /* Dark Blue Color */
+        }
+
+
+        .password-update-section {
+          padding: 20px;
+          border-radius: 15px;
+          background-color: #f9f9f9;
+          max-width: 600px;
+
+        }
+
+        .password-update-header {
+          margin-bottom: 20px;
+        }
+
+        .password-update-title {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+
+        .password-update-description {
+          color: #555;
+        }
+
+        .password-update-form {
+          padding: 20px;
+        }
+
+        .password-update-item {
+          display: flex;
+          flex-direction: column;
+          gap: 5px;
+          padding-bottom: 10px;
+        }
+
+        .password-update-label {
+          font-weight: bold;
+          color: #054d94; /* Dark Blue Color */
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+
+        .password-update-input {
+          background-color: #f0f0f0;
+          border: 1px solid #ddd;
+          border-radius: 10px;
+          padding: 8px 12px;
+          color: #555;
+          font-weight: bold;
+          box-shadow: none; /* Remove shadow */
+        }
+
+        .password-update-input::placeholder {
+          color: #4a4a4a;
+          font-weight: bold;
+        }
+
+        .password-update-error {
+          color: red;
+          font-size: 0.875rem;
+        }
+
+        .password-update-actions {
+          display: flex;
+          align-items: center;
+          justify-content: center; /* Center align the actions */
+          gap: 10px;
+          margin-top: 20px; /* Add margin above the button */
+        }
+
+        .password-update-save-button {
+          background-color: #003d80 !important; /* Darker blue */
+          color: #fff;
+          border-radius: 25px; /* Rounded corners */
+          padding: 10px 20px;
+          transition: background-color 0.3s;
+          border: none; /* Remove default border */
+          display: flex;
+          align-items: center;
+        }
+
+        .password-update-save-button:hover {
+          background-color: #002a60 !important; /* Even darker blue for hover */
+        }
+
+        .password-update-save-message {
+          color: #28a745;
+        }
+
+
 
 
 body {
