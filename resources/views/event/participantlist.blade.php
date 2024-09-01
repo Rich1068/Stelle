@@ -12,7 +12,7 @@
         <div class="alert alert-danger">{{ session('error') }}</div>
     @endif
 
-    <form action="{{ route('sendCertificates', $event->id) }}" method="POST">
+    <form action="{{ route('sendCertificates', $event->id) }}" method="POST" id="sendCert">
         @csrf
         <table class="table">
             <thead>
@@ -41,4 +41,25 @@
         <button type="submit" class="btn btn-primary">Send Certificates</button>
     </form>
 </div>
+
+<script>
+
+function disableButton(button) {
+    button.disabled = true; // Disable the button
+    button.innerText = 'Submitting...'; // Change button text
+
+    // Re-enable the button after 3 seconds
+    setTimeout(function() {
+        button.disabled = false;
+        button.innerText = 'Create Event';
+    }, 3000); // 3000 milliseconds = 3 seconds
+
+    button.form.submit(); // Submit the form
+}
+document.getElementById('sendCert').addEventListener('keydown', function(event) {
+    if (event.key === 'Enter' && event.target.tagName === 'INPUT' && event.target.type !== 'submit') {
+        event.preventDefault();
+    }
+});
+</script>
 @endsection
