@@ -64,7 +64,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   padding: 10px;
   border-radius: 15px; 
   max-width: 1920px;
-  margin: 10;s
+  margin: 10;
   
 }
 
@@ -226,7 +226,6 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 }
 
 .event-datetime {
-  grid-column: 2 / ; /* Place on the right side */
   display: flex;
   flex-direction: column; /* Stack date and time fields vertically */
   gap: 20px; /* Space between date and time containers */

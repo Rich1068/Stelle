@@ -8,7 +8,7 @@
         <img src="/images/illustration1.png" alt="Illustration">
 
         <!-- Sign Up Text -->
-        <p class="signup-text">Don't have an account? <a href="#" class="signup-link">Sign Up Here</a></p>
+        <p class="signup-text">Don't have an account? <a href="{{route('register') }}" class="signup-link">Sign Up Here</a></p>
     </div>
 
     <!-- Divider Line -->

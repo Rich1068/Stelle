@@ -296,7 +296,14 @@ class EventController extends Controller
         $certificateId = $certificate->id;
     
         foreach ($participantIds as $participantId) {
-            $this->connectUserToCertificate($participantId, $certificateId);
+            // Check if the certificate already exists for this event and user using the CertUser model
+            $exists = CertUser::where('cert_id', $certificateId)
+                ->where('user_id', $participantId)
+                ->exists();
+    
+            if (!$exists) {
+                $this->connectUserToCertificate($participantId, $certificateId);
+            }
         }
     
         return redirect()->back()->with('success', 'Certificates sent successfully.');

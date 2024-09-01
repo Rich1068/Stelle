@@ -66,4 +66,15 @@ class User extends Authenticatable implements CanResetPassword
     {
         return $this->hasMany(UserEvent::class);
     }
+    public function certificates()
+    {
+        return $this->hasManyThrough(
+            Certificate::class,
+            CertUser::class,
+            'user_id', // Foreign key on CertUser table
+            'id', // Foreign key on Certificate table
+            'id', // Local key on User table
+            'cert_id' // Local key on CertUser table
+        );
+    }
 }

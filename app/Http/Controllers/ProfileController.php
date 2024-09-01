@@ -125,4 +125,16 @@ class ProfileController extends Controller
         return back()->with('success', 'You have registered to be an Event Admin, Please wait for approval!');
     }
 
+    public function myCertificates()
+    {
+        // Get the currently authenticated user
+        $user = Auth::user();
+
+        // Load the certificates relationship to avoid N+1 query problem
+        $user->load('certificates');
+
+        // Return the view with the user and their certificates
+        return view('profile.mycertificates', compact('user'));
+    }
+
 }

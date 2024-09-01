@@ -12,4 +12,15 @@ class CertUser extends Model
         'cert_id',
         'user_id'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function certificate()
+    {
+        return $this->belongsTo(Certificate::class, 'cert_id');
+    }
+
 }

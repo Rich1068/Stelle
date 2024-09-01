@@ -16,12 +16,13 @@ Route::get('/', function () {
 
 //check if logged in
 Route::middleware('auth')->group(function () {
+    Route::get('/profile/MyCertificates', [ProfileController::class, 'myCertificates'])->name('profile.mycertificates');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     route::get('/profile', [ProfileController::class, 'profile'])->name('profile.profile');
     Route::get('/profile/{id}', [ProfileController::class, 'view'])->name('profile.view');
     Route::patch('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile/destroy', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
+    
 });
 
 require __DIR__.'/auth.php';
@@ -57,12 +58,15 @@ Route::middleware(['auth', 'checkRole:3'])->group(function () {
 
 Route::middleware('auth')->group(function () {
 
+
     //overall event view and join
     route::resource('events', EventController::class);
     route::get('/events', [EventController::class, 'list'])->name('event.list');
     route::get('/event/{id}', [EventController::class, 'view'])->name('event.view');
     Route::post('/event/{id}/join', [EventController::class, 'join'])->name('event.join');
     Route::post('/event/{id}/participants/send-certificates', [EventController::class, 'sendCertificates'])->name('sendCertificates');
+
+    
     
     
 

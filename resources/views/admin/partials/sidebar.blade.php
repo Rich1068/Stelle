@@ -59,9 +59,9 @@ User Management
 </li>
 <hr class="sidebar-divider">
 <li class="nav-item">
-  <a href="{{route('profile.edit')}}" class="nav-link">
+  <a href="{{route('profile.mycertificates')}}" class="nav-link">
         <i class="fas fa-fw fa-table"></i>
-        <span>Certificates</span></a>
+        <span>My Certificates</span></a>
 </li>
 <hr class="sidebar-divider">
 <li class="nav-item">
