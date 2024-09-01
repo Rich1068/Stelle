@@ -2,9 +2,27 @@
 
 @section('body')
 
-<form action="{{ route('questions.update', ['id' => $id, 'form' => $form]) }}" method="POST">
+<!-- Main Form Container -->
+<form action="{{ route('questions.update', ['id' => $id, 'form' => $form]) }}" method="POST" class="form-question-container">
     @method('PUT')
     @csrf
+
+    <!-- Header Text with Icon -->
+    <div class="header-text">
+        <i class="fas fa-list"></i> Edit Evaluation Form
+    </div>
+
+    <!-- Input Field for New Question -->
+    <div class="input-container">
+        <input type="text" id="question-input" placeholder="Type your question here..." class="question-input">
+    </div>
+
+    <!-- Divider with "Question Type" Text -->
+    <div class="divider">
+        <span class="divider-text">Question Type</span>
+    </div>
+
+    <!-- Existing Questions -->
     <div id="questions">
         <!-- Existing questions will be displayed here -->
         @foreach($questions as $question)
@@ -15,7 +33,7 @@
                     </label>
                     <input type="text" name="questions[]" value="{{ $question->question }}" required>
                     @if($question->type_id == 1)
-                        <div class="essay-underline" style="border-bottom: 1px solid #000; margin-top: 5px;"></div>
+                        <div class="essay-underline"></div>
                     @else
                         <div class="radio-options">
                             <label>Options:</label>
@@ -36,29 +54,41 @@
     </div>
 
     <!-- Buttons to add Essay or Radio questions -->
-    <button type="button" onclick="addEssayQuestion()">Add Essay Question</button>
-    <button type="button" onclick="addRadioQuestion()">Add Radio Question</button>
-    <button type="submit">Update Questions</button>
+    <div class="button-container">
+        <button type="button" class="add-question-btn" onclick="addEssayQuestion()">Add Essay Question</button>
+        <button type="button" class="add-question-btn" onclick="addRadioQuestion()">Add Radio Question</button>
+    </div>
+
+    <!-- Save Button -->
+    <button type="submit" class="save-questions-btn">Update Questions</button>
 </form>
 
 <script>
 function addEssayQuestion() {
+    const questionInput = document.getElementById('question-input').value;
+    if (questionInput.trim() === "") return; // Do nothing if the input is empty
+
     const questionsDiv = document.getElementById('questions');
     const newQuestionDiv = document.createElement('div');
     newQuestionDiv.classList.add('form-group', 'question-group');
     newQuestionDiv.innerHTML = `
         <div class="question-content">
             <label for="questions[]">Essay Question:</label>
-            <input type="text" name="questions[]" required>
-            <div class="essay-underline" style="border-bottom: 1px solid #000; margin-top: 5px;"></div>
+            <input type="text" name="questions[]" value="${questionInput}" required>
+            <div class="essay-underline"></div>
         </div>
         <button type="button" class="remove-question" onclick="removeQuestion(this)">Remove</button>
         <input type="hidden" name="question_type[]" value="essay">
     `;
     questionsDiv.appendChild(newQuestionDiv);
+
+    document.getElementById('question-input').value = ""; // Clear the input field
 }
 
 function addRadioQuestion() {
+    const questionInput = document.getElementById('question-input').value;
+    if (questionInput.trim() === "") return; // Do nothing if the input is empty
+
     const questionsDiv = document.getElementById('questions');
     const newQuestionDiv = document.createElement('div');
     newQuestionDiv.classList.add('form-group', 'question-group');
@@ -66,7 +96,7 @@ function addRadioQuestion() {
     newQuestionDiv.innerHTML = `
         <div class="question-content">
             <label for="questions[]">Radio Question:</label>
-            <input type="text" name="questions[]" required>
+            <input type="text" name="questions[]" value="${questionInput}" required>
             <div class="radio-options">
                 <label>Options:</label>
                 <div>
@@ -82,6 +112,8 @@ function addRadioQuestion() {
         <input type="hidden" name="question_type[]" value="radio">
     `;
     questionsDiv.appendChild(newQuestionDiv);
+
+    document.getElementById('question-input').value = ""; // Clear the input field
 }
 
 function removeQuestion(button) {
@@ -89,5 +121,8 @@ function removeQuestion(button) {
     questionDiv.remove();
 }
 </script>
+
+<!-- Link to the external CSS file -->
+<link rel="stylesheet" href="{{ asset('css/form-questions.css') }}">
 
 @endsection
