@@ -738,7 +738,7 @@ h2 {
   display: flex;
   flex-direction: row;
   gap: 20px;
-  width: 100%;
+  width: 70%;
   flex-wrap: wrap;
 }
 
@@ -749,7 +749,7 @@ h2 {
 }
 
 .info-section p {
-  padding: 10px 0;
+  padding: 0px 0;
   border-bottom: 1px solid #ddd;
 }
 
@@ -792,6 +792,176 @@ h2 {
   margin-right: 10px; /* Space between icon and text */
   
 }
+.top-container {
+  width: 100%;
+  background-color: white;
+  border-radius: 15px; /* Adjusted border radius */
+  padding: 40px 20px; /* Increased padding for a taller container */
+  margin-bottom: 20px;
+  margin-top: 40px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Shadow for the top container */
+  text-align: left; /* Align text to the left */
+  display: flex; /* Flexbox for alignment */
+  flex-direction: column; /* Stack items vertically */
+  align-items: flex-start; /* Align items to the start */
+}
+
+.back-btn {
+  background-color: #002f6c; /* Dark blue background */
+  border-radius: 50%; /* Circular shape */
+  width: 40px; /* Button size */
+  height: 40px;
+  display: flex; /* Center icon */
+  align-items: center;
+  justify-content: center;
+  margin-right: 15px; /* Space between button and text */
+}
+
+.back-btn a {
+  color: white; /* White arrow */
+  text-decoration: none; /* Remove underline */
+  font-size: 1.2em; /* Adjust icon size */
+}
+
+.manage-participants {
+  font-size: 1.2em; /* Font size for "Pending Participants For" */
+  color: #002f6c; /* Dark blue color */
+  font-weight: bold;
+}
+
+.event-title {
+  font-size: 1.8em; /* Larger font size for event title */
+  color: grey; /* Grey color for the event title */
+  margin-top: 5px; /* Margin to separate from the "Pending Participants For" text */
+}
+
+.participant-list-container {
+  width: 100%;
+  border-radius: 15px;
+  padding: 15px;
+}
+
+.participant-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px; /* Increased padding */
+  margin-bottom: 20px; /* Margin between items */
+  border-radius: 15px; /* Rounded corners */
+  border: 1px solid #ddd; /* Light grey border */
+  background-color: #f9f9f9; /* Light background color */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Shadow for items */
+  transition: box-shadow 0.3s ease-in-out; /* Smooth transition for shadow */
+  animation: fadeIn 0.5s ease-in-out; /* Fade-in animation */
+}
+
+.participant-info {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  padding: 25px;
+}
+
+.participant-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.profile-picture {
+  width: 50px; /* Adjusted size of the profile picture */
+  height: 50px;
+  border-radius: 50%; /* Circular shape */
+  object-fit: cover;
+}
+
+.participant-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.participant-name {
+  font-size: 1.2em; /* Font size for participant's name */
+  color: #002f6c; /* Dark blue color */
+  font-weight: bold;
+}
+
+.participant-status, .participant-country {
+  font-size: 0.9em; /* Font size for status and country */
+  color: #888; /* Grey color */
+}
+
+.participant-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.participant-action-form .btn {
+  border-radius: 20px; /* Rounded edges for buttons */
+  padding: 6px 15px; /* Padding for buttons */
+  font-size: 0.85em; /* Font size */
+  font-weight: bold;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.send-cert-btn {
+  text-align: center; /* Center the button */
+  margin-top: 20px; /* Space above the button */
+}
+
+.send-cert-btn button {
+  background-color: #002f6c; /* Dark blue background */
+  color: white; /* White text color */
+  border: none; /* Remove default border */
+  border-radius: 25px; /* Rounded edges */
+  padding: 10px 20px; /* Padding for button size */
+  font-size: 1em; /* Font size */
+  font-weight: bold; /* Bold text */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s, transform 0.3s; /* Smooth transitions */
+}
+
+.send-cert-btn button:hover {
+  background-color: #001c4a; /* Darker blue on hover */
+  transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+.participant-list-item input[type="checkbox"] {
+  appearance: none; /* Remove default appearance */
+  -webkit-appearance: none; /* Remove default appearance for Safari */
+  border-radius: 50%; /* Circular shape */
+  width: 28px; /* Size of the checkbox */
+  height: 28px;
+  background-color: #f9f9f9; /* Light background color */
+  border: 2px solid #002f6c; /* Dark blue border */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s, border-color 0.3s; /* Smooth transition */
+  outline: none; /* Remove default outline */
+  position: relative; /* Positioning for the checkmark */
+}
+
+/* Style the checkbox when checked */
+.participant-list-item input[type="checkbox"]:checked {
+  background-color: #002f6c; /* Dark blue background */
+  border-color: #002f6c; /* Dark blue border */
+}
+
+/* Create a custom checkmark */
+.participant-list-item input[type="checkbox"]:checked::before {
+  content: none; /* Remove any additional content */
+}
+
+
 
 
         .side-by-side-container {
