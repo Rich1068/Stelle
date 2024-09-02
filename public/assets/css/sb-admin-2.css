@@ -281,6 +281,174 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   margin: auto;
   
 }
+/* Container and Main Content Styling */
+/* Event Container */
+.event-view-container {
+  max-width: 900px;
+  margin: 20px auto; /* Margin for spacing top and bottom */
+  padding: 40px;
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+  margin-top: 70px;
+  margin-bottom: 70px;
+}
+
+/* Title and Banner */
+.event-view-header {
+  text-align: left;
+  margin-bottom: 40px; /* Increased space below */
+}
+
+.event-view-event-title {
+  font-size: 30px;
+  font-weight: bold;
+  color: #001e54;
+  margin-bottom: 10px;
+}
+
+.event-view-banner {
+  width: 100%;
+  max-height: 300px;
+  border-radius: 15px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* About Section */
+.event-view-about {
+  font-size: 20px; /* Increased size */
+  color: #333;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.event-view-about i {
+  margin-right: 10px;
+  font-size: 22px;
+  color: #001e54;
+}
+
+.event-view-about b {
+  color: #001e54; /* Dark blue color */
+  font-weight: bold; /* Ensure boldness */
+}
+
+/* Divider */
+.event-view-divider {
+  position: relative;
+  text-align: center;
+  margin: 20px 0;
+}
+
+.event-view-divider span {
+  background: #fff;
+  padding: 0 10px;
+  color: #001e54;
+  font-weight: bold;
+  position: relative;
+  z-index: 1; /* Ensure text is above the line */
+}
+
+.event-view-divider::before {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 1px;
+  background-color: #969696;
+  position: absolute;
+  top: 50%; /* Center the line vertically */
+  left: 0;
+  z-index: 0; /* Place behind the text */
+}
+
+/* Event Information */
+.event-view-info {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Two columns */
+  gap: 20px; /* Increased gap */
+  margin-bottom: 20px;
+}
+
+.event-view-info div {
+  display: flex;
+  align-items: center;
+}
+
+.event-view-info div i {
+  font-size: 20px;
+  margin-right: 10px;
+  color: #001e54; /* Dark blue color */
+}
+
+.event-view-info div span {
+  font-size: 16px;
+  color: rgb(136, 135, 135); /* Dynamic information in light grey */
+  font-weight: normal; /* Normal weight for dynamic text */
+}
+
+.event-view-info div span::before {
+  content: attr(data-label); /* Add the label text before the dynamic information */
+  color: #001e54; /* Dark blue for the label text */
+  font-weight: bold; /* Ensure boldness for the label text */
+}
+
+/* Buttons Section */
+.event-view-buttons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2x2 grid layout */
+  gap: 25px; /* Increased gap */
+  margin-bottom: 10px; /* Margin for spacing from the bottom */
+  
+}
+
+.event-view-buttons .btn {
+  margin-top: 19px;
+  background-color: #001e54;
+  color: white;
+  border-radius: 20px; /* Rounded corners */
+  padding: 15px;
+  font-size: 15px;
+  font-weight: bold;
+  text-align: center; /* Center text */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 55px; /* Fixed height for consistency */
+}
+
+.event-view-buttons .btn:hover {
+  background-color: #002b80;
+}
+
+/* Full-width button */
+.full-width-button {
+  grid-column: span 2; /* Span across both columns */
+}
+
+/* Centered Create Certificate Button */
+.create-certificate-button {
+  display: flex;
+  justify-content: right;
+  margin-top: 20px; /* Space from other elements */
+}
+
+.create-certificate-button .btn {
+  width: auto; /* Auto width for the certificate button */
+  max-width: 300px; /* Ensure it doesn't get too wide */
+}
+
+/* Certificate Modal */
+.event-view-modal .modal-content {
+  border-radius: 10px;
+}
+
+.event-view-certificate-image {
+  width: 100%;
+  border-radius: 15px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
 
 .event-list-container {
   margin-top: 30px; /* Space above the container */
