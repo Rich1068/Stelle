@@ -22,15 +22,16 @@
                 @if ($question->type_id == 1) <!-- Essay -->
                     <textarea name="answers[{{ $question->id }}]}" class="form-control answer-forms-textarea" placeholder="Insert Answer Here" required></textarea>
                 @elseif ($question->type_id == 2) <!-- Radio -->
-                    <div class="answer-forms-radio-group">
-                        @for ($i = 1; $i <= 5; $i++)
-                            <label class="answer-forms-radio-label">
-                                <input type="radio" name="answers[{{ $question->id }}]" value="{{ $i }}" class="answer-forms-radio-input" required>
-                                <span class="answer-forms-radio-circle"></span>
-                                <span class="answer-forms-radio-number">{{ $i }}</span>
-                            </label>
-                        @endfor
-                    </div>
+                <div class="answer-forms-radio-group">
+    @for ($i = 1; $i <= 5; $i++)
+        <label class="answer-forms-radio-label">
+            <span class="answer-forms-radio-number">{{ $i }}</span> <!-- Number on top -->
+            <input type="radio" name="answers[{{ $question->id }}]" value="{{ $i }}" class="answer-forms-radio-input" required>
+            <span class="answer-forms-radio-circle"></span> <!-- Radio circle -->
+        </label>
+    @endfor
+</div>
+
                 @endif
             </div>
         </div>

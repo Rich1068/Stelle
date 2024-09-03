@@ -132,22 +132,21 @@
 
 /* Radio Group */
 .answer-forms-radio-group {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 70px;
-    gap: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px 70px;
+  gap: 20px; /* Adjust gap between items as needed */
 }
-
 
 /* Radio Label */
 .answer-forms-radio-label {
   display: flex;
-  flex-direction: column; /* Stack number below the radio button */
+  flex-direction: column; /* Stack number above the radio button */
   align-items: center;
-  gap: 5px;
+  gap: 15px; /* Space between number and circle */
   cursor: pointer;
-  margin: 10px;
+  margin: 20px; /* Space around each label */
 }
 
 /* Radio Circle */
@@ -156,17 +155,16 @@
   height: 20px;
   border: 2px solid #001f54; /* Dark blue */
   border-radius: 50%;
-  padding: 10px;
   transition: background-color 0.3s;
-  font-weight: 300;
+}
+
+/* Radio Input */
+.answer-forms-radio-input {
+  display: none; /* Hide the default radio button */
 }
 
 .answer-forms-radio-input:checked + .answer-forms-radio-circle {
-  background-color: #001f54; /* Dark blue */
-}
-
-.answer-forms-radio-input {
-  display: none; /* Hide the default radio button */
+  background-color: #001f54; /* Dark blue when checked */
 }
 
 /* Radio Number */
@@ -175,6 +173,7 @@
   font-weight: 900;
   color: #001f54; /* Dark blue */
 }
+
 
 /* Submit Button */
 .answer-forms-submit {
