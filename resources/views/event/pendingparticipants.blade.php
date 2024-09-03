@@ -31,7 +31,7 @@
                                 {{ $participant->user->first_name }} {{ $participant->user->last_name }}
                             </a>
                             <div class="participant-status">{{ $participant->status->status }}</div>
-                            <div class="participant-country">{{ $participant->user->country }}</div>
+                          
                         </div>
                     </div>
                 </div>

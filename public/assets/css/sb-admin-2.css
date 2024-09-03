@@ -283,6 +283,29 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 }
 /* Container and Main Content Styling */
 /* Event Container */
+.event-view-about {
+  font-size: 20px; /* Increased size */
+  color: #333;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap; /* Allow wrapping of long text */
+  word-wrap: break-word; /* Ensure text wraps within the container */
+  overflow-wrap: break-word; /* Handle long words breaking */
+}
+
+.event-view-about i {
+  margin-right: 10px;
+  font-size: 22px;
+  color: #001e54;
+}
+
+.event-view-about b {
+  color: #001e54; /* Dark blue color */
+  font-weight: bold; /* Ensure boldness */
+}
+
+/* Event View Container */
 .event-view-container {
   max-width: 900px;
   margin: 20px auto; /* Margin for spacing top and bottom */
@@ -293,6 +316,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   position: relative;
   margin-top: 70px;
   margin-bottom: 70px;
+  overflow: hidden; /* Prevent overflow of child elements */
 }
 
 /* Title and Banner */
@@ -322,17 +346,13 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   margin-bottom: 20px;
   display: flex;
   align-items: center;
+  flex-wrap: wrap; /* Allow wrapping of long text */
+  overflow-wrap: break-word; /* Handle long words breaking */
+  word-break: break-word; /* Break words if needed */
 }
-
-.event-view-about i {
-  margin-right: 10px;
-  font-size: 22px;
-  color: #001e54;
-}
-
-.event-view-about b {
-  color: #001e54; /* Dark blue color */
-  font-weight: bold; /* Ensure boldness */
+.event-view-about {
+  flex-basis: 100%; /* Allow full width wrapping */
+  max-width: 100%; /* Ensure text doesn’t exceed container */
 }
 
 /* Divider */
@@ -400,7 +420,6 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   grid-template-columns: repeat(2, 1fr); /* 2x2 grid layout */
   gap: 25px; /* Increased gap */
   margin-bottom: 10px; /* Margin for spacing from the bottom */
-  
 }
 
 .event-view-buttons .btn {
@@ -421,6 +440,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 .event-view-buttons .btn:hover {
   background-color: #002b80;
 }
+
 
 /* Full-width button */
 .full-width-button {

@@ -35,7 +35,7 @@
                                 <a href="{{ route('profile.view', $participant->user->id) }}" class="participant-name">
                                     {{ $participant->user->first_name }} {{ $participant->user->last_name }}
                                 </a>
-                                <div class="participant-country">{{ $participant->user->country }}</div>
+                               
                             </div>
                         </div>
                     </div>

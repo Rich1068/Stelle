@@ -16,15 +16,10 @@
         <input type="text" id="question-input" placeholder="Type your question here..." class="question-input">
     </div>
 
-    <!-- Divider with "Question Type" Text -->
-    <div class="divider">
-        <span class="divider-text">Question Type</span>
-    </div>
-
     <!-- Buttons to add Essay or Radio questions -->
     <div class="button-container">
-        <button type="button" class="add-question-btn" onclick="addRadioQuestion()">Add Question</button>
-        <button type="button" class="add-question-btn" onclick="addEssayQuestion()">Add Comment</button>
+        <button type="button" class="add-question-btn" onclick="addQuestion('essay')">Add Comment Question</button>
+        <button type="button" class="add-question-btn" onclick="addQuestion('radio')">Add Radio Question</button>
     </div>
 
     <!-- Container for the questions -->
@@ -42,7 +37,7 @@
 </form>
 
 <script>
-function addEssayQuestion() {
+function addQuestion(type) {
     const questionInput = document.getElementById('question-input').value;
     if (questionInput.trim() === "") return; // Do nothing if the input is empty
 
@@ -50,50 +45,40 @@ function addEssayQuestion() {
     const questionIndex = questionsDiv.children.length; // Generate a unique index for each question
     const newQuestionDiv = document.createElement('div');
     newQuestionDiv.classList.add('form-group', 'question-group');
-    newQuestionDiv.innerHTML = `
-        <div class="question-header">${questionInput}</div>
-        <div class="question-content">
-            <div class="question-type">Essay Question</div>
-        </div>
-        <input type="hidden" name="questions[${questionIndex}][text]" value="${questionInput}">
-        <input type="hidden" name="questions[${questionIndex}][type]" value="essay">
-        <button type="button" class="remove-question" onclick="removeQuestion(this)">Remove</button>
-    `;
-    questionsDiv.appendChild(newQuestionDiv);
 
-    document.getElementById('question-input').value = ""; // Clear the input field
-    document.getElementById('error-message').style.display = 'none'; // Hide the error message if displayed
-}
-
-function addRadioQuestion() {
-    const questionInput = document.getElementById('question-input').value;
-    if (questionInput.trim() === "") return; // Do nothing if the input is empty
-
-    const questionsDiv = document.getElementById('questions');
-    const questionIndex = questionsDiv.children.length; // Generate a unique index for each question
-    const newQuestionDiv = document.createElement('div');
-    newQuestionDiv.classList.add('form-group', 'question-group');
-    newQuestionDiv.innerHTML = `
-        <div class="question-header">${questionInput}</div>
-        <div class="question-content">
-            <div class="question-type">Radio Question</div>
-            <div class="radio-options">
-                <label class="options-label">Options:</label>
-                <div class="radio-buttons">
-                    <input type="radio" name="questions[${questionIndex}][options]" value="1" disabled> 1
-                    <input type="radio" name="questions[${questionIndex}][options]" value="2" disabled> 2
-                    <input type="radio" name="questions[${questionIndex}][options]" value="3" disabled> 3
-                    <input type="radio" name="questions[${questionIndex}][options]" value="4" disabled> 4
-                    <input type="radio" name="questions[${questionIndex}][options]" value="5" disabled> 5
+    if (type === 'essay') {
+        newQuestionDiv.innerHTML = `
+            <div class="question-header">${questionInput}</div>
+            <div class="question-content">
+                <div class="question-type">Essay Question</div>
+            </div>
+            <input type="hidden" name="questions[${questionIndex}][text]" value="${questionInput}">
+            <input type="hidden" name="questions[${questionIndex}][type]" value="essay">
+            <button type="button" class="remove-question" onclick="removeQuestion(this)">Remove</button>
+        `;
+    } else if (type === 'radio') {
+        newQuestionDiv.innerHTML = `
+            <div class="question-header">${questionInput}</div>
+            <div class="question-content">
+                <div class="question-type">Radio Question</div>
+                <div class="radio-options">
+                    <label class="options-label">Options:</label>
+                    <div class="radio-buttons">
+                        <input type="radio" name="questions[${questionIndex}][options]" value="1" disabled> 1
+                        <input type="radio" name="questions[${questionIndex}][options]" value="2" disabled> 2
+                        <input type="radio" name="questions[${questionIndex}][options]" value="3" disabled> 3
+                        <input type="radio" name="questions[${questionIndex}][options]" value="4" disabled> 4
+                        <input type="radio" name="questions[${questionIndex}][options]" value="5" disabled> 5
+                    </div>
                 </div>
             </div>
-        </div>
-        <input type="hidden" name="questions[${questionIndex}][text]" value="${questionInput}">
-        <input type="hidden" name="questions[${questionIndex}][type]" value="radio">
-        <button type="button" class="remove-question" onclick="removeQuestion(this)">Remove</button>
-    `;
-    questionsDiv.appendChild(newQuestionDiv);
+            <input type="hidden" name="questions[${questionIndex}][text]" value="${questionInput}">
+            <input type="hidden" name="questions[${questionIndex}][type]" value="radio">
+            <button type="button" class="remove-question" onclick="removeQuestion(this)">Remove</button>
+        `;
+    }
 
+    questionsDiv.appendChild(newQuestionDiv);
     document.getElementById('question-input').value = ""; // Clear the input field
     document.getElementById('error-message').style.display = 'none'; // Hide the error message if displayed
 }
