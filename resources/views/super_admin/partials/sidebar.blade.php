@@ -1,71 +1,64 @@
 @php
-  @endphp
-  <!-- Main Sidebar Container -->
-          <!-- Sidebar -->
-<ul class="navbar-nav bg-primary sidebar sidebar-light accordion" id="accordionSidebar">
- 
-<!-- Sidebar - Brand -->
-<a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
-    <div class="sidebar-brand-icon rotate-n-15">
-        <i class="fas fa-laugh-wink"></i>
-    </div>
-    <div class="sidebar-brand-text mx-3">dashboard</div>
+@endphp
+<!-- Main Sidebar Container -->
+<!-- Sidebar -->
+<ul class="navbar-nav admin-sidebar bg-primary sidebar sidebar-light accordion" id="accordionSidebar">
+    <!-- Sidebar - Brand -->
+    <a class="sidebar-brand sidebar-head d-flex align-items-center justify-content-center" href="{{ route('super_admin.dashboard') }}">
+    <div class="sidebar-brand-text mx-3">Dashboard</div>
 </a>
- 
-<!-- Divider -->
-<hr class="sidebar-divider my-0">
- 
-<!-- Nav Item - Dashboard -->
-<li class="nav-item active">
-    <a href="{{route('super_admin.dashboard')}}" class="nav-link">
-        <i class="fas fa-fw fa-tachometer-alt"></i>
-        <span>Dashboard</span></a>
-</li>
- 
-<!-- Divider -->
-<hr class="sidebar-divider">
- 
-<!-- Heading -->
- 
-<li class="nav-item">
-  <a href="{{route('profile.profile')}}" class="nav-link">
-        <i class="fas fa-fw fa-table"></i>
-        <span>My Profile</span></a>
-</li>
 
-<hr class="sidebar-divider">
-<li class="nav-item">
-  <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseEvents" aria-expanded="true" aria-controls="collapseEvents">
-    <i class="fas fa-fw fa-table"></i>
-    <span>Events & Conferences</span>
-  </a>
-  <div id="collapseEvents" class="collapse" aria-labelledby="headingEvents" data-parent="#accordionSidebar">
-    <div class="bg-white py-2 collapse-inner rounded">
-      <h6 class="collapse-header">Event Management:</h6>
-      <a class="collapse-item" href="{{ route('event.list') }}">All Events</a>
-      <a class="collapse-item" href="{{ route('event.create') }}">Create Event</a>
-      <a class="collapse-item" href="{{ route('event.myeventlist') }}">My Events</a>
-    </div>
-  </div>
-</li>
-<hr class="sidebar-divider">
-<li class="nav-item">
-  <a href="{{route('profile.edit')}}" class="nav-link">
-        <i class="fas fa-fw fa-table"></i>
-        <span>Create Events</span></a>
-</li>
-<hr class="sidebar-divider">
-<li class="nav-item">
-  <a href="{{route('profile.mycertificates')}}" class="nav-link">
-        <i class="fas fa-fw fa-table"></i>
-        <span>My Certificates</span></a>
-</li>
-<hr class="sidebar-divider">
-<li class="nav-item">
-  <a href="{{route('profile.edit')}}" class="nav-link">
-        <i class="fas fa-fw fa-table"></i>
-        <span>My Events</span></a>
-</li>
- 
+    <!-- Nav Item - Profile -->
+    <li class="nav-item">
+        <a href="{{ route('profile.profile') }}" class="nav-link">
+            <span>My Profile</span>
+            <i class="fas fa-user"></i>
+        </a>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+
+    <!-- Nav Item - Events -->
+    <li class="nav-item">
+        <a href="{{ route('event.list') }}" class="nav-link">
+            <span>Events</span>
+            <i class="fas fa-calendar-alt"></i>
+        </a>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+
+    <!-- Nav Item - My Events -->
+    <li class="nav-item">
+        <a href="{{ route('event.myeventlist') }}" class="nav-link">
+            <span>My Events</span>
+            <i class="fas fa-calendar-check"></i>
+        </a>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+
+    <!-- Nav Item - Create Events -->
+    <li class="nav-item">
+        <a href="{{ route('event.create') }}" class="nav-link">
+            <span>Create Events</span>
+            <i class="fas fa-plus-circle"></i>
+        </a>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+
+    <!-- Nav Item - My Certificates -->
+    <li class="nav-item">
+        <a href="{{ route('profile.mycertificates') }}" class="nav-link">
+            <span>My Certificates</span>
+            <i class="fas fa-certificate"></i>
+        </a>
+    </li>
+
 </ul>
 <!-- End of Sidebar -->

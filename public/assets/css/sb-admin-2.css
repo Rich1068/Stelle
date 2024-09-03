@@ -456,7 +456,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 
 .event-list-item {
   display: flex;
-  background: rgba(255, 255, 255, 0.75); /* Transparent white background */
+  background-color: white;
   border-radius: 30px; /* Increased corner radius for a more rounded look */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   overflow: hidden; /* Ensures the content stays within rounded corners */
@@ -487,7 +487,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 }
 
 .event-list-month {
-  font-size: 12px; /* Smaller font size */
+  font-size: 15px; /* Smaller font size */
   text-transform: uppercase;
 }
 
@@ -501,7 +501,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 
 .event-list-title {
   margin: 0;
-  font-size: 16px; /* Smaller font size */
+  font-size: 25px; /* Smaller font size */
   font-weight: bold;
   color: #003366;
 }
@@ -509,7 +509,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 .event-list-description {
   margin: 5px 0;
   color: #666;
-  font-size: 12px; /* Smaller font size */
+  font-size: 15px; /* Smaller font size */
 }
 
 .event-list-meta {
@@ -662,6 +662,109 @@ h2 {
   color: #003d80; /* Dark blue text color for headings */
 }
 
+  .sidebar-head {
+    background-color: #f8f9fa !important; /* Background color for the sidebar brand */
+    padding: 15px 20px !important; /* Padding around the text */
+    margin: 20px 0 !important; /* Add space above and below the element */
+    border-radius: 5px !important; /* Rounded corners */
+    text-align: center !important; /* Center text alignment */
+  }
+
+  .sidebar-head .sidebar-brand-text {
+    font-size: 1.5rem !important; /* Adjust font size as needed */
+    font-weight: 780 !important; /* Make text extra bold */
+    color: #00003d !important; /* Dark blue text color */
+    letter-spacing: -0.1px !important; /* Adjust spacing between letters */
+    display: block !important; /* Ensure the text is visible */
+    white-space: nowrap !important; /* Prevent text from wrapping to the next line */
+    text-transform: none !important; /* Ensure text is not transformed to uppercase */
+  }
+
+
+
+  .admin-sidebar {
+    background-color: #f8f9fa !important; /* Light background for contrast */
+  }
+
+  .admin-sidebar .nav-link {
+    color: #00008B !important; /* Dark blue text */
+    font-weight: bold !important;
+    font-size: 1.3rem !important; /* Larger text */
+    padding-right: 20px !important; /* Space between text and icon */
+    padding-top: 15px !important; /* Space above items */
+    padding-bottom: 15px !important; /* Space below items */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for hover effect */
+    display: flex !important; /* Flexbox for alignment */
+    justify-content: space-between !important; /* Text on left, icon on right */
+    align-items: center !important;
+  }
+
+  .admin-sidebar .nav-link i {
+    color: #003366 !important; /* Darker blue icon */
+    transition: color 0.3s ease; /* Smooth transition for icon color change */
+    font-size: 1.5rem !important; /* Larger icon */
+  }
+
+  .admin-sidebar .nav-link:hover {
+    background-color: #2c3e50 !important; /* Darker blue background on hover */
+    color: #ffffff !important; /* White text on hover */
+  }
+
+  .admin-sidebar .nav-link:hover i {
+    color: #ffffff !important; /* White icons on hover */
+  }
+
+  .admin-sidebar .nav-link.active {
+    background-color: #00008B !important; /* Dark blue background for active link */
+    color: #ffffff !important; /* White text for active link */
+  }
+
+  .admin-sidebar .nav-link.active i {
+    color: #ffffff !important; /* White icons for active link */
+  }
+
+  .admin-sidebar .sidebar-brand {
+    color: #00008B !important; /* Dark blue text for the brand */
+    font-size: 1.5rem !important; /* Larger text */
+    font-weight: bold !important;
+  }
+
+  .admin-sidebar .sidebar-divider {
+    border-color: #dee2e6 !important;
+  }
+
+  .admin-sidebar .collapse-header {
+    color: #00008B !important; /* Dark blue text for collapse headers */
+    font-weight: bold !important;
+    font-size: 1.3rem !important; /* Larger text */
+  }
+
+  .admin-sidebar .collapse-item {
+    color: #00008B !important; /* Dark blue text for collapse items */
+    font-weight: bold !important;
+    padding-right: 20px !important; /* Space between text and icon */
+    padding-top: 15px !important; /* Space above items */
+    padding-bottom: 15px !important; /* Space below items */
+    transition: background-color 0.3s ease, color 0.3s ease;
+    display: flex !important; /* Flexbox for alignment */
+    justify-content: space-between !important; /* Text on left, icon on right */
+    align-items: center !important;
+  }
+
+  .admin-sidebar .collapse-item i {
+    color: #003366 !important; /* Darker blue icon for collapse items */
+    transition: color 0.3s ease; /* Smooth transition for icon color change */
+    font-size: 1.5rem !important; /* Larger icon */
+  }
+
+  .admin-sidebar .collapse-item:hover {
+    background-color: #2c3e50 !important; /* Darker blue background on hover */
+    color: #ffffff !important; /* White text on hover */
+  }
+
+  .admin-sidebar .collapse-item:hover i {
+    color: #ffffff !important; /* White icons on hover */
+  }
 
 
 .profile-header {
@@ -961,14 +1064,12 @@ h2 {
   content: none; /* Remove any additional content */
 }
 
-
-
-
         .side-by-side-container {
           display: flex; /* Align child elements horizontally */
           gap: 20px; /* Space between the sections */
           padding: 20px; /* Optional: Add padding around the container */
           margin: 0 auto; /* Center the container horizontally */
+          margin: auto; /* Center this container horizontally */
         }
 
         /* Existing styles for profile edit section */
@@ -976,7 +1077,6 @@ h2 {
             padding: 20px;
             border-radius: 15px;
             background-color: #f9f9f9;
-            max-width: 600px;
             flex: 1; /* Allow section to grow and fill available space */
           }
           
@@ -11699,6 +11799,7 @@ a:focus {
 }
 
 .sidebar .sidebar-brand .sidebar-brand-text {
+  font-size: 15px;
   display: none;
 }
 
@@ -11769,11 +11870,11 @@ a:focus {
     display: block;
     width: 100%;
     text-align: left;
-    padding: 1rem;
+    padding: 20px;
     width: 14rem;
   }
   .sidebar .nav-item .nav-link i {
-    font-size: 0.85rem;
+    font-size: 15px;
     margin-right: 0.25rem;
   }
   .sidebar .nav-item .nav-link span {
