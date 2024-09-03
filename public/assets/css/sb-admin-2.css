@@ -46,6 +46,158 @@
 *::after {
   box-sizing: border-box;
 }
+/* Top Title Container */
+/* Top Title Container */
+/* Event Title Container */
+.answer-forms-event-title-container {
+  padding: 20px;
+  text-align: left;
+  margin-left: 5%; 
+  margin-right: 5%;
+  margin-bottom: 1%;
+  margin-top: 20px; /* Increased spacing above the container */
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  width: 90%;
+}
+
+
+/* Event Title */
+.answer-forms-event-title {
+  font-size: 28px;
+  font-weight: bold;
+  color: #001f54; /* Dark blue */
+}
+
+/* Event Subtitle */
+.answer-forms-event-subtitle {
+  font-size: 20px;
+  font-weight: bold;
+  color: #808080; /* Grey */
+  margin-top: 5px;
+  font-weight: 900;
+}
+
+/* Main Form Container */
+.answer-forms-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-left: 10%;
+  padding-right: 10%;
+}
+
+/* Question Container */
+.answer-forms-question-container {
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 15px;
+  overflow: hidden;
+  margin-bottom: 1%;
+}
+
+/* Dark Blue Header */
+.answer-forms-question-header {
+  background-color: #001f54; /* Dark blue */
+  padding: 12px;
+}
+
+/* Question Title */
+.answer-forms-question-title {
+  font-size: 16px;
+  font-weight: 900;
+  color: white;
+}
+
+/* Question Body */
+.answer-forms-question-body {
+  padding: 15px;
+  background-color: #ffffff; /* White */
+}
+
+/* Textarea Styling */
+.answer-forms-textarea {
+  width: 100% !important;
+  padding: 20px;
+  border: none;
+  border-radius: 15px;
+  background-color: #ebebeb !important; /* Grey background */
+  color: #000;
+}
+
+.answer-forms-textarea::placeholder {
+  font-weight: bold;
+  color: #505050; /* Dark grey text */
+}
+
+/* Radio Group */
+.answer-forms-radio-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 70px;
+    gap: 10px;
+}
+
+
+/* Radio Label */
+.answer-forms-radio-label {
+  display: flex;
+  flex-direction: column; /* Stack number below the radio button */
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  margin: 10px;
+}
+
+/* Radio Circle */
+.answer-forms-radio-circle {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #001f54; /* Dark blue */
+  border-radius: 50%;
+  padding: 10px;
+  transition: background-color 0.3s;
+  font-weight: 300;
+}
+
+.answer-forms-radio-input:checked + .answer-forms-radio-circle {
+  background-color: #001f54; /* Dark blue */
+}
+
+.answer-forms-radio-input {
+  display: none; /* Hide the default radio button */
+}
+
+/* Radio Number */
+.answer-forms-radio-number {
+  font-size: 14px;
+  font-weight: 900;
+  color: #001f54; /* Dark blue */
+}
+
+/* Submit Button */
+.answer-forms-submit {
+  padding: 15px 30px !important; /* Increased padding for more space */
+  font-size: 16px !important;
+  background-color: #001f54 !important; /* Dark blue */
+  color: white !important;
+  border: none !important;
+  border-radius: 30px !important; 
+  font-weight: bold !important; 
+  font-size: 20px !important;
+  transition: background-color 0.3s !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  margin-bottom: 10%;
+  display: inline-block; 
+  padding-bottom: 1Opx;
+}
+
+.answer-forms-submit:hover {
+  background-color: #003c8f !important; /* Slightly lighter dark blue for hover effect */
+}
+
 
 html {
   font-family: sans-serif;
@@ -270,6 +422,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
       margin: 5px 0;
   }
 }
+
 
 
 .profile-container {
@@ -3187,7 +3340,7 @@ pre code {
   font-weight: 400;
   line-height: 1.5;
   color: #6e707e;
-  background-color: #fff;
+  background-color: #ebebeb;
   background-clip: padding-box;
   border: 1px solid #d1d3e2;
   border-radius: 0.35rem;
