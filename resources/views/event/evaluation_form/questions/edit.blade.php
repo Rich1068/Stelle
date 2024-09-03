@@ -55,8 +55,8 @@
 
     <!-- Buttons to add Essay or Radio questions -->
     <div class="button-container">
-        <button type="button" class="add-question-btn" onclick="addEssayQuestion('radio')">Add Question</button>
-        <button type="button" class="add-question-btn" onclick="addRadioQuestion('essay')">Add Comment</button>
+        <button type="button" class="add-question-btn" onclick="addEssayQuestion('essay')">Add Comment</button>
+        <button type="button" class="add-question-btn" onclick="addRadioQuestion('radio')">Add  Radio Question</button>
     </div>
 
     <!-- Error Message Container -->
