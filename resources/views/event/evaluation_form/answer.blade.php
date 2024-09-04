@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('body')
-<h1>Take Evaluation Form for {{ $event->name }}</h1>
+<h1>Take Evaluation Form for {{ $event->title }}</h1>
 
 <form action="{{ route('evaluation-form.submit', ['id' => $event->id]) }}" method="POST">
     @csrf
