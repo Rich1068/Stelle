@@ -3,10 +3,10 @@
 @section('body')
 <div class="container">
     <div class="top-container">
-        <div class="manage-participants">
+        <div class="answer-forms-event-title">
             Pending Participants For
         </div>
-        <div class="event-title">
+        <div class="answer-forms-event-subtitle">
             {{ $event->title }}
         </div>
     </div>

@@ -46,7 +46,168 @@
 *::after {
   box-sizing: border-box;
 }
-/* Top Title Container */
+
+
+/* styles.css */
+
+/* Page title container */
+/* styles.css */
+
+/* Certificates page container */
+.certificates-page {
+  padding: 20px;
+  margin-bottom: 40px; /* Add space at the bottom */
+}
+
+/* Page title container */
+.page-title-container {
+  background-color: white;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Increased shadow effect */
+  display: flex;
+  align-items: center;
+  margin-bottom: 45px; /* Additional space below the title container */
+}
+
+/* Page title styles */
+.page-title {
+  color: #003366; /* Darker blue color */
+  font-weight: 600;
+  font-size: 2em;
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
+
+/* Icon styling */
+.page-title i {
+  margin-right: 10px; /* Space between the icon and text */
+  color: #003366; /* Darker blue color for the icon */
+}
+
+
+.certificates-container {
+  margin-top: 60px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 columns layout */
+  gap: 34px; /* Space between certificates */
+  justify-content: center;
+  margin-bottom: 80px; /* Space at the bottom */
+  width: 90%;
+  margin: auto;
+  padding-bottom: 10px;
+}
+
+.certificate-list {
+  background-color: rgba(255, 255, 255, 0.5); 
+  border-radius: 15px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 350px; /* Wider container */
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative; /* For positioning buttons inside */
+  margin-bottom: 20px; /* Space between certificate containers */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+}
+
+.certificate-list:hover {
+  transform: scale(1.05); /* Slightly increase the size */
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2); /* Enhanced shadow */
+}
+
+.certificate-header {
+  background-color: #ffffff; /* White background */
+  color: #34495e; /* Dark blue text */
+  padding: 15px; /* Increased padding for better spacing */
+  font-size: 1.2rem; /* Header font size */
+  font-weight: bold;
+  border-radius: 15px;
+  margin-bottom: 20px; /* Space below header */
+  box-sizing: border-box; /* Ensure padding is included in width calculation */
+  width: 100%; /* Ensure header spans full width of the container */
+}
+
+.certificate-title {
+  font-size: 1.2rem; /* Adjusted font size */
+  font-weight: bold;
+  color: #2c3e50;
+  margin: 15px 0; /* Adjusted margin */
+}
+
+.certificate-image {
+  border-radius: 15px;
+  width: 100%;
+  height: auto;
+  margin-bottom: 20px; /* Adjusted margin */
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1); /* Enhanced shadow */
+}
+
+.certificate-actions {
+  display: flex;
+  justify-content: space-between; /* Align buttons horizontally */
+  padding: 0 10px; /* Space from edges */
+  margin-top: 20px; /* Space above buttons */
+}
+
+.certificate-actions .btn {
+  width: 48%; /* Button width for horizontal alignment */
+  border-radius: 20px;
+  font-weight: bold;
+  padding: 8px; /* Reduced padding for smaller buttons */
+  box-sizing: border-box; /* Include padding in width calculation */
+  color: white; /* Text color */
+  font-size: 0.9rem; /* Smaller font size */
+  transition: transform 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.certificate-actions .btn-primary {
+  background-color: #34495e; /* Dark blue color */
+  border-color: #34495e;
+}
+
+.certificate-actions .btn-success {
+  background-color: #34495e; /* Dark blue color */
+  border-color: #34495e;
+}
+
+.certificate-actions .btn:hover {
+  transform: scale(1.1); /* Slightly increase button size on hover */
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .certificates-container {
+    grid-template-columns: repeat(3, 1fr); /* 3 columns on medium screens */
+  }
+}
+
+@media (max-width: 900px) {
+  .certificates-container {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns on smaller screens */
+  }
+}
+
+@media (max-width: 600px) {
+  .certificates-container {
+    grid-template-columns: 1fr; /* 1 column on extra-small screens */
+  }
+
+  .certificate-actions {
+    flex-direction: column; /* Stack buttons vertically on small screens */
+    gap: 10px; /* Space between buttons on small screens */
+  }
+
+  .certificate-actions .btn {
+    width: 100%; /* Full width for buttons on small screens */
+    font-size: 0.8rem; /* Smaller font size for small screens */
+  }
+}
+
+
 /* Top Title Container */
 /* Event Title Container */
 .answer-forms-event-title-container {
@@ -1122,13 +1283,19 @@ h2 {
   align-items: center;
   padding: 15px; /* Increased padding */
   margin-bottom: 20px; /* Margin between items */
-  border-radius: 15px; /* Rounded corners */
+  border-radius: 30px; /* Rounded corners */
   border: 1px solid #ddd; /* Light grey border */
   background-color: #f9f9f9; /* Light background color */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Shadow for items */
-  transition: box-shadow 0.3s ease-in-out; /* Smooth transition for shadow */
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Smooth transition for size and shadow */
   animation: fadeIn 0.5s ease-in-out; /* Fade-in animation */
 }
+
+.participant-list-item:hover {
+  transform: scale(1.05); /* Slightly enlarge the item on hover */
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Slightly larger shadow on hover */
+}
+
 
 .participant-info {
   display: flex;
