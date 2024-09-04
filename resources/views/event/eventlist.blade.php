@@ -40,10 +40,13 @@
                 @endforeach
             </div>
 
-            <!-- Pagination links -->
-            <div class="d-flex justify-content-center">
-                {{ $events->links() }}
-            </div>
+<!-- Using the custom1 pagination template -->
+<div class="d-flex justify-content-center">
+    {{ $events->links('vendor.pagination.custom1') }}
+</div>
+
+
+
         @endif
     </div>
 @endsection

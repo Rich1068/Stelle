@@ -46,7 +46,64 @@
 *::after {
   box-sizing: border-box;
 }
+.pagination {
+  margin-top: 20px !important;
+  padding-bottom: 40px !important;
+}
 
+.page-item.active .page-link {
+  background-color: darkblue !important;
+  border-color: rgb(0, 7, 75) !important;
+  color: white !important;
+}
+
+.page-link {
+  color: rgb(38, 0, 63) !important;
+  border-radius: 50% !important;
+}
+
+.page-link:hover {
+  background-color: rgb(33, 3, 48) !important;
+  color: white !important;
+}
+
+/* Pagination Container */
+.pagination {
+  display: flex !important;
+  justify-content: center !important;
+  list-style-type: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  margin-bottom: 20px !important; /* Additional margin to ensure spacing at the bottom */
+}
+
+/* Pagination Links */
+.pagination a, .pagination span {
+  display: inline-block !important;
+  padding: 10px 15px !important;
+  margin: 0 5px !important;
+  border-radius: 20px !important;
+  text-align: center !important;
+  font-weight: bold !important;
+  color: LightSeaGreen !important;
+  text-decoration: none !important;
+  background-color: white !important;
+  border: 1px solid LightSeaGreen !important;
+  transition: background-color 0.3s, color 0.3s !important;
+}
+
+/* Active Page */
+.pagination .active span {
+  background-color: LightSeaGreen !important;
+  color: white !important;
+  border: 1px solid LightSeaGreen !important;
+}
+
+/* Hover Effect */
+.pagination a:hover {
+  background-color: rgb(38, 4, 77) !important;
+  color: white !important;
+}
 
 /* styles.css */
 
@@ -649,7 +706,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   width: 100%;
   max-height: 300px;
   border-radius: 15px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+
 }
 
 /* About Section */
