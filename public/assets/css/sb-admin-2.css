@@ -46,6 +46,375 @@
 *::after {
   box-sizing: border-box;
 }
+.pagination {
+  margin-top: 20px !important;
+  padding-bottom: 40px !important;
+}
+
+.page-item.active .page-link {
+  background-color: darkblue !important;
+  border-color: rgb(0, 7, 75) !important;
+  color: white !important;
+}
+
+.page-link {
+  color: rgb(38, 0, 63) !important;
+  border-radius: 50% !important;
+}
+
+.page-link:hover {
+  background-color: rgb(33, 3, 48) !important;
+  color: white !important;
+}
+
+/* Pagination Container */
+.pagination {
+  display: flex !important;
+  justify-content: center !important;
+  list-style-type: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  margin-bottom: 20px !important; /* Additional margin to ensure spacing at the bottom */
+}
+
+/* Pagination Links */
+.pagination a, .pagination span {
+  display: inline-block !important;
+  padding: 10px 15px !important;
+  margin: 0 5px !important;
+  border-radius: 20px !important;
+  text-align: center !important;
+  font-weight: bold !important;
+  color: LightSeaGreen !important;
+  text-decoration: none !important;
+  background-color: white !important;
+  border: 1px solid LightSeaGreen !important;
+  transition: background-color 0.3s, color 0.3s !important;
+}
+
+/* Active Page */
+.pagination .active span {
+  background-color: LightSeaGreen !important;
+  color: white !important;
+  border: 1px solid LightSeaGreen !important;
+}
+
+/* Hover Effect */
+.pagination a:hover {
+  background-color: rgb(38, 4, 77) !important;
+  color: white !important;
+}
+
+/* styles.css */
+
+/* Page title container */
+/* styles.css */
+
+/* Certificates page container */
+.certificates-page {
+  padding: 20px;
+  margin-bottom: 40px; /* Add space at the bottom */
+}
+
+/* Page title container */
+.page-title-container {
+  background-color: white;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Increased shadow effect */
+  display: flex;
+  align-items: center;
+  margin-bottom: 45px; /* Additional space below the title container */
+}
+
+/* Page title styles */
+.page-title {
+  color: #003366; /* Darker blue color */
+  font-weight: 600;
+  font-size: 2em;
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
+
+/* Icon styling */
+.page-title i {
+  margin-right: 10px; /* Space between the icon and text */
+  color: #003366; /* Darker blue color for the icon */
+}
+
+
+.certificates-container {
+  margin-top: 60px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 columns layout */
+  gap: 34px; /* Space between certificates */
+  justify-content: center;
+  margin-bottom: 80px; /* Space at the bottom */
+  width: 90%;
+  margin: auto;
+  padding-bottom: 10px;
+}
+
+.certificate-list {
+  background-color: rgba(255, 255, 255, 0.5); 
+  border-radius: 15px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 350px; /* Wider container */
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative; /* For positioning buttons inside */
+  margin-bottom: 20px; /* Space between certificate containers */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+}
+
+.certificate-list:hover {
+  transform: scale(1.05); /* Slightly increase the size */
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2); /* Enhanced shadow */
+}
+
+.certificate-header {
+  background-color: #ffffff; /* White background */
+  color: #34495e; /* Dark blue text */
+  padding: 15px; /* Increased padding for better spacing */
+  font-size: 1.2rem; /* Header font size */
+  font-weight: bold;
+  border-radius: 15px;
+  margin-bottom: 20px; /* Space below header */
+  box-sizing: border-box; /* Ensure padding is included in width calculation */
+  width: 100%; /* Ensure header spans full width of the container */
+}
+
+.certificate-title {
+  font-size: 1.2rem; /* Adjusted font size */
+  font-weight: bold;
+  color: #2c3e50;
+  margin: 15px 0; /* Adjusted margin */
+}
+
+.certificate-image {
+  border-radius: 15px;
+  width: 100%;
+  height: auto;
+  margin-bottom: 20px; /* Adjusted margin */
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1); /* Enhanced shadow */
+}
+
+.certificate-actions {
+  display: flex;
+  justify-content: space-between; /* Align buttons horizontally */
+  padding: 0 10px; /* Space from edges */
+  margin-top: 20px; /* Space above buttons */
+}
+
+.certificate-actions .btn {
+  width: 48%; /* Button width for horizontal alignment */
+  border-radius: 20px;
+  font-weight: bold;
+  padding: 8px; /* Reduced padding for smaller buttons */
+  box-sizing: border-box; /* Include padding in width calculation */
+  color: white; /* Text color */
+  font-size: 0.9rem; /* Smaller font size */
+  transition: transform 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.certificate-actions .btn-primary {
+  background-color: #34495e; /* Dark blue color */
+  border-color: #34495e;
+}
+
+.certificate-actions .btn-success {
+  background-color: #34495e; /* Dark blue color */
+  border-color: #34495e;
+}
+
+.certificate-actions .btn:hover {
+  transform: scale(1.1); /* Slightly increase button size on hover */
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .certificates-container {
+    grid-template-columns: repeat(3, 1fr); /* 3 columns on medium screens */
+  }
+}
+
+@media (max-width: 900px) {
+  .certificates-container {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns on smaller screens */
+  }
+}
+
+@media (max-width: 600px) {
+  .certificates-container {
+    grid-template-columns: 1fr; /* 1 column on extra-small screens */
+  }
+
+  .certificate-actions {
+    flex-direction: column; /* Stack buttons vertically on small screens */
+    gap: 10px; /* Space between buttons on small screens */
+  }
+
+  .certificate-actions .btn {
+    width: 100%; /* Full width for buttons on small screens */
+    font-size: 0.8rem; /* Smaller font size for small screens */
+  }
+}
+
+
+/* Top Title Container */
+/* Event Title Container */
+.answer-forms-event-title-container {
+  padding: 20px;
+  text-align: left;
+  margin-left: 5%; 
+  margin-right: 5%;
+  margin-bottom: 1%;
+  margin-top: 20px; /* Increased spacing above the container */
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  width: 90%;
+}
+
+
+/* Event Title */
+.answer-forms-event-title {
+  font-size: 28px;
+  font-weight: bold;
+  color: #001f54; /* Dark blue */
+}
+
+/* Event Subtitle */
+.answer-forms-event-subtitle {
+  font-size: 20px;
+  font-weight: bold;
+  color: #808080; /* Grey */
+  margin-top: 5px;
+  font-weight: 900;
+}
+
+/* Main Form Container */
+.answer-forms-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-left: 10%;
+  padding-right: 10%;
+}
+
+/* Question Container */
+.answer-forms-question-container {
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 15px;
+  overflow: hidden;
+  margin-bottom: 1%;
+}
+
+/* Dark Blue Header */
+.answer-forms-question-header {
+  background-color: #001f54; /* Dark blue */
+  padding: 12px;
+}
+
+/* Question Title */
+.answer-forms-question-title {
+  font-size: 16px;
+  font-weight: 900;
+  color: white;
+}
+
+/* Question Body */
+.answer-forms-question-body {
+  padding: 15px;
+  background-color: #ffffff; /* White */
+}
+
+/* Textarea Styling */
+.answer-forms-textarea {
+  width: 100% !important;
+  padding: 20px;
+  border: none;
+  border-radius: 15px;
+  background-color: #ebebeb !important; /* Grey background */
+  color: #000;
+}
+
+.answer-forms-textarea::placeholder {
+  font-weight: bold;
+  color: #505050; /* Dark grey text */
+}
+
+/* Radio Group */
+.answer-forms-radio-group {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px 70px;
+  gap: 20px; /* Adjust gap between items as needed */
+}
+
+/* Radio Label */
+.answer-forms-radio-label {
+  display: flex;
+  flex-direction: column; /* Stack number above the radio button */
+  align-items: center;
+  gap: 15px; /* Space between number and circle */
+  cursor: pointer;
+  margin: 20px; /* Space around each label */
+}
+
+/* Radio Circle */
+.answer-forms-radio-circle {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #001f54; /* Dark blue */
+  border-radius: 50%;
+  transition: background-color 0.3s;
+}
+
+/* Radio Input */
+.answer-forms-radio-input {
+  display: none; /* Hide the default radio button */
+}
+
+.answer-forms-radio-input:checked + .answer-forms-radio-circle {
+  background-color: #001f54; /* Dark blue when checked */
+}
+
+/* Radio Number */
+.answer-forms-radio-number {
+  font-size: 14px;
+  font-weight: 900;
+  color: #001f54; /* Dark blue */
+}
+
+
+/* Submit Button */
+.answer-forms-submit {
+  padding: 15px 30px !important; /* Increased padding for more space */
+  font-size: 16px !important;
+  background-color: #001f54 !important; /* Dark blue */
+  color: white !important;
+  border: none !important;
+  border-radius: 30px !important; 
+  font-weight: bold !important; 
+  font-size: 20px !important;
+  transition: background-color 0.3s !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  margin-bottom: 10%;
+  display: inline-block; 
+  padding-bottom: 1Opx;
+}
+
+.answer-forms-submit:hover {
+  background-color: #003c8f !important; /* Slightly lighter dark blue for hover effect */
+}
+
 
 html {
   font-family: sans-serif;
@@ -272,6 +641,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 }
 
 
+
 .profile-container {
   display: flex;
   flex-direction: column;
@@ -283,6 +653,29 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 }
 /* Container and Main Content Styling */
 /* Event Container */
+.event-view-about {
+  font-size: 20px; /* Increased size */
+  color: #333;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap; /* Allow wrapping of long text */
+  word-wrap: break-word; /* Ensure text wraps within the container */
+  overflow-wrap: break-word; /* Handle long words breaking */
+}
+
+.event-view-about i {
+  margin-right: 10px;
+  font-size: 22px;
+  color: #001e54;
+}
+
+.event-view-about b {
+  color: #001e54; /* Dark blue color */
+  font-weight: bold; /* Ensure boldness */
+}
+
+/* Event View Container */
 .event-view-container {
   max-width: 900px;
   margin: 20px auto; /* Margin for spacing top and bottom */
@@ -293,6 +686,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   position: relative;
   margin-top: 70px;
   margin-bottom: 70px;
+  overflow: hidden; /* Prevent overflow of child elements */
 }
 
 /* Title and Banner */
@@ -312,7 +706,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   width: 100%;
   max-height: 300px;
   border-radius: 15px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+
 }
 
 /* About Section */
@@ -322,17 +716,13 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   margin-bottom: 20px;
   display: flex;
   align-items: center;
+  flex-wrap: wrap; /* Allow wrapping of long text */
+  overflow-wrap: break-word; /* Handle long words breaking */
+  word-break: break-word; /* Break words if needed */
 }
-
-.event-view-about i {
-  margin-right: 10px;
-  font-size: 22px;
-  color: #001e54;
-}
-
-.event-view-about b {
-  color: #001e54; /* Dark blue color */
-  font-weight: bold; /* Ensure boldness */
+.event-view-about {
+  flex-basis: 100%; /* Allow full width wrapping */
+  max-width: 100%; /* Ensure text doesn’t exceed container */
 }
 
 /* Divider */
@@ -400,7 +790,6 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   grid-template-columns: repeat(2, 1fr); /* 2x2 grid layout */
   gap: 25px; /* Increased gap */
   margin-bottom: 10px; /* Margin for spacing from the bottom */
-  
 }
 
 .event-view-buttons .btn {
@@ -421,6 +810,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 .event-view-buttons .btn:hover {
   background-color: #002b80;
 }
+
 
 /* Full-width button */
 .full-width-button {
@@ -456,7 +846,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 
 .event-list-item {
   display: flex;
-  background: rgba(255, 255, 255, 0.75); /* Transparent white background */
+  background-color: white;
   border-radius: 30px; /* Increased corner radius for a more rounded look */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   overflow: hidden; /* Ensures the content stays within rounded corners */
@@ -487,7 +877,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 }
 
 .event-list-month {
-  font-size: 12px; /* Smaller font size */
+  font-size: 15px; /* Smaller font size */
   text-transform: uppercase;
 }
 
@@ -501,7 +891,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 
 .event-list-title {
   margin: 0;
-  font-size: 16px; /* Smaller font size */
+  font-size: 25px; /* Smaller font size */
   font-weight: bold;
   color: #003366;
 }
@@ -509,7 +899,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 .event-list-description {
   margin: 5px 0;
   color: #666;
-  font-size: 12px; /* Smaller font size */
+  font-size: 15px; /* Smaller font size */
 }
 
 .event-list-meta {
@@ -662,6 +1052,109 @@ h2 {
   color: #003d80; /* Dark blue text color for headings */
 }
 
+  .sidebar-head {
+    background-color: #f8f9fa !important; /* Background color for the sidebar brand */
+    padding: 15px 20px !important; /* Padding around the text */
+    margin: 20px 0 !important; /* Add space above and below the element */
+    border-radius: 5px !important; /* Rounded corners */
+    text-align: center !important; /* Center text alignment */
+  }
+
+  .sidebar-head .sidebar-brand-text {
+    font-size: 1.5rem !important; /* Adjust font size as needed */
+    font-weight: 780 !important; /* Make text extra bold */
+    color: #00003d !important; /* Dark blue text color */
+    letter-spacing: -0.1px !important; /* Adjust spacing between letters */
+    display: block !important; /* Ensure the text is visible */
+    white-space: nowrap !important; /* Prevent text from wrapping to the next line */
+    text-transform: none !important; /* Ensure text is not transformed to uppercase */
+  }
+
+
+
+  .admin-sidebar {
+    background-color: #f8f9fa !important; /* Light background for contrast */
+  }
+
+  .admin-sidebar .nav-link {
+    color: #00008B !important; /* Dark blue text */
+    font-weight: bold !important;
+    font-size: 1.3rem !important; /* Larger text */
+    padding-right: 20px !important; /* Space between text and icon */
+    padding-top: 15px !important; /* Space above items */
+    padding-bottom: 15px !important; /* Space below items */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for hover effect */
+    display: flex !important; /* Flexbox for alignment */
+    justify-content: space-between !important; /* Text on left, icon on right */
+    align-items: center !important;
+  }
+
+  .admin-sidebar .nav-link i {
+    color: #003366 !important; /* Darker blue icon */
+    transition: color 0.3s ease; /* Smooth transition for icon color change */
+    font-size: 1.5rem !important; /* Larger icon */
+  }
+
+  .admin-sidebar .nav-link:hover {
+    background-color: #2c3e50 !important; /* Darker blue background on hover */
+    color: #ffffff !important; /* White text on hover */
+  }
+
+  .admin-sidebar .nav-link:hover i {
+    color: #ffffff !important; /* White icons on hover */
+  }
+
+  .admin-sidebar .nav-link.active {
+    background-color: #00008B !important; /* Dark blue background for active link */
+    color: #ffffff !important; /* White text for active link */
+  }
+
+  .admin-sidebar .nav-link.active i {
+    color: #ffffff !important; /* White icons for active link */
+  }
+
+  .admin-sidebar .sidebar-brand {
+    color: #00008B !important; /* Dark blue text for the brand */
+    font-size: 1.5rem !important; /* Larger text */
+    font-weight: bold !important;
+  }
+
+  .admin-sidebar .sidebar-divider {
+    border-color: #dee2e6 !important;
+  }
+
+  .admin-sidebar .collapse-header {
+    color: #00008B !important; /* Dark blue text for collapse headers */
+    font-weight: bold !important;
+    font-size: 1.3rem !important; /* Larger text */
+  }
+
+  .admin-sidebar .collapse-item {
+    color: #00008B !important; /* Dark blue text for collapse items */
+    font-weight: bold !important;
+    padding-right: 20px !important; /* Space between text and icon */
+    padding-top: 15px !important; /* Space above items */
+    padding-bottom: 15px !important; /* Space below items */
+    transition: background-color 0.3s ease, color 0.3s ease;
+    display: flex !important; /* Flexbox for alignment */
+    justify-content: space-between !important; /* Text on left, icon on right */
+    align-items: center !important;
+  }
+
+  .admin-sidebar .collapse-item i {
+    color: #003366 !important; /* Darker blue icon for collapse items */
+    transition: color 0.3s ease; /* Smooth transition for icon color change */
+    font-size: 1.5rem !important; /* Larger icon */
+  }
+
+  .admin-sidebar .collapse-item:hover {
+    background-color: #2c3e50 !important; /* Darker blue background on hover */
+    color: #ffffff !important; /* White text on hover */
+  }
+
+  .admin-sidebar .collapse-item:hover i {
+    color: #ffffff !important; /* White icons on hover */
+  }
 
 
 .profile-header {
@@ -738,7 +1231,7 @@ h2 {
   display: flex;
   flex-direction: row;
   gap: 20px;
-  width: 100%;
+  width: 70%;
   flex-wrap: wrap;
 }
 
@@ -749,7 +1242,7 @@ h2 {
 }
 
 .info-section p {
-  padding: 10px 0;
+  padding: 0px 0;
   border-bottom: 1px solid #ddd;
 }
 
@@ -792,13 +1285,187 @@ h2 {
   margin-right: 10px; /* Space between icon and text */
   
 }
+.top-container {
+  width: 100%;
+  background-color: white;
+  border-radius: 15px; /* Adjusted border radius */
+  padding: 40px 20px; /* Increased padding for a taller container */
+  margin-bottom: 20px;
+  margin-top: 40px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Shadow for the top container */
+  text-align: left; /* Align text to the left */
+  display: flex; /* Flexbox for alignment */
+  flex-direction: column; /* Stack items vertically */
+  align-items: flex-start; /* Align items to the start */
+}
 
+.back-btn {
+  background-color: #002f6c; /* Dark blue background */
+  border-radius: 50%; /* Circular shape */
+  width: 40px; /* Button size */
+  height: 40px;
+  display: flex; /* Center icon */
+  align-items: center;
+  justify-content: center;
+  margin-right: 15px; /* Space between button and text */
+}
+
+.back-btn a {
+  color: white; /* White arrow */
+  text-decoration: none; /* Remove underline */
+  font-size: 1.2em; /* Adjust icon size */
+}
+
+.manage-participants {
+  font-size: 1.2em; /* Font size for "Pending Participants For" */
+  color: #002f6c; /* Dark blue color */
+  font-weight: bold;
+}
+
+.event-title {
+  font-size: 1.8em; /* Larger font size for event title */
+  color: grey; /* Grey color for the event title */
+  margin-top: 5px; /* Margin to separate from the "Pending Participants For" text */
+}
+
+.participant-list-container {
+  width: 100%;
+  border-radius: 15px;
+  padding: 15px;
+}
+
+.participant-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px; /* Increased padding */
+  margin-bottom: 20px; /* Margin between items */
+  border-radius: 30px; /* Rounded corners */
+  border: 1px solid #ddd; /* Light grey border */
+  background-color: #f9f9f9; /* Light background color */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Shadow for items */
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Smooth transition for size and shadow */
+  animation: fadeIn 0.5s ease-in-out; /* Fade-in animation */
+}
+
+.participant-list-item:hover {
+  transform: scale(1.05); /* Slightly enlarge the item on hover */
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Slightly larger shadow on hover */
+}
+
+
+.participant-info {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  padding: 25px;
+}
+
+.participant-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.profile-picture {
+  width: 50px; /* Adjusted size of the profile picture */
+  height: 50px;
+  border-radius: 50%; /* Circular shape */
+  object-fit: cover;
+}
+
+.participant-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.participant-name {
+  font-size: 1.2em; /* Font size for participant's name */
+  color: #002f6c; /* Dark blue color */
+  font-weight: bold;
+}
+
+.participant-status, .participant-country {
+  font-size: 0.9em; /* Font size for status and country */
+  color: #888; /* Grey color */
+}
+
+.participant-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.participant-action-form .btn {
+  border-radius: 20px; /* Rounded edges for buttons */
+  padding: 6px 15px; /* Padding for buttons */
+  font-size: 0.85em; /* Font size */
+  font-weight: bold;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.send-cert-btn {
+  text-align: center; /* Center the button */
+  margin-top: 20px; /* Space above the button */
+}
+
+.send-cert-btn button {
+  background-color: #002f6c; /* Dark blue background */
+  color: white; /* White text color */
+  border: none; /* Remove default border */
+  border-radius: 25px; /* Rounded edges */
+  padding: 10px 20px; /* Padding for button size */
+  font-size: 1em; /* Font size */
+  font-weight: bold; /* Bold text */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s, transform 0.3s; /* Smooth transitions */
+}
+
+.send-cert-btn button:hover {
+  background-color: #001c4a; /* Darker blue on hover */
+  transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+.participant-list-item input[type="checkbox"] {
+  appearance: none; /* Remove default appearance */
+  -webkit-appearance: none; /* Remove default appearance for Safari */
+  border-radius: 50%; /* Circular shape */
+  width: 28px; /* Size of the checkbox */
+  height: 28px;
+  background-color: #f9f9f9; /* Light background color */
+  border: 2px solid #002f6c; /* Dark blue border */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s, border-color 0.3s; /* Smooth transition */
+  outline: none; /* Remove default outline */
+  position: relative; /* Positioning for the checkmark */
+}
+
+/* Style the checkbox when checked */
+.participant-list-item input[type="checkbox"]:checked {
+  background-color: #002f6c; /* Dark blue background */
+  border-color: #002f6c; /* Dark blue border */
+}
+
+/* Create a custom checkmark */
+.participant-list-item input[type="checkbox"]:checked::before {
+  content: none; /* Remove any additional content */
+}
 
         .side-by-side-container {
           display: flex; /* Align child elements horizontally */
           gap: 20px; /* Space between the sections */
           padding: 20px; /* Optional: Add padding around the container */
           margin: 0 auto; /* Center the container horizontally */
+          margin: auto; /* Center this container horizontally */
         }
 
         /* Existing styles for profile edit section */
@@ -806,7 +1473,6 @@ h2 {
             padding: 20px;
             border-radius: 15px;
             background-color: #f9f9f9;
-            max-width: 600px;
             flex: 1; /* Allow section to grow and fill available space */
           }
           
@@ -2897,7 +3563,7 @@ pre code {
   font-weight: 400;
   line-height: 1.5;
   color: #6e707e;
-  background-color: #fff;
+  background-color: #ebebeb;
   background-clip: padding-box;
   border: 1px solid #d1d3e2;
   border-radius: 0.35rem;
@@ -11529,6 +12195,7 @@ a:focus {
 }
 
 .sidebar .sidebar-brand .sidebar-brand-text {
+  font-size: 15px;
   display: none;
 }
 
@@ -11599,11 +12266,11 @@ a:focus {
     display: block;
     width: 100%;
     text-align: left;
-    padding: 1rem;
+    padding: 20px;
     width: 14rem;
   }
   .sidebar .nav-item .nav-link i {
-    font-size: 0.85rem;
+    font-size: 15px;
     margin-right: 0.25rem;
   }
   .sidebar .nav-item .nav-link span {

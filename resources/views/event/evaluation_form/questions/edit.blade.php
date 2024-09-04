@@ -55,13 +55,13 @@
 
     <!-- Buttons to add Essay or Radio questions -->
     <div class="button-container">
-        <button type="button" class="add-question-btn" onclick="addEssayQuestion()">Add Question</button>
-        <button type="button" class="add-question-btn" onclick="addRadioQuestion()">Add Comment</button>
+        <button type="button" class="add-question-btn" onclick="addEssayQuestion('essay')">Add Comment</button>
+        <button type="button" class="add-question-btn" onclick="addRadioQuestion('radio')">Add  Radio Question</button>
     </div>
 
     <!-- Error Message Container -->
     <div id="error-message" class="error-message" style="color: red; display: none;">
-        Please add at least one question.
+        Please add at least one question.z
     </div>
 
     <!-- Save Button -->
