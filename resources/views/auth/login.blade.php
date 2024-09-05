@@ -59,6 +59,9 @@
                     {{ __('Log in') }}
                 </x-primary-button>
             </div>
+            <div>
+                <a href="{{ route('google.redirect') }}">Login using Google</a>
+            </div>
         </form>
     </div>
 </div>

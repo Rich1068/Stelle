@@ -9,11 +9,13 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\EvaluationFormController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\CertificateController;
+use App\Http\Controllers\Auth\GoogleController;
 
 Route::get('/', function () {
     return view('welcome');
 });
-
+Route::get('auth/google/redirect', [GoogleController::class, 'googlepage'])->name('google.redirect');
+Route::get('auth/google/callback', [GoogleController::class, 'googlecallback'])->name('google.callback');
 //check if logged in
 Route::middleware('auth')->group(function () {
     Route::get('/profile/MyCertificates', [ProfileController::class, 'myCertificates'])->name('profile.mycertificates');

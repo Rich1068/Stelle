@@ -107,8 +107,6 @@ class EventController extends Controller
             // Move the uploaded file to the desired directory
             $file->storeAs('/images/event_banners', $filename);
         
-            // Update the profile picture path
-            //$event->event_banner = $relativePath;
         }
         $event = Event::create([
             'title' => $request->title,

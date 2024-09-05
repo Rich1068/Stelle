@@ -22,12 +22,15 @@ class User extends Authenticatable implements CanResetPassword
         'middle_name',
         'last_name',
         'email',
+        'google_id',
         'role_id',
         'gender',
         'country_id',
         'password',
         'description',
-        'contact_number'
+        'contact_number',
+        'profile_picture',
+
     ];
 
     /**
