@@ -1181,11 +1181,14 @@ h2 {
 }
 
 .profile-picture img {
-  max-width: 120px; /* Adjust size if needed */
-  max-height: 120px; /* Adjust size if needed */
-  width: auto;
-  height: auto;
+  max-width: 120px; /* Set a fixed size */
+  max-height: 120px; /* Ensure it's a square */
+  width: 100%; /* Ensures the image fills the container */
+  height: 100%; /* Keeps the image square */
+  border-radius: 50%; /* Makes the image circular */
+  object-fit: cover; /* Ensures the image fills the area without distortion */
 }
+
 
 .flag-icon {
   max-width: 50px; /* Adjust size if needed */
