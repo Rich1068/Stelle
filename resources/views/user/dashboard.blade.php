@@ -8,6 +8,13 @@
             {{ session('success') }}
         </div>
     @endif
+    <div>
+    Want to be organize events? Be an admin now!
+    <form id="registerAdminForm" action="{{ route('register.admin') }}" method="POST">
+            @csrf
+            <button type="button" class="btn btn-success" onclick="confirmSubmission()">Register</button>
+    </form>
+    </div>
 
     <!-- Hello Container -->
     <div class="card mb-4" style="background-color: #f8f9fc; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
@@ -98,4 +105,15 @@
     </div>
 
 </div>
+
+<script>
+    function confirmSubmission() {
+        // Show confirmation dialog
+        if (confirm('Are you sure you want to register as an event admin?')) {
+            // If confirmed, submit the form
+            document.getElementById('registerAdminForm').submit();
+        }
+        // If not confirmed, do nothing
+    }
+</script>
 @endsection

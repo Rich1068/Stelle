@@ -69,9 +69,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/event/{id}/participants/send-certificates', [EventController::class, 'sendCertificates'])->name('sendCertificates');
 
     
-    
-    
-
     //cert stuff 
     Route::get('/event/{id}/certificates/create', [CertificateController::class, 'create'])->name('certificates.create');
     Route::post('/event/{id}/certificates/save', [CertificateController::class, 'saveCanvas']);
