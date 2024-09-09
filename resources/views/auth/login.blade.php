@@ -8,7 +8,9 @@
         <img src="/images/illustration1.png" alt="Illustration">
 
         <!-- Sign Up Text -->
-        <p class="signup-text">Don't have an account? <a href="#" class="signup-link">Sign Up Here</a></p>
+        <p class="signup-text">Don't have an account? <a href="/register" class="signup-link">Sign Up Here</a></p>
+
+
     </div>
 
     <!-- Divider Line -->
@@ -59,9 +61,19 @@
                     {{ __('Log in') }}
                 </x-primary-button>
             </div>
-            <div>
-                <a href="{{ route('google.redirect') }}">Login using Google</a>
+
+            <div class="or-divider">
+                <span>or</span>
             </div>
+
+
+            <div class="google-button">
+    <a href="{{ route('google.redirect') }}">
+        <img src="/images/googleicon.png" alt="Google Icon" class="google-icon">
+        Login with Google
+    </a>
+</div>
+
         </form>
     </div>
 </div>

@@ -1,5 +1,4 @@
 /* Apply the gradient to the entire page */
-
 body {
     background: linear-gradient(to bottom right, #F99C9C, #ACDFF6);
     min-height: 100vh;
@@ -16,8 +15,8 @@ body {
     background: white;
     border-radius: 20px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    max-width: 800px;
-    max-height: 720px; /* Increased height to make the container taller */
+    max-width: 900px;
+    max-height: 680px; /* Adjusted height to reduce excess space */
     width: 100%;
     overflow: hidden;
 }
@@ -64,6 +63,7 @@ body {
     font-size: 1.75rem; /* Adjusted font size */
     text-align: left;
     margin-bottom: 20px;
+    font-weight: bold;
 }
 
 /* Input fields */
@@ -91,7 +91,6 @@ body {
 .remember-me {
     display: flex;
     align-items: center;
-    margin-bottom: 1rem;
 }
 
 .remember-me input {
@@ -127,16 +126,69 @@ body {
 }
 
 /* Login Button */
-.login-button {
-    background-color: #001f60;
-    color: white;
+    .login-button {
+        background-color: #001f60;
+        color: white;
+        border-radius: 10px;
+        padding: 12px 0;
+        font-size: 1rem;
+        font-weight: bold;
+        width: 70%; /* Consistent width for both buttons */
+        margin: 0 auto 10px; /* Align center and adjust bottom margin */
+        cursor: pointer;
+        border: none;
+    }
+
+    .login-button:hover {
+        background-color: white; /* White background on hover */
+        color: #001f60; /* Dark blue text on hover */
+        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2); /* Add shadow effect */
+        transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+    }
+    
+    
+
+/* Google login button */
+.google-button {
+    background-color: #fff;
     border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
     padding: 12px 0;
-    font-size: 1rem;
-    width: 70%; /* Adjust width for better alignment */
-    margin: auto;
+    text-align: center;
+    width: 70%; /* Consistent width with login button */
+    justify-content: center;
+    margin: 0 auto; /* Align center */
     cursor: pointer;
     border: none;
+    transition: box-shadow 0.2s ease-in-out;
+}
+
+/* Google button text and icon */
+.google-button a {
+    color: #7c7c7c; /* Light gray color */
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+}
+.google-button:hover {
+    background-color: #001f60; /* Dark blue background */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2); /* Slightly deeper shadow */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+}
+
+.google-button:hover a {
+    color: white; /* Change text color to white */
+    transition: color 0.3s ease; /* Smooth transition for text color */
+}
+
+.google-icon {
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
 }
 
 .actions-container {
@@ -147,14 +199,7 @@ body {
     margin-top: 20px; /* Space above the actions container */
 }
 
-.registration-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr; /* Two equal columns */
-    height: 100vh; /* Full height of the viewport */
-    width: 100vw; /* Full width of the viewport */
-    padding: 0 75px; /* Add padding to bring the sections closer */
-    gap: 20px; /* Optional: Add gap between the columns for more control */
-}
+
 .image-carousel {
     display: flex;
     align-items: center;
@@ -212,11 +257,21 @@ body {
     margin-left: auto;
 }
 /* Right side: Registration form */
+
+.registration-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two equal columns */
+    max-height: 100vh; /* Full height of the viewport */
+    width: 100vw; /* Full width of the viewport */
+    padding: 0 75px; /* Add padding to bring the sections closer */
+    gap: 10px; /* Optional: Add gap between the columns for more control */
+}
+
 .register-account {
     background: white;
     border-radius: 20px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.21);
-    padding: 30px;
+    padding: 20px;
     width: 70%; /* Use most of the grid column width */
     margin: auto; /* Center within the grid cell */
     text-align: center;
@@ -249,8 +304,8 @@ body {
     border-radius: 10px;
     padding: 12px 15px;
     font-size: 1rem;
-    width: 100%;
-    margin-bottom: 60px; /* Increased space between input fields */
+    width: 80%;
+    margin-bottom: 40px; /* Increased space between input fields */
     font-weight: bold; /* Make input text bold */
 }
 
@@ -261,19 +316,34 @@ body {
 }
 
 /* Sign Up Button */
-.register-button {
-    background-color: #001f60;
-    color: white;
-    border-radius: 15px;
-    padding: 12px 0;
-    font-size: 1rem;
-    width: 40%; /* Reduced button width for better alignment */
-    cursor: pointer;
-    border: none;
-    margin-top: 10px; /* Increased space above the button */
+
+
+
+.or-divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 20px 0;
 }
 
-/* Additional spacing between each div (form group) */
-.form-group {
-    margin-bottom: 50px; /* Extra space between each div for a longer form appearance */
+.or-divider::before,
+.or-divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #d9d9d9;
 }
+
+.or-divider::before {
+    margin-right: 10px;
+}
+
+.or-divider::after {
+    margin-left: 10px;
+}
+
+.or-divider span {
+    color: #02126e;
+    font-weight: bold;
+}
+
+/* Google login button */

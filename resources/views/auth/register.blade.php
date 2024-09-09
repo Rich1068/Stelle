@@ -69,10 +69,22 @@
             </div>
 
             <div class="flex items-center justify-center mt-4">
-                <x-primary-button class="register-button">
+                <x-primary-button class="login-button">
                     {{ __('Sign Up') }}
                 </x-primary-button>
             </div>
+
+            <div class="or-divider">
+                <span>or</span>
+            </div>
+
+
+            <div class="google-button">
+    <a href="{{ route('google.redirect') }}">
+        <img src="/images/googleicon.png" alt="Google Icon" class="google-icon">
+        Login with Google
+    </a>
+</div>
         </form>
     </div>
 </div>

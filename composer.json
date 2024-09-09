@@ -8,7 +8,7 @@
         "php": "^8.2",
         "barryvdh/laravel-dompdf": "^2.2",
         "laravel/framework": "^11.9",
-        "laravel/socialite": "*",
+        "laravel/socialite": "^5.16",
         "laravel/tinker": "^2.9"
     },
     "require-dev": {
