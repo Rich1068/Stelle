@@ -66,6 +66,7 @@ class EventController extends Controller
         $pendingparticipants = EventParticipant::where('event_id', $id)
             ->where('status_id', 3)
             ->get();
+        $currentUser = Auth::user()->id;
 
         $hasAnswered = false;
         if ($evaluationForm) {
@@ -92,7 +93,8 @@ class EventController extends Controller
             'hasAnswered' => $hasAnswered,
             'certificate' => $certificate,
             'participants' => $participants,
-            'pendingparticipants' =>$pendingparticipants
+            'pendingparticipants' =>$pendingparticipants, 
+            'currentUser' =>$currentUser
         ]);
     }
 

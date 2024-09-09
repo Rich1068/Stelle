@@ -17,6 +17,7 @@
         <div class="alert alert-danger">{{ session('error') }}</div>
     @endif
 
+    @if ($currentUser == $userevent->user->id)
     <form action="{{ route('sendCertificates', $event->id) }}" method="POST" id="sendCert">
         @csrf
         <div class="participant-list-container">
@@ -24,7 +25,7 @@
                 <div class="participant-list-item">
                     <!-- Selection Checkbox -->
                     <input type="checkbox" name="participants[]" value="{{ $participant->user->id }}">
-
+                    
                     <!-- User Information -->
                     <div class="participant-info">
                         <div class="participant-profile">
@@ -33,7 +34,6 @@
                                 <a href="{{ route('profile.view', $participant->user->id) }}" class="participant-name">
                                     {{ $participant->user->first_name }} {{ $participant->user->last_name }}
                                 </a>
-                               
                             </div>
                         </div>
                     </div>
@@ -44,6 +44,24 @@
             <button type="submit" onclick="disableButton(this)">Send Certificates</button>
         </div>
     </form>
+    @else
+        <div class="participant-list-container">
+            @foreach($participants as $participant)
+                <div class="participant-list-item">
+                    <div class="participant-info">
+                        <div class="participant-profile">
+                            <img src="{{ $participant->user->profile_picture_url }}" alt="{{ $participant->user->first_name }}" class="profile-picture">
+                            <div class="participant-details">
+                                <a href="{{ route('profile.view', $participant->user->id) }}" class="participant-name">
+                                    {{ $participant->user->first_name }} {{ $participant->user->last_name }}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    @endif
 </div>
 
 <script>

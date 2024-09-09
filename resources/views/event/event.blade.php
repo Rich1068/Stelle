@@ -6,7 +6,9 @@
     <div class="tabs">
         <div class="tab-button active" data-tab="main">Event Details</div>
         <div class="tab-button" data-tab="participants">Participants</div>
-        <div class="tab-button" data-tab="feedback">Evaluation Form</div>
+        @if ($currentUser == $userevent->user->id)
+            <div class="tab-button" data-tab="feedback">Evaluation Form</div>
+        @endif
     </div>
 
     <!-- Tab Contents -->
@@ -93,10 +95,13 @@
 
         <!-- Participants Tab -->
         <div class="tab-pane" id="participants">
-            @include('event.partials.participantlist', ['event' => $event, 'participants' => $participants])
+            @include('event.partials.participantlist', ['event' => $event, 'participants' => $participants, 'currentUser' => $currentUser, 'userevent' =>$userevent])
+            @if ($currentUser == $userevent->user->id)
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#pendingParticipantsModal">
                 <span>View Requesting Participants</span>
             </button>
+            @endif
+
         </div>
         @include('event.partials.pendingparticipants', ['event' => $event, 'pendingparticipants' => $pendingparticipants])
         <!-- Feedback Form Tab -->
@@ -130,7 +135,7 @@
     </div>
 </div>
 
-<!-- Modal HTML -->
+<!-- Modal for certificate viewing -->
 @if($certificate)
 <div class="modal fade" id="certificateModal" tabindex="-1" aria-labelledby="certificateModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
