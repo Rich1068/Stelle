@@ -1,6 +1,3 @@
-@extends('layouts.app')
-
-@section('body')
 <div class="container">
     <div class="top-container">
         <div class="answer-forms-event-title">
@@ -9,6 +6,7 @@
         <div class="answer-forms-event-subtitle">
             {{ $event->title }}
         </div>
+        <div><i class="fas fa-users"></i><span data-label="Capacity:">{{ $currentParticipants }}/{{ $event->capacity }}</span></div>
     </div>
 
     @if(session('success'))
@@ -68,4 +66,3 @@ document.getElementById('sendCert').addEventListener('keydown', function(event) 
     }
 });
 </script>
-@endsection

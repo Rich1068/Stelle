@@ -51,7 +51,7 @@ class EventController extends Controller
     {
         $userevent = UserEvent::with('user')->where('event_id', $id)->firstOrFail();
         $currentParticipants = EventParticipant::where('event_id', $id)
-            ->where('status_id', 1) // Assuming 'Accepted' has an id of 1
+            ->where('status_id', 1) // Only accepted will show
             ->count();
         $event = Event::findOrFail($id);
         $certificate = Certificate::where('event_id', $id)->first();
@@ -59,6 +59,14 @@ class EventController extends Controller
         $eventParticipant = EventParticipant::where('event_id', $id)
             ->where('user_id', Auth::user()->id)
             ->first();
+
+        $participants = EventParticipant::where('event_id', $id)
+            ->where('status_id', 1)
+            ->get();
+        $pendingparticipants = EventParticipant::where('event_id', $id)
+            ->where('status_id', 3)
+            ->get();
+
         $hasAnswered = false;
         if ($evaluationForm) {
             $questions = Question::where('form_id', $evaluationForm->id)->pluck('id');
@@ -82,7 +90,9 @@ class EventController extends Controller
             'evaluationForm' => $evaluationForm,
             'currentParticipants' => $currentParticipants,
             'hasAnswered' => $hasAnswered,
-            'certificate' => $certificate
+            'certificate' => $certificate,
+            'participants' => $participants,
+            'pendingparticipants' =>$pendingparticipants
         ]);
     }
 
@@ -224,37 +234,6 @@ class EventController extends Controller
         }
 
         return redirect()->route('event.view', $event->id)->with('error', 'You have already requested to join this event.');
-    }
-
-
-    public function showParticipants($id)
-    {
-        $eventuser = UserEvent::findOrFail($id);
-        $event = Event::findOrFail($id);
-        // Check if the logged-in user is the creator of the event
-        if ($eventuser->user_id !== Auth::id()) {
-            return redirect()->route('unauthorized')->with('error', 'You do not have permission to view this page.');
-        }
-
-        $participants = EventParticipant::where('event_id', $id)->get();
-
-        return view('event.pendingparticipants', compact('eventuser', 'participants', 'event'));
-    }
-    public function showParticipantslist($id)
-    {
-        $eventuser = UserEvent::findOrFail($id);
-        $event = Event::findOrFail($id);
-        // Check if the logged-in user is the creator of the event
-        if ($eventuser->user_id !== Auth::id()) {
-            return redirect()->route('unauthorized')->with('error', 'You do not have permission to view this page.');
-        }
-
-        
-        $participants = EventParticipant::where('event_id', $id)
-                                ->where('status_id', 1)
-                                ->get();
-
-        return view('event.participantlist', compact('eventuser', 'participants', 'event'));
     }
 
     public function updateParticipantStatus(Request $request, $eventId, $participantId)

@@ -6,7 +6,7 @@
     <div class="tabs">
         <div class="tab-button active" data-tab="main">Event Details</div>
         <div class="tab-button" data-tab="participants">Participants</div>
-        <div class="tab-button" data-tab="feedback">Feedback Form</div>
+        <div class="tab-button" data-tab="feedback">Evaluation Form</div>
     </div>
 
     <!-- Tab Contents -->
@@ -93,16 +93,12 @@
 
         <!-- Participants Tab -->
         <div class="tab-pane" id="participants">
-            <div class="event-view-buttons">
-                <a href="{{ route('events.participantslist', $event->id) }}" class="btn btn-primary">
-                    <span>View Participants</span>
-                </a>
-                <a href="{{ route('events.participants', $event->id) }}" class="btn btn-primary">
-                    <span>View Requesting Participants</span>
-                </a>
-            </div>
+            @include('event.partials.participantlist', ['event' => $event, 'participants' => $participants])
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#pendingParticipantsModal">
+                <span>View Requesting Participants</span>
+            </button>
         </div>
-
+        @include('event.partials.pendingparticipants', ['event' => $event, 'pendingparticipants' => $pendingparticipants])
         <!-- Feedback Form Tab -->
         <div class="tab-pane" id="feedback">
             <!-- Create or Update Evaluation Form Button -->
@@ -155,36 +151,61 @@
 
 <!-- JavaScript to handle tab switching and modal display -->
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Tab switching
-        const tabButtons = document.querySelectorAll('.tab-button');
-        const tabPanes = document.querySelectorAll('.tab-pane');
+   document.addEventListener('DOMContentLoaded', function () {
+    const tabButtons = document.querySelectorAll('.tab-button');
+    const tabPanes = document.querySelectorAll('.tab-pane');
+    const activeTabKey = 'activeTab'; // Key to store the active tab in local storage
 
-        tabButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const target = button.dataset.tab;
+    // Retrieve the last selected tab from local storage, if it exists
+    const savedTab = localStorage.getItem(activeTabKey);
+    if (savedTab) {
+        // Find the button and pane for the saved tab
+        const savedButton = document.querySelector(`.tab-button[data-tab="${savedTab}"]`);
+        const savedPane = document.getElementById(savedTab);
 
-                tabButtons.forEach(btn => btn.classList.remove('active'));
-                tabPanes.forEach(pane => pane.classList.remove('active'));
+        if (savedButton && savedPane) {
+            // Remove active class from all buttons and panes
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            tabPanes.forEach(pane => pane.classList.remove('active'));
 
-                button.classList.add('active');
-                document.getElementById(target).classList.add('active');
-            });
-        });
-
-        // Certificate modal
-        const viewCertificateButton = document.querySelector('#viewCertificateButton');
-        if (viewCertificateButton) {
-            viewCertificateButton.addEventListener('click', function (event) {
-                event.preventDefault();
-                const imageUrl = event.target.dataset.imageUrl;
-                const certificateImage = document.querySelector('#certificateImage');
-                if (certificateImage) {
-                    certificateImage.src = imageUrl;
-                    $('#certificateModal').modal('show');
-                }
-            });
+            // Activate the saved tab
+            savedButton.classList.add('active');
+            savedPane.classList.add('active');
         }
+    }
+
+    // Tab switching logic
+    tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const target = button.dataset.tab;
+
+            // Store the selected tab in local storage
+            localStorage.setItem(activeTabKey, target);
+
+            // Remove active class from all buttons and panes
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            tabPanes.forEach(pane => pane.classList.remove('active'));
+
+            // Activate the clicked tab
+            button.classList.add('active');
+            document.getElementById(target).classList.add('active');
+        });
     });
+
+    // Certificate modal logic
+    const viewCertificateButton = document.querySelector('#viewCertificateButton');
+    if (viewCertificateButton) {
+        viewCertificateButton.addEventListener('click', function (event) {
+            event.preventDefault();
+            const imageUrl = event.target.dataset.imageUrl;
+            const certificateImage = document.querySelector('#certificateImage');
+            if (certificateImage) {
+                certificateImage.src = imageUrl;
+                $('#certificateModal').modal('show');
+            }
+        });
+    }
+});
+
 </script>
 @endsection
