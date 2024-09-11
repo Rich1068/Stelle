@@ -1,4 +1,3 @@
-
 <div class="modal fade" id="pendingParticipantsModal" tabindex="-1" role="dialog" aria-labelledby="pendingParticipantsModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -21,12 +20,12 @@
                 <!-- Participant List -->
                 <div class="participant-list-container">
                     @foreach($pendingparticipants as $pendingparticipant)
-                        <div class="participant-list-item">
+                        <div class="participant-list-item d-flex align-items-center justify-content-between mb-3">
                             <!-- User Information -->
-                            <div class="participant-info">
+                            <div class="participant-info d-flex align-items-center">
                                 <div class="participant-profile">
                                     <img src="{{ $pendingparticipant->user->profile_picture_url }}" alt="{{ $pendingparticipant->user->first_name }}" class="profile-picture">
-                                    <div class="participant-details">
+                                    <div class="participant-details ml-3">
                                         <a href="{{ route('profile.view', $pendingparticipant->user->id) }}" class="participant-name">
                                             {{ $pendingparticipant->user->first_name }} {{ $pendingparticipant->user->last_name }}
                                         </a>
@@ -36,13 +35,13 @@
                             </div>
 
                             <!-- Actions -->
-                            <div class="participant-actions">
-                                <form action="{{ route('participants.updateStatus', [$event->id, $pendingparticipant->user_id]) }}" method="POST" class="participant-action-form">
+                            <div class="participant-actions d-flex">
+                                <form action="{{ route('participants.updateStatus', [$event->id, $pendingparticipant->user_id]) }}" method="POST" class="mr-2">
                                     @csrf
                                     <input type="hidden" name="status_id" value="1"> <!-- Accepted -->
                                     <button type="submit" class="btn btn-success">Accept</button>
                                 </form>
-                                <form action="{{ route('participants.updateStatus', [$event->id, $pendingparticipant->user_id]) }}" method="POST" class="participant-action-form">
+                                <form action="{{ route('participants.updateStatus', [$event->id, $pendingparticipant->user_id]) }}" method="POST">
                                     @csrf
                                     <input type="hidden" name="status_id" value="2"> <!-- Declined -->
                                     <button type="submit" class="btn btn-danger">Decline</button>
