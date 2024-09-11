@@ -1,78 +1,81 @@
-<div class="container">
-    <div class="top-container">
-        <div class="answer-forms-event-title">
-            Participants List For
-        </div>
-        <div class="answer-forms-event-subtitle">
-            {{ $event->title }}
-        </div>
-        <div><i class="fas fa-users"></i><span data-label="Capacity:">{{ $currentParticipants }}/{{ $event->capacity }}</span></div>
+@extends('layouts.app')
+
+@section('body')
+    <div class="container">
+        <h1>Evaluation Results</h1>
+
+        <!-- Display Comments Section -->
+        @if(!empty($comments))
+            <h2>Comments</h2>
+            <ul>
+                @foreach ($comments as $comment)
+                    <li>
+                        <strong>{{ $comment['question'] }}:</strong>
+                        <ul>
+                            @foreach ($comment['answers'] as $answer)
+                                <li>{{ $answer }}</li>
+                            @endforeach
+                        </ul>
+                    </li>
+                @endforeach
+            </ul>
+        @endif
+
+        <!-- Display Radio Questions Charts -->
+        <h2>Radio Question Results</h2>
+
+        @foreach($radioData as $index => $data)
+            <div class="chart-container" style="position: relative; height:40vh; width:80vw">
+                <h3>{{ $data['question'] }}</h3>
+                <!-- Create a unique canvas ID for each radio question -->
+                <canvas id="radioChart_{{ $index }}"></canvas>
+            </div>
+        @endforeach
     </div>
 
-    @if ($currentUser == $userevent->user->id)
-    <form action="{{ route('sendCertificates', $event->id) }}" method="POST" id="sendCert">
-        @csrf
-        <div class="participant-list-container">
-            @foreach($participants as $participant)
-                <div class="participant-list-item">
-                    <!-- Selection Checkbox -->
-                    <input type="checkbox" name="participants[]" value="{{ $participant->user->id }}">
-                    
-                    <!-- User Information -->
-                    <div class="participant-info">
-                        <div class="participant-profile">
-                            <img src="{{ $participant->user->profile_picture_url }}" alt="{{ $participant->user->first_name }}" class="profile-picture">
-                            <div class="participant-details">
-                                <a href="{{ route('profile.view', $participant->user->id) }}" class="participant-name">
-                                    {{ $participant->user->first_name }} {{ $participant->user->last_name }}
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            @endforeach
-        </div>
-        <div class="send-cert-btn">
-            <button type="submit" onclick="disableButton(this)">Send Certificates</button>
-        </div>
-    </form>
-    @else
-        <div class="participant-list-container">
-            @foreach($participants as $participant)
-                <div class="participant-list-item">
-                    <div class="participant-info">
-                        <div class="participant-profile">
-                            <img src="{{ $participant->user->profile_picture_url }}" alt="{{ $participant->user->first_name }}" class="profile-picture">
-                            <div class="participant-details">
-                                <a href="{{ route('profile.view', $participant->user->id) }}" class="participant-name">
-                                    {{ $participant->user->first_name }} {{ $participant->user->last_name }}
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            @endforeach
-        </div>
-    @endif
-</div>
+    <!-- Include Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<script>
-function disableButton(button) {
-    button.disabled = true; // Disable the button
-    button.innerText = 'Submitting...'; // Change button text
+    <!-- Initialize Chart.js for each radio question -->
+    <script>
+        @foreach($radioData as $index => $data)
+            var ctx_{{ $index }} = document.getElementById('radioChart_{{ $index }}').getContext('2d');
+            
+            var chartData_{{ $index }} = {
+                labels: @json($staticRadioOptions), // The static radio options (1, 2, 3, 4, 5)
+                datasets: [{
+                    label: '{{ $data['question'] }}',
+                    data: @json($data['values']),
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            };
 
-    // Re-enable the button after 3 seconds
-    setTimeout(function() {
-        button.disabled = false;
-        button.innerText = 'Send Certificates';
-    }, 3000); // 3000 milliseconds = 3 seconds
+            var chartOptions_{{ $index }} = {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Number of Responses'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Rating (1-5)'
+                        }
+                    }
+                }
+            };
 
-    button.form.submit(); // Submit the form
-}
-
-document.getElementById('sendCert').addEventListener('keydown', function(event) {
-    if (event.key === 'Enter' && event.target.tagName === 'INPUT' && event.target.type !== 'submit') {
-        event.preventDefault();
-    }
-});
-</script>
+            // Initialize Chart for each radio question
+            new Chart(ctx_{{ $index }}, {
+                type: 'bar',
+                data: chartData_{{ $index }},
+                options: chartOptions_{{ $index }}
+            });
+        @endforeach
+    </script>
+@endsection

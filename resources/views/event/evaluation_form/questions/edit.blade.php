@@ -24,14 +24,17 @@
 
     <!-- Existing Questions -->
     <div id="questions">
-        <!-- Existing questions will be displayed here -->
         @foreach($questions as $question)
             <div class="form-group question-group">
                 <div class="question-content">
-                    <label>
-                        {{ $question->type_id == 1 ? 'Essay Question:' : 'Radio Question:' }}
-                    </label>
+                    <label>{{ $question->type_id == 1 ? 'Essay Question:' : 'Radio Question:' }}</label>
+                    
+                    <!-- Hidden field for the question ID -->
+                    <input type="hidden" name="questions[{{ $loop->index }}][id]" value="{{ $question->id }}">
+
+                    <!-- Text input for the question text -->
                     <input type="text" name="questions[{{ $loop->index }}][text]" value="{{ $question->question }}" required>
+
                     @if($question->type_id == 1)
                         <div class="essay-underline"></div>
                     @else
@@ -55,13 +58,13 @@
 
     <!-- Buttons to add Essay or Radio questions -->
     <div class="button-container">
-        <button type="button" class="add-question-btn" onclick="addEssayQuestion('essay')">Add Comment</button>
-        <button type="button" class="add-question-btn" onclick="addRadioQuestion('radio')">Add  Radio Question</button>
+        <button type="button" class="add-question-btn" onclick="addEssayQuestion()">Add Comment</button>
+        <button type="button" class="add-question-btn" onclick="addRadioQuestion()">Add Radio Question</button>
     </div>
 
     <!-- Error Message Container -->
     <div id="error-message" class="error-message" style="color: red; display: none;">
-        Please add at least one question.z
+        Please add at least one question.
     </div>
 
     <!-- Save Button -->
@@ -71,10 +74,10 @@
 <script>
 function addEssayQuestion() {
     const questionInput = document.getElementById('question-input').value;
-    if (questionInput.trim() === "") return; // Do nothing if the input is empty
+    if (questionInput.trim() === "") return;
 
     const questionsDiv = document.getElementById('questions');
-    const questionIndex = questionsDiv.children.length; // Generate a unique index for each question
+    const questionIndex = questionsDiv.children.length;
     const newQuestionDiv = document.createElement('div');
     newQuestionDiv.classList.add('form-group', 'question-group');
     newQuestionDiv.innerHTML = `
@@ -88,17 +91,17 @@ function addEssayQuestion() {
     `;
     questionsDiv.appendChild(newQuestionDiv);
 
-    document.getElementById('question-input').value = ""; // Clear the input field
-    document.getElementById('error-message').style.display = 'none'; // Hide the error message if displayed
+    document.getElementById('question-input').value = "";
+    document.getElementById('error-message').style.display = 'none';
 }
 
 function addRadioQuestion() {
     const questionInput = document.getElementById('question-input').value;
-    if (questionInput.trim() === "") return; // Do nothing if the input is empty
+    if (questionInput.trim() === "") return;
 
     const questionsDiv = document.getElementById('questions');
-    const questionIndex = questionsDiv.children.length; // Generate a unique index for each question
-    const uniqueRadioName = `radio_${Date.now()}`; // Unique name for each set of radio buttons
+    const questionIndex = questionsDiv.children.length;
+    const uniqueRadioName = `radio_${Date.now()}`;
     const newQuestionDiv = document.createElement('div');
     newQuestionDiv.classList.add('form-group', 'question-group');
     newQuestionDiv.innerHTML = `
@@ -121,8 +124,8 @@ function addRadioQuestion() {
     `;
     questionsDiv.appendChild(newQuestionDiv);
 
-    document.getElementById('question-input').value = ""; // Clear the input field
-    document.getElementById('error-message').style.display = 'none'; // Hide the error message if displayed
+    document.getElementById('question-input').value = "";
+    document.getElementById('error-message').style.display = 'none';
 }
 
 function removeQuestion(button) {
@@ -133,10 +136,10 @@ function removeQuestion(button) {
 function validateForm() {
     const questionsDiv = document.getElementById('questions');
     if (questionsDiv.children.length === 0) {
-        document.getElementById('error-message').style.display = 'block'; // Show error message
-        return false; // Prevent form submission
+        document.getElementById('error-message').style.display = 'block';
+        return false;
     }
-    return true; // Allow form submission
+    return true;
 }
 </script>
 

@@ -7,6 +7,8 @@ use App\Models\EvaluationForm;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Answer;
+use Illuminate\Support\Facades\DB;
+
 class EvaluationFormController extends Controller
 {
     public function store(Request $request, $eventId)
@@ -76,5 +78,55 @@ class EvaluationFormController extends Controller
         return redirect()->route('event.view', $event->id)->with('success', 'Your evaluation has been submitted successfully.');
     }
 
+    public function showEvaluationResults($id)
+    {
+        // Fetch the event with its related form, questions, and answers
+        $event = Event::with('evaluationForm.questions.answers')
+            ->where('id', $id)
+            ->firstOrFail();
+    
+        $comments = [];
+        $radioData = [];
+    
+        // Define the static radio options (1, 2, 3, 4, 5)
+        $staticRadioOptions = [1, 2, 3, 4, 5];
+    
+        // Access the single form associated with the event
+        $form = $event->evaluationForm;
+    
+        if ($form) {
+            foreach ($form->questions as $question) {
+                // Check if the question is a comment or radio type
+                if ($question->isComment()) {
+                    // Collect comment answers in a list
+                    $comments[] = [
+                        'question' => $question->question,
+                        'answers' => $question->answers->pluck('answer'),
+                    ];
+                } elseif ($question->isRadio()) {
+                    // Compile data for the radio question into a bar chart format
+                    $answerCounts = $question->answers()
+                        ->select('answer', DB::raw('count(*) as count'))
+                        ->groupBy('answer')
+                        ->get()
+                        ->pluck('count', 'answer'); // Keyed collection: answer => count
+    
+                    // Ensure all static radio options are present, with a count of 0 if not selected
+                    $compiledCounts = collect($staticRadioOptions)->mapWithKeys(function ($option) use ($answerCounts) {
+                        return [$option => $answerCounts->get($option, 0)];
+                    });
+    
+                    $radioData[] = [
+                        'question' => $question->question,
+                        'labels' => $staticRadioOptions,
+                        'values' => $compiledCounts->values(),  // Extract counts in the correct order
+                    ];
+                }
+            }
+        }
+    
+        // Send the radio data and comments to the view for Chart.js
+        return view('event.partials.evaluation', compact('comments', 'radioData', 'staticRadioOptions'));
+    }
  
 }

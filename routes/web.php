@@ -94,6 +94,8 @@ Route::middleware(['auth', 'checkEventCreator'])->group(function () {
     route::patch('/event/{id}/update', [EventController::class, 'update'])->name('event.update');
     Route::get('/event/{id}/pending-participants', [EventController::class, 'showPendingParticipants'])->name('events.pendingparticipants');
     Route::post('/event/{id}/participants/{participant}/update', [EventController::class, 'updateParticipantStatus'])->name('participants.updateStatus');
+    Route::get('/event/{id}/evaluation-results/', [EvaluationFormController::class, 'showEvaluationResults'])->name('evaluation.results');
+
     
 
     //eval forms

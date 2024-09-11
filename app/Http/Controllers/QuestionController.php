@@ -45,47 +45,68 @@ class QuestionController extends Controller
     }
 
 
-    public function update(Request $request, $id, $form)
+    public function update(Request $request, $id, $formId)
     {
         // Validate the request
         $request->validate([
-            'questions' => 'required|array',
+            'questions' => 'required|array|min:1', // Ensure at least one question is present
+            'questions.*.id' => 'nullable|integer', // The ID is optional (for existing questions)
             'questions.*.text' => 'required|string',
             'questions.*.type' => 'required|string|in:essay,radio',
         ]);
-    
-        // Begin a database transaction to ensure data consistency
+
+        // Begin a database transaction
         DB::beginTransaction();
-    
+
         try {
-            // Delete existing questions for the form
-            Question::where('form_id', $form)->delete();
-    
-            // Save updated questions
+            $updatedQuestionIds = [];
+
+            // Loop through each question in the request
             foreach ($request->input('questions') as $question) {
-                $type = $question['type'];
-                $typeId = ($type === 'essay') ? 1 : 2;
-    
-                Question::create([
-                    'form_id' => $form,
-                    'question' => $question['text'],
-                    'type_id' => $typeId,
-                ]);
+                $typeId = ($question['type'] === 'radio') ? 2 : 1;
+
+                if (isset($question['id'])) {
+                    // Update existing question
+                    $existingQuestion = Question::find($question['id']);
+
+                    if ($existingQuestion) {
+                        $existingQuestion->update([
+                            'question' => $question['text'],
+                            'type_id' => $typeId,
+                        ]);
+                        $updatedQuestionIds[] = $existingQuestion->id;
+                    }
+                } else {
+                    // Create a new question if no ID exists
+                    $newQuestion = Question::create([
+                        'form_id' => $formId,
+                        'question' => $question['text'],
+                        'type_id' => $typeId,
+                    ]);
+                    $updatedQuestionIds[] = $newQuestion->id;
+                }
             }
-    
-            // Commit the transaction if everything is fine
+
+            // Delete any questions that were not part of the update
+            Question::where('form_id', $formId)
+                    ->whereNotIn('id', $updatedQuestionIds)
+                    ->delete();
+
+            // Commit the transaction
             DB::commit();
         } catch (\Exception $e) {
-            // Rollback the transaction in case of error
+            // Rollback in case of error
             DB::rollBack();
-    
-            // Redirect if error
+
             return redirect()->back()->withErrors(['msg' => 'Failed to update questions. Please try again.']);
         }
-    
+
         // Redirect to the event view page
-        return redirect()->route('event.view', ['id' => $id])->with('success', 'Questions updated successfully!');
+        return redirect()->route('event.view', ['id' => EvaluationForm::find($formId)->event_id])
+                        ->with('success', 'Questions updated successfully!');
     }
+
+
     
 
 

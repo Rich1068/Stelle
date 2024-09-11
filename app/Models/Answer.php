@@ -15,4 +15,9 @@ class Answer extends Model
         'user_id',
         'answer',
     ];
+
+    public function question()
+    {
+        return $this->belongsTo(Question::class);
+    }
 }

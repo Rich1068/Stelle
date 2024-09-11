@@ -126,6 +126,12 @@
                 </form>
             @endif
 
+            <button type="button" class="btn btn-primary">
+            <a href="{{ route('evaluation.results', ['id' => $event->id]) }}" style="color:white; text-decoration:none;">
+                View Evaluation Results
+            </a>
+            </button>
+
             <!-- Activate Checkbox -->
             @if($event->evaluationForm)
                 <form action="{{ route('evaluation-forms.toggle', ['id' => $event->id, 'form' => $event->evaluationForm->id]) }}" method="POST" class="full-width-button">

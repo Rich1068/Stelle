@@ -21,4 +21,5 @@ class EvaluationForm extends Model
     {
         return $this->hasMany(Question::class, 'form_id');
     }
+
 }
