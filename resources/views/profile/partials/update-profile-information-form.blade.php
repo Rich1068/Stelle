@@ -121,6 +121,14 @@
                 <x-input-error class="profile-edit-error" :messages="$errors->get('description')" />
             </div>
 
+            <div class="profile-edit-item profile-edit-item-full">
+                <x-input-label for="age" class="profile-edit-label">
+                    <i class="fas fa-pencil-alt"></i> {{ __('Age:') }}
+                </x-input-label>
+                <textarea id="age" name="age" class="profile-edit-textarea" autofocus autocomplete="age">{{ old('age', $user->age) }}</textarea>
+                <x-input-error class="profile-edit-error" :messages="$errors->get('age')" />
+            </div>
+
             <div class="profile-edit-item profile-edit-actions">
                 <x-primary-button class="profile-edit-save-button">
                     <i class="fas fa-save"></i> {{ __('Save') }}

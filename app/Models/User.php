@@ -30,6 +30,7 @@ class User extends Authenticatable implements CanResetPassword
         'description',
         'contact_number',
         'profile_picture',
+        'age'
 
     ];
 
@@ -80,4 +81,9 @@ class User extends Authenticatable implements CanResetPassword
             'cert_id' // Local key on CertUser table
         );
     }
-}
+
+    public function eventParticipant()
+    {
+        return $this->hasMany(EventParticipant::class);
+    }
+};

@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File;
 use App\Models\Country;
 use App\Models\User;
+use App\Models\Event;
 use App\Models\Roles;
 use App\Models\RegisterAdmin;
 
@@ -25,9 +26,10 @@ class ProfileController extends Controller
         $user = Auth::user(); 
         $user->load('country');
         $user->load('role');
+        $attendedEvents = $user->eventParticipant()->with('event')->get()->pluck('event');
         $countryTable = $user->country;
-
-        return view('profile.profile', ['user' => $user, 'countryTable' => $countryTable]); 
+        $event = Event::all();
+        return view('profile.profile', ['user' => $user, 'countryTable' => $countryTable, 'attendedEvents' => $attendedEvents, 'event' => $event]); 
     }
     /**
      * Display the user's profile form.

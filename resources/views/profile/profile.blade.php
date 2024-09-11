@@ -42,7 +42,38 @@
                 @endif
             </p>
             <p><strong>Gender:</strong> @if($user->gender == null) N/A @else {{ $user->gender }} @endif</p>
+            <p><strong>Age:</strong> @if($user->age == null) N/A @else {{ $user->age }} @endif</p>
         </div>
     </div>
+    <!-- Section for attended events -->
+    <div class="attended-events-section">
+    <h3 class="bold-blue">
+        <i class="fas fa-calendar-check"></i> Attended Events
+    </h3>
+
+    @if($attendedEvents->isEmpty())
+        <p>N/A</p>
+    @else
+        <div class="scrollable-event-list">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($attendedEvents as $event)
+                        <tr>
+                            <td><a href="{{ route('event.view', $event->id) }}">{{ $event->title }}</a></td>
+                            <!-- <td><strong>{{ $event->title }}</strong></td> -->
+                            <td>{{ $event->date }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    @endif
+</div>
 </div>
 @endsection
