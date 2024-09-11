@@ -9,7 +9,9 @@ class SuperAdminController extends Controller
 {
     public function index()
     {
-        return view('super_admin.dashboard');
+        $user = Auth::user()->id;
+
+        return view('super_admin.dashboard',compact('user'));
     }
 
 
