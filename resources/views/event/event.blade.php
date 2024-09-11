@@ -1,6 +1,14 @@
 @extends('layouts.app')
 @section('body')
 
+@if(session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
+    @endif
+
+    @if(session('error'))
+        <div class="alert alert-danger">{{ session('error') }}</div>
+@endif
+
 <div class="event-view-container">
     <!-- Tab Navigation -->
     <div class="tabs">
@@ -97,13 +105,11 @@
         <div class="tab-pane" id="participants">
             @include('event.partials.participantlist', ['event' => $event, 'participants' => $participants, 'currentUser' => $currentUser, 'userevent' =>$userevent])
             @if ($currentUser == $userevent->user->id)
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#pendingParticipantsModal">
-                <span>View Requesting Participants</span>
-            </button>
+            <a href="{{ route('events.pendingparticipants', $event->id) }}" class="btn btn-primary">
+                    <span>View Requesting Participants</span>
+                </a>
             @endif
-
         </div>
-        @include('event.partials.pendingparticipants', ['event' => $event, 'pendingparticipants' => $pendingparticipants])
         <!-- Feedback Form Tab -->
         <div class="tab-pane" id="feedback">
             <!-- Create or Update Evaluation Form Button -->

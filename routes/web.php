@@ -92,7 +92,7 @@ Route::middleware(['auth', 'checkEventCreator'])->group(function () {
     //update event info
     route::get('/event/{id}/edit', [EventController::class, 'edit'])->name('event.edit');
     route::patch('/event/{id}/update', [EventController::class, 'update'])->name('event.update');
-
+    Route::get('/event/{id}/pending-participants', [EventController::class, 'showPendingParticipants'])->name('events.pendingparticipants');
     Route::post('/event/{id}/participants/{participant}/update', [EventController::class, 'updateParticipantStatus'])->name('participants.updateStatus');
     
 

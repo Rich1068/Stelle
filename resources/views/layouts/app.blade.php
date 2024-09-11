@@ -29,11 +29,13 @@
             width: 100%;
         }
         .topbar .image-container img {
-            max-width: 150px; /* Adjusted size */
-            max-height: 75px; /* Adjusted size */
+            max-width: 150px;
+            max-height: 75px; 
             /* Optional: Add padding or margin to adjust position if needed */
         }
     </style>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
  
 <div id="page-top">

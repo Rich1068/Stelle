@@ -63,9 +63,6 @@ class EventController extends Controller
         $participants = EventParticipant::where('event_id', $id)
             ->where('status_id', 1)
             ->get();
-        $pendingparticipants = EventParticipant::where('event_id', $id)
-            ->where('status_id', 3)
-            ->get();
         $currentUser = Auth::user()->id;
 
         $hasAnswered = false;
@@ -93,7 +90,6 @@ class EventController extends Controller
             'hasAnswered' => $hasAnswered,
             'certificate' => $certificate,
             'participants' => $participants,
-            'pendingparticipants' =>$pendingparticipants, 
             'currentUser' =>$currentUser
         ]);
     }
@@ -236,6 +232,22 @@ class EventController extends Controller
         }
 
         return redirect()->route('event.view', $event->id)->with('error', 'You have already requested to join this event.');
+    }
+
+    public function showPendingParticipants($id)
+    {
+        $eventuser = UserEvent::findOrFail($id);
+        $event = Event::findOrFail($id);
+        // Check if the logged-in user is the creator of the event
+        if ($eventuser->user_id !== Auth::id()) {
+            return redirect()->route('unauthorized')->with('error', 'You do not have permission to view this page.');
+        }
+
+        $participants = EventParticipant::where('event_id', $id)
+                ->where('status_id', 3)
+                ->get();
+
+        return view('event.pendingparticipants', compact('eventuser', 'participants', 'event'));
     }
 
     public function updateParticipantStatus(Request $request, $eventId, $participantId)
