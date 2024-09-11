@@ -1231,15 +1231,13 @@ h2 {
   }
 
   :root {
-    --primary-color: #003d80;
-    --secondary-color: #1e3a8a;
-    --hover-color: #002a60;
-    --link-color: #1e3a8a;
-    --link-hover-color: #0d47a1;
+    --dark-blue: #003d80;
+    --dark-blue-hover: #002a60;
+    --dark-blue-light: #1e3a8a;
+    --dark-blue-light-hover: #0d47a1;
+    --light-grey: #e0e0e0;
     --divider-color: rgba(0, 61, 128, 0.3);
-    --table-hover-color: rgba(0, 61, 128, 0.05);
-    --text-color: #003d80;
-    --background-color: #fff;
+    --shadow-color: rgba(0, 0, 0, 0.1);
 }
 
 .profile-container {
@@ -1250,11 +1248,11 @@ h2 {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    background: var(--background-color);
+    background: #fff;
     padding: 30px;
     border-radius: 15px;
     margin-bottom: 20px;
-    box-shadow: 0 2px 10px #0000001a;
+    box-shadow: 0 2px 10px var(--shadow-color);
     width: 100%;
     box-sizing: border-box;
 }
@@ -1291,16 +1289,16 @@ h2 {
 
 .name-bold {
     font-weight: bold;
-    color: var(--primary-color);
+    color: var(--dark-blue);
 }
 
 .label-blue {
-    color: var(--primary-color);
+    color: var(--dark-blue);
     font-weight: bold;
 }
 
 .btn-edit {
-    background-color: var(--primary-color);
+    background-color: var(--dark-blue);
     color: #fff;
     padding: 10px 20px;
     text-decoration: none;
@@ -1311,7 +1309,7 @@ h2 {
 }
 
 .btn-edit:hover {
-    background-color: var(--hover-color);
+    background-color: var(--dark-blue-hover);
 }
 
 .btn-edit i {
@@ -1328,22 +1326,22 @@ h2 {
 
 .info-section,
 .profile-attended-events-container {
-    background: var(--background-color);
+    background: #fff;
     padding: 20px;
     border-radius: 15px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 10px var(--shadow-color);
     width: 100%;
 }
 
 .info-divider {
     height: 2px;
-    background-color: var(--divider-color); /* Use variable for divider color */
+    background-color: var(--divider-color); /* Dark blue with 30% transparency */
     margin: 10px 0; /* Adjust spacing as needed */
 }
 
 .bold-blue {
     font-weight: bold;
-    color: var(--primary-color);
+    color: var(--dark-blue);
 }
 
 .profile-attended-events-header {
@@ -1355,7 +1353,7 @@ h2 {
 .profile-attended-events-title {
     font-size: 18px;
     font-weight: bold;
-    color: var(--secondary-color);
+    color: var(--dark-blue-light);
     display: flex;
     align-items: center;
 }
@@ -1378,78 +1376,201 @@ h2 {
 
 .profile-attended-events-table thead th {
     font-weight: bold;
-    color: var(--primary-color); /* Dark blue header text */
+    color: var(--dark-blue); /* Dark blue header text */
     padding: 12px; /* Add padding for better readability */
     text-align: left;
     border-bottom: 2px solid var(--divider-color); /* Dark blue transparent border for the header */
 }
 
 .profile-attended-events-table tbody tr {
-    border-bottom: 1px solid #e0e0e0; /* Light grey divider between rows */
+    border-bottom: 1px solid var(--light-grey); /* Light grey divider between rows */
 }
 
 .profile-attended-events-table tbody tr td {
     padding: 12px; /* Add padding for spacing inside cells */
-    color: var(--text-color); /* Dark blue for the table text */
+    color: var(--dark-blue); /* Dark blue for the table text */
 }
 
 .profile-attended-events-table tbody tr:hover {
-    background-color: var(--table-hover-color); /* Subtle hover effect */
+    background-color: rgba(0, 61, 128, 0.05); /* Subtle hover effect */
 }
 
 .profile-attended-events-link {
-    color: var(--link-color); /* Same dark blue for links */
+    color: var(--dark-blue-light); /* Same dark blue for links */
     text-decoration: none;
     font-weight: bold; /* Make the link stand out */
     transition: color 0.3s;
 }
 
 .profile-attended-events-link:hover {
-    color: var(--link-hover-color); /* Darker blue on hover */
+    color: var(--dark-blue-light-hover); /* Darker blue on hover */
 }
 
-/* Responsive Adjustments */
-@media (max-width: 1200px) {
-    .profile-body-grid {
-        grid-template-columns: 1fr; /* Stack columns on smaller screens */
-    }
-}
-
+/* Mobile Responsiveness */
 @media (max-width: 768px) {
-    .profile-header {
-        flex-direction: column; /* Stack header content vertically */
-        align-items: center;
-        text-align: center;
-    }
+  .profile-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
 
-    .profile-info {
-        margin-left: 0;
-        margin-top: 20px;
-    }
+  .profile-info {
+    margin-left: 0;
+    margin-top: 15px;
+  }
 
-    .profile-body-grid {
-        grid-template-columns: 1fr; /* Stack columns on smaller screens */
-    }
+  .profile-body-grid {
+    grid-template-columns: 1fr; /* Single column layout */
+  }
 
-    .profile-attended-events-list {
-        max-height: 200px; /* Adjust height for smaller screens */
-    }
+  .profile-attended-events-table {
+    width: 100%; /* Make sure it uses full width on smaller screens */
+    font-size: 14px; /* Smaller text size */
+  }
+
+  .profile-attended-events-table thead th,
+  .profile-attended-events-table tbody td {
+    padding: 8px; /* Adjust padding for smaller screens */
+  }
 }
 
-@media (max-width: 480px) {
-    .btn-edit {
-        padding: 8px 16px; /* Adjust button padding for smaller screens */
-    }
 
-    .profile-picture {
-        width: 100px;
-        height: 100px;
-    }
+.flag-icon {
+  max-width: 50px; /* Adjust size if needed */
+  max-height: 50px; /* Adjust size if needed */
+}
 
-    .profile-picture img {
-        width: 100px;
-        height: 100px;
-    }
+.fas {
+  margin-right: 10px; /* Space between icon and text */
+  
+}
+.top-container {
+  width: 100% !important; /* Ensure it takes full width */
+  max-width: 1200px !important; /* Set a maximum width to avoid it stretching too wide */
+  background-color: white !important; /* White background */
+  margin: 20px auto !important; /* Center the container with margin */
+  padding: 20px !important; /* Padding inside the container */
+  border-radius: 25px !important; /* Rounded corners */
+  text-align: left !important; /* Align text to the left */
+  display: flex !important; /* Flexbox for alignment */
+  flex-direction: column !important; /* Stack items vertically */
+  align-items: flex-start !important; /* Align items to the start */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important; /* Optional: add shadow for a subtle lift effect */
+}
+
+
+.back-btn {
+  background-color: #002f6c; /* Dark blue background */
+  border-radius: 50%; /* Circular shape */
+  width: 40px; /* Button size */
+  height: 40px;
+  display: flex; /* Center icon */
+  align-items: center;
+  justify-content: center;
+  margin-right: 15px; /* Space between button and text */
+}
+
+.back-btn a {
+  color: white; /* White arrow */
+  text-decoration: none; /* Remove underline */
+  font-size: 1.2em; /* Adjust icon size */
+}
+
+.manage-participants {
+  font-size: 1.2em; /* Font size for "Pending Participants For" */
+  color: #002f6c; /* Dark blue color */
+  font-weight: bold;
+}
+
+.event-title {
+  font-size: 1.8em; /* Larger font size for event title */
+  color: grey; /* Grey color for the event title */
+  margin-top: 5px; /* Margin to separate from the "Pending Participants For" text */
+}
+
+.participant-list-container {
+  width: 100%;
+  border-radius: 15px;
+  padding: 15px;
+}
+
+.participant-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px; /* Increased padding */
+  margin-bottom: 20px; /* Margin between items */
+  border-radius: 30px; /* Rounded corners */
+  border: 1px solid #ddd; /* Light grey border */
+  background-color: #f9f9f9; /* Light background color */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Shadow for items */
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Smooth transition for size and shadow */
+  animation: fadeIn 0.5s ease-in-out; /* Fade-in animation */
+}
+
+.participant-list-item:hover {
+  transform: scale(1.05); /* Slightly enlarge the item on hover */
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Slightly larger shadow on hover */
+}
+
+
+.participant-info {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  padding: 25px;
+}
+
+.participant-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.profile-picture {
+  width: 50px; /* Adjusted size of the profile picture */
+  height: 50px;
+  border-radius: 50%; /* Circular shape */
+  object-fit: cover;
+}
+
+.participant-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.participant-name {
+  font-size: 1.2em; /* Font size for participant's name */
+  color: #002f6c; /* Dark blue color */
+  font-weight: bold;
+}
+
+.participant-status, .participant-country {
+  font-size: 0.9em; /* Font size for status and country */
+  color: #888; /* Grey color */
+}
+
+.participant-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.participant-action-form .btn {
+  border-radius: 20px; /* Rounded edges for buttons */
+  padding: 6px 15px; /* Padding for buttons */
+  font-size: 0.85em; /* Font size */
+  font-weight: bold;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .send-cert-btn {
@@ -1467,6 +1588,7 @@ h2 {
   font-weight: bold; /* Bold text */
   cursor: pointer; /* Pointer cursor on hover */
   transition: background-color 0.3s, transform 0.3s; /* Smooth transitions */
+  margin-bottom: 20px;
 }
 
 .send-cert-btn button:hover {

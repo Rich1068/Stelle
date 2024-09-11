@@ -2,11 +2,11 @@
 @section('body')
 
 @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
+    <div class="alert alert-success">{{ session('success') }}</div>
+@endif
 
-    @if(session('error'))
-        <div class="alert alert-danger">{{ session('error') }}</div>
+@if(session('error'))
+    <div class="alert alert-danger">{{ session('error') }}</div>
 @endif
 
 <div class="event-view-container">
@@ -54,8 +54,8 @@
                             <span>Edit</span>
                         </a>
 
-                        <!-- Create and View Certificate Buttons -->
-                        <div class="create-certificate-buttons">
+                        <!-- Create and View Certificate Buttons Side by Side -->
+                        <div class="certificate-buttons">
                             @if ($certificate == null)
                                 <a href="{{ route('certificates.create', $event->id) }}" class="btn btn-primary">Create Certificate</a>
                             @else
@@ -66,6 +66,9 @@
                                 <button id="viewCertificateButton" data-image-url="{{ asset($certificate->cert_path) }}" class="btn btn-primary">View Certificate</button>
                             @endif
                         </div>
+
+                        <!-- View Participants Button -->
+                 
                     </div>
                 @endif
 
@@ -105,11 +108,12 @@
         <div class="tab-pane" id="participants">
             @include('event.partials.participantlist', ['event' => $event, 'participants' => $participants, 'currentUser' => $currentUser, 'userevent' =>$userevent])
             @if ($currentUser == $userevent->user->id)
-            <a href="{{ route('events.pendingparticipants', $event->id) }}" class="btn btn-primary">
-                    <span>View Requesting Participants</span>
+                <a href="{{ route('events.pendingparticipants', $event->id) }}" class="send-cert-btn">
+                <button type="submit" class="btn btn-primary">View Pending Participants</button>
                 </a>
             @endif
         </div>
+
         <!-- Feedback Form Tab -->
         <div class="tab-pane" id="feedback">
             <!-- Create or Update Evaluation Form Button -->
@@ -193,36 +197,35 @@
 
     // Tab switching logic
     tabButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            const target = button.dataset.tab;
-
-            // Store the selected tab in local storage
-            localStorage.setItem(activeTabKey, target);
-
+        button.addEventListener('click', function () {
+            const targetTab = this.getAttribute('data-tab');
+            
             // Remove active class from all buttons and panes
             tabButtons.forEach(btn => btn.classList.remove('active'));
             tabPanes.forEach(pane => pane.classList.remove('active'));
 
-            // Activate the clicked tab
-            button.classList.add('active');
-            document.getElementById(target).classList.add('active');
+            // Add active class to the clicked button and the corresponding pane
+            this.classList.add('active');
+            document.getElementById(targetTab).classList.add('active');
+
+            // Save the current tab to local storage
+            localStorage.setItem(activeTabKey, targetTab);
         });
     });
 
-    // Certificate modal logic
-    const viewCertificateButton = document.querySelector('#viewCertificateButton');
-    if (viewCertificateButton) {
-        viewCertificateButton.addEventListener('click', function (event) {
-            event.preventDefault();
-            const imageUrl = event.target.dataset.imageUrl;
-            const certificateImage = document.querySelector('#certificateImage');
-            if (certificateImage) {
-                certificateImage.src = imageUrl;
-                $('#certificateModal').modal('show');
+    // Show certificate in modal
+    document.querySelectorAll('[id="viewCertificateButton"]').forEach(button => {
+        button.addEventListener('click', function () {
+            const imageUrl = this.getAttribute('data-image-url');
+            const modal = document.getElementById('certificateModal');
+            const modalImage = document.getElementById('certificateImage');
+
+            if (modal && modalImage) {
+                modalImage.src = imageUrl;
+                $(modal).modal('show');
             }
         });
-    }
+    });
 });
-
 </script>
 @endsection
