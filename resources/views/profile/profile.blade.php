@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('body')
-
 <div class="profile-container">
+    <!-- Profile Header Section -->
     <div class="profile-header">
         <div class="profile-picture">
             @if($user->profile_picture == null)
@@ -19,21 +19,18 @@
         </a>
     </div>
 
-    <div class="profile-body">
-        <div class="about-section">
-            <h3 class="bold-blue">
-                <i class="fas fa-user-circle"></i> About/Bio
-            </h3>
-            <p>@if($user->description == null) N/A @else {{ $user->description }} @endif</p>
-        </div>
-
+    <!-- Profile Body Grid Layout -->
+    <div class="profile-body-grid">
+        <!-- Information Section -->
         <div class="info-section">
             <h3 class="bold-blue">
-                <i class="fas fa-info-circle"></i> Information
+                Information
             </h3>
-            <p><strong>Email:</strong> {{ $user->email }}</p>
-            <p><strong>Contact Number:</strong> @if($user->contact_number == null) N/A @else {{ $user->contact_number }} @endif</p>
-            <p><strong>Country:</strong> 
+            <p><strong class="label-blue">Email:</strong> {{ $user->email }}</p>
+            <div class="info-divider"></div>
+            <p><strong class="label-blue">Contact Number:</strong> @if($user->contact_number == null) N/A @else {{ $user->contact_number }} @endif</p>
+            <div class="info-divider"></div>
+            <p><strong class="label-blue">Country:</strong> 
                 @if($user->country_id == null) 
                     N/A 
                 @else 
@@ -41,39 +38,48 @@
                     <img src="{{ asset('storage/images/flags/' . $countryTable->code . '.png') }}" alt="Flag of {{ $countryTable->countryname }}" class="flag-icon"> 
                 @endif
             </p>
-            <p><strong>Gender:</strong> @if($user->gender == null) N/A @else {{ $user->gender }} @endif</p>
-            <p><strong>Age:</strong> @if($user->age == null) N/A @else {{ $user->age }} @endif</p>
+            <div class="info-divider"></div>
+            <p><strong class="label-blue">Gender:</strong> @if($user->gender == null) N/A @else {{ $user->gender }} @endif</p>
+            <div class="info-divider"></div>
+            <p><strong class="label-blue">Age:</strong> @if($user->age == null) N/A @else {{ $user->age }} @endif</p>
+            <div class="info-divider"></div>
+            <p><strong class="label-blue">About/Bio:</strong> @if($user->description == null) N/A @else {{ $user->description }} @endif</p>
+        </div>
+
+        <!-- Attended Events Section -->
+        <div class="profile-attended-events-container">
+            <div class="profile-attended-events-header">
+                <h3 class="profile-attended-events-title">
+                    <i class="fas fa-calendar-alt"></i> Attended Events
+                </h3>
+            </div>
+            <div class="profile-attended-events-list">
+                @if($attendedEvents->isEmpty())
+                    <p>N/A</p>
+                @else
+                    <table class="profile-attended-events-table">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($attendedEvents as $event)
+                                <tr>
+                                    <td>
+                                        <a href="{{ route('event.view', $event->id) }}" class="profile-attended-events-link">
+                                            {{ $event->title }}
+                                        </a>
+                                    </td>
+                                    <td>{{ $event->date }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                @endif
+            </div>
         </div>
     </div>
-    <!-- Section for attended events -->
-    <div class="attended-events-section">
-    <h3 class="bold-blue">
-        <i class="fas fa-calendar-check"></i> Attended Events
-    </h3>
-
-    @if($attendedEvents->isEmpty())
-        <p>N/A</p>
-    @else
-        <div class="scrollable-event-list">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($attendedEvents as $event)
-                        <tr>
-                            <td><a href="{{ route('event.view', $event->id) }}">{{ $event->title }}</a></td>
-                            <!-- <td><strong>{{ $event->title }}</strong></td> -->
-                            <td>{{ $event->date }}</td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-    @endif
-</div>
 </div>
 @endsection

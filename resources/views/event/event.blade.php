@@ -90,7 +90,7 @@
                             @else
                                 <form action="{{ route('evaluation-form.take', ['id' => $event->id, 'form' => $evaluationForm->id]) }}" method="GET" class="full-width-button">
                                     @csrf
-                                    <button type="submit" class="create-certificate-buttons">Take Evaluation</button>
+                                    <button type="submit" class="btn btn-primary">Take Evaluation</button>
                                 </form>
                             @endif
                         @else
