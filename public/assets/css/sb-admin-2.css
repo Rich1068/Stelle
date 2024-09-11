@@ -46,6 +46,12 @@
 *::after {
   box-sizing: border-box;
 }
+
+.circular-image {
+  border-radius: 50%;
+  object-fit: cover; /* Ensures the image covers the circle */
+}
+
 .pagination {
   margin-top: 20px !important;
   padding-bottom: 40px !important;
@@ -1359,11 +1365,8 @@ h2 {
 .top-container {
   width: 100%;
   background-color: white;
-  border-radius: 15px; /* Adjusted border radius */
-  padding: 40px 20px; /* Increased padding for a taller container */
   margin-bottom: 20px;
-  margin-top: 40px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Shadow for the top container */
+  margin-top: 10px;
   text-align: left; /* Align text to the left */
   display: flex; /* Flexbox for alignment */
   flex-direction: column; /* Stack items vertically */
@@ -4156,10 +4159,19 @@ fieldset:disabled a.btn {
 }
 
 .btn-primary {
-  color: #fff !important; 
-  background-color: #4e73df;
-  border-color: #4e73df;
+  background-color: #001e54;
+  color: white;
+  border-radius: 20px; /* Rounded corners */
+  padding: 15px;
+  font-size: 15px;
+  font-weight: bold;
+  text-align: center; /* Center text */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 55px; /* Fixed height for consistency */
 }
+
 
 .btn-primary:hover {
   color: #fff;
@@ -4193,10 +4205,20 @@ fieldset:disabled a.btn {
 }
 
 .btn-secondary {
-  color: #fff;
-  background-color: #858796;
-  border-color: #858796;
+  margin-top: 19px;
+  background-color: #3c4658;
+  color: white;
+  border-radius: 20px; /* Rounded corners */
+  padding: 15px;
+  font-size: 15px;
+  font-weight: bold;
+  text-align: center; /* Center text */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 55px; /* Fixed height for consistency */
 }
+
 
 .btn-secondary:hover {
   color: #fff;
@@ -4230,14 +4252,23 @@ fieldset:disabled a.btn {
 }
 
 .btn-success {
-  color: #fff;
-  background-color: #1cc88a;
-  border-color: #1cc88a;
+  background-color: #001e54;
+  color: white;
+  border-radius: 20px; /* Rounded corners */
+  padding: 15px;
+  font-size: 15px;
+  font-weight: bold;
+  text-align: center; /* Center text */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 55px; /* Fixed height for consistency */
+  margin-bottom: 10px;
 }
 
 .btn-success:hover {
   color: #fff;
-  background-color: #17a673;
+  background-color: #04027c;
   border-color: #169b6b;
 }
 
@@ -4344,6 +4375,16 @@ fieldset:disabled a.btn {
   color: #fff;
   background-color: #e74a3b;
   border-color: #e74a3b;
+  border-radius: 20px; /* Rounded corners */
+  padding: 15px;
+  font-size: 15px;
+  font-weight: bold;
+  text-align: center; /* Center text */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 55px; /* Fixed height for consistency */
+  margin-bottom: 10px;
 }
 
 .btn-danger:hover {

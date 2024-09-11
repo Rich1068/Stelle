@@ -78,11 +78,11 @@
                     @if ($participant && $participant->status_id == 1)
                         @if($event->evaluationForm && $event->evaluationForm->status_id == 1)
                             @if($hasAnswered)
-                                <button type="button" class="btn btn-secondary" disabled>Evaluation Form Already Answered</button>
+                                <button type="button" class="create-certificate-buttons" disabled>Evaluation Form Already Answered</button>
                             @else
                                 <form action="{{ route('evaluation-form.take', ['id' => $event->id, 'form' => $evaluationForm->id]) }}" method="GET" class="full-width-button">
                                     @csrf
-                                    <button type="submit" class="btn btn-primary">Take Evaluation</button>
+                                    <button type="submit" class="create-certificate-buttons">Take Evaluation</button>
                                 </form>
                             @endif
                         @else
