@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\CanResetPassword;
+use App\Notifications\ResetPassword as CustomResetPasswordNotification;  // Import the custom notification class
 
 class User extends Authenticatable implements CanResetPassword
 {
@@ -30,8 +30,7 @@ class User extends Authenticatable implements CanResetPassword
         'description',
         'contact_number',
         'profile_picture',
-        'age'
-
+        'age',
     ];
 
     /**
@@ -45,7 +44,7 @@ class User extends Authenticatable implements CanResetPassword
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * The attributes that should be cast.
      *
      * @return array<string, string>
      */
@@ -56,6 +55,20 @@ class User extends Authenticatable implements CanResetPassword
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Send the password reset notification.
+     *
+     * @param  string  $token
+     * @return void
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        // Use the custom ResetPassword notification and pass the token
+        $this->notify(new CustomResetPasswordNotification($token));
+    }
+
+    // Define relationships
     public function country()
     {
         return $this->belongsTo(Country::class, 'country_id');
@@ -70,6 +83,7 @@ class User extends Authenticatable implements CanResetPassword
     {
         return $this->hasMany(UserEvent::class);
     }
+
     public function certificates()
     {
         return $this->hasManyThrough(
@@ -86,4 +100,4 @@ class User extends Authenticatable implements CanResetPassword
     {
         return $this->hasMany(EventParticipant::class);
     }
-};
+}
