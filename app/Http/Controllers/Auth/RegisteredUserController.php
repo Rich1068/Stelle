@@ -31,25 +31,30 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $request->validate([
-            'first_name' => ['required', 'string', 'max:255'],
-            'last_name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
+    // Validate the input fields
+    $request->validate([
+        'first_name' => ['required', 'string', 'max:255'],
+        'last_name' => ['required', 'string', 'max:255'],
+        'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+        'password' => ['required', 'confirmed', Rules\Password::defaults()],
+    ]);
 
-        $user = User::create([
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role_id' => 3,
-        ]);
+    // Create the user
+    $user = User::create([
+        'first_name' => $request->first_name,
+        'last_name' => $request->last_name,
+        'email' => $request->email,
+        'password' => Hash::make($request->password),
+        'role_id' => 3,  // Assign a default role
+    ]);
 
-        event(new Registered($user));
+    // Trigger the registered event to send email verification
+    event(new Registered($user));
 
-        Auth::login($user);
+    // Log the user in
+    Auth::login($user);
 
-        return redirect(route('user.dashboard', absolute: false));
+    // Redirect to the email verification notice page instead of the dashboard
+    return redirect()->route('verification.notice');
     }
 }

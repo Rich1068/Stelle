@@ -24,24 +24,29 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
+        // Authenticate the user
         $request->authenticate();
 
+        // Regenerate session
         $request->session()->regenerate();
 
-        //user() is table, role_id is the column
-        if($request->user()->role_id == 1)
-        {
-            return redirect('super_admin/dashboard');
-        } else if($request->user()->role_id == 2)
-        {
-            return redirect('admin/dashboard');
-        } else if($request->user()->role_id == 3)
-        {
-            return redirect('user/dashboard');
+        // Check if the user's email is verified
+        if (!$request->user()->hasVerifiedEmail()) {
+            // If not verified, redirect to the email verification notice page
+            return redirect()->route('verification.notice');
         }
-        else{
-        return redirect()->intended(route('dashboard', absolute: false));
-    }
+
+        // Check the role and redirect accordingly
+        if ($request->user()->role_id == 1) {
+            return redirect()->route('super_admin.dashboard');
+        } elseif ($request->user()->role_id == 2) {
+            return redirect()->route('admin.dashboard');
+        } elseif ($request->user()->role_id == 3) {
+            return redirect()->route('user.dashboard');
+        }
+
+        // Default redirect if no role matches
+        return redirect()->intended(route('auth.login', absolute: false));
     }
 
     /**

@@ -12,7 +12,7 @@ use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\Auth\GoogleController;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 Route::get('auth/google/redirect', [GoogleController::class, 'googlepage'])->name('google.redirect');
 Route::get('auth/google/callback', [GoogleController::class, 'googlecallback'])->name('google.callback');
@@ -117,10 +117,10 @@ Route::group(['middleware' => ['auth', 'checkFormOwner']], function() {
 });
 
 //super admin stuff
-route::get('/super-admin/dashboard', [SuperAdminController::class, 'index'])->middleware(['auth','super_admin'])->name('super_admin.dashboard');
+route::get('/super-admin/dashboard', [SuperAdminController::class, 'index'])->middleware(['auth','super_admin','verified'])->name('super_admin.dashboard');
 
 //admin stuff
-route::get('/admin/dashboard', [AdminController::class, 'index'])->middleware(['auth','admin'])->name('admin.dashboard');
+route::get('/admin/dashboard', [AdminController::class, 'index'])->middleware(['auth','admin','verified'])->name('admin.dashboard');
 
 //user stuff
-route::get('/user/dashboard', [UserController::class, 'index'])->middleware(['auth','user'])->name('user.dashboard');
+route::get('/user/dashboard', [UserController::class, 'index'])->middleware(['auth','user', 'verified'])->name('user.dashboard');

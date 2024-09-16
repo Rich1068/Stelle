@@ -29,7 +29,7 @@ class GoogleController extends Controller
             $firstname = $googleUser['given_name'] ?? '';  // Use given_name from Google
             $lastname = $googleUser['family_name'] ?? '';  // Use family_name from Google
             $middlename = '';  // Google doesn't explicitly provide middle name
-
+            
             $finduser = User::where('google_id', $user->id)->first();
 
             if ($finduser) {
@@ -67,7 +67,8 @@ class GoogleController extends Controller
                     'google_id' => $user->id,
                     'profile_picture' => $filedatabase,
                     'role_id' => '3',
-                    'password' => bcrypt('samplepassword12345')
+                    'password' => env('GOOGLE_DEFAULT_PASSWORD'),
+                    'email_verified_at' => now()
                 ]);
 
                 Auth::login($newUser);

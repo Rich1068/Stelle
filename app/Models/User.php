@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Contracts\Auth\MustVerifyEmail;  // Add this for email verification
 use Illuminate\Contracts\Auth\CanResetPassword;
 use App\Notifications\ResetPassword as CustomResetPasswordNotification;  // Import the custom notification class
 
-class User extends Authenticatable implements CanResetPassword
+class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
 {
     use HasFactory, Notifiable;
 
@@ -31,6 +32,7 @@ class User extends Authenticatable implements CanResetPassword
         'contact_number',
         'profile_picture',
         'age',
+        'email_verified_at'
     ];
 
     /**
@@ -66,6 +68,18 @@ class User extends Authenticatable implements CanResetPassword
     {
         // Use the custom ResetPassword notification and pass the token
         $this->notify(new CustomResetPasswordNotification($token));
+    }
+
+    /**
+     * Send the email verification notification.
+     * If you want to customize the email verification notification,
+     * you can override this method.
+     *
+     * @return void
+     */
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new \App\Notifications\CustomVerifyEmail);  // Use your custom email verification notification if needed
     }
 
     // Define relationships
