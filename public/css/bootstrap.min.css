@@ -347,3 +347,104 @@ body {
 }
 
 /* Google login button */
+.white-container {
+    display: flex;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+
+    width: 40%;
+    height: auto; /* Allow container height to adjust automatically */
+    padding: 20px; /* Add padding to give more space inside the container */
+    margin: 0 auto; /* Center the container horizontally */
+    align-items: center; /* Center the content vertically */
+    justify-content: center; /* Center the content horizontally */
+    flex-direction: column; /* Stack elements vertically */
+}
+
+.logo-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Center the content vertically */
+    padding: 20px;
+    width: 100%; /* Ensure logo section spans the full width */
+}
+
+.logo-section img {
+    max-width: 70%; /* Limit logo size */
+    height: auto; /* Maintain aspect ratio */
+    margin-bottom: 40px; /* Adds spacing below the image */
+}
+
+.fpassword-container {
+    padding: 40px; /* Increased padding for more space */
+    width: 100%;
+    max-width: 500px; /* Increase max-width for more space */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center items within the form container */
+    justify-content: center; /* Center items within the form container */
+}
+
+.fpassword-container input[type="email"] {
+    background-color: #f0f0f0;
+    border: 1px solid #D9D9D9;
+    border-radius: 10px;
+    padding: 14px 20px; /* Added more padding for comfort */
+    font-size: 1rem;
+    width: 100%; /* Ensure input field spans full width */
+    max-width: 100%; /* Make sure it doesn't exceed the container */
+    box-sizing: border-box; /* Ensure padding is included in the total width */
+}
+
+.fpassword-container input::placeholder {
+    color: rgba(51, 51, 51, 0.5); /* Dark grey with 60% opacity for transparency */
+    font-weight: bold; /* Bold placeholder text */
+    text-align: center;
+}
+
+.fpassword-container .actions-container {
+
+    width: 100%; /* Ensure actions container takes full width */
+}
+.fpassword-container .login-button {
+    background-color: #001f60; /* Dark blue background */
+    color: white; /* White text */
+    border-radius: 10px;
+    padding: 12px 0; /* Adjusted padding */
+    font-size: 1rem;
+    font-weight: bold; /* Bold text */
+    width: 20%; /* Ensure button spans full width */
+    margin: 10px auto 10px; /* Reduce space above the button */
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+}
+
+.fpassword-container .login-button:hover {
+    background-color: white; /* White background on hover */
+    color: #001f60; /* Dark blue text on hover */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
+}
+
+.email-label-container {
+    text-align: center; /* Center the content within the container */
+    margin-bottom: 6px; /* Space below the label */
+}
+
+.email-label {
+    color: #001f60; /* Dark blue color */
+    font-weight: bold; /* Make text bold */
+    font-size: 1rem; /* Adjust font size if needed */
+    margin-bottom: 20px;
+}
+
+.actionsfpassword-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; /* Align items to the bottom */
+    max-width: 100%;
+
+  
+}
