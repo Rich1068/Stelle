@@ -35,7 +35,7 @@ class VerifyEmailController extends Controller
     {
         // Redirect based on role_id
         if ($user->role_id == 1) {
-            return redirect()->route('superadmin.dashboard')->with('verified', 1);
+            return redirect()->route('super_admin.dashboard')->with('verified', 1);
         } elseif ($user->role_id == 2) {
             return redirect()->route('admin.dashboard')->with('verified', 1);
         } elseif ($user->role_id == 3) {

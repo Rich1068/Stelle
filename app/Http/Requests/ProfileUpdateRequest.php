@@ -25,7 +25,7 @@ class ProfileUpdateRequest extends FormRequest
             'country_id' => ['nullable', 'int'],
             'description' => ['nullable', 'string', 'max:255'],
             'contact_number' => ['nullable', 'string', 'max:11', 'regex:/^\d+$/'],
-            'age' => ['nullable', 'integer', 'min:1', 'max:120'],
+            'birthdate' => ['nullable', 'date', 'before:today', 'after:1900-01-01'],
         ];
     }
 }

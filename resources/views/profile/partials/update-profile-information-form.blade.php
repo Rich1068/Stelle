@@ -122,11 +122,16 @@
             </div>
 
             <div class="profile-edit-item profile-edit-item-full">
-                <x-input-label for="age" class="profile-edit-label">
-                    <i class="fas fa-pencil-alt"></i> {{ __('Age:') }}
+                <x-input-label for="birthdate" class="profile-edit-label">
+                    <i class="fas fa-pencil-alt"></i> {{ __('Birthdate:') }}
                 </x-input-label>
-                <textarea id="age" name="age" class="profile-edit-textarea" autofocus autocomplete="age">{{ old('age', $user->age) }}</textarea>
-                <x-input-error class="profile-edit-error" :messages="$errors->get('age')" />
+                
+                <!-- Use input type="date" for date picker -->
+                <input id="birthdate" name="birthdate" type="date" class="profile-edit-textarea" 
+                    value="{{ old('birthdate', $user->birthdate) }}" 
+                    autofocus autocomplete="bday">
+                    
+                <x-input-error class="profile-edit-error" :messages="$errors->get('birthdate')" />
             </div>
 
             <div class="profile-edit-item profile-edit-actions">

@@ -7,6 +7,7 @@ use App\Models\EvaluationForm;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Answer;
+use App\Models\EventParticipant;
 use Illuminate\Support\Facades\DB;
 
 class EvaluationFormController extends Controller
@@ -84,22 +85,33 @@ class EvaluationFormController extends Controller
         $event = Event::with('evaluationForm.questions.answers')
             ->where('id', $id)
             ->firstOrFail();
-    
-        $comments = [];
-        $radioData = [];
-    
+        $currentParticipants = EventParticipant::where('event_id', $id)
+            ->where('status_id', 1) // Only accepted will show
+            ->count();
         // Define the static radio options (1, 2, 3, 4, 5)
         $staticRadioOptions = [1, 2, 3, 4, 5];
-    
+
         // Access the single form associated with the event
         $form = $event->evaluationForm;
-    
+
+        // Initialize an empty array to hold the unified list of questions (comments and radio)
+        $questionsData = [];
+        $totalUsers = 0;
+
         if ($form) {
+            // Collect unique users who answered the form
+            $totalUsers = DB::table('answers')
+                ->join('questions', 'answers.question_id', '=', 'questions.id')
+                ->where('questions.form_id', $form->id)
+                ->distinct('answers.user_id') // Count distinct user IDs
+                ->count('answers.user_id');
+
             foreach ($form->questions as $question) {
                 // Check if the question is a comment or radio type
                 if ($question->isComment()) {
-                    // Collect comment answers in a list
-                    $comments[] = [
+                    // Collect comment answers in the unified list
+                    $questionsData[] = [
+                        'type' => 'comment',
                         'question' => $question->question,
                         'answers' => $question->answers->pluck('answer'),
                     ];
@@ -110,13 +122,14 @@ class EvaluationFormController extends Controller
                         ->groupBy('answer')
                         ->get()
                         ->pluck('count', 'answer'); // Keyed collection: answer => count
-    
+
                     // Ensure all static radio options are present, with a count of 0 if not selected
                     $compiledCounts = collect($staticRadioOptions)->mapWithKeys(function ($option) use ($answerCounts) {
                         return [$option => $answerCounts->get($option, 0)];
                     });
-    
-                    $radioData[] = [
+
+                    $questionsData[] = [
+                        'type' => 'radio',
                         'question' => $question->question,
                         'labels' => $staticRadioOptions,
                         'values' => $compiledCounts->values(),  // Extract counts in the correct order
@@ -124,9 +137,10 @@ class EvaluationFormController extends Controller
                 }
             }
         }
-    
-        // Send the radio data and comments to the view for Chart.js
-        return view('event.partials.evaluation', compact('comments', 'radioData', 'staticRadioOptions'));
+        $participationRate = $currentParticipants > 0 ? round(($totalUsers / $currentParticipants) * 100, 2) : 0;
+
+        // Send the unified list of questions (comments and radio) and the total user count to the view
+        return view('event.partials.evaluation', compact('questionsData', 'staticRadioOptions', 'totalUsers', 'currentParticipants'));
     }
  
 }

@@ -41,7 +41,7 @@
             <div class="info-divider"></div>
             <p><strong class="label-blue">Gender:</strong> @if($user->gender == null) N/A @else {{ $user->gender }} @endif</p>
             <div class="info-divider"></div>
-            <p><strong class="label-blue">Age:</strong> @if($user->age == null) N/A @else {{ $user->age }} @endif</p>
+            <p><strong class="label-blue">Birthdate</strong> @if($user->birthdate == null) N/A @else {{ $user->birthdate }} @endif</p>
             <div class="info-divider"></div>
             <p><strong class="label-blue">About/Bio:</strong> @if($user->description == null) N/A @else {{ $user->description }} @endif</p>
         </div>

@@ -39,6 +39,7 @@
                 @endif
             </p>
             <p><strong>Gender:</strong> @if($user->gender == null) N/A @else {{ $user->gender }} @endif</p>
+            <p><strong>Birthdate:</strong> @if($user->birthdate == null) N/A @else {{ $user->birthdate }} @endif</p>
         </div>
     </div>
 </div>

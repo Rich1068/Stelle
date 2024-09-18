@@ -10,6 +10,7 @@ use App\Models\Question;
 use App\Models\Answer;
 use App\Models\CertUser;
 use Illuminate\View\View;
+use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -17,7 +18,6 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
-
 use Illuminate\Http\Request;
 
 class EventController extends Controller
@@ -27,9 +27,27 @@ class EventController extends Controller
         return view('event.create');
     }
 
-    public function list()
+    public function list(Request $request)
     {
-    $events = Event::paginate(10); // Fetch 10 events per page
+        // Start with the Event query
+        $query = Event::query();
+
+        // Check if there is a search term in the request
+        if ($request->has('search') && $request->search != '') {
+            // Filter events by title or description containing the search term
+            $query->where('title', 'like', '%' . $request->search . '%');
+        }
+
+        if ($request->has('date') && $request->date != '') {
+            // Parse the date input
+            $selectedDate = Carbon::parse($request->date)->format('Y-m-d');
+    
+            // Filter events occurring on the selected date
+            $query->whereDate('date', '=', $selectedDate);
+        }
+
+        // Paginate the results (10 per page)
+        $events = $query->paginate(10);
 
     return view('event.eventlist', compact('events'));
     }
