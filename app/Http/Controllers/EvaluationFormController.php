@@ -7,6 +7,8 @@ use App\Models\EvaluationForm;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Answer;
+use Carbon\Carbon;
+use Illuminate\Support\Collection;
 use App\Models\EventParticipant;
 use Illuminate\Support\Facades\DB;
 
@@ -85,62 +87,132 @@ class EvaluationFormController extends Controller
         $event = Event::with('evaluationForm.questions.answers')
             ->where('id', $id)
             ->firstOrFail();
+    
+        // Get the number of participants
         $currentParticipants = EventParticipant::where('event_id', $id)
-            ->where('status_id', 1) // Only accepted will show
+            ->where('status_id', 1) // Only accepted participants
             ->count();
+    
         // Define the static radio options (1, 2, 3, 4, 5)
         $staticRadioOptions = [1, 2, 3, 4, 5];
-
-        // Access the single form associated with the event
+    
+        // Access the form associated with the event
         $form = $event->evaluationForm;
-
-        // Initialize an empty array to hold the unified list of questions (comments and radio)
+    
+        // Initialize variables for user data
         $questionsData = [];
         $totalUsers = 0;
-
+    
+        // Initialize userAges as a Collection, not an array
+        $userAges = collect(); // Laravel collection to store individual ages
+        $ageRanges = [
+            '10-15' => 0,
+            '16-25' => 0,
+            '26-35' => 0,
+            '36-45' => 0,
+            '46-55' => 0,
+            '56-65' => 0,
+            '66+'   => 0,
+            'Unknown' => 0, // New label for users with no birthdate
+        ];
+    
+        // Initialize gender count
+        $genderDistribution = [
+            'Male' => 0,
+            'Female' => 0,
+            'Unknown' => 0, // To handle users without specified gender
+        ];
+    
         if ($form) {
             // Collect unique users who answered the form
-            $totalUsers = DB::table('answers')
+            $users = DB::table('answers')
                 ->join('questions', 'answers.question_id', '=', 'questions.id')
+                ->join('users', 'answers.user_id', '=', 'users.id')
                 ->where('questions.form_id', $form->id)
                 ->distinct('answers.user_id') // Count distinct user IDs
-                ->count('answers.user_id');
-
+                ->select('users.birthdate', 'users.gender')   // Select user birthdate and gender
+                ->get();
+    
+            // Calculate individual ages and group them into ranges, and track gender distribution
+            $users->each(function ($user) use (&$userAges, &$ageRanges, &$genderDistribution) {
+                // Handle age
+                if ($user->birthdate) {
+                    $age = Carbon::parse($user->birthdate)->age;
+    
+                    // Store individual age in the Collection
+                    $userAges->push($age);
+    
+                    // Group the age into a range
+                    if ($age >= 10 && $age <= 15) {
+                        $ageRanges['10-15']++;
+                    } elseif ($age >= 16 && $age <= 25) {
+                        $ageRanges['16-25']++;
+                    } elseif ($age >= 26 && $age <= 35) {
+                        $ageRanges['26-35']++;
+                    } elseif ($age >= 36 && $age <= 45) {
+                        $ageRanges['36-45']++;
+                    } elseif ($age >= 46 && $age <= 55) {
+                        $ageRanges['46-55']++;
+                    } elseif ($age >= 56 && $age <= 65) {
+                        $ageRanges['56-65']++;
+                    } else {
+                        $ageRanges['66+']++;
+                    }
+                } else {
+                    $ageRanges['Unknown']++;
+                }
+    
+                // Handle gender
+                switch (strtolower($user->gender)) {
+                    case 'male':
+                        $genderDistribution['Male']++;
+                        break;
+                    case 'female':
+                        $genderDistribution['Female']++;
+                        break;
+                    default:
+                        $genderDistribution['Unknown']++;
+                        break;
+                }
+            });
+    
+            // Process questions for comments and radio questions
             foreach ($form->questions as $question) {
-                // Check if the question is a comment or radio type
                 if ($question->isComment()) {
-                    // Collect comment answers in the unified list
                     $questionsData[] = [
                         'type' => 'comment',
                         'question' => $question->question,
                         'answers' => $question->answers->pluck('answer'),
                     ];
                 } elseif ($question->isRadio()) {
-                    // Compile data for the radio question into a bar chart format
                     $answerCounts = $question->answers()
                         ->select('answer', DB::raw('count(*) as count'))
                         ->groupBy('answer')
                         ->get()
-                        ->pluck('count', 'answer'); // Keyed collection: answer => count
-
-                    // Ensure all static radio options are present, with a count of 0 if not selected
+                        ->pluck('count', 'answer');
+    
                     $compiledCounts = collect($staticRadioOptions)->mapWithKeys(function ($option) use ($answerCounts) {
                         return [$option => $answerCounts->get($option, 0)];
                     });
-
+    
                     $questionsData[] = [
                         'type' => 'radio',
                         'question' => $question->question,
                         'labels' => $staticRadioOptions,
-                        'values' => $compiledCounts->values(),  // Extract counts in the correct order
+                        'values' => $compiledCounts->values(),
                     ];
                 }
             }
         }
-        $participationRate = $currentParticipants > 0 ? round(($totalUsers / $currentParticipants) * 100, 2) : 0;
-
-        // Send the unified list of questions (comments and radio) and the total user count to the view
-        return view('event.partials.evaluation', compact('questionsData', 'staticRadioOptions', 'totalUsers', 'currentParticipants'));
+    
+        // Calculate participation rate
+        $participationRate = $currentParticipants > 0 ? round(($users->count() / $currentParticipants) * 100, 2) : 0;
+    
+        // Send data to the view
+        return view('event.partials.evaluation', compact(
+            'questionsData', 'staticRadioOptions', 'totalUsers', 'currentParticipants', 
+            'participationRate', 'userAges', 'ageRanges', 'genderDistribution'
+        ));
     }
  
 }
