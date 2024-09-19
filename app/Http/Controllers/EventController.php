@@ -197,15 +197,12 @@ class EventController extends Controller
 
                 // Move the uploaded file to the desired directory
                 $path = $file->storeAs('/images/event_banners', $filename);
-
-                // Update the event banner path in the validated data
                 $validatedData['event_banner'] = $relativePath;
             } else {
                 // Remove event_banner from validated data if no new file is uploaded
                 unset($validatedData['event_banner']);
             }
 
-            // Fill and save the event with the validated data
             $event->fill($validatedData);
             $event->save();
         } catch (\Exception $e) {

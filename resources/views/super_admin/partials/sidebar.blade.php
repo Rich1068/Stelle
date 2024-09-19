@@ -59,6 +59,12 @@
             <i class="fas fa-certificate"></i>
         </a>
     </li>
+    <li class="nav-item">
+        <a href="{{ route('super_admin.userlist') }}" class="nav-link">
+            <span>Manage User</span>
+            <i class="fas fa-certificate"></i>
+        </a>
+    </li>
 
 </ul>
 <!-- End of Sidebar -->

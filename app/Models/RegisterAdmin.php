@@ -11,5 +11,9 @@ class RegisterAdmin extends Model
         'user_id',
         'status_id',
     ];
+    public function usertable()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
     use HasFactory;
 }
