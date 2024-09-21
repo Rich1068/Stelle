@@ -46,6 +46,98 @@
 *::after {
   box-sizing: border-box;
 }
+
+.page-title-container-createuser {
+  background-color: white;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Increased shadow effect */
+  margin: 0 auto 45px auto; /* Center horizontally and add space below */
+  max-width: 90%;
+  text-align: left; /* Align text to the left */
+}
+
+.register-title {
+  margin-bottom: 10px; /* Add space below the title */
+}
+
+.register-description {
+  margin-top: 0; /* Ensure no extra margin above */
+}
+
+
+.registration-container {
+  display: grid;
+  grid-template-columns: 1fr; /* Single column layout for centering */
+  max-width: 800px; /* Set a maximum width for the container */
+  width: 90%; /* Allow the container to be responsive */
+  padding: 0 20px; /* Add padding */
+  margin: auto; /* Center horizontally */
+  height: 100vh; /* Make the parent take the full height */
+  align-items: center; /* Center vertically */
+  margin-bottom: 40px;
+}
+
+
+.register-account {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.21);
+  padding: 40px; /* Increase padding for more space */
+  width: 100%; /* Full width of the container */
+  text-align: center; /* Center all text */
+}
+
+/* Labels */
+.register-label {
+  color: #001f60;
+  font-weight: bold;
+  font-size: 1.2rem; /* Increase font size */
+  margin-bottom: 10px;
+  display: block;
+  text-align: center;
+}
+
+/* Input fields */
+.register-input {
+  background-color: #f0f0f0;
+  border: 1px solid #D9D9D9;
+  border-radius: 10px;
+  padding: 15px; /* Increase padding for input fields */
+  font-size: 1.1rem; /* Increase font size */
+  width: 100%; /* Full width of the input fields */
+  margin-bottom: 30px; /* Decrease space between input fields */
+  font-weight: bold; /* Make input text bold */
+}
+
+/* Submit Button */
+.register-save-button {
+  width: 100%; /* Full width for the button */
+  font-size: 1.1rem; /* Increase font size for the button */
+}
+
+.user-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  margin: 20px auto;
+  border-radius: 30px;
+  border: 1px solid #ddd;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+  animation: fadeIn 0.5s;
+  max-width: 60%;
+  max-height: 50%;
+}
+
+.user-list-item:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+
 /* Container for search and form */
 .event-filter-container {
   display: flex;
@@ -4393,8 +4485,7 @@ fieldset:disabled a.btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 55px; /* Fixed height for consistency */
-  margin-top: 10px;
+  height: 55px; /* Fixed height for consistency */;
 }
 
 
