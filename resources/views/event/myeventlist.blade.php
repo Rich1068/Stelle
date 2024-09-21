@@ -1,8 +1,13 @@
 @extends('layouts.app')
 
 @section('body')
-    <div class="container event-list-container">
-        <h1 class="event-list-header">My Event List</h1>
+<div class="page-title-container-eventlist">
+    <h2>
+        <i class="fas fa-list me-2"></i> <!-- List icon -->
+        My Event List
+    </h2>
+</div> <!-- Close page-title-container-eventlist -->
+
 
         @if ($events->isEmpty())
             <p>No events available.</p>
@@ -48,5 +53,5 @@
                 {{ $events->links() }}
             </div>
         @endif
-    </div>
+   
 @endsection
