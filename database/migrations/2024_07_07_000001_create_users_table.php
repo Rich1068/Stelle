@@ -34,7 +34,7 @@ return new class extends Migration
             $table->rememberToken();
             $table->foreignId('role_id')->constrained('roles')->onDelete('cascade');;
             $table->string('profile_picture')->nullable();
-            $table->enum('gender', ['male', 'female']);
+            $table->enum('gender', ['male', 'female'])->nullable();
             $table->date('birthdate')->nullable();
             $table->string('description')->nullable();
             $table->string('contact_number')->nullable();

@@ -1,7 +1,11 @@
 @extends('layouts.app')
 
 @section('body')
-
+@if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
 <div class="profile-container">
     <div class="profile-header">
         <div class="profile-picture">

@@ -35,6 +35,9 @@ Route::middleware(['auth','super_admin'])->group(function () {
     route::get('super_admin/userlist',[SuperAdminController::class,'userlist'])->name('super_admin.userlist');
     route::get('super_admin/viewRequestingAdmins',[SuperAdminController::class,'viewRequestingAdmins'])->name('super_admin.requestingAdmins');
     Route::post('/handle-admin-request/{id}/{action}', [SuperAdminController::class, 'handleAdminRequest'])->name('super_admin.adminRequest');
+    Route::get('super_admin/users/create', [SuperAdminController::class, 'usercreate'])->name('superadmin.usercreate');
+    Route::post('super_admin/users', [SuperAdminController::class, 'storeuser'])->name('superadmin.storeuser');
+   
 });
 route::get('admin/dashboard',[AdminController::class,'index'])->
     middleware(['auth','admin']);

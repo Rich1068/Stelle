@@ -6,7 +6,15 @@
         <div class="answer-forms-event-title">
             User List
         </div>
+        
+        <!-- Add User Button -->
+        <div class="add-user-button">
+            <a href="{{ route('superadmin.usercreate') }}" class="btn btn-primary">
+                Add User
+            </a>
+        </div>
     </div>
+
     @foreach($users as $user)
         <div class="participant-list-item">
             <div class="participant-info">
@@ -20,15 +28,18 @@
                         <a href="{{ route('profile.view', $user->id) }}" class="participant-name">
                         {{ $user->first_name }} {{ $user->last_name }}
                         </a>
-                            </div>
-                        </div>
                     </div>
+                    <span class="meta-text">{{ $user->role->role_name }}</span>
                 </div>
-            @endforeach
+                </div>
             </div>
-        </div>
+    @endforeach
+
         <a href="{{ route('super_admin.requestingAdmins') }}" class="nav-link">
             <span>View Requesting Admin</span>
         </a>
+        </div>
+    </div>
 </div>
+
 @endsection

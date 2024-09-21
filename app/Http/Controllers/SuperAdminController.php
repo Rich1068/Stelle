@@ -5,7 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use App\Models\RegisterAdmin;
+use Illuminate\Validation\Rules;
+use Illuminate\View\View;
+use Illuminate\Support\Facades\Hash;
 class SuperAdminController extends Controller
 {
     public function index()
@@ -24,7 +28,7 @@ class SuperAdminController extends Controller
 
     public function viewRequestingAdmins()
     {
-        $users = RegisterAdmin::all();
+        $users = RegisterAdmin::where('status_id', 3)->get();
 
         return view('super_admin.requestingAdmins', compact('users'));
     }
@@ -61,5 +65,37 @@ class SuperAdminController extends Controller
 
         return redirect()->back()->with('error', 'Invalid action');
     }
+
+    public function usercreate(): View
+    {
+        return view('super_admin.createuser');
+    }
+
+    public function storeuser(Request $request): RedirectResponse
+    {
+        // Validate the input fields
+        $request->validate([
+            'first_name' => ['required', 'string', 'max:255'],
+            'last_name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ]);
+
+        // Create the user
+        $user = User::create([
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'role_id' => $request->role_id,  // Allow the super admin to choose the role if necessary
+        ]);
+
+        // Optionally, you could trigger the registered event to send email verification, but this is not needed if you don't want to.
+        // event(new Registered($user));
+
+        // Redirect back to the user list
+        return redirect()->route('profile.view', ['id' => $user->id])->with('success', 'User has been created successfully.');
+    }
+
 
 }
