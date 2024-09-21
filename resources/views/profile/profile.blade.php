@@ -24,13 +24,15 @@
         <!-- Information Section -->
         <div class="info-section">
             <h3 class="bold-blue">
-                Information
+                <i class="fas fa-info-circle"></i> Information
             </h3>
-            <p><strong class="label-blue">Email:</strong> {{ $user->email }}</p>
+            <p><i class="fas fa-envelope"></i> <strong class="label-blue">Email:</strong> {{ $user->email }}</p>
             <div class="info-divider"></div>
-            <p><strong class="label-blue">Contact Number:</strong> @if($user->contact_number == null) N/A @else {{ $user->contact_number }} @endif</p>
+            <p><i class="fas fa-phone"></i> <strong class="label-blue">Contact Number:</strong> 
+                @if($user->contact_number == null) N/A @else {{ $user->contact_number }} @endif
+            </p>
             <div class="info-divider"></div>
-            <p><strong class="label-blue">Country:</strong> 
+            <p><i class="fas fa-flag"></i> <strong class="label-blue">Country:</strong> 
                 @if($user->country_id == null) 
                     N/A 
                 @else 
@@ -39,11 +41,17 @@
                 @endif
             </p>
             <div class="info-divider"></div>
-            <p><strong class="label-blue">Gender:</strong> @if($user->gender == null) N/A @else {{ $user->gender }} @endif</p>
+            <p><i class="fas fa-venus-mars"></i> <strong class="label-blue">Gender:</strong> 
+                @if($user->gender == null) N/A @else {{ $user->gender }} @endif
+            </p>
             <div class="info-divider"></div>
-            <p><strong class="label-blue">Birthdate</strong> @if($user->birthdate == null) N/A @else {{ $user->birthdate }} @endif</p>
+            <p><i class="fas fa-birthday-cake"></i> <strong class="label-blue">Birthdate:</strong> 
+                @if($user->birthdate == null) N/A @else {{ $user->birthdate }} @endif
+            </p>
             <div class="info-divider"></div>
-            <p><strong class="label-blue">About/Bio:</strong> @if($user->description == null) N/A @else {{ $user->description }} @endif</p>
+            <p><i class="fas fa-info-circle"></i> <strong class="label-blue">About/Bio:</strong> 
+                @if($user->description == null) N/A @else {{ $user->description }} @endif
+            </p>
         </div>
 
         <!-- Attended Events Section -->
