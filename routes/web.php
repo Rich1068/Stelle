@@ -16,6 +16,7 @@ Route::get('/', function () {
 });
 Route::get('auth/google/redirect', [GoogleController::class, 'googlepage'])->name('google.redirect');
 Route::get('auth/google/callback', [GoogleController::class, 'googlecallback'])->name('google.callback');
+
 //check if logged in
 Route::middleware('auth')->group(function () {
     Route::get('/profile/MyCertificates', [ProfileController::class, 'myCertificates'])->name('profile.mycertificates');
@@ -29,9 +30,11 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
+
+//super admin
 Route::middleware(['auth','super_admin'])->group(function () {
 
-    route::get('super_admin/dashboard',[SuperAdminController::class,'index']);
+    route::get('/super-admin/dashboard', [SuperAdminController::class, 'index'])->middleware(['verified'])->name('super_admin.dashboard');
     Route::get('super_admin/get-events', [SuperAdminController::class, 'getEvents'])->name('events.get');
     route::get('super_admin/userlist',[SuperAdminController::class,'userlist'])->name('super_admin.userlist');
     route::get('super_admin/viewRequestingAdmins',[SuperAdminController::class,'viewRequestingAdmins'])->name('super_admin.requestingAdmins');
@@ -40,11 +43,22 @@ Route::middleware(['auth','super_admin'])->group(function () {
     Route::post('super_admin/users', [SuperAdminController::class, 'storeuser'])->name('superadmin.storeuser');
    
 });
-route::get('admin/dashboard',[AdminController::class,'index'])->
-    middleware(['auth','admin']);
-    
-route::get('user/dashboard',[UserController::class,'index'])->
-    middleware(['auth','user']);
+
+//admin
+Route::middleware(['auth','admin'])->group(function () {
+
+    route::get('/admin/dashboard', [AdminController::class, 'index'])->middleware(['verified'])->name('admin.dashboard');
+    Route::get('admin/get-events', [AdminController::class, 'getEvents'])->name('events.get');
+
+});
+
+//user
+Route::middleware(['auth','user'])->group(function () {
+
+    route::get('/user/dashboard', [UserController::class, 'index'])->middleware(['verified'])->name('user.dashboard');
+    Route::get('user/get-events', [UserController::class, 'getEvents'])->name('events.get');
+
+});
 
 route::get('/unauthorized', function () {
         return view('unauthorized');
@@ -124,11 +138,3 @@ Route::group(['middleware' => ['auth', 'checkFormOwner']], function() {
     Route::put('/event/{id}/evaluation-form/{form}/questions/update', [QuestionController::class, 'update'])->name('questions.update');
 });
 
-//super admin stuff
-route::get('/super-admin/dashboard', [SuperAdminController::class, 'index'])->middleware(['auth','super_admin','verified'])->name('super_admin.dashboard');
-
-//admin stuff
-route::get('/admin/dashboard', [AdminController::class, 'index'])->middleware(['auth','admin','verified'])->name('admin.dashboard');
-
-//user stuff
-route::get('/user/dashboard', [UserController::class, 'index'])->middleware(['auth','user', 'verified'])->name('user.dashboard');

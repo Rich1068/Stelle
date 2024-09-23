@@ -1,6 +1,6 @@
 <!-- resources/views/partials/calendar.blade.php -->
 
-<div id="patientcalendar"></div>
+<div id="calendar"></div>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar/main.min.css" />
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar/index.global.min.js"></script>
@@ -19,7 +19,7 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const calendarEl = document.getElementById('patientcalendar');
+        const calendarEl = document.getElementById('calendar');
 
         const calendar = new FullCalendar.Calendar(calendarEl, {
             headerToolbar: {
