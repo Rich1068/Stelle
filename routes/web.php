@@ -32,6 +32,7 @@ require __DIR__.'/auth.php';
 Route::middleware(['auth','super_admin'])->group(function () {
 
     route::get('super_admin/dashboard',[SuperAdminController::class,'index']);
+    Route::get('super_admin/get-events', [SuperAdminController::class, 'getEvents'])->name('events.get');
     route::get('super_admin/userlist',[SuperAdminController::class,'userlist'])->name('super_admin.userlist');
     route::get('super_admin/viewRequestingAdmins',[SuperAdminController::class,'viewRequestingAdmins'])->name('super_admin.requestingAdmins');
     Route::post('/handle-admin-request/{id}/{action}', [SuperAdminController::class, 'handleAdminRequest'])->name('super_admin.adminRequest');
