@@ -322,4 +322,58 @@ class EventController extends Controller
             'cert_id' => $certificateId,
         ]);
     }
+
+
+    public function getCalendarEvents(Request $request)
+{
+    // Check the request for a filter parameter, defaults to 'all' if not present
+    $filter = $request->input('filter', 'all');
+    
+    // Get the current authenticated user
+    $userId = Auth::id();
+
+    // Filter events based on the filter option
+    if ($filter === 'own') {
+        // Fetch events created by the authenticated user
+        $events = Event::with('userEvent')
+            ->whereHas('userEvent', function ($query) use ($userId) {
+                $query->where('user_id', $userId);
+            })->get();
+    } elseif ($filter === 'join') {
+        $events = Event::with('participants')
+            ->whereHas('participants', function ($query) use ($userId) {
+                $query->where('user_id', $userId);
+            })->get();
+    } else {
+        // Fetch all events
+        $events = Event::with('userEvent')->get();
+    }
+
+    $formattedEvents = [];
+
+    foreach ($events as $event) {
+        $userEvent = $event->userEvent;
+        $user = $userEvent->user ?? null;
+
+        $formattedEvents[] = [
+            'id' => $event->id,
+            'title' => $event->title,
+            'start' => $event->date . ' ' . $event->start_time,
+            'end' => $event->date . ' ' . $event->end_time,
+            'extendedProps' => [
+                'description' => $event->description,
+                'location' => $event->address,
+                'mode' => $event->mode,
+                'start_time' => $event->start_time,
+                'end_time' => $event->end_time,
+                'first_name' => $user->first_name ?? 'Unknown',
+                'middle_name' => $user->middle_name ?? '',
+                'last_name' => $user->last_name ?? 'Unknown',
+            ],
+        ];
+    }
+
+    return response()->json($formattedEvents);
+}
+
 }

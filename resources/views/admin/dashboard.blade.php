@@ -29,7 +29,26 @@
             </div>
         </div>
     </div>
-    @include('admin.partials.calendar')
+    <div class="dropdown mt-3">
+        <select id="calendarFilter" class="form-control">
+            <option value="all">All Events</option>
+            <option value="own">Own Events</option>
+            <option value="join">Joined Events</option>
+        </select>
+    </div>
+    <!-- Calendar Container -->
+    <div id="calendar"></div>
+
+    <!-- Modal for event details -->
+    <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body" id="modalContent">
+                    <!-- Modal content will be dynamically inserted here -->
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 
@@ -80,14 +99,5 @@
     }
 </style>
 
-<script>
-    function confirmSubmission() {
-        // Show confirmation dialog
-        if (confirm('Are you sure you want to register as an event admin?')) {
-            // If confirmed, submit the form
-            document.getElementById('registerAdminForm').submit();
-        }
-        // If not confirmed, do nothing
-    }
-</script>
+@vite('resources/js/calendar.js')
 @endsection

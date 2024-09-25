@@ -19,6 +19,8 @@ Route::get('auth/google/callback', [GoogleController::class, 'googlecallback'])-
 
 //check if logged in
 Route::middleware('auth')->group(function () {
+    Route::get('/get-events', [EventController::class, 'getCalendarEvents'])->name('events.get');
+    Route::get('/get-adminevents', [EventController::class, 'getAdminOnlyEvents'])->name('adminevents.get');
     Route::get('/profile/MyCertificates', [ProfileController::class, 'myCertificates'])->name('profile.mycertificates');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     route::get('/profile', [ProfileController::class, 'profile'])->name('profile.profile');
@@ -35,7 +37,6 @@ require __DIR__.'/auth.php';
 Route::middleware(['auth','super_admin'])->group(function () {
 
     route::get('/super-admin/dashboard', [SuperAdminController::class, 'index'])->middleware(['verified'])->name('super_admin.dashboard');
-    Route::get('super_admin/get-events', [SuperAdminController::class, 'getEvents'])->name('events.get');
     route::get('super_admin/userlist',[SuperAdminController::class,'userlist'])->name('super_admin.userlist');
     route::get('super_admin/viewRequestingAdmins',[SuperAdminController::class,'viewRequestingAdmins'])->name('super_admin.requestingAdmins');
     Route::post('/handle-admin-request/{id}/{action}', [SuperAdminController::class, 'handleAdminRequest'])->name('super_admin.adminRequest');
@@ -48,7 +49,6 @@ Route::middleware(['auth','super_admin'])->group(function () {
 Route::middleware(['auth','admin'])->group(function () {
 
     route::get('/admin/dashboard', [AdminController::class, 'index'])->middleware(['verified'])->name('admin.dashboard');
-    Route::get('admin/get-events', [AdminController::class, 'getEvents'])->name('events.get');
 
 });
 
@@ -56,7 +56,6 @@ Route::middleware(['auth','admin'])->group(function () {
 Route::middleware(['auth','user'])->group(function () {
 
     route::get('/user/dashboard', [UserController::class, 'index'])->middleware(['verified'])->name('user.dashboard');
-    Route::get('user/get-events', [UserController::class, 'getEvents'])->name('events.get');
 
 });
 

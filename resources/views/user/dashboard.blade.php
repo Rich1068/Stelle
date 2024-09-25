@@ -29,7 +29,25 @@
             </div>
         </div>
     </div>
-    @include('user.partials.calendar')
+    <div class="dropdown mt-3">
+        <select id="calendarFilter" class="form-control">
+            <option value="all">All Events</option>
+            <option value="join">Joined Events</option>
+        </select>
+    </div>
+    <!-- Calendar Container -->
+    <div id="calendar"></div>
+
+    <!-- Modal for event details -->
+    <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body" id="modalContent">
+                    <!-- Modal content will be dynamically inserted here -->
+                </div>
+            </div>
+        </div>
+    </div>
 
 
     <!-- Registration Section (Bottom Right) -->

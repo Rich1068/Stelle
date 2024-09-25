@@ -1,34 +1,27 @@
-<!-- resources/views/partials/calendar.blade.php -->
+document.addEventListener('DOMContentLoaded', function() {
+    const calendarEl = document.getElementById('calendar');
+    let calendar;
 
-<div id="calendar"></div>
+    // Function to fetch and reload events based on filter
+    function loadCalendarEvents(filter = 'all') {
+        if (calendar) {
+            calendar.destroy(); // Destroy previous calendar instance if exists
+        }
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar/main.min.css" />
-<script src="https://cdn.jsdelivr.net/npm/fullcalendar/index.global.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/moment/min/moment.min.js"></script>
-
-<!-- Modal for event details -->
-<div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-body" id="modalContent">
-                <!-- Modal content will be dynamically inserted here -->
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const calendarEl = document.getElementById('calendar');
-
-        const calendar = new FullCalendar.Calendar(calendarEl, {
+        calendar = new FullCalendar.Calendar(calendarEl, {
             headerToolbar: {
                 left: 'title',
                 center: '',
                 right: 'prev,next today'
             },
             initialView: 'dayGridMonth',
-            events: '{{ route("events.get") }}', // Laravel route that fetches events
+            events: function(fetchInfo, successCallback, failureCallback) {
+                // Fetch events based on filter
+                fetch(`/get-events?filter=${filter}`)
+                    .then(response => response.json())
+                    .then(events => successCallback(events))
+                    .catch(error => failureCallback(error));
+            },
             eventContent: function(info) {
                 return {
                     html: `
@@ -39,15 +32,13 @@
                     `
                 };
             },
-
             eventClick: function(info) {
                 const date = moment(info.event.start).format('MMMM DD, YYYY');
-                const time = moment(info.event.start).format('h:mm A')+ " to " + moment(info.event.end).format('h:mm A');
+                const time = moment(info.event.start).format('h:mm A') + " to " + moment(info.event.end).format('h:mm A');
                 const ownerName = info.event.extendedProps.first_name + " " +
                                   (info.event.extendedProps.middle_name || '') + " " +
                                   info.event.extendedProps.last_name;
 
-                // Build the content for the modal
                 const modalContent = `
                     <div class="modal-header">
                         <h5 class="modal-title">Event Details</h5>
@@ -65,7 +56,6 @@
                      <a href="/event/${info.event.id}" class="btn btn-primary">View Event</a>
                 `;
 
-                // Create a Bootstrap Modal
                 const modal = new bootstrap.Modal(document.getElementById('eventModal'), {
                     backdrop: 'static',
                     keyboard: true
@@ -77,5 +67,14 @@
         });
 
         calendar.render();
+    }
+
+    // Load the calendar initially with all events
+    loadCalendarEvents();
+
+    // Listen for changes in the dropdown and reload the calendar based on the selected filter
+    document.getElementById('calendarFilter').addEventListener('change', function() {
+        const selectedFilter = this.value;
+        loadCalendarEvents(selectedFilter);
     });
-</script>
+});
