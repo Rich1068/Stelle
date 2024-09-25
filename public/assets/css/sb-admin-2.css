@@ -881,6 +881,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 /* Event Container */
 
 /* Event Container */
+/* Main Container */
 .event-view-container {
   width: 90%;
   margin: 0 auto;
@@ -899,6 +900,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 .tabs {
   display: flex;
   border-bottom: 2px solid #ddd;
+  flex-wrap: wrap; /* Allows tabs to wrap on smaller screens */
 }
 
 .tab-button {
@@ -910,11 +912,14 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   border-bottom: none;
   cursor: pointer;
   border-radius: 10px;
+  box-sizing: border-box;
+  font-weight: bold; /* Make the text bold */
+  color: #001e54; /* Set text color to dark blue */
 }
 
 .tab-button.active {
   background: #ffffff;
-  border-top: 2px solid #007bff;
+  border-top: 2px solid #03305f;
 }
 
 .tab-content {
@@ -951,15 +956,13 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   align-items: center;
   justify-content: center;
   height: 55px;
-  width: 30%;
-  height: 40%;
 }
 
 .event-view-buttons .btn:hover {
   background-color: #002b80;
 }
 
-/* Additional styles for the modal */
+/* Ensure modal looks good on mobile */
 .modal-content {
   border-radius: 15px;
 }
@@ -970,6 +973,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   border-radius: 10px;
 }
 
+/* About Section */
 .event-view-about {
   font-size: 20px;
   color: #333;
@@ -1011,12 +1015,6 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   border-radius: 15px;
 }
 
-/* About Section */
-.event-view-about {
-  flex-basis: 100%;
-  max-width: 100%;
-}
-
 /* Divider */
 .event-view-divider {
   position: relative;
@@ -1045,10 +1043,47 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   z-index: 0;
 }
 
+/* Responsive Styling */
+
+/* For small screens (mobiles and small tablets) */
+@media (max-width: 768px) {
+  .event-view-buttons {
+    grid-template-columns: 1fr; /* Buttons stack vertically on mobile */
+    gap: 15px;
+  }
+
+  .event-view-header {
+    text-align: center; /* Center align the header text on small screens */
+  }
+
+  .event-view-event-title {
+    font-size: 24px; /* Slightly smaller text on small screens */
+  }
+
+  .tab-button {
+    padding: 8px;
+    font-size: 14px; /* Smaller font size for tabs */
+  }
+
+  .tabs {
+    flex-direction: column; /* Stack tabs vertically on smaller screens */
+  }
+
+  .event-view-about {
+    font-size: 16px; /* Smaller text size for the about section */
+  }
+
+  .modal-dialog {
+    width: 95%; /* Ensure modal fits well on small screens */
+  }
+}
+
+
 /* Event Information */
+/* Info Section */
 .event-view-info {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, 1fr); /* Default: 2 columns */
   gap: 20px;
   margin-bottom: 20px;
 }
@@ -1079,29 +1114,45 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 /* Buttons Section */
 .event-view-buttons {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 2x2 grid layout */
+  grid-template-columns: repeat(2, 1fr); /* Default: 2x2 grid layout */
   gap: 25px; /* Increased gap */
-  margin-bottom: 10px; /* Margin for spacing from the bottom */
+  margin-bottom: 10px;
 }
 
 .event-view-buttons .btn {
   margin-top: 19px;
   background-color: #001e54;
   color: white;
-  border-radius: 20px; /* Rounded corners */
+  border-radius: 20px;
   padding: 15px;
   font-size: 15px;
   font-weight: bold;
-  text-align: center; /* Center text */
+  text-align: center;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 55px; /* Fixed height for consistency */
+  height: 55px;
 }
-
 
 .event-view-buttons .btn:hover {
   background-color: #002b80;
+}
+
+/* Responsive Layout for Mobile */
+
+/* Stack items on smaller screens */
+@media (max-width: 768px) {
+  .event-view-info {
+    grid-template-columns: 1fr; /* Stack info section in a single column */
+  }
+
+  .event-view-buttons {
+    grid-template-columns: 1fr; /* Stack buttons in a single column */
+  }
+
+  .event-view-buttons .btn {
+    width: 100%; /* Ensure buttons take full width on mobile */
+  }
 }
 
 
@@ -1671,6 +1722,19 @@ h2 {
 .fas {
   margin-right: 10px; /* Space between icon and text */
   
+}
+.top-container {
+  width: 100% !important; /* Ensure it takes full width */
+  max-width: 1200px !important; /* Set a maximum width to avoid it stretching too wide */
+  background-color: white !important; /* White background */
+  margin: 20px auto !important; /* Center the container with margin */
+  padding: 20px !important; /* Padding inside the container */
+  border-radius: 25px !important; /* Rounded corners */
+  text-align: left !important; /* Align text to the left */
+  display: flex !important; /* Flexbox for alignment */
+  flex-direction: column !important; /* Stack items vertically */
+  align-items: flex-start !important; /* Align items to the start */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important; /* Optional: add shadow for a subtle lift effect */
 }
 .top-container {
   width: 100% !important; /* Ensure it takes full width */
@@ -4486,6 +4550,20 @@ fieldset:disabled a.btn {
   align-items: center;
   justify-content: center;
   height: 55px; /* Fixed height for consistency */;
+}
+.btn-primary-2 {
+  background-color: #001e54;
+  color: white;
+  border-radius: 20px; /* Rounded corners */
+  padding: 15px;
+  font-size: 15px;
+  font-weight: bold;
+  text-align: center; /* Center text */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 55px; /* Fixed height for consistency */;
+  margin-top: 10px;
 }
 
 
