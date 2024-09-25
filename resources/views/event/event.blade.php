@@ -108,8 +108,8 @@
         <div class="tab-pane" id="participants">
             @include('event.partials.participantlist', ['event' => $event, 'participants' => $participants, 'currentUser' => $currentUser, 'userevent' =>$userevent])
             @if ($currentUser == $userevent->user->id)
-                <a href="{{ route('events.pendingparticipants', $event->id) }}" class="send-cert-btn">
-                <button type="submit" class="btn btn-primary">View Pending Participants</button>
+                <a href="{{ route('events.pendingparticipants', $event->id) }}">
+                <button type="submit" class="btn btn-primary-2">View Pending Participants</button>
                 </a>
             @endif
         </div>
@@ -130,7 +130,7 @@
                 </form>
             @endif
 
-            <button type="button" class="btn btn-primary">
+            <button type="button" class="btn btn-primary-2">
             <a href="{{ route('evaluation.results', ['id' => $event->id]) }}" style="color:white; text-decoration:none;">
                 View Evaluation Results
             </a>

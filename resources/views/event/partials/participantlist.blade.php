@@ -32,9 +32,10 @@
                 </div>
             @endforeach
         </div>
-        <div class="send-cert-btn">
-            <button type="submit" onclick="disableButton(this)">Send Certificates</button>
-        </div>
+        <button type="submit" class="btn btn-primary">
+    Send Certificates
+</button>
+
     </form>
     @else
         <div class="participant-list-container">
