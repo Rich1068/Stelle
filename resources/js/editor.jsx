@@ -12,6 +12,7 @@ import { PagesTimeline } from 'polotno/pages-timeline';
 import { ZoomButtons } from 'polotno/toolbar/zoom-buttons';
 import { createStore } from 'polotno/model/store';
 import { getImageSize } from 'polotno/utils/image';
+import SendButton from './sendButton';
 
 import {
   TextSection,
@@ -114,6 +115,8 @@ const sections = [
   SizeSection,
 ];
 
+
+
 const saveDesign = async (eventId, setCertificateId) => {
   const canvasData = store.toJSON();
 
@@ -159,6 +162,7 @@ const loadDesign = async (eventId, certId) => {
 };
 
 export const App = () => {
+  // Get the eventId from the DOM
   const eventId = document.getElementById('container').getAttribute('data-event-id');
   const [certificateId, setCertificateId] = useState(null);
 
@@ -177,13 +181,13 @@ export const App = () => {
     };
 
     fetchCertificateId();
-  }, []);
+  }, [eventId]); // eventId dependency
 
   useEffect(() => {
     if (certificateId) {
       loadDesign(eventId, certificateId);
     }
-  }, [certificateId]);
+  }, [certificateId, eventId]);
 
   return (
     <PolotnoContainer className="polotno-app-container">
@@ -191,17 +195,17 @@ export const App = () => {
         <SidePanel store={store} sections={sections} defaultSection="photos" />
       </SidePanelWrap>
       <WorkspaceWrap style={{ width: '100%', height: '100%' }}>
-        <Toolbar store={store} downloadButtonEnabled />
+        {/* Pass eventId to SendButton via Toolbar */}
+        <Toolbar store={store} components={{ ActionControls: (props) => <SendButton {...props} eventId={eventId} /> }} />
         <Workspace store={store} style={{ width: '100%', height: '100%' }} />
         <ZoomButtons store={store} />
         <PagesTimeline store={store} />
-        <Button onClick={() => saveDesign(eventId, setCertificateId)} style={{top: 10, right: -100 }}>
-        Save Design
-      </Button>
+        <Button onClick={() => saveDesign(eventId, setCertificateId)} style={{ top: 10, right: -100 }}>
+          Save Design
+        </Button>
       </WorkspaceWrap>
     </PolotnoContainer>
   );
 };
-
 const root = ReactDOM.createRoot(document.getElementById('container'));
 root.render(<App />);

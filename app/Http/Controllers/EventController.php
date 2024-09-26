@@ -5,6 +5,7 @@ use App\Http\Requests\EventUpdateRequest;
 use App\Models\UserEvent;
 use App\Models\EventParticipant;
 use App\Models\Event;
+use App\Models\User;
 use App\Models\Certificate;
 use App\Models\Question;
 use App\Models\Answer;
@@ -285,42 +286,123 @@ class EventController extends Controller
         return back()->with('success', 'Participant status updated successfully.');
 
     }
-    public function sendCertificates(Request $request, $id)
+    public function sendCertificates(Request $request, $eventId)
     {
+        // Validate the incoming request
         $request->validate([
-            'participants' => 'required|array',
-            'participants.*' => 'exists:users,id', // Ensure each participant ID exists in the users table
+            'participants' => 'required|array',  // Ensure we have an array of selected participants
+            'participants.*' => 'exists:users,id',  // Validate that each participant ID exists in the users table
         ]);
-    
-        $participantIds = $request->input('participants', []);
-    
-        $certificate = Certificate::where('event_id', $id)->first();
+
+        $userIds = $request->input('participants');  // Get the selected participant IDs
+
+        // Get the template certificate for the event
+        $certificate = Certificate::where('event_id', $eventId)->first();
+
         if (!$certificate) {
-            return redirect()->back()->with('error', 'Certificate not found for this event.');
+            return redirect()->back()->with('error', 'Certificate design not found for this event.');
         }
-    
-        $certificateId = $certificate->id;
-    
-        foreach ($participantIds as $participantId) {
-            // Check if the certificate already exists for this event and user using the CertUser model
-            $exists = CertUser::where('cert_id', $certificateId)
-                ->where('user_id', $participantId)
-                ->exists();
-    
-            if (!$exists) {
-                $this->connectUserToCertificate($participantId, $certificateId);
-            }
+
+        // Loop through each selected user and generate their certificate
+        foreach ($userIds as $userId) {
+            $user = User::findOrFail($userId);  // Get user by ID
+            $fullname = $user->first_name . ' ' . ($user->middle_name ? $user->middle_name . ' ' : '') . $user->last_name;
+
+            // Load the certificate design JSON and personalize it for this user
+            $canvasData = json_decode($certificate->design, true);
+            $personalizedCanvas = $this->replacePlaceholdersInDesign($canvasData, $fullname);
+
+            // Convert the modified canvas to a base64 image (use front-end toDataURL)
+            $imageData = $request->input('image');  // Personalized image data
+
+            // Save the personalized certificate image
+            $personalizedImagePath = $this->savePersonalizedCertificateImage($imageData, $eventId, $fullname);
+
+            // Save the personalized certificate in the 'cert_users' table
+            CertUser::create([
+                'user_id' => $userId,
+                'cert_id' => $certificate->id,
+                'cert_path' => $personalizedImagePath,  // Save the personalized certificate path
+            ]);
         }
-    
-        return redirect()->back()->with('success', 'Certificates sent successfully.');
+
+        return redirect()->back()->with('success', 'Personalized certificates generated successfully!');
     }
 
-    private function connectUserToCertificate($userId, $certificateId)
+    public function getParticipants($event_id)
     {
-        CertUser::create([
-            'user_id' => $userId,
-            'cert_id' => $certificateId,
-        ]);
+        // Fetch the participants for the given event_id and concatenate user names
+        $participants = EventParticipant::where('event_id', $event_id)
+            ->with(['user']) // Eager load the related user
+            ->get()
+            ->map(function ($participant) {
+                // Concatenate user's first, middle, and last name
+                $fullName = $participant->user->first_name . ' ' .
+                            ($participant->user->middle_name ?? '') . ' ' .
+                            $participant->user->last_name;
+    
+                // Return the full name
+                return ['full_name' => trim($fullName)];
+            });
+    
+        // Return the participant full names as a JSON response
+        return response()->json($participants);
+    }
+
+
+
+
+
+
+
+
+
+    private function replacePlaceholdersInDesign($canvasData, $userName)
+    {
+        // Replace the {{name}} placeholder with the actual user's name
+        array_walk_recursive($canvasData, function (&$item) use ($userName) {
+            $item = str_replace('{{name}}', $userName, $item);
+        });
+
+        return $canvasData;
+    }
+
+    // Helper function to save personalized certificates
+    private function savePersonalizedCertificateImage($imageData, $eventId, $userName)
+    {
+        // Validate the image data format
+    if (strpos($imageData, ',') === false) {
+        Log::error('Invalid image data format, missing comma');
+        return response()->json(['message' => 'Invalid image data format'], 400);
+    }
+
+    // Split the base64 string into two parts
+    $imageParts = explode(',', $imageData);
+
+    // Check if there are exactly two parts (data prefix and the base64-encoded image)
+    if (count($imageParts) < 2) {
+        Log::error('Invalid image data format, less than 2 parts');
+        return response()->json(['message' => 'Invalid image data format'], 400);
+    }
+
+    // Get the base64-encoded image (the second part)
+    $imageBase64 = $imageParts[1];
+
+    // Generate a unique name for the personalized certificate
+    $imageName = 'certificate_' . $eventId . '_' . Str::slug($userName) . '.png';
+    $relativePath = 'storage/images/certificates/' . $imageName;
+    $imagePath = storage_path('app/public/images/certificates/' . $imageName);
+
+    // Save the base64-decoded image to the file system
+    try {
+        file_put_contents($imagePath, base64_decode($imageBase64));
+    } catch (\Exception $e) {
+        Log::error('Error saving the image: ' . $e->getMessage());
+        return response()->json(['message' => 'Error saving image'], 500);
+    }
+
+    // Return the relative path for saving in the database
+    return $relativePath;
     }
 
 

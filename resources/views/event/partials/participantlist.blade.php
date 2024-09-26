@@ -10,7 +10,7 @@
     </div>
 
     @if ($currentUser == $userevent->user->id)
-    <form action="{{ route('sendCertificates', $event->id) }}" method="POST" id="sendCert">
+    <form id="sendCert">
         @csrf
         <div class="participant-list-container">
             @foreach($participants as $participant)
@@ -32,10 +32,9 @@
                 </div>
             @endforeach
         </div>
-        <button type="submit" class="btn btn-primary">
-    Send Certificates
-</button>
-
+        <button type="submit" class="btn btn-primary" onclick="disableButton(this)">
+            Send Certificates
+        </button>
     </form>
     @else
         <div class="participant-list-container">
@@ -59,21 +58,13 @@
 
 <script>
 function disableButton(button) {
-    button.disabled = true; // Disable the button
-    button.innerText = 'Submitting...'; // Change button text
+    button.disabled = true;  // Disable the button
+    button.innerText = 'Submitting...';  // Change button text
 
     // Re-enable the button after 3 seconds
     setTimeout(function() {
         button.disabled = false;
         button.innerText = 'Send Certificates';
-    }, 3000); // 3000 milliseconds = 3 seconds
-
-    button.form.submit(); // Submit the form
+    }, 3000);  // 3 seconds
 }
-
-document.getElementById('sendCert').addEventListener('keydown', function(event) {
-    if (event.key === 'Enter' && event.target.tagName === 'INPUT' && event.target.type !== 'submit') {
-        event.preventDefault();
-    }
-});
 </script>

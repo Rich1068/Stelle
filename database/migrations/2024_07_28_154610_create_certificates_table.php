@@ -32,6 +32,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('cert_id')->constrained('certificates')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->string('cert_path')->nullable();
             $table->timestamps();
         });
     }

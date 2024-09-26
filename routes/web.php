@@ -37,11 +37,11 @@ require __DIR__.'/auth.php';
 Route::middleware(['auth','super_admin'])->group(function () {
 
     route::get('/super-admin/dashboard', [SuperAdminController::class, 'index'])->middleware(['verified'])->name('super_admin.dashboard');
-    route::get('super_admin/userlist',[SuperAdminController::class,'userlist'])->name('super_admin.userlist');
-    route::get('super_admin/viewRequestingAdmins',[SuperAdminController::class,'viewRequestingAdmins'])->name('super_admin.requestingAdmins');
+    route::get('/super_admin/userlist',[SuperAdminController::class,'userlist'])->name('super_admin.userlist');
+    route::get('/super_admin/viewRequestingAdmins',[SuperAdminController::class,'viewRequestingAdmins'])->name('super_admin.requestingAdmins');
     Route::post('/handle-admin-request/{id}/{action}', [SuperAdminController::class, 'handleAdminRequest'])->name('super_admin.adminRequest');
-    Route::get('super_admin/users/create', [SuperAdminController::class, 'usercreate'])->name('superadmin.usercreate');
-    Route::post('super_admin/users', [SuperAdminController::class, 'storeuser'])->name('superadmin.storeuser');
+    Route::get('/super_admin/users/create', [SuperAdminController::class, 'usercreate'])->name('superadmin.usercreate');
+    Route::post('/super_admin/users', [SuperAdminController::class, 'storeuser'])->name('superadmin.storeuser');
    
 });
 
@@ -87,10 +87,14 @@ Route::middleware('auth')->group(function () {
     route::get('/events', [EventController::class, 'list'])->name('event.list');
     route::get('/event/{id}', [EventController::class, 'view'])->name('event.view');
     Route::post('/event/{id}/join', [EventController::class, 'join'])->name('event.join');
-    Route::post('/event/{id}/participants/send-certificates', [EventController::class, 'sendCertificates'])->name('sendCertificates');
+    Route::post('/event/{id}/participants/send-certificates', [CertificateController::class, 'sendCertificates'])->name('sendCertificates');
+    Route::get('/event/{id}/get-participants', [EventController::class, 'getParticipants']);
+
 
     
     //cert stuff 
+    Route::post('/event/{id}/certificates/saveImage', [CertificateController::class, 'saveImage'])->name('certificates.saveImage');
+    Route::get('/event/{id}/certificates/getDesign', [CertificateController::class, 'getCertificateDesign']);
     Route::get('/event/{id}/certificates/create', [CertificateController::class, 'create'])->name('certificates.create');
     Route::post('/event/{id}/certificates/save', [CertificateController::class, 'saveCanvas']);
     Route::get('/event/{id}/certificates/load/{certId}', [CertificateController::class, 'loadCanvas']);
