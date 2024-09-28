@@ -11,12 +11,31 @@
                 <img src="{{ asset('storage/' . $user->profile_picture) }}" alt="Profile picture of {{ $user->first_name }}"> 
             @endif
         </div>
-        <div class="profile-info">
-            <h2 class="name-bold">{{ $user->first_name }} {{ $user->middle_name }} {{ $user->last_name }}</h2>
+        
+            <div class="profile-info">
+                <h2 class="name-bold">{{ $user->first_name }} {{ $user->middle_name }} {{ $user->last_name }}</h2>
+    <p style="font-size: 1.3em; color: #003d80; display: inline;">
+        <strong class="bio-label" style="font-size: 1.2em; color: #003d80; margin-right: 5px;">Bio:</strong> 
+        <span style="font-size: 1.2em; color: grey;">
+            @if($user->description == null) 
+                N/A 
+            @else 
+                {{ $user->description }} 
+            @endif
+        </span>
+    </p>
+
+
+
+
         </div>
+    
+        
         <a href="{{ route('profile.edit') }}" class="btn-edit">
             <i class="fas fa-pencil-alt"></i> <span>Edit</span>
         </a>
+
+        
     </div>
 
     <!-- Profile Body Grid Layout -->
@@ -48,10 +67,7 @@
             <p><i class="fas fa-birthday-cake"></i> <strong class="label-blue">Birthdate:</strong> 
                 @if($user->birthdate == null) N/A @else {{ $user->birthdate }} @endif
             </p>
-            <div class="info-divider"></div>
-            <p><i class="fas fa-info-circle"></i> <strong class="label-blue">About/Bio:</strong> 
-                @if($user->description == null) N/A @else {{ $user->description }} @endif
-            </p>
+    
         </div>
 
         <!-- Attended Events Section -->
