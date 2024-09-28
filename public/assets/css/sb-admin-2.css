@@ -1514,6 +1514,7 @@ h2 {
   text-align: center !important; /* Center text alignment */
   display: flex;
   align-items: center; /* Center items vertically */
+  justify-content: center; /* Center items horizontally */
 }
 
 .sidebar-head .sidebar-brand-text {
@@ -1528,11 +1529,10 @@ h2 {
 }
 
 .sidebar-head .sidebar-icon {
-  color: #00003d !important; /* Ensure icon color matches the text */
+  color: #00008B !important; /* Ensure the icon color matches the dark blue used in the sidebar */
   font-size: 1.5rem; /* Ensure the icon size matches the text size */
   margin-right: 5px; /* Add slight margin to the right of the icon */
 }
-
 
 .admin-sidebar {
   background-color: #f8f9fa !important; /* Light background for contrast */
@@ -1569,10 +1569,12 @@ h2 {
 .admin-sidebar .nav-link.active {
   background-color: #00008B !important; /* Dark blue background for active link */
   color: #ffffff !important; /* White text for active link */
+
 }
 
 .admin-sidebar .nav-link.active i {
   color: #ffffff !important; /* White icons for active link */
+
 }
 
 .admin-sidebar .sidebar-brand {
@@ -1617,10 +1619,27 @@ h2 {
 .admin-sidebar .collapse-item:hover i {
   color: #ffffff !important; /* White icons on hover */
 }
+.admin-sidebar .nav-link.active {
+  background-color: #03203d !important; /* Darker blue background for active link */
+  color: #ffffff !important; /* White text for active link */
+  border-radius: 5px; /* Rounded corners */
+
+  /* Optional: add a transition for a smoother effect */
+  transition: background-color 0.3s ease; 
+}
+
+/* Ensure that the hover state retains the same appearance */
+.admin-sidebar .nav-link.active:hover {
+  background-color: #031c35 !important; /* Keep hover background same as active */
+  color: #ffffff !important; /* Keep text color the same */
+}
+
 
 
 /* Media query for mobile devices */
-@media (max-width: 768px) { /* Adjust the max-width as needed for your design */
+/* Media query for mobile devices */
+/* Media query for mobile devices */
+@media (max-width: 768px) {
   .admin-sidebar .nav-link span {
       display: none !important; /* Hide text on mobile devices */
   }
@@ -1635,11 +1654,19 @@ h2 {
       font-size: 1.5rem !important; /* Ensure icons are large enough */
   }
 
+  .sidebar-head {
+      flex-direction: column; /* Stack items vertically */
+      align-items: center; /* Center items vertically */
+  }
+
   .sidebar-head .sidebar-brand-text {
       display: none !important; /* Hide brand text on mobile */
   }
-}
 
+  .sidebar-head .sidebar-icon {
+      margin: 0; /* Remove margin to better center the icon */
+  }
+}
 
   :root {
     --dark-blue: #003d80;
@@ -4150,7 +4177,7 @@ pre code {
   font-weight: 400;
   line-height: 1.5;
   color: #191f4f;
-  background-color: #e0f7fa; /* Light blue background */
+  background-color: #ffffff; /* Light blue background */
   background-clip: padding-box;
   border: none;
   border-radius: 0.35rem;
@@ -4177,7 +4204,7 @@ pre code {
 
 .form-control:focus {
   color: #2b315f;
-  background-color: #e0f7fa; /* Keep the background color the same */
+  background-color: #ffffff; /* Keep the background color the same */
   outline: 0;
   font-weight: bold;
   box-shadow: none; /* Remove glow effect on focus */
@@ -12828,16 +12855,20 @@ a:focus {
 }
 
 .sidebar .sidebar-brand {
-  height: 4.375rem;
+  height: 4.375rem; /* Height of the sidebar brand */
   text-decoration: none;
   font-size: 1rem;
   font-weight: 800;
-  padding: 1.5rem 1rem;
-  text-align: center;
-  text-transform: uppercase;
-  letter-spacing: 0.05rem;
-  z-index: 1;
+  padding: 1.5rem 1rem; /* Padding around the text */
+  text-align: center; /* Center text horizontally */
+  text-transform: uppercase; /* Uppercase text */
+  letter-spacing: 0.05rem; /* Spacing between letters */
+  z-index: 1; /* Ensure it is on top */
+  display: flex; /* Use flexbox for centering */
+  justify-content: center; /* Center content horizontally */
+  align-items: center; /* Center content vertically */
 }
+
 
 .sidebar .sidebar-brand .sidebar-brand-icon i {
   font-size: 2rem;
@@ -12974,7 +13005,7 @@ a:focus {
   }
   .sidebar.toggled .nav-item .collapse,
   .sidebar.toggled .nav-item .collapsing {
-    margin: 0;
+    margin: 1;
   }
   .sidebar.toggled .nav-item:last-child {
     margin-bottom: 1rem;
@@ -12983,6 +13014,7 @@ a:focus {
     text-align: center;
     padding: 0.75rem 1rem;
     width: 6.5rem;
+    
   }
   .sidebar.toggled .nav-item .nav-link span {
     font-size: 0.65rem;
