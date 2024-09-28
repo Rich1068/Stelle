@@ -4865,7 +4865,8 @@ fieldset:disabled a.btn {
   align-items: center;
   justify-content: center;
   height: 55px; /* Fixed height for consistency */;
-  margin-top: 10px;
+  margin-top: 20px;
+  margin-bottom: 10px;
 }
 
 

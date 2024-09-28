@@ -121,7 +121,7 @@
                 <form action="{{ route('evaluation-forms.update', ['id' => $event->id, 'form' => $event->evaluationForm->id]) }}" method="POST" class="full-width-button">
                     @method('PUT')
                     @csrf
-                    <button type="submit" class="btn btn-primary">Update Evaluation Form</button>
+                    <button type="submit" class="btn btn-primary-2">Update Evaluation Form</button>
                 </form>
             @else
                 <form action="{{ route('evaluation-forms.store', $event->id) }}" method="POST" class="full-width-button">
