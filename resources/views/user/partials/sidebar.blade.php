@@ -5,6 +5,7 @@
 <ul class="navbar-nav admin-sidebar bg-primary sidebar sidebar-light accordion" id="accordionSidebar">
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand sidebar-head d-flex align-items-center justify-content-center" href="{{ route('user.dashboard') }}">
+    <i class="fas fa-th sidebar-icon"></i> <!-- Change the icon class as needed -->
     <div class="sidebar-brand-text mx-3">Dashboard</div>
 </a>
 

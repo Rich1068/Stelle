@@ -51,6 +51,7 @@
     .table tbody tr td a:hover {
       color: blue  !important;
       text-decoration: underline  !important;
+      text-align: center !important;
   }
 
   /* Add border-radius to the entire table */
@@ -69,6 +70,7 @@
     width: 100%; 
     table-layout: fixed; 
     overflow: hidden;
+    margin-bottom: 10px;
 }
 
 th, td {
@@ -82,11 +84,11 @@ th, td {
     width: 50px; 
     height: 50px; 
     border-radius: 50%; 
-    border: 2px solid #001e54;
+    border: 2px solid #02286e !important;
 }
 
 .participant-name, .role-name {
-    color: #001e54; 
+    color: #001e54 !important; 
     text-decoration: none; 
     font-weight: bold; 
     font-size: 14px; /* Same font size */
@@ -396,9 +398,9 @@ th, td {
   display: flex !important;
   justify-content: center !important;
   list-style-type: none !important;
+  margin-top: 10px !important;
   padding: 0 !important;
-  margin: 0 !important;
-  margin-bottom: 20px !important; /* Additional margin to ensure spacing at the bottom */
+  align-items: right !important;
 }
 
 /* Pagination Links */
@@ -1498,115 +1500,146 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 
 label {
   color: #003d80; /* Dark blue text color */
+  font-weight: bold;
 }
 
 h2 {
   color: #003d80; /* Dark blue text color for headings */
 }
 
-  .sidebar-head {
-    background-color: #f8f9fa !important; /* Background color for the sidebar brand */
-    padding: 15px 20px !important; /* Padding around the text */
-    margin: 20px 0 !important; /* Add space above and below the element */
-    border-radius: 5px !important; /* Rounded corners */
-    text-align: center !important; /* Center text alignment */
-  }
+.sidebar-head {
+  background-color: #ffffff !important; /* Background color for the sidebar brand */
+  margin: 20px 0 !important; /* Add space above and below the element */
+  border-radius: 5px !important; /* Rounded corners */
+  text-align: center !important; /* Center text alignment */
+  display: flex;
+  align-items: center; /* Center items vertically */
+}
 
-  .sidebar-head .sidebar-brand-text {
-    font-size: 1.5rem !important; /* Adjust font size as needed */
-    font-weight: 780 !important; /* Make text extra bold */
-    color: #00003d !important; /* Dark blue text color */
-    letter-spacing: -0.1px !important; /* Adjust spacing between letters */
-    display: block !important; /* Ensure the text is visible */
-    white-space: nowrap !important; /* Prevent text from wrapping to the next line */
-    text-transform: none !important; /* Ensure text is not transformed to uppercase */
-  }
+.sidebar-head .sidebar-brand-text {
+  font-size: 1.5rem !important; /* Adjust font size as needed */
+  font-weight: 780 !important; /* Make text extra bold */
+  color: #00003d !important; /* Dark blue text color */
+  letter-spacing: -0.1px !important; /* Adjust spacing between letters */
+  display: block !important; /* Ensure the text is visible */
+  white-space: nowrap !important; /* Prevent text from wrapping to the next line */
+  text-transform: none !important; /* Ensure text is not transformed to uppercase */
+  margin-left: 0; /* Remove margin to tighten the space */
+}
+
+.sidebar-head .sidebar-icon {
+  color: #00003d !important; /* Ensure icon color matches the text */
+  font-size: 1.5rem; /* Ensure the icon size matches the text size */
+  margin-right: 5px; /* Add slight margin to the right of the icon */
+}
 
 
+.admin-sidebar {
+  background-color: #f8f9fa !important; /* Light background for contrast */
+}
 
-  .admin-sidebar {
-    background-color: #f8f9fa !important; /* Light background for contrast */
+.admin-sidebar .nav-link {
+  color: #00008B !important; /* Dark blue text */
+  font-weight: bold !important;
+  font-size: 1.3rem !important; /* Larger text */
+  padding-right: 20px !important; /* Space between text and icon */
+  padding-top: 15px !important; /* Space above items */
+  padding-bottom: 15px !important; /* Space below items */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for hover effect */
+  display: flex !important; /* Flexbox for alignment */
+  justify-content: space-between !important; /* Text on left, icon on right */
+  align-items: center !important;
+}
+
+.admin-sidebar .nav-link i {
+  color: #003366 !important; /* Darker blue icon */
+  transition: color 0.3s ease; /* Smooth transition for icon color change */
+  font-size: 1.5rem !important; /* Larger icon */
+}
+
+.admin-sidebar .nav-link:hover {
+  background-color: #2c3e50 !important; /* Darker blue background on hover */
+  color: #ffffff !important; /* White text on hover */
+}
+
+.admin-sidebar .nav-link:hover i {
+  color: #ffffff !important; /* White icons on hover */
+}
+
+.admin-sidebar .nav-link.active {
+  background-color: #00008B !important; /* Dark blue background for active link */
+  color: #ffffff !important; /* White text for active link */
+}
+
+.admin-sidebar .nav-link.active i {
+  color: #ffffff !important; /* White icons for active link */
+}
+
+.admin-sidebar .sidebar-brand {
+  color: #00008B !important; /* Dark blue text for the brand */
+  font-size: 1.5rem !important; /* Larger text */
+  font-weight: bold !important;
+}
+
+.admin-sidebar .sidebar-divider {
+  border-color: #dee2e6 !important;
+}
+
+.admin-sidebar .collapse-header {
+  color: #00008B !important; /* Dark blue text for collapse headers */
+  font-weight: bold !important;
+  font-size: 1.3rem !important; /* Larger text */
+}
+
+.admin-sidebar .collapse-item {
+  color: #00008B !important; /* Dark blue text for collapse items */
+  font-weight: bold !important;
+  padding-right: 20px !important; /* Space between text and icon */
+  padding-top: 15px !important; /* Space above items */
+  padding-bottom: 15px !important; /* Space below items */
+  transition: background-color 0.3s ease, color 0.3s ease;
+  display: flex !important; /* Flexbox for alignment */
+  justify-content: space-between !important; /* Text on left, icon on right */
+  align-items: center !important;
+}
+
+.admin-sidebar .collapse-item i {
+  color: #003366 !important; /* Darker blue icon for collapse items */
+  transition: color 0.3s ease; /* Smooth transition for icon color change */
+  font-size: 1.5rem !important; /* Larger icon */
+}
+
+.admin-sidebar .collapse-item:hover {
+  background-color: #2c3e50 !important; /* Darker blue background on hover */
+  color: #ffffff !important; /* White text on hover */
+}
+
+.admin-sidebar .collapse-item:hover i {
+  color: #ffffff !important; /* White icons on hover */
+}
+
+
+/* Media query for mobile devices */
+@media (max-width: 768px) { /* Adjust the max-width as needed for your design */
+  .admin-sidebar .nav-link span {
+      display: none !important; /* Hide text on mobile devices */
   }
 
   .admin-sidebar .nav-link {
-    color: #00008B !important; /* Dark blue text */
-    font-weight: bold !important;
-    font-size: 1.3rem !important; /* Larger text */
-    padding-right: 20px !important; /* Space between text and icon */
-    padding-top: 15px !important; /* Space above items */
-    padding-bottom: 15px !important; /* Space below items */
-    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for hover effect */
-    display: flex !important; /* Flexbox for alignment */
-    justify-content: space-between !important; /* Text on left, icon on right */
-    align-items: center !important;
+      justify-content: center; /* Center the icon */
+      padding: 15px 0 !important; /* Adjust padding for better spacing */
   }
 
   .admin-sidebar .nav-link i {
-    color: #003366 !important; /* Darker blue icon */
-    transition: color 0.3s ease; /* Smooth transition for icon color change */
-    font-size: 1.5rem !important; /* Larger icon */
+      margin: 0 auto; /* Center icons in their flex containers */
+      font-size: 1.5rem !important; /* Ensure icons are large enough */
   }
 
-  .admin-sidebar .nav-link:hover {
-    background-color: #2c3e50 !important; /* Darker blue background on hover */
-    color: #ffffff !important; /* White text on hover */
+  .sidebar-head .sidebar-brand-text {
+      display: none !important; /* Hide brand text on mobile */
   }
+}
 
-  .admin-sidebar .nav-link:hover i {
-    color: #ffffff !important; /* White icons on hover */
-  }
-
-  .admin-sidebar .nav-link.active {
-    background-color: #00008B !important; /* Dark blue background for active link */
-    color: #ffffff !important; /* White text for active link */
-  }
-
-  .admin-sidebar .nav-link.active i {
-    color: #ffffff !important; /* White icons for active link */
-  }
-
-  .admin-sidebar .sidebar-brand {
-    color: #00008B !important; /* Dark blue text for the brand */
-    font-size: 1.5rem !important; /* Larger text */
-    font-weight: bold !important;
-  }
-
-  .admin-sidebar .sidebar-divider {
-    border-color: #dee2e6 !important;
-  }
-
-  .admin-sidebar .collapse-header {
-    color: #00008B !important; /* Dark blue text for collapse headers */
-    font-weight: bold !important;
-    font-size: 1.3rem !important; /* Larger text */
-  }
-
-  .admin-sidebar .collapse-item {
-    color: #00008B !important; /* Dark blue text for collapse items */
-    font-weight: bold !important;
-    padding-right: 20px !important; /* Space between text and icon */
-    padding-top: 15px !important; /* Space above items */
-    padding-bottom: 15px !important; /* Space below items */
-    transition: background-color 0.3s ease, color 0.3s ease;
-    display: flex !important; /* Flexbox for alignment */
-    justify-content: space-between !important; /* Text on left, icon on right */
-    align-items: center !important;
-  }
-
-  .admin-sidebar .collapse-item i {
-    color: #003366 !important; /* Darker blue icon for collapse items */
-    transition: color 0.3s ease; /* Smooth transition for icon color change */
-    font-size: 1.5rem !important; /* Larger icon */
-  }
-
-  .admin-sidebar .collapse-item:hover {
-    background-color: #2c3e50 !important; /* Darker blue background on hover */
-    color: #ffffff !important; /* White text on hover */
-  }
-
-  .admin-sidebar .collapse-item:hover i {
-    color: #ffffff !important; /* White icons on hover */
-  }
 
   :root {
     --dark-blue: #003d80;
@@ -3773,12 +3806,14 @@ pre code {
 .table td {
   padding: 0.75rem;
   vertical-align: top;
-  border-top: 1px solid #e3e6f0;
+  border-top: 1px solid #0037ff;
+  font-weight: bold;
 }
 
 .table thead th {
-  vertical-align: bottom;
-  border-bottom: 2px solid #e3e6f0;
+  vertical-align: center;
+  border-bottom: 1px solid #e3e6f0;
+
 }
 
 .table tbody + tbody {
@@ -4115,14 +4150,14 @@ pre code {
   font-weight: 400;
   line-height: 1.5;
   color: #191f4f;
-  background-color: #ffffff;
+  background-color: #e0f7fa; /* Light blue background */
   background-clip: padding-box;
-  border: none; /* Removed the border */
+  border: none;
   border-radius: 0.35rem;
   max-width: 100%;
-  transition: box-shadow 0.15s ease-in-out;
+  transition: none; /* No transition effects */
+  box-shadow: none; /* No glow effect */
 }
-
 
 @media (prefers-reduced-motion: reduce) {
   .form-control {
@@ -4142,9 +4177,10 @@ pre code {
 
 .form-control:focus {
   color: #2b315f;
-  background-color: #fff;
+  background-color: #e0f7fa; /* Keep the background color the same */
   outline: 0;
   font-weight: bold;
+  box-shadow: none; /* Remove glow effect on focus */
 }
 
 .form-control::-webkit-input-placeholder {
@@ -6825,9 +6861,12 @@ input[type="button"].btn-block {
   word-wrap: break-word;
   background-color: #fff;
   background-clip: border-box;
-  border: 1px solid #e3e6f0;
-  border-radius: 0.35rem;
+  border-radius: 15px;
+  max-width: 90%; /* The card will take up a max of 70% of the width */
+  margin: 0 auto; /* This centers the card horizontally */
+  margin-bottom: 10px !important;
 }
+
 
 .card > hr {
   margin-right: 0;
@@ -6843,6 +6882,7 @@ input[type="button"].btn-block {
   border-top-width: 0;
   border-top-left-radius: calc(0.35rem - 1px);
   border-top-right-radius: calc(0.35rem - 1px);
+  margin: 0 auto; /* This centers the card horizontally */
 }
 
 .card > .list-group:last-child {
@@ -6858,7 +6898,7 @@ input[type="button"].btn-block {
 
 .card-body {
   flex: 1 1 auto;
-  min-height: 1px;
+  min-height: 2px;
   padding: 1.25rem;
 }
 
@@ -6886,9 +6926,12 @@ input[type="button"].btn-block {
 .card-header {
   padding: 0.75rem 1.25rem;
   margin-bottom: 0;
-  background-color: #f8f9fc;
+  background-color: #001e54;
   border-bottom: 1px solid #e3e6f0;
+  border-top-left-radius: 15px !important;
+  border-top-right-radius: 15px !important;
 }
+
 
 .card-header:first-child {
   border-radius: calc(0.35rem - 1px) calc(0.35rem - 1px) 0 0;
@@ -7088,6 +7131,7 @@ input[type="button"].btn-block {
   padding-left: 0;
   list-style: none;
   border-radius: 0.35rem;
+  margin-top: 10px;
 }
 
 .page-link {
@@ -11926,7 +11970,7 @@ button.bg-dark:focus {
 }
 
 .text-primary {
-  color: #4e73df !important;
+  color: white !important;
 }
 
 a.text-primary:hover, a.text-primary:focus {
