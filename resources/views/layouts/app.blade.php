@@ -11,6 +11,7 @@
     <title>Admin Panel  {{isset($title)?'| '.$title:''}}</title>
     <!-- Custom fonts for this template-->
     <link href="{{asset('assets/vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('assets/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
@@ -199,9 +200,11 @@
     
     
     <!-- Bootstrap core JavaScript-->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{asset('assets/vendor/jquery/jquery.min.js')}}"></script>
     <script src="{{asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+    <script src="{{ asset('assets/vendor/datatables/jquery.dataTables.js') }}"></script>
+    <script src="{{ asset('assets/vendor/datatables/dataTables.bootstrap4.js') }}"></script>
+    <script src="{{ asset('assets/js/demo/datatables-demo.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <!-- Core plugin JavaScript-->
     <script src="{{asset('assets/vendor/jquery-easing/jquery.easing.min.js')}}"></script>
@@ -211,7 +214,6 @@
  
     <!-- Page level plugins -->
     <script src="{{asset('assets/vendor/chart.js/Chart.min.js')}}"></script>
- 
     <!-- Page level custom scripts -->
     <script src="{{asset('assets/js/demo/chart-area-demo.js')}}"></script>
     <script src="{{asset('assets/js/demo/chart-pie-demo.js')}}"></script>
