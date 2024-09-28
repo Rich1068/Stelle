@@ -1,5 +1,4 @@
 <link rel="stylesheet" href="/css/bootstrap.min.css">
-<link rel="stylesheet" href="/css/custom.css"> <!-- Ensure custom styles are linked -->
 
 <div class="white-container"> 
     <!-- Forgot Password Form Section -->
