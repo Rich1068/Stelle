@@ -47,6 +47,74 @@
   box-sizing: border-box;
 }
 
+    /* Make name text blue and underline on hover */
+    .table tbody tr td a:hover {
+      color: blue  !important;
+      text-decoration: underline  !important;
+  }
+
+  /* Add border-radius to the entire table */
+  .table {
+      border-radius: 15px  !important;
+      overflow: hidden  !important;
+
+
+  }
+  .table {
+    border: 1px solid #001e54; 
+    background-color: white; 
+    border-radius: 15px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); 
+    font-size: 14px; 
+    width: 100%; 
+    table-layout: fixed; 
+    overflow: hidden;
+}
+
+th, td {
+    padding: 6px; 
+    text-align: center; 
+    vertical-align: middle; 
+    font-size: 14px; /* Default font size */
+}
+
+.profile-pic {
+    width: 50px; 
+    height: 50px; 
+    border-radius: 50%; 
+    border: 2px solid #001e54;
+}
+
+.participant-name, .role-name {
+    color: #001e54; 
+    text-decoration: none; 
+    font-weight: bold; 
+    font-size: 14px; /* Same font size */
+}
+
+/* Media Queries for mobile responsiveness */
+@media (max-width: 768px) {
+    .page-title-container-eventlist {
+        flex-direction: column; /* Stack elements vertically */
+        align-items: flex-start; /* Align items to the left */
+    }
+
+    .answer-forms-event-title {
+        font-size: 20px; /* Smaller title font on mobile */
+    }
+
+    .add-user-buttons {
+        width: 100%; /* Full width for buttons */
+        justify-content: flex-start; /* Align buttons to the left */
+        margin-top: 10px; /* Spacing above buttons */
+    }
+
+    th, td {
+        font-size: 12px; /* Smaller font for table on mobile */
+    }
+
+}
+
 .page-title-container-createuser {
   background-color: white;
   border-radius: 15px;
@@ -229,10 +297,41 @@
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Increased shadow effect */
   display: flex;
   align-items: center;
+  justify-content: space-between; /* Distribute space between items */
   margin: 0 auto 25px auto; /* Auto margins for horizontal centering */
   max-width: 90%; /* Adjust width if needed */
   margin-top: 45px;
 }
+
+/* Media query for mobile devices */
+@media (max-width: 768px) {
+  .page-title-container-eventlist {
+    flex-direction: column; /* Stack elements vertically */
+    align-items: center; /* Center items */
+    text-align: center; /* Center text */
+  }
+  
+  .answer-forms-event-title {
+    margin-bottom: 10px; /* Add space between title and buttons */
+    font-size: 20px; /* Adjust font size if needed */
+  }
+  
+  .add-user-buttons {
+    width: 100%; /* Make buttons full width */
+    display: flex;
+    flex-direction: column; /* Stack buttons vertically */
+    align-items: center; /* Center buttons horizontally */
+    gap: 10px; /* Space between buttons */
+  }
+  
+  .btn {
+    width: auto; /* Set to auto or a specific width */
+    display: inline-flex; /* Ensure buttons have consistent appearance */
+    justify-content: center; /* Center content within buttons */
+    padding: 10px 20px; /* Adjust padding for button size */
+  }
+}
+
 
 .page-title-container-eventlist h2 {
   font-weight: bold; /* Makes the h2 text bold */
