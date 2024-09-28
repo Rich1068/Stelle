@@ -8,89 +8,277 @@
             <div class="card shadow-sm rounded" style="border-radius: 15px; width: 100%; max-width: 1200px;">
                 <div class="d-flex" style="width: 100%;">
                     <!-- First Section -->
-                    <div class="flex-fill" style="padding: 2rem; border-radius: 15px 0 0 15px; background-color: #f8f9fc;">
+                    <div class="flex-fill"
+                        style="padding: 2rem; border-radius: 15px 0 0 15px; background-color: #f8f9fc;">
                         <h2 class="text-primary font-weight-bold mb-0">
                             Good Evening <span class="text-dark">User!</span>
                         </h2>
                         <p class="text-muted mb-0 font-weight-bold">How are you feeling?</p>
 
                         <!-- Dropdown for calendar filtering -->
-                        
+
                     </div>
 
                     <!-- Divider -->
                     <div class="divider" style="width: 2px; background-color: #dee2e6;"></div>
-                    
+
                 </div>
             </div>
         </div>
     </div>
-    <div class="dropdown mt-3">
-        <select id="calendarFilter" class="form-control">
-            <option value="all">All Events</option>
-            <option value="own">Own Events</option>
-            <option value="join">Joined Events</option>
-        </select>
-    </div>
-    <!-- Calendar Container -->
-    <div id="calendar"></div>
 
-    <!-- Modal for event details -->
-    <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-body" id="modalContent">
-                    <!-- Modal content will be dynamically inserted here -->
+    <div class="row">
+
+        <!-- Earnings (Monthly) Card Example -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">
+                                Total Users</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{$totalUsers}}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">
+                                Total Events</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{$totalEvents}}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">
+                                Created Events</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{$totalCreatedEvents}}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">
+                                Joined Events</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{$totalCreatedEvents}}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-4 col-lg-5">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">User Roles</h6>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <div class="chart-pie pt-4 pb-2">
+                        <canvas id="totalUserChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-4 col-lg-5">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">User Genders</h6>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <div class="chart-pie pt-4 pb-2">
+                        <canvas id="genderChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<div class="col-xl-4 col-lg-5">
+    <div class="card shadow mb-4">
+        <div class="dropdown mt-3">
+            <select id="calendarFilter" class="form-control">
+                <option value="all">All Events</option>
+                <option value="own">Own Events</option>
+                <option value="join">Joined Events</option>
+            </select>
+        </div>
+        <!-- Calendar Container -->
+        <div id="calendar"></div>
+
+        <!-- Modal for event details -->
+        <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-body" id="modalContent">
+                        <!-- Modal content will be dynamically inserted here -->
+                    </div>
+                </div>
+            </div>
+        </div>
         </div>
     </div>
 </div>
 
 <style>
     .btn-dark-blue {
-        background-color: #003366; /* Dark Blue Color */
+        background-color: #003366;
+        /* Dark Blue Color */
         color: white;
-        border-radius: 15px; /* Circular but consistent */
-        padding: 10px 20px; /* Adjust padding as needed */
+        border-radius: 15px;
+        /* Circular but consistent */
+        padding: 10px 20px;
+        /* Adjust padding as needed */
         border: none;
-        font-weight: bold; /* Make button text bold */
+        font-weight: bold;
+        /* Make button text bold */
     }
 
     .btn-dark-blue:hover {
-        background-color: #002244; /* Darker shade on hover */
+        background-color: #002244;
+        /* Darker shade on hover */
     }
 
     .card {
         border: none;
     }
 
-    .table th, .table td {
-        border: 1px solid #dee2e6; /* Light border for table cells */
-        font-weight: bold; /* Make table text bold */
+    .table th,
+    .table td {
+        border: 1px solid #dee2e6;
+        /* Light border for table cells */
+        font-weight: bold;
+        /* Make table text bold */
     }
 
     .card-header {
-        border-radius: 15px 15px 0 0; /* Rounded top corners consistent with other elements */
+        border-radius: 15px 15px 0 0;
+        /* Rounded top corners consistent with other elements */
     }
 
     .table thead th {
-        background-color: #003366; /* Dark Blue for table header */
+        background-color: #003366;
+        /* Dark Blue for table header */
         color: white;
     }
 
     .table tbody td {
-        background-color: #f8f9fc; /* Light background for table cells */
+        background-color: #f8f9fc;
+        /* Light background for table cells */
     }
 
     .table tbody tr:nth-child(odd) td {
-        background-color: #e9ecef; /* Alternate row color */
+        background-color: #e9ecef;
+        /* Alternate row color */
     }
 
     .bg-dark-blue {
-        background-color: #003366; /* Dark Blue Background */
+        background-color: #003366;
+        /* Dark Blue Background */
     }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Make sure Chart.js is included -->
+<script>
+    // Pass Laravel data to JavaScript
+    var userCountData = @json($userCountData); // Ensure $chartData is passed from the controller
 
+    // Pie Chart Example
+    var ctx = document.getElementById("totalUserChart").getContext('2d');
+    var myPieChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: userCountData.labels,  // Use the labels from Laravel
+            datasets: [{
+                data: userCountData.values,  // Use the values from Laravel
+                backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
+                hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
+                hoverBorderColor: "rgba(234, 236, 244, 1)",
+            }],
+        },
+        options: {
+            maintainAspectRatio: false,
+            tooltips: {
+                backgroundColor: "rgb(255,255,255)",
+                bodyFontColor: "#858796",
+                borderColor: '#dddfeb',
+                borderWidth: 1,
+                xPadding: 15,
+                yPadding: 10,
+                displayColors: false,
+                caretPadding: 10,
+            },
+            legend: {
+                display: false
+            },
+            cutoutPercentage: 80,
+        },
+    });
+
+    var genderData = @json($genderData); // Ensure $chartData is passed from the controller
+
+    // Pie Chart Example
+    var ctx = document.getElementById("genderChart").getContext('2d');
+    var myPieChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: genderData.labels,  // Use the labels from Laravel
+            datasets: [{
+                data: genderData.values,  // Use the values from Laravel
+                backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
+                hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
+                hoverBorderColor: "rgba(234, 236, 244, 1)",
+            }],
+        },
+        options: {
+            maintainAspectRatio: false,
+            tooltips: {
+                backgroundColor: "rgb(255,255,255)",
+                bodyFontColor: "#858796",
+                borderColor: '#dddfeb',
+                borderWidth: 1,
+                xPadding: 15,
+                yPadding: 10,
+                displayColors: false,
+                caretPadding: 10,
+            },
+            legend: {
+                display: false
+            },
+            cutoutPercentage: 80,
+        },
+    });
+</script>
 @vite('resources/js/calendar.js')
 @endsection

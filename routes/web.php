@@ -36,7 +36,7 @@ require __DIR__.'/auth.php';
 //super admin
 Route::middleware(['auth','super_admin'])->group(function () {
 
-    route::get('/super-admin/dashboard', [SuperAdminController::class, 'index'])->middleware(['verified'])->name('super_admin.dashboard');
+    route::get('/super-admin/dashboard', [SuperAdminController::class, 'index'])->middleware('verified')->name('super_admin.dashboard');
     route::get('/super_admin/userlist',[SuperAdminController::class,'userlist'])->name('super_admin.userlist');
     route::get('/super_admin/viewRequestingAdmins',[SuperAdminController::class,'viewRequestingAdmins'])->name('super_admin.requestingAdmins');
     Route::post('/handle-admin-request/{id}/{action}', [SuperAdminController::class, 'handleAdminRequest'])->name('super_admin.adminRequest');
@@ -48,14 +48,14 @@ Route::middleware(['auth','super_admin'])->group(function () {
 //admin
 Route::middleware(['auth','admin'])->group(function () {
 
-    route::get('/admin/dashboard', [AdminController::class, 'index'])->middleware(['verified'])->name('admin.dashboard');
+    route::get('/admin/dashboard', [AdminController::class, 'index'])->middleware('verified')->name('admin.dashboard');
 
 });
 
 //user
 Route::middleware(['auth','user'])->group(function () {
 
-    route::get('/user/dashboard', [UserController::class, 'index'])->middleware(['verified'])->name('user.dashboard');
+    route::get('/user/dashboard', [UserController::class, 'index'])->middleware('verified')->name('user.dashboard');
 
 });
 

@@ -33,11 +33,8 @@ class EmailVerificationPromptController extends Controller
             return redirect()->route('super_admin.dashboard');
         } elseif ($user->role_id == 2) {
             return redirect()->route('admin.dashboard');
-        } elseif ($user->role_id == 3) {
+        } else{
             return redirect()->route('user.dashboard');
         }
-
-        // Default redirect if no role matches
-        return redirect()->intended(route('dashboard'));
     }
 }

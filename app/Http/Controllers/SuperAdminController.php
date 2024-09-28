@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\UserEvent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
@@ -17,7 +18,30 @@ class SuperAdminController extends Controller
     {
         $user = Auth::user()->id;
 
-        return view('super_admin.dashboard',compact('user'));
+        $totalUsers = User::count();
+        $totalEvents = Event::count();
+        $totalCreatedEvents = UserEvent::where('user_id', $user)->count();
+        
+        $userCount = User::where('role_id', '3')->count();
+        $adminCount = User::where('role_id', '2')->count();
+        $superAdminCount = User::where('role_id', '1')->count();
+
+        $maleGender = User::where('gender', 'male')->count();
+        $femaleGender = User::where('gender', 'female')->count();
+        $unknownGender = User::where('gender', null)->count();
+
+        // Data to pass to the view
+        $userCountData = [
+            'labels' => ['User', 'Admin', 'Super Admin'],
+            'values' => [$userCount, $adminCount, $superAdminCount]
+        ];
+
+        $genderData = [
+            'labels' => ['Male', 'Female', 'N/A'],
+            'values' => [$maleGender, $femaleGender, $unknownGender]
+        ];
+
+        return view('super_admin.dashboard',compact('user', 'totalUsers', 'totalEvents', 'userCountData','totalCreatedEvents','genderData'));
     }
 
     public function userlist()
