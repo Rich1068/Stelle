@@ -77,7 +77,8 @@ class ProfileController extends Controller
             }
     
             // If email is updated, reset email_verified_at
-            if ($user->isDirty('email')) {
+            if ($user->email !== $validatedData['email']) {
+                // If email is updated, reset email_verified_at
                 $user->email_verified_at = null;
             }
     
