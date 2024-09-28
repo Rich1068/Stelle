@@ -32,13 +32,8 @@ class EventController extends Controller
     {
         // Start with the Event query
         $query = Event::query();
-
-        // Check if there is a search term in the request
-        if ($request->has('search') && $request->search != '') {
-            // Filter events by title or description containing the search term
-            $query->where('title', 'like', '%' . $request->search . '%');
-        }
-
+    
+        // Check if date filter is applied
         if ($request->has('date') && $request->date != '') {
             // Parse the date input
             $selectedDate = Carbon::parse($request->date)->format('Y-m-d');
@@ -46,26 +41,52 @@ class EventController extends Controller
             // Filter events occurring on the selected date
             $query->whereDate('date', '=', $selectedDate);
         }
-
+    
         // Paginate the results (10 per page)
         $events = $query->paginate(10);
-
-    return view('event.eventlist', compact('events'));
+    
+        // Check if this is an AJAX request (for filtering without reloading the page)
+        if ($request->ajax()) {
+            return response()->json([
+                'eventsHtml' => view('event.partials.eventlist', compact('events'))->render(),
+                'paginationHtml' => $events->links('vendor.pagination.custom1')->render(),
+            ]);
+        }
+    
+        // Return the regular view with events
+        return view('event.eventlist', compact('events'));
     }
 
-    public function myEventlist()
+    public function myEventlist(Request $request)
     {
-        $userId = Auth::user()->id;
+        $userId = Auth::id(); // Use Auth::id() to get the currently logged-in user's ID
 
         // Get event IDs where the user is the creator
         $eventIds = UserEvent::where('user_id', $userId)->pluck('event_id');
 
-        // Fetch and paginate events using the retrieved event IDs
-        $events = Event::whereIn('id', $eventIds)->paginate(10);
+        // Start the event query
+        $query = Event::whereIn('id', $eventIds);
+
+        // Check if a date filter is present in the request
+        if ($request->has('date') && $request->date != '') {
+            $selectedDate = Carbon::parse($request->date)->format('Y-m-d');
+            $query->whereDate('date', '=', $selectedDate);
+        }
+
+        // Paginate the results (10 per page)
+        $events = $query->paginate(10);
+
+        // Check if the request is an AJAX request (for filtering without reloading)
+        if ($request->ajax()) {
+            return response()->json([
+                'eventsHtml' => view('event.partials.myeventlist', compact('events'))->render(),
+                'paginationHtml' => $events->links('vendor.pagination.custom1')->render(),
+            ]);
+        }
 
         return view('event.myeventlist', compact('events'));
     }
-
+    
     public function view($id): View
     {
         $userevent = UserEvent::with('user')->where('event_id', $id)->firstOrFail();

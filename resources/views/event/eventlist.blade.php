@@ -8,85 +8,97 @@
     </h2>
 </div> <!-- Close page-title-container-eventlist -->
 
-
-  
+<!-- Filter Form -->
 <div class="event-filter-container p-3 mb-3">
-    <form method="GET" action="{{ route('event.list') }}" id="event-filter-form" class="d-flex justify-content-center align-items-center">
+    <div class="d-flex justify-content-center align-items-center">
         <!-- Search input with search icon inside the same container -->
-        <div class="search-wrapper">
-            <input type="text" name="search" class="form-control search-input" placeholder="SEARCH FOR EVENTS HERE" value="{{ request('search') }}">
-            <button class="search-btn">
+        <div class="search-wrapper position-relative">
+            <input type="text" id="eventSearch" class="form-control search-input" placeholder="Search for events...">
+            <button class="search-btn end-0 me-2" type="button">
                 <i class="fas fa-search"></i>
             </button>
         </div>
 
         <!-- Sort and date input inside the same container -->
-        <div class="d-flex align-items-center sort-date-wrapper">
-            <button class="btn sort-btn">SORT BY</button>
-            <span class="divider">|</span>
-            <input type="date" name="date" class="form-control date-input" value="{{ request('date') }}" id="date-input">
+        <div class="d-flex align-items-center sort-date-wrapper ms-3">
+            <input type="date" name="date" class="form-control date-input" id="date-input">
+            <button class="btn btn-outline-secondary ms-2" id="clear-date-btn" type="button">Clear Date</button>
         </div>
-    </form>
+    </div>
 </div>
 
+<!-- Event List -->
+<div id="event-list-container">
+    @include('event.partials.eventlist', ['events' => $events]) <!-- Separate partial for events -->
+</div>
 
+<!-- Pagination -->
+<div class="d-flex justify-content-center" id="pagination-links">
+    {{ $events->appends(request()->query())->links('vendor.pagination.custom1') }}
+</div>
 
-
-    @if ($events->isEmpty())
-        <p>No events available.</p>
-    @else
-        <div class="event-list">
-            @foreach ($events as $event)
-                <div class="event-list-item">
-                    <!-- Date Section -->
-                    <div class="event-list-date text-center text-white">
-                        <span class="event-list-day">{{ \Carbon\Carbon::parse($event->date)->format('d') }}</span>
-                        <span class="event-list-month">{{ \Carbon\Carbon::parse($event->date)->format('M Y') }}</span>
-                    </div>
-
-                    <!-- Event Details Section -->
-                    <div class="event-list-details">
-                        <h3 class="event-list-title mb-1">{{ $event->title }}</h3>
-                        <p class="event-list-description text-muted mb-2">{{ Str::limit($event->description, 50) }}</p>
-                        <div class="event-list-meta d-flex justify-content-between">
-                            <div class="meta-item time d-flex align-items-center">
-                                <i class="fas fa-clock"></i>
-                                <span class="meta-text ms-1">{{ \Carbon\Carbon::parse($event->start_time)->format('H:i') }} - {{ \Carbon\Carbon::parse($event->end_time)->format('H:i') }}</span>
-                            </div>
-                            <div class="meta-item location d-flex align-items-center">
-                                <i class="fas fa-map-marker-alt"></i>
-                                <span class="meta-text ms-1">{{ $event->address }}</span>
-                            </div>
-                            <div class="meta-item capacity d-flex align-items-center">
-                                <i class="fas fa-users"></i>
-                                <span class="meta-text ms-1">{{ $event->capacity }}</span>
-                            </div>
-                        </div>
-                        <a href="{{ route('event.view', $event->id) }}" class="event-list-view-btn">View</a>
-                    </div>
-                </div>
-            @endforeach
-        </div>
-
-        <!-- Using the custom1 pagination template -->
-        <div class="d-flex justify-content-center">
-            {{ $events->appends(request()->query())->links('vendor.pagination.custom1') }}
-        </div>
-    @endif
 @endsection
 
+@section('scripts')
 <script>
-    document.getElementById('date-input').addEventListener('change', function() {
-        document.getElementById('event-filter-form').submit();
-    });
-    const clearDateBtn = document.getElementById('clear-date-btn');
-    if (clearDateBtn) {
-        clearDateBtn.addEventListener('click', function() {
-            // Clear the date input
-            document.getElementById('date-input').value = '';
+    // Event listener for search input
+    document.getElementById('eventSearch').addEventListener('input', function () {
+        const searchTerm = this.value.toLowerCase();
+        const events = document.querySelectorAll('.event-list-item');
 
-            // Submit the form to clear the filter
-            document.getElementById('event-filter-form').submit();
+        events.forEach(event => {
+            const title = event.querySelector('.event-list-title').textContent.toLowerCase();
+            const description = event.querySelector('.event-list-description').textContent.toLowerCase();
+            const location = event.querySelector('.meta-item.location .meta-text').textContent.toLowerCase();
+
+            // Check if search term matches title, description, or location
+            const matches = title.includes(searchTerm) || description.includes(searchTerm) || location.includes(searchTerm);
+
+            // Toggle visibility
+            if (matches) {
+                event.style.display = '';
+            } else {
+                event.style.display = 'none';
+            }
         });
-    }
+    });
+    // Automatically submit form when the date is changed using AJAX
+    document.getElementById('date-input').addEventListener('change', function() {
+        const selectedDate = this.value;
+
+        // Send AJAX request to filter events by date
+        $.ajax({
+            url: '{{ route('event.list') }}', // Ensure this is the correct route
+            type: 'GET',
+            data: { date: selectedDate },
+            success: function(data) {
+                // Update the event list and pagination with the new filtered data
+                $('#event-list-container').html(data.eventsHtml);
+                $('#pagination-links').html(data.paginationHtml);
+            },
+            error: function(xhr) {
+                console.error(xhr.responseText);
+            }
+        });
+    });
+
+    // Clear date filter and fetch all events
+    document.getElementById('clear-date-btn').addEventListener('click', function() {
+        // Clear the date input
+        document.getElementById('date-input').value = '';
+
+        // Send AJAX request with no date filter to reset the list
+        $.ajax({
+            url: '{{ route('event.list') }}',
+            type: 'GET',
+            success: function(data) {
+                $('#event-list-container').html(data.eventsHtml);
+                $('#pagination-links').html(data.paginationHtml);
+            },
+            error: function(xhr) {
+                console.error(xhr.responseText);
+            }
+        });
+    });
 </script>
+@endsection
