@@ -123,4 +123,5 @@
         // If not confirmed, do nothing
     }
 </script>
+@vite('resources/js/calendar.js')
 @endsection

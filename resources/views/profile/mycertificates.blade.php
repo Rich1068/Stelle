@@ -11,13 +11,13 @@
         </h1>
     </div>
 
-        @if($user->certificates->isEmpty())
+        @if($user->certUser->isEmpty())
             <p>No certificates found.</p>
         @else
             <div class="certificates-container">
-                @foreach($user->certificates as $certificate)
+                @foreach($user->certUser as $certificate)
                     <div class="certificate-list">
-                        <div class="certificate-header">{{ $certificate->event->title }}</div> <!-- Added header -->
+                        <div class="certificate-header">{{ $certificate->certificate->event->title }}</div> <!-- Added header -->
                         <img src="{{ asset($certificate->cert_path)}}" class="certificate-image">
 
                         <div class="certificate-actions">

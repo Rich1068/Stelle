@@ -10,7 +10,8 @@ class CertUser extends Model
     use HasFactory;
     protected $fillable = [
         'cert_id',
-        'user_id'
+        'user_id',
+        'cert_path'
     ];
 
     public function user()

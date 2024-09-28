@@ -342,7 +342,10 @@ class EventController extends Controller
                             $participant->user->last_name;
     
                 // Return the full name
-                return ['full_name' => trim($fullName)];
+                return [
+                    'full_name' => trim($fullName),
+                    'user_id' => $participant->user->id // Include the user_id here
+                ];
             });
     
         // Return the participant full names as a JSON response

@@ -143,6 +143,8 @@ class ProfileController extends Controller
         // Load the certificates relationship to avoid N+1 query problem
         $user->load('certificates');
 
+        $user->load('certUser');
+
         // Return the view with the user and their certificates
         return view('profile.mycertificates', compact('user'));
     }

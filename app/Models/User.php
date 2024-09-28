@@ -109,6 +109,10 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
             'cert_id' // Local key on CertUser table
         );
     }
+    public function certUser()
+    {
+        return $this->hasMany(CertUser::class);
+    }
 
     public function eventParticipant()
     {
