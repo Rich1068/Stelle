@@ -14,7 +14,6 @@
         <hr style="border-top: 2px solid darkblue; margin: 5px 0;"> <!-- Reduced margin for the divider -->
 
         <!-- Session Status -->
-        <x-auth-session-status class="mb-2" :status="session('status')" /> <!-- Reduced margin below session status -->
         <div class="mb-2 text-sm" style="color: #00008B; font-weight: bold; text-align: center;">
             {{ __('Thank you for signing up!') }}
         </div>
@@ -27,11 +26,7 @@
         <!-- Divider Below Text -->
         <hr style="border-top: 2px solid darkblue; margin: 5px 0;"> <!-- Reduced margin for the divider -->
 
-        @if (session('status') == 'verification-link-sent')
-            <div class="mb-2 font-medium text-sm" style="color: #00008B; font-weight: bold; text-align: center;">
-                {{ __('A new verification link has been sent to your email.') }}
-            </div>
-        @endif
+
 
         <!-- Resend Verification Email -->
         <div class="flex items-center justify-between"> <!-- Removed additional vertical spacing here -->
@@ -40,11 +35,18 @@
 
                 <div>
                     <x-primary-button class="resetpass">
-                        {{ __('Resend Verification') }}
+                        {{ __('Send Verification') }}
                     </x-primary-button>
                 </div>
             </form>
+            @if (session('status') == 'verification-link-sent')
+            <div class="mb-2 font-medium text-sm" style="color: #00008B; text-align: center;">
+                {{ __('A verification link has been sent to your email.') }}
+            </div>
+            <br>
+        @endif
         </div>
+
 
         <!-- Centered Log Out Text -->
         <div class="LogOuttext mt-2 text-center">
