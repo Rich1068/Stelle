@@ -75,3 +75,27 @@
     </li>
 </ul>
 <!-- End of Sidebar -->
+
+<script> 
+// JavaScript to manage sidebar state
+document.addEventListener("DOMContentLoaded", function () {
+    const sidebarLinks = document.querySelectorAll('.admin-sidebar .nav-link');
+    const sidebarState = sessionStorage.getItem('sidebarState');
+
+    // Restore sidebar state
+    if (sidebarState === 'collapsed') {
+        sidebarLinks.forEach(link => {
+            link.classList.add('collapsed'); // Add a class for the collapsed state
+        });
+    }
+
+    // Event listener for clicking sidebar links
+    sidebarLinks.forEach(link => {
+        link.addEventListener('click', function () {
+            this.classList.toggle('collapsed'); // Toggle the class
+            sessionStorage.setItem('sidebarState', this.classList.contains('collapsed') ? 'collapsed' : 'expanded');
+        });
+    });
+});
+
+</script>

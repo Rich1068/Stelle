@@ -3,13 +3,14 @@
 @section('body')
     <!-- Link to the external CSS file -->
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+    <div class="top-container mb-4 d-flex align-items-left">
+    <h2 class="font-weight-bold mb-0">
+    <i class="fas fa-certificate"></i> My Certificate
+</h2>
 
-    <div class="certificates-page">
-    <div class="page-title-container">
-        <h1 class="page-title">
-            <i class="fas fa-certificate"></i> My Certificates
-        </h1>
+        </h2>
     </div>
+    <div class="certificates-page">
 
         @if($user->certUser->isEmpty())
             <p>No certificates found.</p>

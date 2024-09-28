@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('body')
-<div class="page-title-container-eventlist">
-    <h2>
+<div class="top-container">
+<h2 class="font-weight-bold mb-0">
         <i class="fas fa-list me-2"></i> <!-- List icon -->
         My Event List
     </h2>
