@@ -24,7 +24,7 @@
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table id="dataTable" class="table table-bordered" width="100%" cellspacing="0">
+            <table id="dataTable" class="table table-bordered" width="70%" cellspacing="0">
                 <thead>
                     <tr>
                         <th>Profile Picture</th>
