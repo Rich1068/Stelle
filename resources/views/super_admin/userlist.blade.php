@@ -1,22 +1,24 @@
 @extends('layouts.app')
 
 @section('body')
-
-<div class="page-title-container-eventlist" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-    <div class="answer-forms-event-title" style="font-weight: bold; font-size: 24px; color: #001e54;">
-        <i class="fas fa-users"></i> User List
+<div class="top-container mb-4 d-flex align-items-left">
+    <div class="d-flex align-items-right">
+        <h2 class="font-weight-bold mb-0">
+            <i class="fas fa-users"></i> User List
+        </h2>
     </div>
-    <div class="add-user-buttons" style="display: flex; gap: 10px;">
-        <a href="{{ route('superadmin.usercreate') }}" class="btn btn-primary mt-2">
-            <i class="fas fa-user-plus"></i> Add User
+    <div class="add-user-buttons ms-auto" style="display: flex; gap: 10px; margin-left: auto;">
+        <a href="{{ route('superadmin.usercreate') }}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Add User
         </a>
         <form action="{{ route('super_admin.requestingAdmins') }}" method="get" style="display: inline;">
-            <button type="submit" class="btn btn-primary mt-2">
+            <button type="submit" class="btn btn-primary">
                 <i class="fas fa-user-shield"></i> View Requesting Admin
             </button>
         </form>
     </div>
 </div>
+
 
 <div class="card shadow mb-4">
     <div class="card-header py-3">

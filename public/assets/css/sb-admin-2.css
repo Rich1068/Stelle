@@ -47,6 +47,12 @@
   box-sizing: border-box;
 }
 
+.card {
+  margin-bottom: 20px; /* Spacing between cards */
+}
+
+
+
     /* Make name text blue and underline on hover */
     .table tbody tr td a:hover {
       color: blue  !important;
@@ -678,20 +684,29 @@ th, td {
 /* Radio Group */
 .answer-forms-radio-group {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 15px 70px;
+  justify-content: center; /* Center items horizontally */
+  align-items: center; /* Center items vertically */
+  padding: 15px 70px; /* Padding around the group */
   gap: 20px; /* Adjust gap between items as needed */
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+  .answer-forms-radio-group {
+    flex-direction: column; /* Stack items vertically on mobile */
+    align-items: center; /* Center items horizontally */
+    padding: 15px; /* Adjust padding for mobile */
+  }
 }
 
 /* Radio Label */
 .answer-forms-radio-label {
   display: flex;
   flex-direction: column; /* Stack number above the radio button */
-  align-items: center;
+  align-items: center; /* Center label contents */
   gap: 15px; /* Space between number and circle */
   cursor: pointer;
-  margin: 20px; /* Space around each label */
+  margin: 10px; /* Adjust margin around each label */
 }
 
 /* Radio Circle */
@@ -767,6 +782,16 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   flex-direction: column;
   gap: 20px;
 }
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+  .form-question-container {
+    padding: 20px; /* Reduce padding for mobile */
+    margin: 15px auto; /* Adjust margin for mobile */
+    max-width: 95%; /* Increase width for smaller screens */
+  }
+}
+
 /* Divider between input field and buttons */
 .divider {
   display: flex;
@@ -932,14 +957,27 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 .radio-buttons {
   display: flex;
   justify-content: center;
-  gap: 15px; /* Increased spacing between radio buttons */
+  align-items: center; /* Center items vertically */
+  gap: 15px; /* Spacing between radio buttons */
   margin-top: 10px;
+  text-align: center; /* Center the text of the labels */
 }
 
+/* Radio button styles */
 .radio-buttons input[type="radio"] {
   accent-color: #003d80; /* Dark Blue */
   transform: scale(1.2); /* Slightly larger for visibility */
 }
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+  .radio-buttons {
+    flex-direction: column; /* Stack radio buttons vertically on mobile */
+    align-items: center; /* Center items horizontally */
+    gap: 10px; /* Adjust spacing for vertical layout */
+  }
+}
+
 
 /* Label for Options */
 .options-label {
@@ -1024,9 +1062,50 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 }
 
 .tab-content {
-  padding: 20px;
   background: #ffffff;
+  border-radius: 0 15px 15px 15px; /* Remove top left border radius */
+  max-width: 90%;
+  margin: auto;
+  margin-bottom: 0 !important; /* Remove bottom margin */
+  
 }
+
+.nav-tabs {
+  max-width: 90%; /* Same as tab content */
+  margin: auto; /* Center the nav tabs */
+  text-align: center; /* Center the tab links */
+  margin-bottom: 0 !important; /* Remove bottom margin */
+}
+
+.nav-tabs .nav-item {
+  display: inline-block; /* Ensures tabs are inline */
+}
+
+.nav-tabs .nav-link {
+  padding: 10px 15px !important; /* Add padding to the tab links */
+  background: #001e54 !important; /* Dark blue background for inactive tabs */
+  color: #ffffff !important; /* White text for inactive tabs */
+  border-radius: 15px 15px 0 0 !important; /* Rounded top corners */
+  margin-right: 5px !important; /* Space between tabs */
+  font-weight: bold !important; /* Bold text for inactive tabs */
+}
+
+.nav-tabs .nav-link.active {
+  background: #ffffff !important; /* Keep it white for the active tab */
+  color: #001e54 !important; /* Active tab text color */
+  border-bottom: 1px solid #ffffff !important; /* Hide the bottom border for active tab */
+  font-weight: bold !important; /* Bold text for active tab */
+}
+
+
+
+/* Add this if needed */
+.age-distribution-container {
+   display: flex;
+   flex-direction: column; /* Arrange items in a column */
+   margin-bottom: 0; /* Ensure no extra margin */
+}
+
 
 .tab-pane {
   display: none;
@@ -1324,7 +1403,6 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   border-radius: 0; /* No rounding on the date section */
 }
 
-
 .event-list-day {
   font-size: 20px; /* Smaller font size */
   font-weight: bold;
@@ -1404,6 +1482,44 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6), 0 0 5px rgba(0, 0, 0, 0.4); /* Enhanced shadow effect */
   margin-bottom: 20px; /* Space below the header */
 }
+
+/* Media Queries for Mobile Responsiveness */
+/* Media Queries for Mobile Responsiveness */
+@media (max-width: 768px) {
+  .event-list-item {
+    flex-direction: column; /* Stack items vertically on mobile */
+    margin-bottom: 20px; /* Space between event items */
+  }
+
+  .event-list-date {
+    padding: 15px; /* Increase padding for mobile */
+    text-align: center; /* Center text */
+  }
+
+  .event-list-title {
+    font-size: 20px; /* Adjusted font size for mobile */
+    text-align: center; /* Center title */
+    margin: 10px 0; /* Margin above and below title */
+  }
+
+  .event-list-description {
+    font-size: 14px; /* Adjusted font size for mobile */
+    padding-top: 10px;
+    text-align: center; /* Center description */
+    margin-bottom: 10px; /* Space below description */
+  }
+
+  .event-list-meta {
+    flex-direction: column; /* Stack meta items vertically on mobile */
+    text-align: center; /* Center meta items */
+    margin-bottom: 10px; /* Space below meta items */
+  }
+
+
+}
+
+
+
 
 
 /* Header Styling */
@@ -1623,7 +1739,7 @@ h2 {
   background-color: #03203d !important; /* Darker blue background for active link */
   color: #ffffff !important; /* White text for active link */
   border-radius: 5px; /* Rounded corners */
-
+  display: inline-block; /* Make the link only as wide as its content */
   /* Optional: add a transition for a smoother effect */
   transition: background-color 0.3s ease; 
 }
@@ -1640,6 +1756,14 @@ h2 {
 /* Media query for mobile devices */
 /* Media query for mobile devices */
 @media (max-width: 768px) {
+  .admin-sidebar .nav-link.collapsed {
+    /* Style for the collapsed state */
+    justify-content: center; /* Center icon when collapsed */
+    width: 60px; /* Adjust the width */
+    overflow: hidden; /* Prevent text overflow */
+}
+
+
   .admin-sidebar .nav-link span {
       display: none !important; /* Hide text on mobile devices */
   }
@@ -1667,6 +1791,7 @@ h2 {
       margin: 0; /* Remove margin to better center the icon */
   }
 }
+
 
   :root {
     --dark-blue: #003d80;
@@ -1818,6 +1943,7 @@ h2 {
     padding: 12px; /* Add padding for better readability */
     text-align: left;
     border-bottom: 2px solid var(--divider-color); /* Dark blue transparent border for the header */
+    text-align: center;
 }
 
 .profile-attended-events-table tbody tr {
@@ -1884,11 +2010,25 @@ h2 {
 }
 .top-container {
   width: 100% !important; /* Ensure it takes full width */
-  max-width: 1200px !important; /* Set a maximum width to avoid it stretching too wide */
+  max-width: 90% !important; /* Set a maximum width to avoid it stretching too wide */
   background-color: white !important; /* White background */
   margin: 20px auto !important; /* Center the container with margin */
   padding: 20px !important; /* Padding inside the container */
   border-radius: 25px !important; /* Rounded corners */
+  text-align: left !important; /* Align text to the left */
+  display: flex !important; /* Flexbox for alignment */
+  flex-direction: column !important; /* Stack items vertically */
+  align-items: flex-start !important; /* Align items to the start */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important; /* Optional: add shadow for a subtle lift effect */
+}
+
+.top-container-2 {
+  width: 100% !important; /* Ensure it takes full width */
+  max-width: 95% !important; /* Set a maximum width to avoid it stretching too wide */
+  background-color: white !important; /* White background */
+  margin: 20px auto !important; /* Center the container with margin */
+  padding: 15px !important; /* Padding inside the container */
+  border-radius: 15px !important; /* Rounded corners */
   text-align: left !important; /* Align text to the left */
   display: flex !important; /* Flexbox for alignment */
   flex-direction: column !important; /* Stack items vertically */
@@ -5082,12 +5222,11 @@ fieldset:disabled a.btn {
 
 .btn-outline-secondary {
   color: #858796;
-  border-color: #858796;
 }
 
 .btn-outline-secondary:hover {
   color: #fff;
-  background-color: #858796;
+  background-color: darkblue;
   border-color: #858796;
 }
 
@@ -6889,9 +7028,10 @@ input[type="button"].btn-block {
   background-color: #fff;
   background-clip: border-box;
   border-radius: 15px;
-  max-width: 90%; /* The card will take up a max of 70% of the width */
+  max-width: 90%; /* The card will take up a max of 90% of the width */
   margin: 0 auto; /* This centers the card horizontally */
   margin-bottom: 10px !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Added shadow */
 }
 
 
@@ -8846,7 +8986,7 @@ button.bg-success:focus {
 }
 
 .bg-info {
-  background-color: #36b9cc !important;
+  background-color: #003366 !important;
 }
 
 a.bg-info:hover, a.bg-info:focus,
@@ -8886,7 +9026,7 @@ button.bg-light:focus {
 }
 
 .bg-dark {
-  background-color: #5a5c69 !important;
+  background-color: #003366 !important;
 }
 
 a.bg-dark:hover, a.bg-dark:focus,
@@ -12021,11 +12161,11 @@ a.text-success:hover, a.text-success:focus {
 }
 
 .text-info {
-  color: #36b9cc !important;
+  color: #003366 !important;
 }
 
 a.text-info:hover, a.text-info:focus {
-  color: #258391 !important;
+  color: ##003366 !important;
 }
 
 .text-warning {
@@ -12053,7 +12193,7 @@ a.text-light:hover, a.text-light:focus {
 }
 
 .text-dark {
-  color: #5a5c69 !important;
+  color: darkblue !important;
 }
 
 a.text-dark:hover, a.text-dark:focus {

@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
 @section('body')
-<div class="page-title-container-eventlist">
-    <h2>
+<div class="top-container">
+<h2 class="font-weight-bold mb-0">
         <i class="fas fa-calendar-alt me-2"></i> <!-- Calendar icon -->
         Event List
     </h2>
-</div> <!-- Close page-title-container-eventlist -->
+</div> 
 
 <!-- Filter Form -->
 <div class="event-filter-container p-3 mb-3">
