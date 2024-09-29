@@ -1144,7 +1144,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 
 /* Ensure modal looks good on mobile */
 .modal-content {
-  border-radius: 15px;
+  border-radius: 15px !important;
 }
 
 .event-view-certificate-image {

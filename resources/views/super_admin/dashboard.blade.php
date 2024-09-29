@@ -1,158 +1,185 @@
 @extends('layouts.app')
 
 @section('body')
-<div class="container-fluid px-4">
-    <!-- Dropdown for selecting event type -->
-    <div class="row mb-4">
-        <div class="col-lg-12 d-flex justify-content-center">
-            <div class="card shadow-sm rounded" style="border-radius: 15px; width: 100%; max-width: 1200px;">
-                <div class="d-flex" style="width: 100%;">
-                    <!-- First Section -->
-                    <div class="flex-fill"
-                        style="padding: 2rem; border-radius: 15px 0 0 15px; background-color: #f8f9fc;">
-                        <h2 class="text-primary font-weight-bold mb-0">
-                            Good Evening <span class="text-dark">User!</span>
-                        </h2>
-                        <p class="text-muted mb-0 font-weight-bold">How are you feeling?</p>
+<div class="col-lg-12 d-flex justify-content-center">
+    <div class="card shadow-sm rounded" style="border-radius: 15px !important; width: 100% !important; background-color: white;"> <!-- Set background color to white -->
+        <div class="d-flex" style="width: 100%;">
+            <!-- First Section -->
+            <div class="flex-fill" style="padding: 2rem; border-radius: 15px 0 0 15px; background-color: white;"> <!-- Set background color to white -->
+                <h2 class="text-primary font-weight-bold mb-0" style="color: darkcyan !important;"> <!-- Set text color to dark grey -->
+                    Good Evening <span style="color: darkblue !important;">User!</span>
+                </h2>
+                <p class="text-muted mb-0 font-weight-bold" style="color: darkblue;"> <!-- Set text color to dark blue -->
+                    How are you feeling?
+                </p>
+            </div>
 
-                        <!-- Dropdown for calendar filtering -->
+            <!-- Divider -->
+            <div class="divider" style="width: 2px; background-color: #dee2e6;"></div>
 
-                    </div>
-
-                    <!-- Divider -->
-                    <div class="divider" style="width: 2px; background-color: #dee2e6;"></div>
-
-                </div>
+            <!-- Second Section -->
+            <div class="flex-fill" style="padding: 2rem; border-radius: 15px 15px 15px 0; background-color: white;"> <!-- Set background color to white -->
+                <h2 class="text-primary font-weight-bold mb-0" style="color: darkcyan !important;"> <!-- Set text color to dark grey -->
+                    Here are your scheduled events <span style="color: darkblue !important;">for this month</span>
+                </h2>
             </div>
-        </div>
-    </div>
-
-    <div class="row">
-
-        <!-- Earnings (Monthly) Card Example -->
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-primary shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">
-                                Total Users</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{$totalUsers}}</div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-primary shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">
-                                Total Events</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{$totalEvents}}</div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-primary shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">
-                                Created Events</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{$totalCreatedEvents}}</div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-primary shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">
-                                Joined Events</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{$totalCreatedEvents}}</div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-xl-4 col-lg-5">
-            <div class="card shadow mb-4">
-                <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">User Roles</h6>
-                </div>
-                <!-- Card Body -->
-                <div class="card-body">
-                    <div class="chart-pie pt-4 pb-2">
-                        <canvas id="totalUserChart"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-4 col-lg-5">
-            <div class="card shadow mb-4">
-                <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">User Genders</h6>
-                </div>
-                <!-- Card Body -->
-                <div class="card-body">
-                    <div class="chart-pie pt-4 pb-2">
-                        <canvas id="genderChart"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-<div class="col-xl-4 col-lg-5">
-    <div class="card shadow mb-4">
-        <div class="dropdown mt-3">
-            <select id="calendarFilter" class="form-control">
-                <option value="all">All Events</option>
-                <option value="own">Own Events</option>
-                <option value="join">Joined Events</option>
-            </select>
-        </div>
-        <!-- Calendar Container -->
-        <div id="calendar"></div>
-
-        <!-- Modal for event details -->
-        <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-body" id="modalContent">
-                        <!-- Modal content will be dynamically inserted here -->
-                    </div>
-                </div>
-            </div>
-        </div>
         </div>
     </div>
 </div>
 
+
+    
+    <div class="row justify-content-center  custom-bg-white mt-4 mb-4 pt-4"> <!-- Added custom class for border radius -->
+    <!-- Calendar Column -->
+    <div class="col-xl-5 col-md-12 mb-4"> <!-- Adjusted width for the calendar -->
+        <div class="card shadow mb-4" style="height: 500px;"> <!-- Increased height for the calendar -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Event Calendar</h6>
+            </div>
+            <div class="dropdown mt-3">
+                <select id="calendarFilter" class="form-control">
+                    <option value="all">All Events</option>
+                    <option value="own">Own Events</option>
+                    <option value="join">Joined Events</option>
+                </select>
+            </div>
+            <div id="calendar" class="p-3" style="height: 400px; overflow-y: auto;"> <!-- Set height for the calendar and added overflow -->
+                <!-- Calendar will be inserted here -->
+            </div>
+
+            <!-- Modal for event details -->
+            <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body" id="modalContent">
+                            <!-- Modal content will be dynamically inserted here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-5 col-md-12"> <!-- Adjusted to occupy remaining space for cards -->
+        <div class="row mb-4">
+            <!-- Stack all cards on top of each other -->
+            <div class="col-12 mb-4"> <!-- Increased margin for space between cards -->
+                <div class="card border-left-info shadow h-100" style="height: 220px;"> <!-- Reduced height for the card -->
+                    <div class="card-body"> <!-- Removed d-flex justify-content-center -->
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                    Total Users
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totalUsers }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-users fa-2x text-info"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 mb-4"> <!-- Increased margin for space between cards -->
+                <div class="card border-left-info shadow h-100" style="height: 220px;"> <!-- Reduced height for the card -->
+                    <div class="card-body"> <!-- Removed d-flex justify-content-center -->
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                    Total Events
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totalEvents }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-calendar-alt fa-2x text-info"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 mb-4"> <!-- Increased margin for space between cards -->
+                <div class="card border-left-info shadow h-100" style="height: 220px;"> <!-- Reduced height for the card -->
+                    <div class="card-body"> <!-- Removed d-flex justify-content-center -->
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                    Created Events
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totalCreatedEvents }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-plus-square fa-2x text-info"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 mb-4"> <!-- Increased margin for space between cards -->
+                <div class="card border-left-info shadow h-100" style="height: 220px;"> <!-- Reduced height for the card -->
+                    <div class="card-body"> <!-- Removed d-flex justify-content-center -->
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                    Joined Events
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ isset($totalJoinedEvents) ? $totalJoinedEvents : 0 }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-user-check fa-2x text-info"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- User Roles Card -->
+    <div class="col-xl-5 col-lg-6 mb-4"> 
+        <div class="card shadow h-100"> 
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">User Roles</h6>
+            </div>
+            <div class="card-body" style="height: 300px;">
+                <div class="chart-pie pt-4 pb-2">
+                    <canvas id="totalUserChart" style="height: 100%; width: 100%;"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Genders Card -->
+    <div class="col-xl-5 col-lg-6 mb-4">
+        <div class="card shadow h-100">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">User Genders</h6>
+            </div>
+            <div class="card-body" style="height: 300px;">
+                <div class="chart-pie pt-4 pb-2">
+                    <canvas id="genderChart" style="height: 100%; width: 100%;"></canvas>
+                </div>
+            </div>
+        </div>
+    </div> 
+</div>
+
+
+
 <style>
+.custom-bg-white {
+    border-radius: 15px; /* Add border radius */
+    max-width: 80%;
+    align-items: center; /* This is not necessary unless you're using flexbox */
+    margin: auto; /* Center the element */
+    background-color: white; /* Set background color */
+    background-color: rgba(255, 255, 255, 0.4); /* Semi-transparent white */
+}
+
+
     .btn-dark-blue {
         background-color: #003366;
         /* Dark Blue Color */
