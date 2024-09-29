@@ -14,15 +14,26 @@ use Illuminate\Support\Facades\DB;
 
 class EvaluationFormController extends Controller
 {
-    public function store(Request $request, $eventId)
+
+    public function evalList()
     {
+        // Fetch all evaluation forms with their creator and status
+        $evaluationForms = EvaluationForm::with('creator', 'status')->get();
+        
+        // Return the view with the evaluation forms
+        return view('evaluation_form.evaluationlist', compact('evaluationForms'));
+    }
 
+    
+    public function store(Request $request)
+    {
+        // Create the evaluation form without tying it to a specific event
         $form = EvaluationForm::create([
-            'event_id' => $eventId,
-            'status_id' => 2
+            'created_by' => auth()->id(), // Store the creator's ID
+            'status_id' => 2, // Assuming status ID 2 is 'Inactive' or the default status
         ]);
-
-        return redirect()->route('questions.create', ['id' => $eventId,'form' => $form->id]);
+    
+        return redirect()->route('questions.create', ['id' => $form->id]);
     }
     public function update(Request $request, $id, $form)
     {

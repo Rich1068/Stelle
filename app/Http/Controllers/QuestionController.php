@@ -8,12 +8,12 @@ use Illuminate\Support\Facades\DB;
 
 class QuestionController extends Controller
 {
-    public function create($id, $formId)
+    public function create($formId)
     {
-        return view('event.evaluation_form.questions.create', compact('id','formId'));
+        return view('evaluation_form.questions.create', compact('formId'));
     }
 
-    public function store(Request $request, $id, $formId)
+    public function store(Request $request, $formId)
     {
         $request->validate([
             'questions' => 'required|array|min:1', // Ensure at least one question is present
@@ -33,7 +33,7 @@ class QuestionController extends Controller
             ]);
         }
     
-        return redirect()->route('event.view', ['id' => EvaluationForm::find($formId)->event_id]);
+        return redirect()->route('evaluation.evaluationlist');
     }
 
     public function edit($id, $form)

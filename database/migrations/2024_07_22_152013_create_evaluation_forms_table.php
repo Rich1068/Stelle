@@ -21,9 +21,15 @@ return new class extends Migration
         ]);
         Schema::create('evaluation_forms', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('event_id')->constrained('events')->onDelete('cascade');
+            $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
             $table->foreignId('status_id')->constrained('form_statuses')->onDelete('cascade');
             $table->timestamps();
+        });
+        Schema::create('event_evaluation_form', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('event_id')->constrained('events')->onDelete('cascade');
+            $table->foreignId('form_id')->constrained('evaluation_forms')->onDelete('cascade');
+            $table->foreignId('status_id')->constrained('form_statuses')->onDelete('cascade');
         });
         Schema::create('question_types', function (Blueprint $table) {
             $table->id();

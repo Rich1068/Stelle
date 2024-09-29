@@ -90,6 +90,13 @@ Route::middleware('auth')->group(function () {
     Route::post('/event/{id}/participants/send-certificates', [CertificateController::class, 'sendCertificates'])->name('sendCertificates');
     Route::get('/event/{id}/get-participants', [EventController::class, 'getParticipants']);
 
+    //new Eval
+    Route::get('/evaluation-forms', [EvaluationFormController::class, 'evalList'])->name('evaluation.evaluationlist');
+
+    Route::get('/evaluation-forms/create', [EvaluationFormController::class, 'store'])->name('evaluation-forms.create');
+    Route::get('/evaluation-forms/{id}/questions/create', [QuestionController::class, 'create'])->name('questions.create');
+    Route::post('/evaluation-forms/{id}/questions', [QuestionController::class, 'store'])->name('questions.store');
+
 
     
     //cert stuff 
@@ -133,11 +140,11 @@ Route::middleware(['auth', 'checkEventCreator'])->group(function () {
 //check the event owner through form
 Route::group(['middleware' => ['auth', 'checkFormOwner']], function() {
     // create question
-    Route::get('/event/{id}/evaluation-form/{form}/questions/create', [QuestionController::class, 'create'])->name('questions.create');
-    Route::post('/event/{id}/evaluation-forms/{form}/questions', [QuestionController::class, 'store'])->name('questions.store');
+    // Route::get('/event/{id}/evaluation-form/{form}/questions/create', [QuestionController::class, 'create'])->name('questions.create');
+    // Route::post('/event/{id}/evaluation-forms/{form}/questions', [QuestionController::class, 'store'])->name('questions.store');
 
-    // update question
-    Route::get('/event/{id}/evaluation-form/{form}/questions/edit', [QuestionController::class, 'edit'])->name('questions.edit');
-    Route::put('/event/{id}/evaluation-form/{form}/questions/update', [QuestionController::class, 'update'])->name('questions.update');
+    // // update question
+    // Route::get('/event/{id}/evaluation-form/{form}/questions/edit', [QuestionController::class, 'edit'])->name('questions.edit');
+    // Route::put('/event/{id}/evaluation-form/{form}/questions/update', [QuestionController::class, 'update'])->name('questions.update');
 });
 

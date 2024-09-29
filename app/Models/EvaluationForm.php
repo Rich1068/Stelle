@@ -10,7 +10,7 @@ class EvaluationForm extends Model
     use HasFactory;
 
     protected $fillable = [
-        'event_id',
+        'created_by',
         'status_id'
     ];
     public function event()
@@ -20,6 +20,16 @@ class EvaluationForm extends Model
     public function questions()
     {
         return $this->hasMany(Question::class, 'form_id');
+    }
+
+    public function creator()
+{
+    return $this->belongsTo(User::class, 'created_by');
+}
+
+    public function status()
+    {
+        return $this->belongsTo(FormStatus::class, 'status_id');
     }
 
 }

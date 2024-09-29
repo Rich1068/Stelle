@@ -3,12 +3,12 @@
 @section('body')
 
 <!-- Main Form Container -->
-<form action="{{ route('questions.store', ['id' => $id, 'form' => $formId]) }}" method="POST" class="form-question-container" onsubmit="return validateForm()">
+<form action="{{ route('questions.store', ['id' => $formId]) }}" method="POST" class="form-question-container" onsubmit="return validateForm()">
     @csrf
 
     <!-- Header Text with Icon -->
     <div class="header-text">
-        <i class="fas fa-list"></i> Create Evaluation Form
+        <i class="fas fa-list"></i> Create Evaluation Form Questions
     </div>
 
     <!-- Input Field for Question -->
