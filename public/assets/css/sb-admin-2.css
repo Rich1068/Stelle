@@ -1530,8 +1530,8 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   gap: 30px; /* Gap between columns and rows */
   border-radius: 15px;
   padding: 30px; /* Padding inside the form */
-  margin: 10px auto; /* Center the form horizontally */
-  max-width: 70%; /* Maximum width */
+  margin: auto; /* Center the form horizontally */
+  max-width: 55%; /* Maximum width */
   box-sizing: border-box;
 }
 .event-input {
@@ -1544,7 +1544,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   display: flex;
   flex-direction: column;
   padding: 20px;
-  margin-bottom: 10px; /* Added 20px bottom margin */
+  margin-bottom: 5; /* Added 20px bottom margin */
   border-radius: 15px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   background-color: #ffffff;
