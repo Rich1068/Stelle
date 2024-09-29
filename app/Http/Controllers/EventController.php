@@ -10,6 +10,7 @@ use App\Models\Certificate;
 use App\Models\Question;
 use App\Models\Answer;
 use App\Models\CertUser;
+use App\Models\EventEvaluationForm;
 use Illuminate\View\View;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
@@ -95,7 +96,6 @@ class EventController extends Controller
             ->count();
         $event = Event::findOrFail($id);
         $certificate = Certificate::where('event_id', $id)->first();
-        $evaluationForm = $event->evaluationForm;
         $eventParticipant = EventParticipant::where('event_id', $id)
             ->where('user_id', Auth::user()->id)
             ->first();
@@ -106,10 +106,11 @@ class EventController extends Controller
         $currentUser = Auth::user()->id;
 
         $hasAnswered = false;
+        $evaluationForm = $event->evaluationForm;
         if ($evaluationForm) {
-            $questions = Question::where('form_id', $evaluationForm->id)->pluck('id');
-            
-            
+            $questions = Question::where('form_id', $evaluationForm->form_id)->pluck('id');
+                
+                
             foreach ($questions as $question) {
                 $answer = Answer::where('question_id', $question)
                     ->where('user_id', Auth::user()->id)
@@ -120,6 +121,7 @@ class EventController extends Controller
                 }
             }
         }
+        
 
         return view('event.event', [
             'event' => $event,
@@ -307,48 +309,7 @@ class EventController extends Controller
         return back()->with('success', 'Participant status updated successfully.');
 
     }
-    public function sendCertificates(Request $request, $eventId)
-    {
-        // Validate the incoming request
-        $request->validate([
-            'participants' => 'required|array',  // Ensure we have an array of selected participants
-            'participants.*' => 'exists:users,id',  // Validate that each participant ID exists in the users table
-        ]);
 
-        $userIds = $request->input('participants');  // Get the selected participant IDs
-
-        // Get the template certificate for the event
-        $certificate = Certificate::where('event_id', $eventId)->first();
-
-        if (!$certificate) {
-            return redirect()->back()->with('error', 'Certificate design not found for this event.');
-        }
-
-        // Loop through each selected user and generate their certificate
-        foreach ($userIds as $userId) {
-            $user = User::findOrFail($userId);  // Get user by ID
-            $fullname = $user->first_name . ' ' . ($user->middle_name ? $user->middle_name . ' ' : '') . $user->last_name;
-
-            // Load the certificate design JSON and personalize it for this user
-            $canvasData = json_decode($certificate->design, true);
-            $personalizedCanvas = $this->replacePlaceholdersInDesign($canvasData, $fullname);
-
-            // Convert the modified canvas to a base64 image (use front-end toDataURL)
-            $imageData = $request->input('image');  // Personalized image data
-
-            // Save the personalized certificate image
-            $personalizedImagePath = $this->savePersonalizedCertificateImage($imageData, $eventId, $fullname);
-
-            // Save the personalized certificate in the 'cert_users' table
-            CertUser::create([
-                'user_id' => $userId,
-                'cert_id' => $certificate->id,
-                'cert_path' => $personalizedImagePath,  // Save the personalized certificate path
-            ]);
-        }
-
-        return redirect()->back()->with('success', 'Personalized certificates generated successfully!');
-    }
 
     public function getParticipants($event_id)
     {
@@ -375,111 +336,56 @@ class EventController extends Controller
 
 
 
-
-
-
-
-
-
-    private function replacePlaceholdersInDesign($canvasData, $userName)
-    {
-        // Replace the {{name}} placeholder with the actual user's name
-        array_walk_recursive($canvasData, function (&$item) use ($userName) {
-            $item = str_replace('{{name}}', $userName, $item);
-        });
-
-        return $canvasData;
-    }
-
-    // Helper function to save personalized certificates
-    private function savePersonalizedCertificateImage($imageData, $eventId, $userName)
-    {
-        // Validate the image data format
-    if (strpos($imageData, ',') === false) {
-        Log::error('Invalid image data format, missing comma');
-        return response()->json(['message' => 'Invalid image data format'], 400);
-    }
-
-    // Split the base64 string into two parts
-    $imageParts = explode(',', $imageData);
-
-    // Check if there are exactly two parts (data prefix and the base64-encoded image)
-    if (count($imageParts) < 2) {
-        Log::error('Invalid image data format, less than 2 parts');
-        return response()->json(['message' => 'Invalid image data format'], 400);
-    }
-
-    // Get the base64-encoded image (the second part)
-    $imageBase64 = $imageParts[1];
-
-    // Generate a unique name for the personalized certificate
-    $imageName = 'certificate_' . $eventId . '_' . Str::slug($userName) . '.png';
-    $relativePath = 'storage/images/certificates/' . $imageName;
-    $imagePath = storage_path('app/public/images/certificates/' . $imageName);
-
-    // Save the base64-decoded image to the file system
-    try {
-        file_put_contents($imagePath, base64_decode($imageBase64));
-    } catch (\Exception $e) {
-        Log::error('Error saving the image: ' . $e->getMessage());
-        return response()->json(['message' => 'Error saving image'], 500);
-    }
-
-    // Return the relative path for saving in the database
-    return $relativePath;
-    }
-
-
     public function getCalendarEvents(Request $request)
-{
-    // Check the request for a filter parameter, defaults to 'all' if not present
-    $filter = $request->input('filter', 'all');
-    
-    // Get the current authenticated user
-    $userId = Auth::id();
+    {
+        // Check the request for a filter parameter, defaults to 'all' if not present
+        $filter = $request->input('filter', 'all');
+        
+        // Get the current authenticated user
+        $userId = Auth::id();
 
-    // Filter events based on the filter option
-    if ($filter === 'own') {
-        // Fetch events created by the authenticated user
-        $events = Event::with('userEvent')
-            ->whereHas('userEvent', function ($query) use ($userId) {
-                $query->where('user_id', $userId);
-            })->get();
-    } elseif ($filter === 'join') {
-        $events = Event::with('participants')
-            ->whereHas('participants', function ($query) use ($userId) {
-                $query->where('user_id', $userId);
-            })->get();
-    } else {
-        // Fetch all events
-        $events = Event::with('userEvent')->get();
+        // Filter events based on the filter option
+        if ($filter === 'own') {
+            // Fetch events created by the authenticated user
+            $events = Event::with('userEvent')
+                ->whereHas('userEvent', function ($query) use ($userId) {
+                    $query->where('user_id', $userId);
+                })->get();
+        } elseif ($filter === 'join') {
+            $events = Event::with('participants')
+                ->whereHas('participants', function ($query) use ($userId) {
+                    $query->where('user_id', $userId);
+                })->get();
+        } else {
+            // Fetch all events
+            $events = Event::with('userEvent')->get();
+        }
+
+        $formattedEvents = [];
+
+        foreach ($events as $event) {
+            $userEvent = $event->userEvent;
+            $user = $userEvent->user ?? null;
+
+            $formattedEvents[] = [
+                'id' => $event->id,
+                'title' => $event->title,
+                'start' => $event->date . ' ' . $event->start_time,
+                'end' => $event->date . ' ' . $event->end_time,
+                'extendedProps' => [
+                    'description' => $event->description,
+                    'location' => $event->address,
+                    'mode' => $event->mode,
+                    'start_time' => $event->start_time,
+                    'end_time' => $event->end_time,
+                    'first_name' => $user->first_name ?? 'Unknown',
+                    'middle_name' => $user->middle_name ?? '',
+                    'last_name' => $user->last_name ?? 'Unknown',
+                ],
+            ];
+        }
+
+        return response()->json($formattedEvents);
     }
-
-    $formattedEvents = [];
-
-    foreach ($events as $event) {
-        $userEvent = $event->userEvent;
-        $user = $userEvent->user ?? null;
-
-        $formattedEvents[] = [
-            'id' => $event->id,
-            'title' => $event->title,
-            'start' => $event->date . ' ' . $event->start_time,
-            'end' => $event->date . ' ' . $event->end_time,
-            'extendedProps' => [
-                'description' => $event->description,
-                'location' => $event->address,
-                'mode' => $event->mode,
-                'start_time' => $event->start_time,
-                'end_time' => $event->end_time,
-                'first_name' => $user->first_name ?? 'Unknown',
-                'middle_name' => $user->middle_name ?? '',
-                'last_name' => $user->last_name ?? 'Unknown',
-            ],
-        ];
-    }
-
-    return response()->json($formattedEvents);
-}
 
 }

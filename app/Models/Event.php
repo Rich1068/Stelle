@@ -13,7 +13,7 @@ class Event extends Model
     }
     public function evaluationForm()
     {
-        return $this->hasOne(EvaluationForm::class);
+        return $this->hasOne(EventEvaluationForm::class);
     }
 
     public function userEvent()

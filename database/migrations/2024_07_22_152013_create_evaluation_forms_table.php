@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string('form_name')->nullable();
             $table->timestamps();
         });
-        Schema::create('event_evaluation_form', function (Blueprint $table) {
+        Schema::create('event_evaluation_forms', function (Blueprint $table) {
             $table->id();
             $table->foreignId('event_id')->constrained('events')->onDelete('cascade');
             $table->foreignId('form_id')->constrained('evaluation_forms')->onDelete('cascade');
