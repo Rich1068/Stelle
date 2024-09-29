@@ -8,34 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 class QuestionController extends Controller
 {
-    public function create($formId)
-    {
-        return view('evaluation_form.questions.create', compact('formId'));
-    }
-
-    public function store(Request $request, $formId)
-    {
-        $request->validate([
-            'questions' => 'required|array|min:1', // Ensure at least one question is present
-            'questions.*.text' => 'required|string',
-            'questions.*.type' => 'required|string|in:essay,radio',
-        ]);
     
-        $questions = $request->input('questions');
-    
-        foreach ($questions as $question) {
-            $typeId = ($question['type'] === 'radio') ? 2 : 1; // 1 for 'essay', 2 for 'radio'
-    
-            Question::create([
-                'form_id' => $formId,
-                'question' => $question['text'],
-                'type_id' => $typeId,
-            ]);
-        }
-    
-        return redirect()->route('evaluation.evaluationlist');
-    }
-
     public function edit($id, $form)
     {
         $evaluationForm = EvaluationForm::findOrFail($form);
@@ -45,7 +18,7 @@ class QuestionController extends Controller
     }
 
 
-    public function update(Request $request, $id, $formId)
+    public function update(Request $request, $formId)
     {
         // Validate the request
         $request->validate([
@@ -102,8 +75,8 @@ class QuestionController extends Controller
         }
 
         // Redirect to the event view page
-        return redirect()->route('event.view', ['id' => EvaluationForm::find($formId)->event_id])
-                        ->with('success', 'Questions updated successfully!');
+        return redirect()->route('evaluation.evaluationlist')
+                        ->with('success', 'Evaluation Form updated successfully!');
     }
 
 

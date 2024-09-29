@@ -3,12 +3,17 @@
 @section('body')
 
 <!-- Main Form Container -->
-<form action="{{ route('questions.store', ['id' => $formId]) }}" method="POST" class="form-question-container" onsubmit="return validateForm()">
+<form action="{{ route('evaluation-forms.store') }}" method="POST" class="form-question-container" onsubmit="return validateForm()">
     @csrf
 
     <!-- Header Text with Icon -->
     <div class="header-text">
         <i class="fas fa-list"></i> Create Evaluation Form Questions
+    </div>
+
+    <div class="form-group">
+            <label for="form_name" class="font-weight-bold">Form Name</label>
+            <input type="text" id="form_name" name="form_name" class="form-control" placeholder="Enter form name..." value="{{ old('form_name') }}" required>
     </div>
 
     <!-- Input Field for Question -->
@@ -39,7 +44,13 @@
 <script>
 function addQuestion(type) {
     const questionInput = document.getElementById('question-input').value;
-    if (questionInput.trim() === "") return; // Do nothing if the input is empty
+    const errorMessage = document.getElementById('error-message');
+    
+    if (questionInput.trim() === "") {
+        errorMessage.innerText = "Please type a question before adding."; // Show custom error message
+        errorMessage.style.display = 'block'; // Display the error message
+        return; // Stop further execution
+    }
 
     const questionsDiv = document.getElementById('questions');
     const questionIndex = questionsDiv.children.length; // Generate a unique index for each question
@@ -80,7 +91,7 @@ function addQuestion(type) {
 
     questionsDiv.appendChild(newQuestionDiv);
     document.getElementById('question-input').value = ""; // Clear the input field
-    document.getElementById('error-message').style.display = 'none'; // Hide the error message if displayed
+    errorMessage.style.display = 'none'; // Hide the error message if displayed
 }
 
 function removeQuestion(button) {
@@ -91,7 +102,9 @@ function removeQuestion(button) {
 function validateForm() {
     const questionsDiv = document.getElementById('questions');
     if (questionsDiv.children.length === 0) {
-        document.getElementById('error-message').style.display = 'block'; // Show error message
+        const errorMessage = document.getElementById('error-message');
+        errorMessage.innerText = "Please add at least one question.";
+        errorMessage.style.display = 'block'; // Show the error message
         return false; // Prevent form submission
     }
     return true; // Allow form submission

@@ -20,16 +20,28 @@
                     <th>Status</th>
                     <th>Created By</th>
                     <th>Created At</th>
+                    <th>Actions</th> <!-- New column for actions (Edit/Deactivate) -->
                 </tr>
             </thead>
             <tbody>
                 @foreach($evaluationForms as $form)
                 <tr>
                     <td>{{ $form->id }}</td>
-                    <td>{{ $form->name ?? 'Untitled' }}</td> <!-- Optional: Add a form name field -->
+                    <td>{{ $form->form_name }}</td> <!-- Display form name -->
                     <td>{{ $form->status->status }}</td>
                     <td>{{ $form->creator->first_name }}</td>
                     <td>{{ $form->created_at->format('Y-m-d') }}</td>
+                    <td>
+                        <!-- Edit Button -->
+                        <a href="{{ route('evaluation-forms.edit', $form->id) }}" class="btn btn-warning btn-sm">Edit</a>
+
+                        <!-- Deactivate Button (Change status to 'Inactive') -->
+                        <form action="{{ route('evaluation-forms.deactivate', $form->id) }}" method="POST" style="display:inline-block;">
+                            @csrf
+                            @method('PATCH') <!-- Using PATCH instead of DELETE -->
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to deactivate this form?')">Deactivate</button>
+                        </form>
+                    </td>
                 </tr>
                 @endforeach
             </tbody>

@@ -17,30 +17,158 @@ class EvaluationFormController extends Controller
 
     public function evalList()
     {
-        // Fetch all evaluation forms with their creator and status
-        $evaluationForms = EvaluationForm::with('creator', 'status')->get();
+        $evaluationForms = EvaluationForm::with('creator', 'status')
+                                          ->where('status_id', 1)
+                                          ->get();
         
         // Return the view with the evaluation forms
         return view('evaluation_form.evaluationlist', compact('evaluationForms'));
     }
 
+    public function create()
+    {
+        return view('evaluation_form.questions.create');
+    }
+
     
     public function store(Request $request)
     {
-        // Create the evaluation form without tying it to a specific event
-        $form = EvaluationForm::create([
-            'created_by' => auth()->id(), // Store the creator's ID
-            'status_id' => 2, // Assuming status ID 2 is 'Inactive' or the default status
+        // Validate the form name and questions
+        $request->validate([
+            'form_name' => 'required|string|max:255',
+            'questions' => 'required|array|min:1', // Ensure at least one question is present
+            'questions.*.text' => 'required|string',
+            'questions.*.type' => 'required|string|in:essay,radio',
         ]);
-    
-        return redirect()->route('questions.create', ['id' => $form->id]);
+
+        DB::beginTransaction();
+
+        try {
+            // Create the evaluation form
+            $form = EvaluationForm::create([
+                'form_name' => $request->input('form_name'),  // Keep 'form_name' as your database column
+                'created_by' => auth()->id(), // Store the creator's ID
+                'status_id' => 1, // Assuming status ID 2 is 'Inactive' or the default status
+            ]);
+
+            // Handle the questions
+            $questions = $request->input('questions');
+
+            foreach ($questions as $question) {
+                $typeId = ($question['type'] === 'radio') ? 2 : 1; // 1 for 'essay', 2 for 'radio'
+
+                Question::create([
+                    'form_id' => $form->id, // Use the newly created form's ID
+                    'question' => $question['text'],
+                    'type_id' => $typeId,
+                ]);
+            }
+
+            // Commit the transaction
+            DB::commit();
+
+        } catch (\Exception $e) {
+            // Rollback the transaction
+            DB::rollBack();
+
+            // Optionally log the error or return a custom error message
+            // Log::error($e->getMessage());
+            return redirect()->back()->withErrors('An error occurred while saving the form. Please try again.');
+        }
+
+        // Redirect to the evaluation form list or wherever appropriate
+        return redirect()->route('evaluation.evaluationlist');
     }
-    public function update(Request $request, $id, $form)
+
+    public function edit($form)
     {
         $evaluationForm = EvaluationForm::findOrFail($form);
-        $evaluationForm->touch(); // This updates the `updated_at` timestamp
+        $questions = Question::where('form_id', $form)->get(); 
 
-        return redirect()->route('questions.edit', ['id'=> $id, 'form' => $evaluationForm]);
+        return view('evaluation_form.questions.edit', compact( 'form', 'questions','evaluationForm'));
+    }
+
+    public function update(Request $request, $formId)
+    {
+        // Validate the request
+        $request->validate([
+            'form_name' => 'required|string|max:255',
+            'questions' => 'required|array|min:1', // Ensure at least one question is present
+            'questions.*.id' => 'nullable|integer', // The ID is optional (for existing questions)
+            'questions.*.text' => 'required|string',
+            'questions.*.type' => 'required|string|in:essay,radio',
+        ]);
+    
+        // Begin a database transaction
+        DB::beginTransaction();
+    
+        try {
+            // Update the form's `updated_at` timestamp
+            $evaluationForm = EvaluationForm::findOrFail($formId);
+            $evaluationForm->update([
+                'form_name' => $request->input('form_name'), // Update form name
+            ]);
+            $evaluationForm->touch(); // This updates the `updated_at` timestamp
+    
+            $updatedQuestionIds = [];
+    
+            // Loop through each question in the request
+            foreach ($request->input('questions') as $question) {
+                $typeId = ($question['type'] === 'radio') ? 2 : 1;
+    
+                if (isset($question['id'])) {
+                    // Update existing question
+                    $existingQuestion = Question::find($question['id']);
+    
+                    if ($existingQuestion) {
+                        $existingQuestion->update([
+                            'question' => $question['text'],
+                            'type_id' => $typeId,
+                        ]);
+                        $updatedQuestionIds[] = $existingQuestion->id;
+                    }
+                } else {
+                    // Create a new question if no ID exists
+                    $newQuestion = Question::create([
+                        'form_id' => $formId,
+                        'question' => $question['text'],
+                        'type_id' => $typeId,
+                    ]);
+                    $updatedQuestionIds[] = $newQuestion->id;
+                }
+            }
+    
+            // Delete any questions that were not part of the update
+            Question::where('form_id', $formId)
+                    ->whereNotIn('id', $updatedQuestionIds)
+                    ->delete();
+    
+            // Commit the transaction
+            DB::commit();
+        } catch (\Exception $e) {
+            // Rollback in case of error
+            DB::rollBack();
+    
+            return redirect()->back()->withErrors(['msg' => 'Failed to update questions. Please try again.']);
+        }
+    
+        // Redirect to the evaluation form list
+        return redirect()->route('evaluation.evaluationlist')
+                         ->with('success', 'Evaluation Form and questions updated successfully!');
+    }
+
+    public function deactivate($id)
+    {
+        // Find the form by ID
+        $evaluationForm = EvaluationForm::findOrFail($id);
+
+        // Update the status to 'Inactive' (assuming status_id = 2 means 'Inactive')
+        $evaluationForm->update([
+            'status_id' => 2, // Setting status to 'Inactive'
+        ]);
+
+        // Redirect with a success message
+        return redirect()->route('evaluation.evaluationlist')->with('success', 'Evaluation Form deactivated successfully.');
     }
     public function toggleActivation(Request $request, $id, $formId)
     {

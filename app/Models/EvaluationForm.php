@@ -11,7 +11,8 @@ class EvaluationForm extends Model
 
     protected $fillable = [
         'created_by',
-        'status_id'
+        'status_id',
+        'form_name'
     ];
     public function event()
     {

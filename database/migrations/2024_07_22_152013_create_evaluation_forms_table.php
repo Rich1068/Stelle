@@ -23,6 +23,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
             $table->foreignId('status_id')->constrained('form_statuses')->onDelete('cascade');
+            $table->string('form_name')->nullable();
             $table->timestamps();
         });
         Schema::create('event_evaluation_form', function (Blueprint $table) {
@@ -64,6 +65,7 @@ return new class extends Migration
         Schema::dropIfExists('answers');
         Schema::dropIfExists('questions');
         Schema::dropIfExists('question_types');
+        Schema::dropIfExists('event_evaluation_form');
         Schema::dropIfExists('evaluation_forms');
         Schema::dropIfExists('form_statuses');
     }

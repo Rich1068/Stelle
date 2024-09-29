@@ -24,7 +24,7 @@
                     <x-input-label for="first_name" class="profile-edit-label">
                         <i class="fas fa-user"></i> {{ __('First Name:') }}
                     </x-input-label>
-                    <x-text-input id="first_name" name="first_name" type="text" class="profile-edit-input" :value="old('first_name', $user->first_name)" required autofocus autocomplete="first_name" placeholder="Lorenzo" />
+                    <x-text-input id="first_name" name="first_name" type="text" class="profile-edit-input" :value="old('first_name', $user->first_name)" required autofocus autocomplete="first_name" placeholder="Enter First Name" />
                     <x-input-error class="profile-edit-error" :messages="$errors->get('first_name')" />
                 </div>
 
@@ -33,7 +33,7 @@
                     <x-input-label for="middle_name" class="profile-edit-label">
                         <i class="fas fa-user"></i> {{ __('Middle Name:') }}
                     </x-input-label>
-                    <x-text-input id="middle_name" name="middle_name" type="text" class="profile-edit-input" :value="old('middle_name', $user->middle_name)" autofocus autocomplete="middle_name" placeholder="Middle" />
+                    <x-text-input id="middle_name" name="middle_name" type="text" class="profile-edit-input" :value="old('middle_name', $user->middle_name)" autofocus autocomplete="middle_name" placeholder="Enter Middle Name" />
                     <x-input-error class="profile-edit-error" :messages="$errors->get('middle_name')" />
                 </div>
 
@@ -42,7 +42,7 @@
                     <x-input-label for="last_name" class="profile-edit-label">
                         <i class="fas fa-user"></i> {{ __('Last Name:') }}
                     </x-input-label>
-                    <x-text-input id="last_name" name="last_name" type="text" class="profile-edit-input" :value="old('last_name', $user->last_name)" required autofocus autocomplete="last_name" placeholder="Sangalang" />
+                    <x-text-input id="last_name" name="last_name" type="text" class="profile-edit-input" :value="old('last_name', $user->last_name)" required autofocus autocomplete="last_name" placeholder="Enter Last Name" />
                     <x-input-error class="profile-edit-error" :messages="$errors->get('last_name')" />
                 </div>
 

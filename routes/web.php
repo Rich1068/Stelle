@@ -93,9 +93,12 @@ Route::middleware('auth')->group(function () {
     //new Eval
     Route::get('/evaluation-forms', [EvaluationFormController::class, 'evalList'])->name('evaluation.evaluationlist');
 
-    Route::get('/evaluation-forms/create', [EvaluationFormController::class, 'store'])->name('evaluation-forms.create');
-    Route::get('/evaluation-forms/{id}/questions/create', [QuestionController::class, 'create'])->name('questions.create');
-    Route::post('/evaluation-forms/{id}/questions', [QuestionController::class, 'store'])->name('questions.store');
+    Route::get('/evaluation-forms/create', [EvaluationFormController::class, 'create'])->name('evaluation-forms.create');
+    Route::post('/evaluation-forms/create', [EvaluationFormController::class, 'store'])->name('evaluation-forms.store');
+    Route::get('/evaluation-forms/{id}/edit', [EvaluationFormController::class, 'edit'])->name('evaluation-forms.edit');
+    Route::put('/evaluation-forms/{id}/edit', [EvaluationFormController::class, 'update'])->name('evaluation-forms.update');
+    Route::patch('evaluation-forms/{id}/deactivate', [EvaluationFormController::class, 'deactivate'])->name('evaluation-forms.deactivate');
+    
 
 
     
@@ -131,9 +134,7 @@ Route::middleware(['auth', 'checkEventCreator'])->group(function () {
     
 
     //eval forms
-    Route::post('/event/{id}/evaluation-form', [EvaluationFormController::class, 'store'])->name('evaluation-forms.store');
-    Route::put('/event/{id}/evaluation-form/{form}', [EvaluationFormController::class, 'update'])->name('evaluation-forms.update');
-    Route::put('/events/{id}/evaluation-form/{form}/toggle', [EvaluationFormController::class, 'toggleActivation'])->name('evaluation-forms.toggle');
+
     
 
 });

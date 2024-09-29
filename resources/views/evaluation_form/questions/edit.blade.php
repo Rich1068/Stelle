@@ -3,13 +3,18 @@
 @section('body')
 
 <!-- Main Form Container -->
-<form action="{{ route('questions.update', ['id' => $id, 'form' => $form]) }}" method="POST" class="form-question-container" onsubmit="return validateForm()">
+<form action="{{ route('evaluation-forms.update', ['id' => $form]) }}" method="POST" class="form-question-container" onsubmit="return validateForm()">
     @method('PUT')
     @csrf
 
     <!-- Header Text with Icon -->
     <div class="header-text">
         <i class="fas fa-list"></i> Edit Evaluation Form
+    </div>
+
+    <div class="form-group">
+        <label for="form_name" class="font-weight-bold">Form Name</label>
+        <input type="text" id="form_name" name="form_name" class="form-control" placeholder="Enter form name..." value="{{ old('form_name', $evaluationForm->form_name ?? '') }}" required>
     </div>
 
     <!-- Input Field for New Question -->
