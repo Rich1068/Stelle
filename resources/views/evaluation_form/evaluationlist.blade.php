@@ -2,132 +2,258 @@
 
 @section('body')
 
-<div class="top-container mb-4 d-flex align-items-left">
-    <div class="d-flex align-items-right">
-        <h2 class="font-weight-bold mb-0">
+<div class="top-container mb-4 d-flex align-items-left justify-content-between" style="background-color: #fff; border-radius: 15px; padding: 20px; box-shadow: none;">
+    <!-- Left: Manage Evaluation Forms Title -->
+    <div class="d-flex align-items-center">
+        <h2 class="font-weight-bold mb-0" style="color: #002060;">
             <i class="fas fa-clipboard-list"></i> Manage Evaluation Forms
         </h2>
+        <!-- Arrow Button (Dropdown Trigger) -->
+        <button id="toggleButton" class="btn custom-btn-light ms-2" type="button" aria-expanded="false" style="border: none; background-color: transparent;">
+            <i id="arrowIcon" class="fas fa-chevron-down" style="font-size: 1.5rem; color: #002060;"></i>
+        </button>
     </div>
-    <div class="add-user-buttons ms-auto" style="display: flex; gap: 10px; margin-left: auto;">
+
+    <!-- Right: Hidden Button -->
+    <div id="buttonContainer" style="display: none; margin-left: 10px;" class="button-group">
         <form action="{{ route('evaluation-forms.create') }}" method="get" style="display: inline;">
-            <button type="submit" class="btn btn-primary">
+            <button type="submit" class="btn btn-primary" style="border-radius: 20px;">
                 <i class="fas fa-plus"></i> Add Evaluation Form
             </button>
         </form>
     </div>
 </div>
 
-<div class="container">
+<div class="container-fluid" style="padding: 0;">
     @if($evaluationForms->isEmpty())
-        <p class="text-center">No evaluation forms found.</p> <!-- Center-align the message -->
+        <p class="text-center">No evaluation forms found.</p>
     @else
-        <table class="table table-striped custom-table text-center"> <!-- Add 'text-center' to table -->
-            <thead class="custom-thead"> <!-- Apply custom class for the table head -->
-                <tr>
-                    <th>ID</th>
-                    <th>Form Name</th>
-                    <th>Status</th>
-                    <th>Created By</th>
-                    <th>Created At</th>
-                    <th>Actions</th> <!-- Center align actions -->
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($evaluationForms as $form)
-                <tr>
-                    <td>{{ $form->id }}</td>
-                    <td>{{ $form->form_name }}</td> <!-- Display form name -->
-                    <td>{{ $form->status->status }}</td>
-                    <td>{{ $form->creator->first_name }}</td>
-                    <td>{{ $form->created_at->format('Y-m-d') }}</td>
-                    <td>
-                        <!-- Edit Button -->
-                        <a href="{{ route('evaluation-forms.edit', $form->id) }}" class="btn btn-edit">Edit</a>
+        <!-- Search Bar -->
+        <div class="search-container" style="margin: 40px auto; max-width: 60%;">
+            <input type="text" id="searchInput" placeholder="Search for forms..." class="search-input" onkeyup="filterTable()">
+            <button class="search-button"><i class="fas fa-search"></i></button>
+        </div>
 
-                        <!-- Deactivate Button (Change status to 'Inactive') -->
-                        <form action="{{ route('evaluation-forms.deactivate', $form->id) }}" method="POST" style="display:inline-block;">
-                            @csrf
-                            @method('PATCH') <!-- Using PATCH instead of DELETE -->
-                            <button type="submit" class="btn btn-delete" onclick="return confirm('Are you sure you want to deactivate this form?')">Deactivate</button>
-                        </form>
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
+        <!-- Responsive Table -->
+        <div class="table-responsive">
+            <table class="table table-striped custom-table text-center" style="width: 90%; table-layout: fixed; margin: auto;">
+                <thead class="custom-thead">
+                    <tr>
+                        <th>ID</th>
+                        <th>Form Name</th>
+                        <th>Status</th>
+                        <th>Created By</th>
+                        <th>Created At</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    @foreach($evaluationForms as $index => $form)
+                    <tr class="table-row" style="background-color: {{ $index % 2 === 0 ? '#f9f9f9' : 'white' }};">
+                        <td style="font-size: 14px; word-wrap: break-word;">{{ $form->id }}</td>
+                        <td style="font-size: 14px; word-wrap: break-word;">{{ $form->form_name }}</td>
+                        <td style="font-size: 14px; word-wrap: break-word;">{{ $form->status->status }}</td>
+                        <td style="font-size: 14px; word-wrap: break-word;">{{ $form->creator->first_name }}</td>
+                        <td style="font-size: 14px; word-wrap: break-word;">{{ $form->created_at->format('Y-m-d') }}</td>
+                        <td>
+                            <div class="button-group" style="display: flex; justify-content: center; align-items: center;">
+                                <a href="{{ route('evaluation-forms.edit', $form->id) }}" class="btn btn-edit rounded-circle me-2" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-edit" style="color: white; margin: auto;"></i>
+                                </a>
+                                <form action="{{ route('evaluation-forms.deactivate', $form->id) }}" method="POST" style="display:inline-block;">
+                                    @csrf
+                                    @method('PATCH')
+                                    <button type="submit" class="btn btn-delete rounded-circle" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;" onclick="return confirm('Are you sure you want to deactivate this form?')">
+                                        <i class="fas fa-times" style="color: white; margin: auto;"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     @endif
 </div>
 
-<!-- Custom CSS for table head and buttons -->
+<!-- Styles -->
 <style>
-    /* Style for the table header */
+    .custom-btn-light {
+        background-color: transparent;
+        color: #002060;
+    }
+
+    .custom-btn-light:hover {
+        color: #004080;
+    }
+
+    .btn-primary {
+        background-color: #001e54;
+        color: white;
+        border-radius: 20px;
+        padding: 10px 15px;
+        font-size: 15px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 10px;
+    }
+
+    @media (max-width: 768px) {
+        .btn-primary {
+            padding: 5px 10px;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .search-container {
+            max-width: 90%; /* Adjust to fill more space on mobile */
+        }
+
+        .custom-table td {
+            font-size: 12px; /* Decrease font size on smaller screens */
+        }
+    }
+
+    @media (min-width: 769px) {
+        .button-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+    }
+
     .custom-thead {
-        background-color: #001e54; /* Set background to dark blue (#001e54) */
-        color: white; /* Set text color to white */
+        background-color: #001e54;
+        color: white;
     }
 
-    /* Add more padding to the table header */
     .custom-thead th {
-        padding: 1rem; /* Increase padding in the table head */
+        padding: 1rem;
+        cursor: pointer;
     }
 
-    /* Remove white border from the table */
     .custom-table {
-        border: none; /* Remove table border */
+        border: none;
+        width: 100%;
     }
 
-    /* Remove white border from table cells */
     .custom-table td, .custom-table th {
-        border: none; /* Remove border from table cells */
-        text-align: center; /* Center-align text in all table cells */
-        vertical-align: middle; /* Vertically center the content */
+        border: none; 
+        text-align: center; 
+        vertical-align: middle; 
+        padding: 10px; /* Reduced padding to fit more content */
+        overflow-wrap: break-word; /* Ensure long text wraps */
     }
 
-    /* Reduce padding within table rows */
-    .custom-table tbody tr {
-        padding: 0.2rem 0.5rem; /* Adjust padding to your liking */
+    .custom-table tbody tr:hover {
+        background-color: #f2f2f2; 
     }
 
-    /* Center align the table itself */
-    .custom-table {
-        margin-left: auto;
-        margin-right: auto;
+    .search-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 10px;
     }
 
-    /* Custom styles for Edit and Deactivate buttons */
-    .btn-edit {
-        margin-top: 19px; /* Adjust margin for better spacing */
-        background-color: #001e54; /* Dark blue for Edit button */
+    .search-input {
+        padding: 10px;
+        border-radius: 15px 0 0 15px;
+        border: 1px solid #ccc;
+        transition: border-color 0.3s;
+        border-right: none; 
+        font-size: 14px; 
+        flex: 1; /* Allow the input to take up available space */
+    }
+
+    .search-input:focus {
+        border-color: black;
+        outline: none;
+    }
+
+    .search-button {
+        padding: 10px;
+        border-radius: 0 15px 15px 0;
+        border: 1px solid #001e54;
+        background-color: #001e54; 
+        color: white; 
+        cursor: pointer; 
+        font-size: 13px; 
+    }
+
+    .search-button:hover {
+        background-color: #0d3b76; 
+    }
+
+    .btn-edit, .btn-delete {
+        margin-top: 0; 
         color: white;
-        border-radius: 15px; /* Rounded corners */
-        padding: 10px 15px; /* Adjust padding for a better fit */
-        font-size: 15px; /* Font size */
+        border-radius: 20px;
+        padding: 10px; 
+        font-size: 15px; 
         font-weight: bold;
-        text-align: center; /* Center text */
-        display: inline-block; /* Use inline-block to fit content */
-        border: none; /* Remove border */
-        text-decoration: none; /* Remove underline for links */
-        min-width: 100px; /* Set a minimum width */
-        height: 40px; /* Set a fixed height for consistency */
-        cursor: pointer; /* Pointer cursor for button */
+        text-align: center; 
+        display: inline-flex; 
+        border: none; 
+        min-width: 40px; 
+        height: 40px; 
+        cursor: pointer; 
+        background-color: #001e54; 
+        justify-content: center; 
+        align-items: center; 
     }
 
-    /* Deactivate button style */
     .btn-delete {
-        margin-top: 19px; /* Adjust margin for better spacing */
-        background-color: #c9302c; /* Dark red for Deactivate button */
-        color: white;
-        border-radius: 15px; /* Rounded corners */
-        padding: 10px 15px; /* Adjust padding for a better fit */
-        font-size: 15px; /* Font size */
-        font-weight: bold;
-        text-align: center; /* Center text */
-        display: inline-block; /* Use inline-block to fit content */
-        border: none; /* Remove border */
-        min-width: 100px; /* Set a minimum width */
-        height: 40px; /* Set a fixed height for consistency */
-        cursor: pointer; /* Pointer cursor for button */
+        background-color: #c9302c; 
     }
 </style>
+
+<!-- JavaScript -->
+<script>
+    document.getElementById("toggleButton").addEventListener("click", function() {
+        var buttonContainer = document.getElementById("buttonContainer");
+        var arrowIcon = document.getElementById("arrowIcon");
+
+        if (buttonContainer.style.display === "none") {
+            buttonContainer.style.display = "flex";
+            arrowIcon.classList.remove("fa-chevron-down");
+            arrowIcon.classList.add("fa-chevron-up");
+        } else {
+            buttonContainer.style.display = "none";
+            arrowIcon.classList.remove("fa-chevron-up");
+            arrowIcon.classList.add("fa-chevron-down");
+        }
+    });
+
+    function filterTable() {
+        const input = document.getElementById('searchInput');
+        const filter = input.value.toLowerCase();
+        const tableBody = document.getElementById('tableBody');
+        const rows = tableBody.getElementsByTagName('tr');
+
+        for (let row of rows) {
+            const cells = row.getElementsByTagName('td');
+            let rowContainsFilter = false;
+
+            for (let cell of cells) {
+                if (cell.innerText.toLowerCase().includes(filter)) {
+                    rowContainsFilter = true;
+                    break;
+                }
+            }
+
+            row.style.display = rowContainsFilter ? '' : 'none';
+        }
+    }
+</script>
 
 @endsection
