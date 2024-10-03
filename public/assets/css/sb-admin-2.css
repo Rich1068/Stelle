@@ -361,6 +361,8 @@ th, td {
 #clear-date-btn {
     margin-left: 10px; /* Add space between date input and clear button */
     border-radius: 5px;
+    background-color: #003366;
+    color: white;
 }
 
 
@@ -1379,7 +1381,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   display: flex;
   background-color: white;
   border-radius: 30px; /* Increased corner radius for a more rounded look */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2); /* Slightly deeper shadow */
   overflow: hidden; /* Ensures the content stays within rounded corners */
   transition: transform 0.3s; /* Adds a smooth transform effect */
   position: relative; /* For absolute positioning of the View Button */
@@ -1388,7 +1390,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 }
 
 .event-list-item:hover {
-  transform: scale(1.02); /* Slightly enlarges on hover for a subtle effect */
+  transform: scale(1.03); /* Slightly enlarges on hover for a subtle effect */
 }
 
 .event-list-date {
@@ -1398,18 +1400,19 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   justify-content: center;
   background-color: #003366; /* Dark blue background */
   color: #fff;
-  padding: 20px; /* Smaller padding */
-  min-width: 100px; /* Adjusted width */
+  padding: 30px; /* Increased padding for more coverage */
+  min-width: 180px; /* Increased width for a broader appearance */
   border-radius: 0; /* No rounding on the date section */
 }
 
+
 .event-list-day {
-  font-size: 20px; /* Smaller font size */
+  font-size: 26px; /* Increased font size */
   font-weight: bold;
 }
 
 .event-list-month {
-  font-size: 15px; /* Smaller font size */
+  font-size: 18px; /* Increased font size */
   text-transform: uppercase;
 }
 
@@ -1418,12 +1421,12 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 15px; /* Smaller padding */
+  padding: 20px; /* Increased padding */
 }
 
 .event-list-title {
   margin: 0;
-  font-size: 25px; /* Smaller font size */
+  font-size: 28px; /* Increased font size */
   font-weight: bold;
   color: #003366;
 }
@@ -1431,14 +1434,14 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 .event-list-description {
   margin: 5px 0;
   color: #666;
-  font-size: 15px; /* Smaller font size */
+  font-size: 16px; /* Increased font size */
 }
 
 .event-list-meta {
   display: flex;
   flex-direction: column;
-  gap: 8px; /* Reduced gap */
-  font-size: 12px; /* Smaller font size */
+  gap: 10px; /* Increased gap */
+  font-size: 14px; /* Increased font size */
 }
 
 .event-list-meta .meta-item {
@@ -1462,12 +1465,12 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   bottom: 20px; /* Adds some space from the bottom */
   background: #003366; /* Dark blue background */
   color: #fff;
-  padding: 8px 16px; /* Adjusted padding for rounded look */
+  padding: 10px 20px; /* Increased padding for a rounded look */
   border-radius: 20px; /* More rounded corners */
   text-decoration: none;
   text-align: center;
   font-weight: bold; /* Bold text */
-  font-size: 13px; /* Bold text */
+  font-size: 15px; /* Increased font size */
   transition: background 0.3s;
 }
 
@@ -1476,14 +1479,13 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 }
 
 .event-list-header {
-  font-size: 24px; /* Adjust font size */
+  font-size: 28px; /* Increased font size */
   font-weight: bold; /* Bold text */
   color: #fff; /* White color */
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6), 0 0 5px rgba(0, 0, 0, 0.4); /* Enhanced shadow effect */
   margin-bottom: 20px; /* Space below the header */
 }
 
-/* Media Queries for Mobile Responsiveness */
 /* Media Queries for Mobile Responsiveness */
 @media (max-width: 768px) {
   .event-list-item {
@@ -1492,18 +1494,18 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   }
 
   .event-list-date {
-    padding: 15px; /* Increase padding for mobile */
+    padding: 20px; /* Decrease padding for mobile */
     text-align: center; /* Center text */
   }
 
   .event-list-title {
-    font-size: 20px; /* Adjusted font size for mobile */
+    font-size: 24px; /* Adjusted font size for mobile */
     text-align: center; /* Center title */
     margin: 10px 0; /* Margin above and below title */
   }
 
   .event-list-description {
-    font-size: 14px; /* Adjusted font size for mobile */
+    font-size: 15px; /* Adjusted font size for mobile */
     padding-top: 10px;
     text-align: center; /* Center description */
     margin-bottom: 10px; /* Space below description */
@@ -1514,9 +1516,8 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
     text-align: center; /* Center meta items */
     margin-bottom: 10px; /* Space below meta items */
   }
-
-
 }
+
 
 
 
