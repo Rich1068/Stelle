@@ -80,7 +80,7 @@
     <li class="nav-item">
         <a href="{{ route('evaluation.evaluationlist') }}" class="nav-link {{ request()->routeIs('evaluation.evaluationlist') ? 'active' : '' }}">
             <span>Manage Evaluation Forms</span>
-            <i class="fas fa-users"></i>
+            <i class="fas fa-clipboard-list"></i>
         </a>
     </li>
 </ul>

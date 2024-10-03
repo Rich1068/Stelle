@@ -19,7 +19,7 @@
             @csrf
             @method('POST')
 
-            <div class="row">
+            <div class="custom-bg-white" style="border-radius: 15px; background-color: white; padding-top: 20px;">
                 <!-- Title -->
                 <div class="col-md-12 mb-4">
                     <div class="event-field">
@@ -144,19 +144,33 @@
                         <img id="image_preview" class="event-image-preview" style="display: none; max-width: 50%; margin-top: 10px;" />
                     </div>
                 </div>
-            </div>
 
-            <!-- Submit Button -->
-            <div class="flex items-center gap-4 mb-4">
-                <x-primary-button id="createEventButton" type="submit" class="profile-edit-save-button" onclick="disableButton(this)">
+                <div class="flex items-center gap-4 mb-4">
+                <x-primary-button id="createEventButton" type="submit" class="btn-primary" onclick="disableButton(this)">
                     <i class="fas fa-save"></i> {{ __('Create Event') }}
                 </x-primary-button>
             </div>
+            </div>
+
+            <!-- Submit Button -->
+          
         </form>
     </div>
 </section>
 
+<style>
+.custom-bg-white {
+    border-radius: 15px; /* Add border radius */
+    max-width: 120%;
+    padding: 12px;
+    align-items: center; /* This is not necessary unless you're using flexbox */
+    margin: auto; /* Center the element */
+    background-color: white; /* Set background color */
+    background-color: rgba(255, 255, 255, 0.4) !important; /* Semi-transparent white */
+    margin-bottom: 20px !important;
+}
 
+    </style>
 <script>
 function previewImage(event) {
     var reader = new FileReader();
