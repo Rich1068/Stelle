@@ -8,14 +8,18 @@
         <div class="carousel-wrapper"> <!-- Wrapper to contain the scrolling -->
             <div class="carousel-images">
                 <img src="/images/ILLUSTRATION2.png" alt="Image 1">
-                <img src=/images/illustration3.png alt="Image 2">
-                <img src=/images/illustration4.png  alt="Image 3">
+                <img src="/images/illustration3.png" alt="Image 2">
+                <img src="/images/illustration4.png" alt="Image 3">
                 <!-- Add more images as needed -->
             </div>
         </div>
         <button class="carousel-arrow right-arrow">&rarr;</button>
+        
+        <!-- Progress bar -->
+        <div class="carousel-progress">
+            <div class="progress-fill"></div>
+        </div>
     </div>
-
 
     <!-- Right Side: Registration Form -->
     <div class="register-account">
@@ -23,8 +27,8 @@
         <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
             @csrf
 
- <!-- First Name -->
- <div class="input-group">
+            <!-- First Name -->
+            <div class="input-group">
                 <x-input-label for="first_name" class="register-label">
                     {{ __('First Name') }}
                 </x-input-label>
@@ -68,6 +72,7 @@
                 <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
             </div>
 
+            <!-- Sign Up Button -->
             <div class="flex items-center justify-center mt-4">
                 <x-primary-button class="login-button">
                     {{ __('Sign Up') }}
@@ -78,13 +83,13 @@
                 <span>or</span>
             </div>
 
-
+            <!-- Google Login -->
             <div class="google-button">
-    <a href="{{ route('google.redirect') }}">
-        <img src="/images/googleicon.png" alt="Google Icon" class="google-icon">
-        Login with Google
-    </a>
-</div>
+                <a href="{{ route('google.redirect') }}">
+                    <img src="/images/googleicon.png" alt="Google Icon" class="google-icon">
+                    Login with Google
+                </a>
+            </div>
         </form>
     </div>
 </div>
@@ -93,28 +98,68 @@
 <script src="/js/bootstrap.bundle.min.js"></script>
 
 <script>
-const leftArrow = document.querySelector('.left-arrow');
-const rightArrow = document.querySelector('.right-arrow');
+// Carousel functionality
 const carouselImages = document.querySelector('.carousel-images');
-
+const images = carouselImages.querySelectorAll('img');
+const imageWidth = images[0].offsetWidth + 70; // Image width plus margin
 let scrollAmount = 0;
 
-leftArrow.addEventListener('click', () => {
-    const imageWidth = carouselImages.querySelector('img').offsetWidth + 70; // Image width plus margin
-    scrollAmount -= imageWidth; // Move left by image width plus margin
-    if (scrollAmount < 0) scrollAmount = 0; // Prevent scrolling before the start
+// Duplicate first and last images to create an infinite loop effect
+const firstImage = images[0].cloneNode(true);
+const lastImage = images[images.length - 1].cloneNode(true);
+carouselImages.appendChild(firstImage);
+carouselImages.insertBefore(lastImage, images[0]);
+
+// Set the initial scroll position to the first real image
+scrollAmount = imageWidth; 
+carouselImages.scrollLeft = scrollAmount; // Start from the first image after the cloned last image
+
+// Continuous scrolling function
+function continuousScroll() {
+    scrollAmount += 1; // Increment scroll amount by 1 pixel for smooth effect
+    carouselImages.scrollTo({
+        left: scrollAmount,
+        behavior: 'instant' // Instantly jump to the new scroll position without animation
+    });
+
+    // Reset the scroll position for the infinite loop effect
+    if (scrollAmount >= carouselImages.scrollWidth - carouselImages.clientWidth) {
+        scrollAmount = imageWidth; // Jump back to the second image (first real image)
+        carouselImages.scrollTo({
+            left: scrollAmount,
+            behavior: 'instant' // No smooth transition for immediate jump
+        });
+    }
+
+    // Continue scrolling
+    requestAnimationFrame(continuousScroll); // Use requestAnimationFrame for smooth animation
+}
+
+// Start the continuous scrolling
+continuousScroll();
+
+// Pause the scrolling when hovering
+document.querySelector('.image-carousel').addEventListener('mouseover', () => {
+    // Pause scrolling on mouseover
+    carouselImages.style.animationPlayState = 'paused';
+});
+
+document.querySelector('.image-carousel').addEventListener('mouseout', () => {
+    // Resume scrolling on mouseout
+    carouselImages.style.animationPlayState = 'running';
+});
+
+// Manual controls
+document.querySelector('.left-arrow').addEventListener('click', () => {
+    scrollAmount -= imageWidth; // Scroll left
     carouselImages.scrollTo({
         left: scrollAmount,
         behavior: 'smooth'
     });
 });
 
-rightArrow.addEventListener('click', () => {
-    const imageWidth = carouselImages.querySelector('img').offsetWidth + 70; // Image width plus margin
-    scrollAmount += imageWidth; // Move right by image width plus margin
-    if (scrollAmount > carouselImages.scrollWidth - carouselImages.clientWidth) {
-        scrollAmount = carouselImages.scrollWidth - carouselImages.clientWidth; // Prevent scrolling after the end
-    }
+document.querySelector('.right-arrow').addEventListener('click', () => {
+    scrollAmount += imageWidth; // Scroll right
     carouselImages.scrollTo({
         left: scrollAmount,
         behavior: 'smooth'

@@ -207,6 +207,8 @@ body {
     width: 100%;
     height: 100%;
     position: relative; /* Make the container relative for absolute positioning of arrows */
+    overflow: hidden;
+    margin: auto;
 }
 
 .carousel-images {
@@ -215,6 +217,10 @@ body {
     overflow: hidden;
     width: 100%; /* Full width to ensure images cover the space */
     position: relative; /* Enable positioning of arrows inside the container */
+    display: flex; /* Align images in a row */
+    transition: none; /* Disable transitions */
+    will-change: scroll-position; /* Optimization for smoother scrolling */
+    margin: auto;
 }
 
 .carousel-images img {
