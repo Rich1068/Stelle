@@ -47,32 +47,87 @@
             </div>
         </div>
 
-        <!-- Request as Admin Column -->
-        <div class="col-xl-4 col-md-2"> 
-            <form id="registerAdminForm" action="{{ route('register.admin') }}" method="POST"> <!-- Original form from old code -->
-                @csrf
-                <div class="card border-left-info shadow h-100" style="height: 120px !important; cursor: pointer;" onclick="confirmSubmission()"> <!-- Added form and onclick -->
-                    <div class="card-body d-flex flex-column justify-content-between">
-                        <div>
+<!-- Request as Admin Column -->
+<div class="col-xl-5 col-md-2 d-flex flex-column justify-content-center"> 
+    <form id="registerAdminForm" action="{{ route('register.admin') }}" method="POST">
+        @csrf
+        
+        <div class="col-12 mb-4"> <!-- Increased margin for space between cards -->
+            <div class="card border-left-info shadow h-100" style="height: 220px !imortant;">
+                <div class="card-body d-flex align-items-center"> <!-- Added d-flex and align-items-center -->
+                    <div class="row no-gutters align-items-center w-100"> <!-- Ensure the row takes full width -->
+                        <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
                                 Request as Admin
                             </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                Click to Register
+                            </div>
                         </div>
-                        <div class="d-flex justify-content-end">
-                            <button class="btn btn-dark-blue btn-sm" style="pointer-events: none;"> <!-- Prevents separate click on button -->
-                                <i class="fas fa-user-plus text-white"></i> <!-- Icon-only button -->
-                            </button>
+                        <div class="col-auto">
+                            <i class="fas fa-user-plus fa-2x icon-dark-blue" onclick="confirmSubmission()"></i> <!-- Dark blue icon with hover effect -->
                         </div>
                     </div>
                 </div>
-            </form>
+            </div>
         </div>
 
+        <div class="col-12 mb-4"> <!-- Increased margin for space between cards -->
+            <div class="card border-left-info shadow h-100" style="height: 220px !imortant;">
+                <div class="card-body d-flex align-items-center"> <!-- Added d-flex and align-items-center -->
+                    <div class="row no-gutters align-items-center w-100"> <!-- Ensure the row takes full width -->
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                Certificates
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">0</div> <!-- Placeholder number -->
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-certificate fa-2x text-info"></i> <!-- Icon for certificates -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+        <div class="col-12 mb-4"> <!-- Increased margin for space between cards -->
+            <div class="card border-left-info shadow h-100" style="height: 220px !imortant;">
+                <div class="card-body d-flex align-items-center"> <!-- Added d-flex and align-items-center -->
+                    <div class="row no-gutters align-items-center w-100"> <!-- Ensure the row takes full width -->
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                Evaluation Forms Answered
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">0</div> <!-- Placeholder number -->
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-check-square fa-2x text-info"></i> <!-- Icon for evaluation forms -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+        <div class="col-12 mb-4"> <!-- Increased margin for space between cards -->
+            <div class="card border-left-info shadow h-100" style="height: 220px !imortant;">
+                <div class="card-body d-flex align-items-center"> <!-- Added d-flex and align-items-center -->
+                    <div class="row no-gutters align-items-center w-100"> <!-- Ensure the row takes full width -->
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                Events Completed
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">0</div> <!-- Placeholder number -->
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-user-check fa-2x text-info"></i> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
 
-
-        
+    </form>
         <!-- Modal for event details -->
         <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -89,6 +144,16 @@
 
 <!-- CSS Styling -->
 <style>
+
+.icon-dark-blue {
+        color: #003366; /* Initial dark blue color */
+        cursor: pointer; /* Cursor changes to pointer */
+        transition: color 0.3s; /* Smooth transition effect */
+    }
+    
+    .icon-dark-blue:hover {
+        color: #007bff; /* Change to a lighter blue on hover */
+    }
     .btn-dark-blue {
         background-color: #003366; /* Dark Blue Color */
         color: white;
