@@ -5,13 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Event;
+use App\Models\UserEvent;
 class AdminController extends Controller
 {
     public function index()
     {
         $user = Auth::user()->id;
+        $totalCreatedEvents = UserEvent::where('user_id', $user)->count();
 
-        return view('admin.dashboard', compact('user'));
+        return view('admin.dashboard', compact('user', 'totalCreatedEvents'));
     }
     public function getEvents()
     {

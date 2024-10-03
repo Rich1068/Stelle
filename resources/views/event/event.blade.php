@@ -117,18 +117,9 @@
         <!-- Feedback Form Tab -->
         <div class="tab-pane" id="feedback">
             <!-- Create or Update Evaluation Form Button -->
-            @if($event->evaluationForm)
-                <form action="{{ route('evaluation-forms.update', ['id' => $event->id, 'form' => $event->evaluationForm->id]) }}" method="POST" class="full-width-button">
-                    @method('PUT')
-                    @csrf
-                    <button type="submit" class="btn btn-primary-2">Update Evaluation Form</button>
-                </form>
-            @else
-                <form action="{{ route('evaluation-forms.store', $event->id) }}" method="POST" class="full-width-button">
-                    @csrf
-                    <button type="submit" class="btn btn-primary">Create Evaluation Form</button>
-                </form>
-            @endif
+            <button type="button" class="btn btn-primary-2" data-toggle="modal" data-target="#evaluationFormModal">
+                Setup Evaluation Form
+            </button>
 
             <button type="button" class="btn btn-primary-2">
             <a href="{{ route('evaluation.results', ['id' => $event->id]) }}" style="color:white; text-decoration:none;">
@@ -169,6 +160,70 @@
     </div>
 </div>
 @endif
+
+<div class="modal fade" id="evaluationFormModal" tabindex="-1" role="dialog" aria-labelledby="evaluationFormModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="evaluationFormModalLabel">Choose an Action</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Option 1: Create Evaluation Form -->
+                @if($event->evaluationForm)
+                <form action="{{ route('event-evaluation-forms.edit', ['formId' => $event->evaluationForm->form_id, 'id' => $event->id]) }}" method="GET" class="full-width-button">
+                    @csrf
+                    <button type="submit" class="btn btn-primary-2">Update Evaluation Form</button>
+                </form>
+                @else
+                <form action="{{ route('event-evaluation-forms.create', ['id' => $event->id]) }}" method="GET" class="mb-3">
+                    @csrf
+                    <button type="submit" class="btn btn-primary btn-block">Create Evaluation Form</button>
+                </form>
+                @endif
+                <!-- Option 2: Use Existing Evaluation Form -->
+                <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#existingFormModal">
+                    Use an Existing Evaluation Form
+                </button>
+
+                <!-- Modal for Selecting Existing Evaluation Form -->
+                <div class="modal fade" id="existingFormModal" tabindex="-1" role="dialog" aria-labelledby="existingFormModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="existingFormModalLabel">Select Existing Evaluation Form</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <!-- Form to Select Existing Evaluation Form -->
+                                <form action="{{ route('event-evaluation-forms.use-existing', ['id' => $event->id]) }}" method="POST">
+                                    @csrf
+                                    <div class="form-group">
+                                        <label for="existing_form_id">Choose Evaluation Form</label>
+                                        <select name="form_id" id="form_id" class="form-control" required>
+                                            <option value="">Select an Evaluation Form</option>
+                                            @foreach($existingForms as $form)
+                                                <option value="{{ $form->id }}">{{ $form->form_name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn btn-success btn-block">Use Selected Form</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 <!-- JavaScript to handle tab switching and modal display -->
 <script>
@@ -224,8 +279,19 @@
                 modalImage.src = imageUrl;
                 $(modal).modal('show');
             }
+            });
         });
     });
-});
+
+    $('#existingFormModal').on('hidden.bs.modal', function () {
+        $('#evaluationFormModal').modal('show');
+    });
+
+    // Handle the X button click specifically
+    $('#existingFormModal .close').on('click', function () {
+        // Manually trigger the hiding of the modal and reopening of the first modal
+        $('#existingFormModal').modal('hide');
+        $('#evaluationFormModal').modal('show');
+    });
 </script>
 @endsection

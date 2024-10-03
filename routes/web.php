@@ -94,9 +94,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/evaluation-forms', [EvaluationFormController::class, 'evalList'])->name('evaluation.evaluationlist');
 
     Route::get('/evaluation-forms/create', [EvaluationFormController::class, 'create'])->name('evaluation-forms.create');
-    Route::post('/evaluation-forms/create', [EvaluationFormController::class, 'store'])->name('evaluation-forms.store');
+    Route::post('/evaluation-forms/store', [EvaluationFormController::class, 'store'])->name('evaluation-forms.store');
     Route::get('/evaluation-forms/{id}/edit', [EvaluationFormController::class, 'edit'])->name('evaluation-forms.edit');
-    Route::put('/evaluation-forms/{id}/edit', [EvaluationFormController::class, 'update'])->name('evaluation-forms.update');
+    Route::put('/evaluation-forms/{id}/update', [EvaluationFormController::class, 'update'])->name('evaluation-forms.update');
     Route::patch('evaluation-forms/{id}/deactivate', [EvaluationFormController::class, 'deactivate'])->name('evaluation-forms.deactivate');
     
 
@@ -134,7 +134,15 @@ Route::middleware(['auth', 'checkEventCreator'])->group(function () {
     
 
     //eval forms
+    Route::get('/event/{id}/event-evaluation-forms/create', [EvaluationFormController::class, 'event_create'])->name('event-evaluation-forms.create');
+    Route::post('/event/{id}/event-evaluation-forms/create', [EvaluationFormController::class, 'event_store'])->name('event-evaluation-forms.store');
 
+    Route::get('/event/{id}/evaluation-forms/{formId}/edit', [EvaluationFormController::class, 'event_edit'])->name('event-evaluation-forms.edit');
+    Route::put('/event/{id}/evaluation-forms/{formId}/update', [EvaluationFormController::class, 'event_update'])->name('event-evaluation-forms.update');
+
+    Route::post('/event/{id}/event-evaluation-forms/use-existing', [EvaluationFormController::class, 'useExistingForm'])->name('event-evaluation-forms.use-existing');
+    
+    Route::put('/events/{id}/evaluation-form/{form}/toggle', [EvaluationFormController::class, 'toggleActivation'])->name('evaluation-forms.toggle');
     
 
 });

@@ -10,6 +10,7 @@ use App\Models\Certificate;
 use App\Models\Question;
 use App\Models\Answer;
 use App\Models\CertUser;
+use App\Models\EvaluationForm;
 use App\Models\EventEvaluationForm;
 use Illuminate\View\View;
 use Carbon\Carbon;
@@ -104,7 +105,9 @@ class EventController extends Controller
             ->where('status_id', 1)
             ->get();
         $currentUser = Auth::user()->id;
-
+        $existingForms = EvaluationForm::where('status_id', 1)
+            ->where('created_by', Auth::id())
+            ->get();
         $hasAnswered = false;
         $evaluationForm = $event->evaluationForm;
         if ($evaluationForm) {
@@ -128,6 +131,7 @@ class EventController extends Controller
             'userevent' => $userevent,
             'participant' => $eventParticipant,
             'evaluationForm' => $evaluationForm,
+            'existingForms' =>$existingForms,
             'currentParticipants' => $currentParticipants,
             'hasAnswered' => $hasAnswered,
             'certificate' => $certificate,
