@@ -28,6 +28,7 @@ class Question extends Model
         return $this->hasMany(Answer::class);
     }
 
+
     public function isComment()
     {
         return $this->type_id === 1;

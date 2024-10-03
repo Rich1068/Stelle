@@ -17,7 +17,7 @@
     <!-- Right: Hidden Button -->
     <div id="buttonContainer" style="display: none; margin-left: 10px;" class="button-group">
         <form action="{{ route('evaluation-forms.create') }}" method="get" style="display: inline;">
-            <button type="submit" class="btn btn-primary" style="border-radius: 20px;">
+            <button type="submit" class="btn btn-primary-2" style="border-radius: 20px;">
                 <i class="fas fa-plus"></i> Add Evaluation Form
             </button>
         </form>
@@ -36,14 +36,14 @@
 
         <!-- Responsive Table -->
         <div class="table-responsive">
-            <table class="table table-striped custom-table text-center" style="width: 90%; table-layout: fixed; margin: auto;">
+            <table class="table table-striped custom-table text-center" id="dataFilter" style="width: 90%; table-layout: fixed; margin: auto;">
                 <thead class="custom-thead">
                     <tr>
-                        <th>ID</th>
-                        <th>Form Name</th>
-                        <th>Status</th>
-                        <th>Created By</th>
-                        <th>Created At</th>
+                        <th onclick="sortTable(0)">ID <i class="fas fa-sort"></i></th>
+                        <th onclick="sortTable(1)">Form Name <i class="fas fa-sort"></i></th>
+                        <th onclick="sortTable(2)">Status <i class="fas fa-sort"></i></th>
+                        <th onclick="sortTable(3)">Created By <i class="fas fa-sort"></i></th>
+                        <th onclick="sortTable(4)">Created At <i class="fas fa-sort"></i></th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -252,6 +252,51 @@
             }
 
             row.style.display = rowContainsFilter ? '' : 'none';
+        }
+    }
+
+    function sortTable(columnIndex) {
+        var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+        table = document.getElementById("dataFilter");
+        switching = true;
+        dir = "asc";  // Set the sorting direction to ascending
+
+        while (switching) {
+            switching = false;
+            rows = table.rows;
+
+            // Loop through all table rows (except the headers)
+            for (i = 1; i < (rows.length - 1); i++) {
+                shouldSwitch = false;
+                x = rows[i].getElementsByTagName("TD")[columnIndex];
+                y = rows[i + 1].getElementsByTagName("TD")[columnIndex];
+
+                // Compare the two rows based on the current direction
+                if (dir == "asc") {
+                    if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                        shouldSwitch = true;
+                        break;
+                    }
+                } else if (dir == "desc") {
+                    if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
+            }
+
+            if (shouldSwitch) {
+                // If a switch has been marked, make the switch and mark switching as true
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+                switchcount++;
+            } else {
+                // If no switching was done and the direction is "asc", change direction to "desc"
+                if (switchcount == 0 && dir == "asc") {
+                    dir = "desc";
+                    switching = true;
+                }
+            }
         }
     }
 </script>

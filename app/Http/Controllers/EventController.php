@@ -124,6 +124,44 @@ class EventController extends Controller
                 }
             }
         }
+        //user age chart in the event
+        $usersBirthdate = User::whereHas('eventParticipant', function ($query) use ($id) {
+            $query->where('event_id', $id);
+            })->select('birthdate')->get();
+        $userAges = $usersBirthdate->map(function ($user) {
+            return $user->birthdate ? Carbon::parse($user->birthdate)->age : 'N/A';
+        });
+
+        $ageRanges = [
+            'Under 18' => $userAges->filter(function ($age) { return $age !== 'N/A' && $age < 18; })->count(),
+            '18-24' => $userAges->filter(function ($age) { return $age !== 'N/A' && $age >= 18 && $age <= 24; })->count(),
+            '25-34' => $userAges->filter(function ($age) { return $age !== 'N/A' && $age >= 25 && $age <= 34; })->count(),
+            '35-44' => $userAges->filter(function ($age) { return $age !== 'N/A' && $age >= 35 && $age <= 44; })->count(),
+            '45-54' => $userAges->filter(function ($age) { return $age !== 'N/A' && $age >= 45 && $age <= 54; })->count(),
+            '55+'   => $userAges->filter(function ($age) { return $age !== 'N/A' && $age >= 55; })->count(),
+            'N/A'   => $userAges->filter(function ($age) { return $age === 'N/A'; })->count(),
+        ];
+
+        $userAgeData = [
+            'labels' => array_keys($ageRanges),
+            'values' => array_values($ageRanges),
+        ];
+
+        //user gender chart in the event
+        $userGenders = User::whereHas('eventParticipant', function ($query) use ($id) {
+            $query->where('event_id', $id);
+        })
+        ->select('gender')
+        ->get()
+        ->groupBy(function ($user) {
+            return $user->gender ?? 'N/A'; // Use 'N/A' if gender is null
+        })
+        ->map(function ($users) {
+            return $users->count();
+        });
+
+        $genderLabels = $userGenders->keys();  // Extract the gender labels
+        $genderCounts = $userGenders->values(); // Extract the gender counts
         
 
         return view('event.event', [
@@ -136,7 +174,10 @@ class EventController extends Controller
             'hasAnswered' => $hasAnswered,
             'certificate' => $certificate,
             'participants' => $participants,
-            'currentUser' =>$currentUser
+            'currentUser' =>$currentUser,
+            'userAgeData' => $userAgeData,
+            'genderLabels' => $genderLabels,
+            'genderCounts' => $genderCounts,
         ]);
     }
 

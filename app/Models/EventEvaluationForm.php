@@ -17,6 +17,14 @@ class EventEvaluationForm extends Model
 
     public function event()
     {
-        return $this->belongsTo(Event::class);
+        return $this->belongsTo(Event::class, 'event_id');
+    }
+    public function evalForm()
+    {
+        return $this->belongsTo(EvaluationForm::class, 'form_id');
+    }
+    public function answer()
+    {
+        return $this->hasMany(Answer::class, 'event_form_id');
     }
 }

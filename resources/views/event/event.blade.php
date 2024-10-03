@@ -15,7 +15,7 @@
         <div class="tab-button active" data-tab="main">Event Details</div>
         <div class="tab-button" data-tab="participants">Participants</div>
         @if ($currentUser == $userevent->user->id)
-            <div class="tab-button" data-tab="feedback">Evaluation Form</div>
+            <div class="tab-button" data-tab="feedback">Event Analytics</div>
         @endif
     </div>
 
@@ -91,7 +91,7 @@
                             @if($hasAnswered)
                                 <button type="button" class="create-certificate-buttons" disabled>Evaluation Form Already Answered</button>
                             @else
-                                <form action="{{ route('evaluation-form.take', ['id' => $event->id, 'form' => $evaluationForm->id]) }}" method="GET" class="full-width-button">
+                                <form action="{{ route('evaluation-form.take', ['id' => $event->id, 'form' => $evaluationForm->form_id]) }}" method="GET" class="full-width-button">
                                     @csrf
                                     <button type="submit" class="btn btn-primary">Take Evaluation</button>
                                 </form>
@@ -114,8 +114,35 @@
             @endif
         </div>
 
-        <!-- Feedback Form Tab -->
+        <!-- Event Analytics Tab -->
         <div class="tab-pane" id="feedback">
+        <div class="row">
+            <div class="col-xl-5 col-lg-6 mb-4"> 
+                <div class="card shadow h-100"> 
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">User Age Distribution</h6>
+                    </div>
+                    <div class="card-body" style="height: 300px;">
+                        <div class="chart-pie pt-4 pb-2">
+                            <canvas id="userAgeChart" style="height: 100%; width: 100%;"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-5 col-lg-6 mb-4"> 
+                <div class="card shadow h-100"> 
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">User Gender Distribution</h6>
+                    </div>
+                    <div class="card-body" style="height: 300px;">
+                        <div class="chart-pie pt-4 pb-2">
+                            <canvas id="userGenderChart" style="height: 100%; width: 100%;"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
             <!-- Create or Update Evaluation Form Button -->
             <button type="button" class="btn btn-primary-2" data-toggle="modal" data-target="#evaluationFormModal">
                 Setup Evaluation Form
@@ -175,7 +202,7 @@
                 @if($event->evaluationForm)
                 <form action="{{ route('event-evaluation-forms.edit', ['formId' => $event->evaluationForm->form_id, 'id' => $event->id]) }}" method="GET" class="full-width-button">
                     @csrf
-                    <button type="submit" class="btn btn-primary-2">Update Evaluation Form</button>
+                    <button type="submit" class="btn btn-primary-2 btn-block">Update Evaluation Form</button>
                 </form>
                 @else
                 <form action="{{ route('event-evaluation-forms.create', ['id' => $event->id]) }}" method="GET" class="mb-3">
@@ -224,9 +251,10 @@
 </div>
 
 
-
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <!-- JavaScript to handle tab switching and modal display -->
 <script>
+
    document.addEventListener('DOMContentLoaded', function () {
     const tabButtons = document.querySelectorAll('.tab-button');
     const tabPanes = document.querySelectorAll('.tab-pane');
@@ -281,6 +309,73 @@
             }
             });
         });
+    });
+
+    var userAgeData = @json($userAgeData); // Data passed from the controller
+
+    var ctx = document.getElementById("userAgeChart").getContext('2d');
+    var myPieChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: userAgeData.labels,  // Age ranges from the controller
+            datasets: [{
+                data: userAgeData.values,  // Age counts from the controller
+                backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b', '#6f42c1', '#d3d3d3'], 
+                hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf', '#f4b619', '#e63946','#5a32a3', '#b0b0b0'],
+                hoverBorderColor: "rgba(234, 236, 244, 1)",
+            }],
+        },
+        options: {
+            maintainAspectRatio: false,
+            tooltips: {
+                backgroundColor: "rgb(255,255,255)",
+                bodyFontColor: "#858796",
+                borderColor: '#dddfeb',
+                borderWidth: 1,
+                xPadding: 15,
+                yPadding: 10,
+                displayColors: false,
+                caretPadding: 10,
+            },
+            legend: {
+                display: false
+            },
+            cutoutPercentage: 80, // Adjusts the doughnut chart cutout size
+        },
+    });
+
+    var genderLabels = @json($genderLabels);
+    var genderCounts = @json($genderCounts);
+
+    var ctx = document.getElementById("userGenderChart").getContext('2d');
+    var myPieChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: genderLabels,  // Gender labels (Male, Female, N/A)
+            datasets: [{
+                data: genderCounts,  // Gender counts
+                backgroundColor: ['#4e73df', '#1cc88a', '#d3d3d3'],  // Colors for Male, Female, N/A
+                hoverBackgroundColor: ['#2e59d9', '#17a673', '#b0b0b0'], // Hover colors for Male, Female, N/A
+                hoverBorderColor: "rgba(234, 236, 244, 1)",
+            }],
+        },
+        options: {
+            maintainAspectRatio: false,
+            tooltips: {
+                backgroundColor: "rgb(255,255,255)",
+                bodyFontColor: "#858796",
+                borderColor: '#dddfeb',
+                borderWidth: 1,
+                xPadding: 15,
+                yPadding: 10,
+                displayColors: false,
+                caretPadding: 10,
+            },
+            legend: {
+                display: false
+            },
+            cutoutPercentage: 80, // Adjust the doughnut chart cutout size
+        },
     });
 
     $('#existingFormModal').on('hidden.bs.modal', function () {

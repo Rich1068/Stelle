@@ -135,7 +135,6 @@
     </div>
 </div>
 
-<!-- Load DataTables scripts -->
 
 
 @endsection

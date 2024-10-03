@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\EventEvaluationForm;
 use App\Models\Question;
 use App\Models\Event;
+use App\Models\User;
 use App\Models\EvaluationForm;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,6 +21,7 @@ class EvaluationFormController extends Controller
     public function evalList()
     {
         $evaluationForms = EvaluationForm::with('creator', 'status')
+                                          ->where('created_by', Auth::id())
                                           ->where('status_id', 1)
                                           ->get();
         
@@ -299,23 +301,42 @@ class EvaluationFormController extends Controller
             'form_id' => 'required|exists:evaluation_forms,id',
         ]);
     
-        // Check if the event already has an associated evaluation form
-        $existingAssociation = EventEvaluationForm::where('event_id', $id)->first();
+        // Start a transaction
+        DB::beginTransaction();
     
-        if ($existingAssociation) {
-            $existingAssociation->update([
-                'form_id' => $request->input('form_id'),
-                'status_id' => 2, 
-            ]);
-        } else {
-            EventEvaluationForm::create([
-                'event_id' => $id,
-                'form_id' => $request->input('form_id'),
-                'status_id' => 2, 
-            ]);
+        try {
+            // Check if the event already has an associated evaluation form
+            $existingAssociation = EventEvaluationForm::where('event_id', $id)->first();
+    
+            if ($existingAssociation) {
+                // Update the existing association
+                $existingAssociation->update([
+                    'form_id' => $request->input('form_id'),
+                    'status_id' => 2, 
+                ]);
+            } else {
+                // Create a new association
+                EventEvaluationForm::create([
+                    'event_id' => $id,
+                    'form_id' => $request->input('form_id'),
+                    'status_id' => 2, 
+                ]);
+            }
+    
+            // Commit the transaction if everything is successful
+            DB::commit();
+    
+            // Redirect with success message
+            return redirect()->route('event.view', compact('id'))->with('success', 'Evaluation form associated successfully!');
+        
+        } catch (\Exception $e) {
+            // Rollback the transaction in case of an error
+            DB::rollBack();
+            \Log::error('Error associating evaluation form: '.$e->getMessage());
+    
+            // Redirect back with an error message
+            return redirect()->route('event.view', compact('id'))->with('error', 'There was an issue in the process. Please try again.');
         }
-
-        return redirect()->route('event.view', compact('id'))->with('success', 'Evaluation form associated successfully!');
     }
 
     public function deactivate($id)
@@ -350,8 +371,8 @@ class EvaluationFormController extends Controller
         
         // Ensure the form is active
         if ($evaluationForm && $evaluationForm->status_id == 1) {
-            $questions = Question::where('form_id', $evaluationForm->id)->get();
-            return view('event.evaluation_form.answer', compact('event', 'questions'));
+            $questions = Question::where('form_id', $formId)->get();
+            return view('evaluation_form.answer', compact('event', 'questions'));
         } else {
             return redirect()->back()->with('error', 'The evaluation form is not available.');
         }
@@ -361,30 +382,44 @@ class EvaluationFormController extends Controller
     {
         $event = Event::findOrFail($id);
         $user = Auth::user();
-
+    
         // Validate the request
         $request->validate([
             'answers' => 'required|array',
             'answers.*' => 'required'
         ]);
-
-        foreach ($request->answers as $questionId => $answer) {
-            Answer::create([
-                'form_id' => $event->evaluationForm->id,
-                'question_id' => $questionId,
-                'event_id' => $event->id,
-                'user_id' => $user->id,
-                'answer' => $answer
-            ]);
+    
+        // Begin the transaction
+        DB::beginTransaction();
+    
+        try {
+            foreach ($request->answers as $questionId => $answer) {
+                Answer::create([
+                    'event_form_id' => $event->evaluationForm->id,
+                    'question_id' => $questionId,
+                    'user_id' => $user->id,
+                    'answer' => $answer
+                ]);
+            }
+    
+            // Commit the transaction if everything is successful
+            DB::commit();
+    
+            return redirect()->route('event.view', $event->id)->with('success', 'Your evaluation has been submitted successfully.');
+        } catch (\Exception $e) {
+            // Rollback the transaction in case of any error
+            DB::rollBack();
+    
+            \Log::error('Error submitting evaluation: '.$e->getMessage());
+    
+            return redirect()->route('event.view', $event->id)->with('error', 'There was an issue submitting your evaluation. Please try again.');
         }
-
-        return redirect()->route('event.view', $event->id)->with('success', 'Your evaluation has been submitted successfully.');
     }
 
     public function showEvaluationResults($id)
     {
         // Fetch the event with its related form, questions, and answers
-        $event = Event::with('evaluationForm.questions.answers')
+        $event = Event::with('evaluationForm.evalForm.questions.answers')
             ->where('id', $id)
             ->firstOrFail();
     
@@ -396,88 +431,21 @@ class EvaluationFormController extends Controller
         // Define the static radio options (1, 2, 3, 4, 5)
         $staticRadioOptions = [1, 2, 3, 4, 5];
     
-        // Access the form associated with the event
         $form = $event->evaluationForm;
     
-        // Initialize variables for user data
-        $questionsData = [];
-        $totalUsers = 0;
-    
-        // Initialize userAges as a Collection, not an array
-        $userAges = collect(); // Laravel collection to store individual ages
-        $ageRanges = [
-            '10-15' => 0,
-            '16-25' => 0,
-            '26-35' => 0,
-            '36-45' => 0,
-            '46-55' => 0,
-            '56-65' => 0,
-            '66+'   => 0,
-            'Unknown' => 0, // New label for users with no birthdate
-        ];
-    
-        // Initialize gender count
-        $genderDistribution = [
-            'Male' => 0,
-            'Female' => 0,
-            'Unknown' => 0, // To handle users without specified gender
-        ];
+        //total user who answered
+        $answeredUsers = User::whereHas('answers', function ($query) use ($id) {
+            $query->whereHas('eventEvalForm', function ($subQuery) use ($id) {
+                $subQuery->where('event_id', $id);
+            });
+        })
+        ->distinct()
+        ->count();
+
     
         if ($form) {
-            // Collect unique users who answered the form
-            $users = DB::table('answers')
-                ->join('questions', 'answers.question_id', '=', 'questions.id')
-                ->join('users', 'answers.user_id', '=', 'users.id')
-                ->where('questions.form_id', $form->id)
-                ->distinct('answers.user_id') // Count distinct user IDs
-                ->select('users.birthdate', 'users.gender')   // Select user birthdate and gender
-                ->get();
-    
-            // Calculate individual ages and group them into ranges, and track gender distribution
-            $users->each(function ($user) use (&$userAges, &$ageRanges, &$genderDistribution) {
-                // Handle age
-                if ($user->birthdate) {
-                    $age = Carbon::parse($user->birthdate)->age;
-    
-                    // Store individual age in the Collection
-                    $userAges->push($age);
-    
-                    // Group the age into a range
-                    if ($age >= 10 && $age <= 15) {
-                        $ageRanges['10-15']++;
-                    } elseif ($age >= 16 && $age <= 25) {
-                        $ageRanges['16-25']++;
-                    } elseif ($age >= 26 && $age <= 35) {
-                        $ageRanges['26-35']++;
-                    } elseif ($age >= 36 && $age <= 45) {
-                        $ageRanges['36-45']++;
-                    } elseif ($age >= 46 && $age <= 55) {
-                        $ageRanges['46-55']++;
-                    } elseif ($age >= 56 && $age <= 65) {
-                        $ageRanges['56-65']++;
-                    } else {
-                        $ageRanges['66+']++;
-                    }
-                } else {
-                    $ageRanges['Unknown']++;
-                }
-    
-                // Handle gender
-                switch (strtolower($user->gender)) {
-                    case 'male':
-                        $genderDistribution['Male']++;
-                        break;
-                    case 'female':
-                        $genderDistribution['Female']++;
-                        break;
-                    default:
-                        $genderDistribution['Unknown']++;
-                        break;
-                }
-            });
-    
             // Process questions for comments and radio questions
-            foreach ($form->questions as $question) {
+            foreach ($form->evalForm->questions as $question) {
                 if ($question->isComment()) {
                     $questionsData[] = [
                         'type' => 'comment',
@@ -506,12 +474,12 @@ class EvaluationFormController extends Controller
         }
     
         // Calculate participation rate
-        $participationRate = $currentParticipants > 0 ? round(($users->count() / $currentParticipants) * 100, 2) : 0;
+        $participationRate = $currentParticipants > 0 ? round(($answeredUsers / $currentParticipants) * 100, 2) : 0;
     
         // Send data to the view
         return view('event.partials.evaluation', compact(
-            'questionsData', 'staticRadioOptions', 'totalUsers', 'currentParticipants', 
-            'participationRate', 'userAges', 'ageRanges', 'genderDistribution'
+            'questionsData', 'staticRadioOptions', 'answeredUsers', 'currentParticipants', 
+            'participationRate'
         ));
     }
  

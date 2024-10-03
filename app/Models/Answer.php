@@ -11,7 +11,7 @@ class Answer extends Model
 
     protected $fillable = [
         'question_id',
-        'form_id',
+        'event_form_id',
         'user_id',
         'answer',
     ];
@@ -19,5 +19,15 @@ class Answer extends Model
     public function question()
     {
         return $this->belongsTo(Question::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function eventEvalForm()
+    {
+        return $this->belongsTo(EventEvaluationForm::class, 'event_form_id');
     }
 }

@@ -236,7 +236,7 @@
         /* Dark Blue Background */
     }
 </style>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Make sure Chart.js is included -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     // Pass Laravel data to JavaScript
     var userCountData = @json($userCountData); // Ensure $chartData is passed from the controller

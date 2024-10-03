@@ -30,7 +30,7 @@
 
 
     <!-- Main Container -->
-    <div class="row justify-content-center  custom-bg-white mt-4 mb-4 pt-4"> <!-- Added custom class for border radius -
+    <div class="row justify-content-center  custom-bg-white mt-4 mb-4 pt-4"> <!-- Added custom class for border radius -->
         <!-- Calendar Column -->
         <div class="col-xl-6 col-md-12 mb-4"> <!-- Adjusted width for the calendar -->
             <div class="card shadow mb-4" style="height: 500px;">
@@ -76,27 +76,10 @@
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
                                     <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Evaluation Forms Created</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">0</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{$totalCreatedEvalForm}}</div>
                                 </div>
                                 <div class="col-auto">
                                     <i class="fas fa-check-square fa-2x text-info"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Events Completed Card -->
-                <div class="col-12 mb-4">
-                    <div class="card border-left-info shadow h-100" style="height: 220px;">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Events Completed</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">0</div>
-                                </div>
-                                <div class="col-auto">
-                                    <i class="fas fa-user-check fa-2x text-info"></i>
                                 </div>
                             </div>
                         </div>
@@ -110,7 +93,7 @@
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
                                     <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Events Created</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">0</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{$totalCreatedEvents}}</div>
                                 </div>
                                 <div class="col-auto">
                                     <i class="fas fa-calendar-plus fa-2x text-info"></i>
@@ -119,6 +102,23 @@
                         </div>
                     </div>
                 </div>
+                <!-- Events Completed Card -->
+                <div class="col-12 mb-4">
+                    <div class="card border-left-info shadow h-100" style="height: 220px;">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Events Joined</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{$totalJoinedEvent}}</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-user-check fa-2x text-info"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>

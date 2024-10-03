@@ -61,5 +61,15 @@
         </a>
     </li>
 
+    <hr class="sidebar-divider">
+
+    <!-- Nav Item - Manage Evaluation Form -->
+    <li class="nav-item">
+        <a href="{{ route('evaluation.evaluationlist') }}" class="nav-link {{ request()->routeIs('evaluation.evaluationlist') ? 'active' : '' }}">
+            <span>Manage Evaluation Forms</span>
+            <i class="fas fa-clipboard-list"></i>
+        </a>
+    </li>
+
 </ul>
 <!-- End of Sidebar -->
