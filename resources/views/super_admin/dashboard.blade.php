@@ -46,7 +46,7 @@
             <div id="calendar" class="p-3" style="height: 400px; overflow-y: auto;"> <!-- Set height for the calendar and added overflow -->
                 <!-- Calendar will be inserted here -->
             </div>
-
+                
             <!-- Modal for event details -->
             <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
@@ -200,14 +200,6 @@
 
     .card {
         border: none;
-    }
-
-    .table th,
-    .table td {
-        border: 1px solid #dee2e6;
-        /* Light border for table cells */
-        font-weight: bold;
-        /* Make table text bold */
     }
 
     .card-header {
