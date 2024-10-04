@@ -9,18 +9,223 @@ use App\Models\CertTemplate;
 use App\Models\Event;
 use App\Models\User;
 use App\Models\CertUser;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 class CertificateController extends Controller
 {
-    public function create($eventId)
+    public function certlist()
+    {
+        $certificates = Certificate::where('created_by', Auth::id())
+                        ->where('status_id', 1)
+                        ->get();
+        return view('certificate.certlist', compact('certificates'));
+    }
+
+    public function create($certificateId = null)
+    {
+        $templates = CertTemplate::all();
+        $certificate = null;
+    
+        // Check if there is a certificate to edit
+        if ($certificateId) {
+            $certificate = Certificate::find($certificateId);
+        }
+    
+        return view('certificate.create', compact('templates', 'certificate'));
+    }
+    public function event_create($eventId)
     {
         $event = Event::findOrFail($eventId);
         $templates = CertTemplate::where('user_id', 1)->orWhereNull('user_id')->get();
-        return view('certificate.create', compact('event', 'templates'));
+        return view('event_certificate.create', compact('event', 'templates'));
+    }
+    public function saveCanvas(Request $request)
+    {
+        // Log the incoming request data
+        Log::info('saveCanvas certificate_id:', ['certificate_id' => $request->input('certificate_id')]);
+    
+        // Start a database transaction
+        DB::beginTransaction();
+    
+        try {
+            // Validate the input
+            $request->validate([
+                'cert_name' => 'required|string|max:255',
+                'canvas' => 'required|array',
+                'image' => 'required|string',
+                'certificate_id' => 'nullable|exists:certificates,id'
+            ]);
+    
+            // Extract the canvas data and image data
+            $canvasData = $request->input('canvas');
+            $imageData = $request->input('image');
+            $certName = $request->input('cert_name');
+            $certificateId = $request->input('certificate_id'); // Optionally pass a certificate ID for update
+    
+            // Validate the image data format (base64)
+            if (strpos($imageData, ',') === false) {
+                return response()->json(['message' => 'Invalid image data format'], 400);
+            }
+    
+            // Decode the base64 image data
+            $imageBase64 = explode(',', $imageData)[1];
+    
+            // Generate file name and store the image
+            $imageName = 'certificate_' . $certName . time() . '.png';
+            $relativePath = 'storage/images/certificates/' . $imageName;
+            $imagePath = storage_path('app/public/images/certificates/' . $imageName);
+    
+            // Save the image to storage
+            file_put_contents($imagePath, base64_decode($imageBase64));
+    
+            // If certificate ID is provided, update the existing certificate, else create a new one
+            if ($certificateId) {
+                // Updating existing certificate
+                $certificate = Certificate::find($certificateId);
+                
+                if (!$certificate) {
+                    return response()->json(['message' => 'Certificate not found'], 404);
+                }
+    
+                $relPath = 'images/certificates/' . basename($certificate->cert_path);
+
+                if (Storage::exists($relPath)) {
+                    Storage::delete($relPath);
+                }
+    
+                // Update the certificate details
+                $certificate->update([
+                    'cert_name' => $certName,
+                    'design' => json_encode($canvasData),
+                    'cert_path' => $relativePath,
+                ]);
+    
+                Log::info('Certificate updated successfully: ' . $certName);
+    
+                $message = 'Certificate updated!';
+    
+            } else {
+                // Creating a new certificate
+                $certificate = Certificate::create([
+                    'created_by' => Auth::id(),
+                    'cert_name' => $certName,
+                    'design' => json_encode($canvasData),
+                    'cert_path' => $relativePath,
+                    'status_id' => 1,  // Assuming status '1' is for active
+                ]);
+    
+                Log::info('Certificate created successfully: ' . $certName);
+    
+                $message = 'Certificate created!';
+            }
+    
+            // Commit the transaction
+            DB::commit();
+    
+            // Return success response
+            return response()->json([
+                'message' => $message,
+                'certificateId' => $certificate->id
+            ]);
+    
+        } catch (\Exception $e) {
+            // Rollback transaction on error
+            DB::rollBack();
+            Log::error('Error saving certificate: ' . $e->getMessage());
+    
+            return response()->json([
+                'message' => 'An error occurred while saving the certificate. Please try again.'
+            ], 500);
+        }
+    }
+    
+
+    public function edit($id)
+    {
+        // Retrieve the certificate to be edited
+        $certificate = Certificate::findOrFail($id);
+
+        // Return the edit view with the certificate data
+        return view('certificate.edit', compact('certificate'));
     }
 
-    public function saveCanvas(Request $request, $id)
+    public function update(Request $request, $id)
+    {
+        // Log the incoming request data
+        Log::info('update request data:', $request->all());
+
+        // Start a database transaction
+        DB::beginTransaction();
+
+        try {
+            // Validate the input
+            $request->validate([
+                'cert_name' => 'required|string|max:255',
+                'canvas' => 'required|array',
+                'image' => 'required|string',
+            ]);
+
+            // Get the canvas data and the new image data
+            $canvasData = $request->input('canvas');
+            $imageData = $request->input('image');
+            $certName = $request->input('cert_name');
+
+            // Validate the image data format (base64)
+            if (strpos($imageData, ',') === false) {
+                return response()->json(['message' => 'Invalid image data format'], 400);
+            }
+
+            // Find the certificate by ID
+            $certificate = Certificate::findOrFail($id);
+
+            // Delete the old certificate image from storage if it exists
+            if ($certificate->cert_path && Storage::exists('public/images/certificates/' . basename($certificate->cert_path))) {
+                Storage::delete('public/images/certificates/' . basename($certificate->cert_path));
+            }
+
+            // Decode the new base64 image data
+            $imageBase64 = explode(',', $imageData)[1];
+
+            // Generate file name for the new image
+            $imageName = 'certificate_' . time() . '.png';
+            $relativePath = 'storage/images/certificates/' . $imageName;
+            $imagePath = storage_path('app/public/images/certificates/' . $imageName);
+
+            // Save the new image to storage
+            file_put_contents($imagePath, base64_decode($imageBase64));
+
+            // Update the certificate with the new name, design, and image path
+            $certificate->update([
+                'cert_name' => $certName,
+                'design' => json_encode($canvasData),
+                'cert_path' => $relativePath,
+            ]);
+
+            // Commit the transaction
+            DB::commit();
+
+            // Log success and return response
+            Log::info('Certificate updated successfully: ' . $certName);
+
+            return response()->json([
+                'message' => 'Certificate updated!',
+                'certificateId' => $certificate->id
+            ]);
+
+        } catch (\Exception $e) {
+            // Rollback transaction on error
+            DB::rollBack();
+            Log::error('Error updating certificate: ' . $e->getMessage());
+
+            return response()->json([
+                'message' => 'An error occurred while updating the certificate. Please try again.'
+            ], 500);
+        }
+    }
+
+    public function event_saveCanvas(Request $request, $id)
     {
         // Log the incoming request data
         Log::info('saveCanvas request data:', $request->all());
@@ -84,8 +289,18 @@ class CertificateController extends Controller
 
         return response()->json(['message' => 'Certificate saved!']);
     }
+    public function loadCanvas($id)
+    {
+        $certificate = Certificate::find($id);
 
-    public function loadCanvas($id, $certId)
+        if ($certificate) {
+            return response()->json(json_decode($certificate->design, true));
+        } else {
+            return response()->json(['message' => 'Certificate not found!'], 404);
+        }
+    }
+
+    public function event_loadCanvas($id, $certId)
     {
         $certificate = Certificate::where('event_id', $id)->where('id', $certId)->first();
 
@@ -162,6 +377,18 @@ class CertificateController extends Controller
 
         // Return the design JSON from the certificate
         return response()->json(json_decode($certificate->design));
+    }
+
+
+    public function deactivate($id)
+    {
+        $certificate = Certificate::findOrFail($id);
+
+        // Set status_id to 2 for deactivation
+        $certificate->status_id = 2;
+        $certificate->save();
+
+        return redirect()->route('certificate.list')->with('success', 'Certificate deleted successfully!');
     }
 
 }

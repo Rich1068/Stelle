@@ -12,7 +12,7 @@
 
                 <!-- Event Details Section -->
                 <div class="event-list-details">
-                    <h3 class="event-list-title mb-1">{{ $event->title }}</h3>
+                    <h3 class="event-list-title mb-1"> <a href="{{ route('event.view', $event->id) }}" style="color: #001e54;">{{ $event->title }}</a></h3>
                     <p class="event-list-description text-muted mb-2">{{ Str::limit($event->description, 50) }}</p>
                     <div class="event-list-meta d-flex justify-content-between">
                         <div class="meta-item time d-flex align-items-center">

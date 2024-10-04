@@ -12,6 +12,7 @@ import { PagesTimeline } from 'polotno/pages-timeline';
 import { ZoomButtons } from 'polotno/toolbar/zoom-buttons';
 import { createStore } from 'polotno/model/store';
 import { getImageSize } from 'polotno/utils/image';
+import SendButton from './sendButton';
 
 import {
   TextSection,
@@ -30,6 +31,7 @@ import MdPhotoLibrary from '@meronex/icons/md/MdPhotoLibrary';
 const csrfTokenMetaTag = document.querySelector('meta[name="csrf-token"]');
 if (csrfTokenMetaTag) {
   const csrfToken = csrfTokenMetaTag.getAttribute('content');
+  // Set the CSRF token in the Axios headers
   axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken;
 } else {
   console.error('CSRF token meta tag not found.');
@@ -49,7 +51,9 @@ export const PhotosPanel = observer(({ store }) => {
     setImages([]);
     await new Promise((resolve) => setTimeout(resolve, 3000));
 
-    setImages([{ url: '/storage/images/certificates/cert_templates/template1.jpg' }]);
+    setImages([
+      { url: '/storage/images/certificates/cert_templates/template1.jpg' },
+    ]);
   }
 
   React.useEffect(() => {
@@ -64,7 +68,9 @@ export const PhotosPanel = observer(({ store }) => {
         onChange={(e) => {
           loadImages();
         }}
-        style={{ marginBottom: '20px' }}
+        style={{
+          marginBottom: '20px',
+        }}
       />
       <p>Demo images: </p>
       <ImagesGrid
@@ -99,70 +105,89 @@ const CustomPhotos = {
   Panel: PhotosPanel,
 };
 
-const sections = [TextSection, CustomPhotos, ElementsSection, UploadSection, BackgroundSection, LayersSection, SizeSection];
+const sections = [
+  TextSection,
+  CustomPhotos,
+  ElementsSection,
+  UploadSection,
+  BackgroundSection,
+  LayersSection,
+  SizeSection,
+];
 
-const saveDesign = async (setCertificateId, certificateId) => {
-    const canvasData = store.toJSON();
-    const certName = document.getElementById('certName').value; // Get cert name from the input field
-  
-    if (!certName) {
-      alert('Please enter a certificate name.');
+
+
+const saveDesign = async (eventId, setCertificateId) => {
+  const canvasData = store.toJSON();
+
+  try {
+    // Convert the current canvas design to a base64 image (returns a Promise)
+    const dataURLPromise = store.toDataURL();
+
+    // Await the Promise to get the actual dataURL
+    const dataURL = await dataURLPromise;
+
+    console.log('Saving design...', canvasData); // Debug log
+    console.log('Image Data URL:', dataURL); // Debug log
+
+    // Check if dataURL is a string
+    if (typeof dataURL !== 'string') {
+      console.error('dataURL is not a string:', dataURL);
       return;
     }
-  
-    try {
-      const dataURLPromise = store.toDataURL();
-      const dataURL = await dataURLPromise;
-  
-      console.log('Saving design...', canvasData); // Debug log
-      console.log('Image Data URL:', dataURL); // Debug log
-  
-      if (typeof dataURL !== 'string') {
-        console.error('dataURL is not a string:', dataURL);
-        return;
-      }
-  
-      // Always use the same save route for both creating and updating
-      const response = await axios.post(`/certificates/save`, {
-        canvas: canvasData,
-        image: dataURL,
-        cert_name: certName, // Include the certificate name in the request
-        certificate_id: certificateId, // Send the certificate ID if it's an update
-      });
-  
-      alert('Design saved successfully!');
-      console.log(response.data.message);
-  
-      // For new certificate, set certificateId after creation
-      if (!certificateId && response.data.certificateId) {
-        setCertificateId(response.data.certificateId); // Update the certificate ID state for further operations
-      }
-    } catch (error) {
-      console.error('Error saving design:', error);
-    }
-  };
 
-const loadDesign = async (certificateId) => {
-    try {
-      const response = await axios.get(`/certificates/${certificateId}/load`);
-      console.log('Load response:', response.data);  // Log the response to check the data
-      if (response.data) {
-        store.loadJSON(response.data);  // Ensure that the response is a valid JSON Polotno can use
-      }
-    } catch (error) {
-      console.error('Error loading design:', error);
+    const response = await axios.post(`/event/${eventId}/certificates/save`, {
+      canvas: canvasData,
+      image: dataURL,
+    });
+    alert('Design saved successfully!');
+    console.log(response.data.message);
+
+    if (response.data.certificateId) {
+      setCertificateId(response.data.certificateId);
     }
-  };
+  } catch (error) {
+    console.error('Error saving design:', error);
+  }
+};
+
+const loadDesign = async (eventId, certId) => {
+  try {
+    const response = await axios.get(`/event/${eventId}/certificates/load/${certId}`);
+    console.log('Load response:', response.data);
+    store.loadJSON(response.data);
+  } catch (error) {
+    console.error('Error loading design:', error);
+  }
+};
 
 export const App = () => {
-  const certificateId = document.getElementById('container').getAttribute('data-certificate-id');
-  const [certId, setCertificateId] = useState(certificateId);
+  // Get the eventId from the DOM
+  const eventId = document.getElementById('container').getAttribute('data-event-id');
+  const [certificateId, setCertificateId] = useState(null);
 
   useEffect(() => {
-    if (certId) {
-      loadDesign(certId);
+    const fetchCertificateId = async () => {
+      try {
+        const response = await axios.get(`/event/${eventId}/certificates/get-id`);
+        const certId = response.data.certificateId;
+        console.log('Fetched Certificate ID:', certId);
+        if (certId) {
+          setCertificateId(certId);
+        }
+      } catch (error) {
+        console.error('Error fetching certificate ID:', error);
+      }
+    };
+
+    fetchCertificateId();
+  }, [eventId]); // eventId dependency
+
+  useEffect(() => {
+    if (certificateId) {
+      loadDesign(eventId, certificateId);
     }
-  }, [certId]);
+  }, [certificateId, eventId]);
 
   return (
     <PolotnoContainer className="polotno-app-container">
@@ -170,17 +195,17 @@ export const App = () => {
         <SidePanel store={store} sections={sections} defaultSection="photos" />
       </SidePanelWrap>
       <WorkspaceWrap style={{ width: '100%', height: '100%' }}>
-        <Toolbar store={store} />
+        {/* Pass eventId to SendButton via Toolbar */}
+        <Toolbar store={store} components={{ ActionControls: (props) => <SendButton {...props} eventId={eventId} /> }} />
         <Workspace store={store} style={{ width: '100%', height: '100%' }} />
         <ZoomButtons store={store} />
         <PagesTimeline store={store} />
-        <Button onClick={() => saveDesign(setCertificateId, certId)} style={{ top: 10, right: -100 }}>
+        <Button onClick={() => saveDesign(eventId, setCertificateId)} style={{ top: 10, right: -100 }}>
           Save Design
         </Button>
       </WorkspaceWrap>
     </PolotnoContainer>
   );
 };
-
 const root = ReactDOM.createRoot(document.getElementById('container'));
 root.render(<App />);

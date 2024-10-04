@@ -83,6 +83,16 @@
             <i class="fas fa-clipboard-list"></i>
         </a>
     </li>
+
+    <hr class="sidebar-divider">
+
+    <!-- Nav Item - Manage Evaluation Form -->
+    <li class="nav-item">
+        <a href="{{ route('certificate.list') }}" class="nav-link {{ request()->routeIs('certificate.list') ? 'active' : '' }}">
+            <span>Manage Certificates</span>
+            <i class="fas fa-clipboard-list"></i>
+        </a>
+    </li>
 </ul>
 <!-- End of Sidebar -->
 

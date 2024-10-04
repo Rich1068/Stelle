@@ -344,7 +344,6 @@ class EvaluationFormController extends Controller
         // Find the form by ID
         $evaluationForm = EvaluationForm::findOrFail($id);
 
-        // Update the status to 'Inactive' (assuming status_id = 2 means 'Inactive')
         $evaluationForm->update([
             'status_id' => 2, // Setting status to 'Inactive'
         ]);
@@ -356,7 +355,6 @@ class EvaluationFormController extends Controller
     {
         $evaluationForm = EventEvaluationForm::findOrFail($formId);
     
-        // Set the status based on the checkbox state
         $evaluationForm->status_id = $request->has('is_active') ? 1 : 2;
         $evaluationForm->save();
     

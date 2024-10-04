@@ -11,18 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('form_statuses', function (Blueprint $table) {
+        Schema::create('statuses', function (Blueprint $table) {
             $table->id();
             $table->string('status');
         });
-        DB::table('form_statuses')->insert([
+        DB::table('statuses')->insert([
             ['status' => 'Active'],
             ['status' => 'Inactive'],
         ]);
         Schema::create('evaluation_forms', function (Blueprint $table) {
             $table->id();
             $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
-            $table->foreignId('status_id')->constrained('form_statuses')->onDelete('cascade');
+            $table->foreignId('status_id')->constrained('statuses')->onDelete('cascade');
             $table->string('form_name')->nullable();
             $table->timestamps();
         });
@@ -30,7 +30,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('event_id')->constrained('events')->onDelete('cascade');
             $table->foreignId('form_id')->constrained('evaluation_forms')->onDelete('cascade');
-            $table->foreignId('status_id')->constrained('form_statuses')->onDelete('cascade');
+            $table->foreignId('status_id')->constrained('statuses')->onDelete('cascade');
             $table->timestamps();
         });
         Schema::create('question_types', function (Blueprint $table) {
@@ -68,6 +68,6 @@ return new class extends Migration
         Schema::dropIfExists('question_types');
         Schema::dropIfExists('event_evaluation_forms');
         Schema::dropIfExists('evaluation_forms');
-        Schema::dropIfExists('form_statuses');
+        Schema::dropIfExists('statuses');
     }
 };

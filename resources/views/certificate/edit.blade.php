@@ -40,6 +40,6 @@
     </div>
 
     <!-- Create Container for Editor -->
-    <div id="container" data-certificate-id="{{ $certificate->id ?? '' }}"></div>
-    
+    <div id="container" data-event-id="{{ $event->id ?? '' }}" data-certificate-id="{{ $certificate->id ?? '' }}"></div>
+
 @endsection

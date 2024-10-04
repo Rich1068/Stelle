@@ -8,6 +8,7 @@ use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Exception;
 class GoogleController extends Controller
@@ -67,7 +68,7 @@ class GoogleController extends Controller
                     'google_id' => $user->id,
                     'profile_picture' => $filedatabase,
                     'role_id' => '3',
-                    'password' => env('GOOGLE_DEFAULT_PASSWORD'),
+                    'password' => Hash::make(env('GOOGLE_DEFAULT_PASSWORD')),
                     'email_verified_at' => now()
                 ]);
 

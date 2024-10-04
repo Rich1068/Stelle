@@ -10,15 +10,13 @@ class Certificate extends Model
     use HasFactory;
 
     protected $fillable = [
-        'event_id',
+        'created_by',
+        'cert_name',
         'cert_path',
         'design',
+        'status_id'
     ];
 
-    public function event()
-    {
-        return $this->belongsTo(Event::class);
-    }
 
     public function template()
     {

@@ -98,15 +98,27 @@ Route::middleware('auth')->group(function () {
     Route::get('/evaluation-forms/{id}/edit', [EvaluationFormController::class, 'edit'])->name('evaluation-forms.edit');
     Route::put('/evaluation-forms/{id}/update', [EvaluationFormController::class, 'update'])->name('evaluation-forms.update');
     Route::patch('evaluation-forms/{id}/deactivate', [EvaluationFormController::class, 'deactivate'])->name('evaluation-forms.deactivate');
-    
+
+    //new cert
+    Route::get('/certificate-list', [CertificateController::class, 'certlist'])->name('certificate.list');
+
+    Route::get('/certificates/create/{certificateId?}', [CertificateController::class, 'create'])->name('certificates.create');
+    Route::post('/certificates/save', [CertificateController::class, 'saveCanvas'])->name('certificates.save');
+
+    Route::get('/certificates/{id}/edit', [CertificateController::class, 'edit'])->name('certificates.edit');
+    Route::put('/certificates/{id}', [CertificateController::class, 'update'])->name('certificates.update');
+
+    Route::get('/certificates/{id}/load', [CertificateController::class, 'loadCanvas'])->name('certificates.load');
+
+    Route::patch('/certificates/{id}/deactivate', [CertificateController::class, 'deactivate'])->name('certificates.deactivate');
 
 
     
     //cert stuff 
     Route::post('/event/{id}/certificates/saveImage', [CertificateController::class, 'saveImage'])->name('certificates.saveImage');
     Route::get('/event/{id}/certificates/getDesign', [CertificateController::class, 'getCertificateDesign']);
-    Route::get('/event/{id}/certificates/create', [CertificateController::class, 'create'])->name('certificates.create');
-    Route::post('/event/{id}/certificates/save', [CertificateController::class, 'saveCanvas']);
+    Route::get('/event/{id}/certificates/create', [CertificateController::class, 'event_create'])->name('event_certificates.create');
+    Route::post('/event/{id}/certificates/save', [CertificateController::class, 'event_saveCanvas']);
     Route::get('/event/{id}/certificates/load/{certId}', [CertificateController::class, 'loadCanvas']);
     Route::get('/event/{id}/certificates/get-id', [CertificateController::class, 'getCertificateId']);
     Route::get('/event/{id}/certificates/viewCert/{certId}', [CertificateController::class, 'viewImage'])->name('certificates.view');

@@ -57,9 +57,9 @@
                         <!-- Create and View Certificate Buttons Side by Side -->
                         <div class="certificate-buttons">
                             @if ($certificate == null)
-                                <a href="{{ route('certificates.create', $event->id) }}" class="btn btn-primary">Create Certificate</a>
+                                <a href="{{ route('event_certificates.create', $event->id) }}" class="btn btn-primary">Create Certificate</a>
                             @else
-                                <a href="{{ route('certificates.create', $event->id) }}" class="btn btn-primary">Update Certificate</a>
+                                <a href="{{ route('event_certificates.create', $event->id) }}" class="btn btn-primary">Update Certificate</a>
                             @endif
 
                             @if ($certificate)
