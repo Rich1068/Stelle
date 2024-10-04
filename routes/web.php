@@ -109,6 +109,7 @@ Route::middleware('auth')->group(function () {
     Route::put('/certificates/{id}', [CertificateController::class, 'update'])->name('certificates.update');
 
     Route::get('/certificates/{id}/load', [CertificateController::class, 'loadCanvas'])->name('certificates.load');
+    Route::get('/certificates/get', [CertificateController::class, 'getCertificates'])->name('certificates.templates');
 
     Route::patch('/certificates/{id}/deactivate', [CertificateController::class, 'deactivate'])->name('certificates.deactivate');
 

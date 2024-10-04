@@ -12,6 +12,7 @@ use App\Models\Answer;
 use App\Models\CertUser;
 use App\Models\EvaluationForm;
 use App\Models\EventEvaluationForm;
+use App\Models\EventCertificate;
 use Illuminate\View\View;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
@@ -96,7 +97,9 @@ class EventController extends Controller
             ->where('status_id', 1) // Only accepted will show
             ->count();
         $event = Event::findOrFail($id);
-        $certificate = Certificate::where('id', $id)->first();
+
+        $certificate = EventCertificate::where('event_id', $id)->first();
+        
         $eventParticipant = EventParticipant::where('event_id', $id)
             ->where('user_id', Auth::user()->id)
             ->first();

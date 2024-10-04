@@ -45,10 +45,13 @@ class CertificateController extends Controller
     {
         // Log the incoming request data
         Log::info('saveCanvas certificate_id:', ['certificate_id' => $request->input('certificate_id')]);
-    
+
         // Start a database transaction
         DB::beginTransaction();
-    
+
+        // Store the image path in case we need to delete it later on failure
+        $tempImagePath = null;
+
         try {
             // Validate the input
             $request->validate([
@@ -57,55 +60,56 @@ class CertificateController extends Controller
                 'image' => 'required|string',
                 'certificate_id' => 'nullable|exists:certificates,id'
             ]);
-    
+
             // Extract the canvas data and image data
             $canvasData = $request->input('canvas');
             $imageData = $request->input('image');
             $certName = $request->input('cert_name');
             $certificateId = $request->input('certificate_id'); // Optionally pass a certificate ID for update
-    
+
             // Validate the image data format (base64)
             if (strpos($imageData, ',') === false) {
                 return response()->json(['message' => 'Invalid image data format'], 400);
             }
-    
+
             // Decode the base64 image data
             $imageBase64 = explode(',', $imageData)[1];
-    
-            // Generate file name and store the image
+
+            // Generate file name and store the image temporarily
             $imageName = 'certificate_' . $certName . time() . '.png';
             $relativePath = 'storage/images/certificates/' . $imageName;
             $imagePath = storage_path('app/public/images/certificates/' . $imageName);
-    
-            // Save the image to storage
+            $tempImagePath = $imagePath; // Store the temp path for rollback
+
+            // Save the image to storage temporarily
             file_put_contents($imagePath, base64_decode($imageBase64));
-    
+
             // If certificate ID is provided, update the existing certificate, else create a new one
             if ($certificateId) {
                 // Updating existing certificate
                 $certificate = Certificate::find($certificateId);
-                
+
                 if (!$certificate) {
                     return response()->json(['message' => 'Certificate not found'], 404);
                 }
-    
-                $relPath = 'images/certificates/' . basename($certificate->cert_path);
 
+                $relPath = 'public/images/certificates/' . basename($certificate->cert_path);
+
+                // Delete the old certificate image if it exists
                 if (Storage::exists($relPath)) {
                     Storage::delete($relPath);
                 }
-    
+
                 // Update the certificate details
                 $certificate->update([
                     'cert_name' => $certName,
                     'design' => json_encode($canvasData),
                     'cert_path' => $relativePath,
                 ]);
-    
+
                 Log::info('Certificate updated successfully: ' . $certName);
-    
+
                 $message = 'Certificate updated!';
-    
             } else {
                 // Creating a new certificate
                 $certificate = Certificate::create([
@@ -115,26 +119,32 @@ class CertificateController extends Controller
                     'cert_path' => $relativePath,
                     'status_id' => 1,  // Assuming status '1' is for active
                 ]);
-    
+
                 Log::info('Certificate created successfully: ' . $certName);
-    
+
                 $message = 'Certificate created!';
             }
-    
+
             // Commit the transaction
             DB::commit();
-    
+
             // Return success response
             return response()->json([
                 'message' => $message,
                 'certificateId' => $certificate->id
             ]);
-    
+
         } catch (\Exception $e) {
             // Rollback transaction on error
             DB::rollBack();
+
+            // If the image was saved but the transaction failed, delete the saved image
+            if ($tempImagePath && file_exists($tempImagePath)) {
+                unlink($tempImagePath);
+            }
+
             Log::error('Error saving certificate: ' . $e->getMessage());
-    
+
             return response()->json([
                 'message' => 'An error occurred while saving the certificate. Please try again.'
             ], 500);
@@ -149,80 +159,6 @@ class CertificateController extends Controller
 
         // Return the edit view with the certificate data
         return view('certificate.edit', compact('certificate'));
-    }
-
-    public function update(Request $request, $id)
-    {
-        // Log the incoming request data
-        Log::info('update request data:', $request->all());
-
-        // Start a database transaction
-        DB::beginTransaction();
-
-        try {
-            // Validate the input
-            $request->validate([
-                'cert_name' => 'required|string|max:255',
-                'canvas' => 'required|array',
-                'image' => 'required|string',
-            ]);
-
-            // Get the canvas data and the new image data
-            $canvasData = $request->input('canvas');
-            $imageData = $request->input('image');
-            $certName = $request->input('cert_name');
-
-            // Validate the image data format (base64)
-            if (strpos($imageData, ',') === false) {
-                return response()->json(['message' => 'Invalid image data format'], 400);
-            }
-
-            // Find the certificate by ID
-            $certificate = Certificate::findOrFail($id);
-
-            // Delete the old certificate image from storage if it exists
-            if ($certificate->cert_path && Storage::exists('public/images/certificates/' . basename($certificate->cert_path))) {
-                Storage::delete('public/images/certificates/' . basename($certificate->cert_path));
-            }
-
-            // Decode the new base64 image data
-            $imageBase64 = explode(',', $imageData)[1];
-
-            // Generate file name for the new image
-            $imageName = 'certificate_' . time() . '.png';
-            $relativePath = 'storage/images/certificates/' . $imageName;
-            $imagePath = storage_path('app/public/images/certificates/' . $imageName);
-
-            // Save the new image to storage
-            file_put_contents($imagePath, base64_decode($imageBase64));
-
-            // Update the certificate with the new name, design, and image path
-            $certificate->update([
-                'cert_name' => $certName,
-                'design' => json_encode($canvasData),
-                'cert_path' => $relativePath,
-            ]);
-
-            // Commit the transaction
-            DB::commit();
-
-            // Log success and return response
-            Log::info('Certificate updated successfully: ' . $certName);
-
-            return response()->json([
-                'message' => 'Certificate updated!',
-                'certificateId' => $certificate->id
-            ]);
-
-        } catch (\Exception $e) {
-            // Rollback transaction on error
-            DB::rollBack();
-            Log::error('Error updating certificate: ' . $e->getMessage());
-
-            return response()->json([
-                'message' => 'An error occurred while updating the certificate. Please try again.'
-            ], 500);
-        }
     }
 
     public function event_saveCanvas(Request $request, $id)
@@ -377,6 +313,29 @@ class CertificateController extends Controller
 
         // Return the design JSON from the certificate
         return response()->json(json_decode($certificate->design));
+    }
+
+    public function getCertificates()
+    {
+        // Fetch all certificates (or only those meant to be templates)
+        $certificates = Certificate::where('status_id', 1)
+                        ->where(function ($query) {
+                            $query->where('created_by', Auth::id())
+                                ->orWhereNull('created_by'); // Add this condition for null values
+                        })
+                        ->get(); // Adjust this query as needed
+
+        // Return the certificate names and their design JSONs
+        $templates = $certificates->map(function ($certificate) {
+            return [
+                'id' => $certificate->id,
+                'name' => $certificate->cert_name,
+                'design' => $certificate->design,
+                'path' =>$certificate->cert_path  // The saved design JSON
+            ];
+        });
+
+        return response()->json($templates);
     }
 
 

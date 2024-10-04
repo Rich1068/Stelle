@@ -42,64 +42,70 @@ const store = createStore({
 
 store.addPage();
 
-export const PhotosPanel = observer(({ store }) => {
-  const [images, setImages] = React.useState([]);
+export const TemplatesPanel = observer(({ store }) => {
+    const [templates, setTemplates] = useState([]);
 
-  async function loadImages() {
-    setImages([]);
-    await new Promise((resolve) => setTimeout(resolve, 3000));
+    // Function to load existing templates from backend
+    async function loadTemplates() {
+      try {
+        const response = await axios.get('/certificates/get');
+        setTemplates(response.data); // Set the loaded templates
 
-    setImages([{ url: '/storage/images/certificates/cert_templates/template1.jpg' }]);
-  }
+      } catch (error) {
+        console.error('Error loading templates:', error);
+      }
+    }
 
-  React.useEffect(() => {
-    loadImages();
-  }, []);
+    useEffect(() => {
+      loadTemplates(); // Load templates on mount
+    }, []);
 
-  return (
-    <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-      <InputGroup
-        leftIcon="search"
-        placeholder="Search..."
-        onChange={(e) => {
-          loadImages();
-        }}
-        style={{ marginBottom: '20px' }}
-      />
-      <p>Demo images: </p>
-      <ImagesGrid
-        images={images}
-        getPreview={(image) => image.url}
-        onSelect={async (image, pos) => {
-          const { width, height } = await getImageSize(image.url);
-          store.activePage.addElement({
-            type: 'image',
-            src: image.url,
-            width,
-            height,
-            x: pos ? pos.x : store.width / 2 - width / 2,
-            y: pos ? pos.y : store.height / 2 - height / 2,
-          });
-        }}
-        rowsNumber={2}
-        isLoading={!images.length}
-        loadMore={false}
-      />
-    </div>
-  );
+    return (
+      <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+        <InputGroup
+          leftIcon="search"
+          placeholder="Search templates..."
+          onChange={(e) => {
+            loadTemplates(); // Reload templates on search (adjust as needed)
+          }}
+          style={{
+            marginBottom: '20px',
+          }}
+        />
+        <p>Available Templates: </p>
+        <ImagesGrid
+            images={templates.map((template) => ({
+                name: template.name,          
+                design: template.design,      
+                preview_image: template.path, 
+                id: template.id               
+            }))}
+            getPreview={(template) => `/${template.preview_image}`} // Display the preview image
+            onSelect={async (template) => {
+                const design = JSON.parse(template.design);
+                console.log('Loading template design:', design);  // Log the design JSON
+                store.loadJSON(design);  // Load the template's design into Polotno
+            }}
+            rowsNumber={2}   // Define the number of rows for displaying templates
+            isLoading={!templates.length}   // Show loading indicator if templates haven't loaded
+            loadMore={false}   // If you have pagination, handle it here, but it's not needed in this case
+        />
+      </div>
+    );
 });
+  
+  // Register this panel as a new custom section in Polotno
+  const CustomTemplates = {
+    name: 'templates',
+    Tab: (props) => (
+      <SectionTab name="Templates" {...props}>
+        <MdPhotoLibrary />
+      </SectionTab>
+    ),
+    Panel: TemplatesPanel,
+  };
 
-const CustomPhotos = {
-  name: 'photos',
-  Tab: (props) => (
-    <SectionTab name="Borders" {...props}>
-      <MdPhotoLibrary />
-    </SectionTab>
-  ),
-  Panel: PhotosPanel,
-};
-
-const sections = [TextSection, CustomPhotos, ElementsSection, UploadSection, BackgroundSection, LayersSection, SizeSection];
+const sections = [TextSection, CustomTemplates, ElementsSection, UploadSection, BackgroundSection, LayersSection, SizeSection];
 
 const saveDesign = async (setCertificateId, certificateId) => {
     const canvasData = store.toJSON();
