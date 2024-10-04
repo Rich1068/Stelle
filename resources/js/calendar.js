@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             eventClick: function(info) {
                 const date = moment(info.event.start).format('MMMM DD, YYYY');
-                const time = moment(info.event.start).format('h:mm A') + " to " + moment(info.event.end).format('h:mm A');
+                const time = moment(info.event.start).format('h:mm A'); // Only showing start time
                 const ownerName = info.event.extendedProps.first_name + " " +
                                   (info.event.extendedProps.middle_name || '') + " " +
                                   info.event.extendedProps.last_name;
@@ -50,10 +50,10 @@ document.addEventListener('DOMContentLoaded', function() {
                         <p><strong>Event:</strong> ${info.event.title}</p>
                         <p><strong>Description:</strong> ${info.event.extendedProps.description || 'No description available'}</p>
                         <p><strong>Date:</strong> ${date}</p>
-                        <p><strong>Time:</strong> ${time}</p>
+                        <p><strong>Time:</strong> ${time}</p> <!-- Simplified Time -->
                         <p><strong>Owner:</strong> ${ownerName}</p>
                     </div>
-                     <a href="/event/${info.event.id}" class="btn btn-primary">View Event</a>
+                    <a href="/event/${info.event.id}" class="btn btn-primary">View Event</a>
                 `;
 
                 const modal = new bootstrap.Modal(document.getElementById('eventModal'), {

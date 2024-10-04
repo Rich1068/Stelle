@@ -6,8 +6,15 @@
         <i class="fas fa-chart-bar"></i> Evaluation Form Analytics
     </h2>
 </div>
-<div class="container mt-4">
+
+<div class="custom-bg-white" style="border-radius: 15px; background-color: white; padding-top: 10px;">
     <div class="row mt-2 mb-4">
+
+    <div class="top-container-2 mb-4">
+        <h5 class="font-weight-bold">
+        <i class="fas fa-poll"></i> Percentage of Participants Response
+        </h5>
+    </div>
         <!-- Total Users Who Answered Card -->
         <div class="col-md-6 mb-2">
             <div class="card border-left-info shadow h-100 py-2">
@@ -88,37 +95,51 @@
             </h5>
         </div>
 
-        <!-- Grouped Radio Questions -->
-        @php $radioCount = 0; @endphp
-        <div class="row mb-4">
-            @foreach ($questionsData as $index => $questionData)
-                @if ($questionData['type'] === 'radio')
-                    <div class="col-md-4 mb-2">
-                        <div class="card border-left-info shadow h-100 py-1">
-                            <div class="card-body" style="padding: 10px;">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col">
-                                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1" style="font-size: 1.1rem;">
-                                            {{ $questionData['question'] }}
-                                        </div>
-                                        <div class="chart-container mt-2" style="position: relative; height: 20vh; width: 100%;">
-                                            <canvas id="radioChart_{{ $index }}"></canvas>
-                                        </div>
-                                    </div>
+   <!-- Grouped Radio Questions -->
+@php $radioCount = 0; @endphp
+<div class="row mb-4">
+    @foreach ($questionsData as $index => $questionData)
+        @if ($questionData['type'] === 'radio')
+            <div class="col-md-4 mb-2">
+                <div class="card border-left-info shadow h-100">
+                    <div class="card-body" style="padding: 0; height: 100%;"> <!-- Remove padding and ensure height is 100% -->
+                        <div class="row no-gutters align-items-center" style="height: 100%;"> <!-- Make the row fill the card height -->
+                            <div class="col">
+                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1" style="font-size: 1.1rem; padding: 10px;"> <!-- Add padding to the question text -->
+                                    {{ $questionData['question'] }}
+                                </div>
+                                <div class="chart-container mt-2" style="position: relative; height: calc(100% - 50px); width: 100%; padding: 10px;"> <!-- Adjust the height and add padding -->
+                                    <canvas id="radioChart_{{ $index }}" style="height: 100%; width: 100%; margin: 0;"> <!-- Ensure canvas takes full width and height -->
+                                    </canvas>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    @php $radioCount++; @endphp
-                    @if ($radioCount % 3 === 0)
-                        </div><div class="row mb-4">
-                    @endif
-                @endif
-            @endforeach
-        </div>
-    @endif
+                </div>
+            </div>
+            @php $radioCount++; @endphp
+            @if ($radioCount % 3 === 0)
+                </div><div class="row mb-4">
+            @endif
+        @endif
+    @endforeach
 </div>
 
+    @endif
+</div>
+<style>
+.custom-bg-white {
+    border-radius: 15px; /* Add border radius */
+    max-width: 80%;
+    padding: 12px;
+    align-items: center; /* This is not necessary unless you're using flexbox */
+    margin: auto; /* Center the element */
+    background-color: white; /* Set background color */
+    background-color: rgba(255, 255, 255, 0.4) !important; /* Semi-transparent white */
+    margin-bottom: 30px !important;
+}
+
+    </style>
 
 <!-- Include Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
