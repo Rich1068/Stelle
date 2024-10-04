@@ -51,9 +51,7 @@
   margin-bottom: 20px; /* Spacing between cards */
 }
 
-
-
-    /* Make name text blue and underline on hover */
+ 
     .table tbody tr td a:hover {
       color: blue  !important;
       text-decoration: underline  !important;
@@ -1380,8 +1378,8 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 .event-list-item {
   display: flex;
   background-color: white;
-  border-radius: 30px; /* Increased corner radius for a more rounded look */
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2); /* Slightly deeper shadow */
+  border-radius: 30px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   overflow: hidden; /* Ensures the content stays within rounded corners */
   transition: transform 0.3s; /* Adds a smooth transform effect */
   position: relative; /* For absolute positioning of the View Button */
@@ -1390,7 +1388,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 }
 
 .event-list-item:hover {
-  transform: scale(1.03); /* Slightly enlarges on hover for a subtle effect */
+  transform: scale(1.02); /* Slightly enlarges on hover for a subtle effect */
 }
 
 .event-list-date {
@@ -1400,19 +1398,19 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   justify-content: center;
   background-color: #003366; /* Dark blue background */
   color: #fff;
-  padding: 30px; /* Increased padding for more coverage */
-  min-width: 180px; /* Increased width for a broader appearance */
+  padding: 20px; /* Smaller padding */
+  min-width: 100px; /* Adjusted width */
   border-radius: 0; /* No rounding on the date section */
 }
 
 
 .event-list-day {
-  font-size: 26px; /* Increased font size */
+  font-size: 20px; 
   font-weight: bold;
 }
 
 .event-list-month {
-  font-size: 18px; /* Increased font size */
+  font-size: 15px; 
   text-transform: uppercase;
 }
 
@@ -1421,12 +1419,12 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 20px; /* Increased padding */
+  padding: 15px; /* Smaller padding */
 }
 
 .event-list-title {
   margin: 0;
-  font-size: 28px; /* Increased font size */
+  font-size: 25px; /* Smaller font size */  
   font-weight: bold;
   color: #003366;
 }
