@@ -61,6 +61,15 @@
   text-align: left; /* Align text to the left */
 }
 
+.chart-container {
+  position: relative; /* Positioning for absolute children */
+  width: 100%; /* Ensures full width */
+  overflow: hidden; /* Prevents overflow */
+}
+
+.card {
+  border: none; /* No border */
+}
 
 .custom-event {
   background-color: rgba(255, 255, 255, 0); /* Dark blue for the circle */

@@ -121,7 +121,37 @@
 
             </div>
         </div>
+        <div class="row mb-5 col-md-11">
+    <div class="col-md-12">
+        <div class="card border-left-info shadow h-100" style="height: 500px; width: 90%;">
+            <div class="card-body p-4 d-flex flex-column"> <!-- Added padding and flexbox for layout -->
+                <div class="text-xs font-weight-bold text-dark-blue text-uppercase mb-3"> <!-- Use dark blue text -->
+                    Created Events Per Month
+                </div>
+                <div class="chart-container flex-grow-1"> <!-- Use flex-grow to fill space -->
+                    <canvas id="monthlyEventsChart" style="height: 100%; width: 100%;"></canvas> <!-- Set canvas to 100% -->
+                </div>
+            </div>
+        </div>
     </div>
+</div>
+
+    <!-- New Monthly Participants Chart -->
+    <div class="row mb-5 col-md-11 mt-2"> 
+        <div class="col-md-12">
+            <div class="card border-left-info shadow h-100" style="height: 500px; width: 90%;">
+                <div class="card-body p-4 d-flex flex-column">
+                    <div class="text-xs font-weight-bold text-dark-blue text-uppercase mb-3">
+                        Monthly Participants
+                    </div>
+                    <div class="chart-container flex-grow-1">
+                        <canvas id="monthlyParticipantsChart" style="height: 100%; width: 100%;"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <!-- Modal for event details -->
     <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel" aria-hidden="true">
@@ -134,7 +164,63 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('monthlyEventsChart').getContext('2d');
+const monthlyEventsChart = new Chart(ctx, {
+    type: 'bar', // Change to 'bar' for a bar chart
+    data: {
+        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+        datasets: [{
+            label: 'Events Joined',
+            data: [12, 19, 3, 5, 2, 3, 10, 7, 8, 15, 4, 9], // Mock data
+            backgroundColor: 'rgba(54, 162, 235, 0.6)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: true,
+                title: {
+                    display: true,
+                    text: 'Number of Events'
+                }
+            }
+        }
+    }
+});
 
+// Monthly Participants Chart
+const ctxParticipants = document.getElementById('monthlyParticipantsChart').getContext('2d');
+    const monthlyParticipantsChart = new Chart(ctxParticipants, {
+        type: 'bar',
+        data: {
+            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+            datasets: [{
+                label: 'Participants Joined',
+                data: [8, 11, 5, 7, 10, 13, 12, 15, 6, 9, 14, 10],
+                backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Number of Participants'
+                    }
+                }
+            }
+        }
+    });
+    </script>
 <style>
     .icon-dark-blue {
         color: #003366; /* Initial dark blue color */

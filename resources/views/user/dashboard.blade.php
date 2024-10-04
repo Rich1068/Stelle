@@ -126,21 +126,21 @@
             </div>
         </div>
 </div>
-
-    </form>
-        <!-- Modal for event details -->
-        <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-body" id="modalContent">
-                        <!-- Modal content will be dynamically inserted here -->
-                    </div>
+<div class="row mb-4 col-md-11">
+    <div class="col-md-12">
+        <div class="card border-left-info shadow h-100" style="height: 500px; width: 90%;">
+            <div class="card-body p-4 d-flex flex-column"> <!-- Added padding and flexbox for layout -->
+                <div class="text-xs font-weight-bold text-dark-blue text-uppercase mb-3"> <!-- Use dark blue text -->
+                    Monthly Events Joined
+                </div>
+                <div class="chart-container flex-grow-1"> <!-- Use flex-grow to fill space -->
+                    <canvas id="monthlyEventsChart" style="height: 100%; width: 100%;"></canvas> <!-- Set canvas to 100% -->
                 </div>
             </div>
         </div>
-
     </div>
 </div>
+
 
 <!-- CSS Styling -->
 <style>
@@ -178,9 +178,39 @@
         background-color: rgba(255, 255, 255, 0.4);
     }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <!-- JavaScript -->
 <script>
+
+         // Mock data for the chart
+const ctx = document.getElementById('monthlyEventsChart').getContext('2d');
+const monthlyEventsChart = new Chart(ctx, {
+    type: 'bar', // Change to 'bar' for a bar chart
+    data: {
+        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+        datasets: [{
+            label: 'Events Joined',
+            data: [12, 19, 3, 5, 2, 3, 10, 7, 8, 15, 4, 9], // Mock data
+            backgroundColor: 'rgba(54, 162, 235, 0.6)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: true,
+                title: {
+                    display: true,
+                    text: 'Number of Events'
+                }
+            }
+        }
+    }
+});
+        
     function confirmSubmission() {
         // Show confirmation dialog
         if (confirm('Are you sure you want to register as an event admin?')) {

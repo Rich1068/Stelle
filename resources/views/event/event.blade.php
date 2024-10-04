@@ -114,35 +114,38 @@
             @endif
         </div>
 
-        <!-- Event Analytics Tab -->
-        <div class="tab-pane" id="feedback">
-        <div class="row">
-            <div class="col-xl-5 col-lg-6 mb-4"> 
-                <div class="card shadow h-100"> 
-                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                        <h6 class="m-0 font-weight-bold text-primary">User Age Distribution</h6>
-                    </div>
-                    <div class="card-body" style="height: 300px;">
-                        <div class="chart-pie pt-4 pb-2">
-                            <canvas id="userAgeChart" style="height: 100%; width: 100%;"></canvas>
-                        </div>
-                    </div>
+<!-- Event Analytics Tab -->
+<div class="tab-pane" id="feedback">
+    <div class="d-flex justify-content-center mt-4"> <!-- Added mt-4 for top margin -->
+        <div class="col-xl-5 col-lg-6 mb-4"> 
+            <div class="card shadow h-80"> 
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">User Age Distribution</h6>
                 </div>
-            </div>
-
-            <div class="col-xl-5 col-lg-6 mb-4"> 
-                <div class="card shadow h-100"> 
-                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                        <h6 class="m-0 font-weight-bold text-primary">User Gender Distribution</h6>
-                    </div>
-                    <div class="card-body" style="height: 300px;">
-                        <div class="chart-pie pt-4 pb-2">
-                            <canvas id="userGenderChart" style="height: 100%; width: 100%;"></canvas>
-                        </div>
+                <div class="card-body" style="height: 300px;">
+                    <div class="chart-pie pt-4 pb-2">
+                        <canvas id="userAgeChart" style="height: 100%; width: 100%;"></canvas>
                     </div>
                 </div>
             </div>
         </div>
+
+        <div class="col-xl-5 col-lg-6 mb-4"> 
+            <div class="card shadow h-80"> 
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">User Gender Distribution</h6>
+                </div>
+                <div class="card-body" style="height: 300px;">
+                    <div class="chart-pie pt-4 pb-2">
+                        <canvas id="userGenderChart" style="height: 100%; width: 100%;"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+        
             <!-- Create or Update Evaluation Form Button -->
             <button type="button" class="btn btn-primary-2" data-toggle="modal" data-target="#evaluationFormModal">
                 Setup Evaluation Form
