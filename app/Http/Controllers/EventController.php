@@ -98,7 +98,7 @@ class EventController extends Controller
             ->count();
         $event = Event::findOrFail($id);
 
-        $certificate = EventCertificate::where('event_id', $id)->first();
+        $certificate = Certificate::where('event_id', $id)->first();
         
         $eventParticipant = EventParticipant::where('event_id', $id)
             ->where('user_id', Auth::user()->id)

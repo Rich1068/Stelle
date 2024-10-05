@@ -9,6 +9,7 @@ use App\Models\CertTemplate;
 use App\Models\Event;
 use App\Models\User;
 use App\Models\CertUser;
+use App\Models\EventTemplate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
@@ -17,7 +18,7 @@ class CertificateController extends Controller
 {
     public function certlist()
     {
-        $certificates = Certificate::where('created_by', Auth::id())
+        $certificates = CertTemplate::where('created_by', Auth::id())
                         ->where('status_id', 1)
                         ->get();
         return view('certificate.certlist', compact('certificates'));
@@ -25,21 +26,20 @@ class CertificateController extends Controller
 
     public function create($certificateId = null)
     {
-        $templates = CertTemplate::all();
         $certificate = null;
     
         // Check if there is a certificate to edit
         if ($certificateId) {
-            $certificate = Certificate::find($certificateId);
+            $certificate = CertTemplate::find($certificateId);
         }
     
-        return view('certificate.create', compact('templates', 'certificate'));
+        return view('certificate.create', compact('certificate'));
     }
     public function event_create($eventId)
     {
         $event = Event::findOrFail($eventId);
-        $templates = CertTemplate::where('user_id', 1)->orWhereNull('user_id')->get();
-        return view('event_certificate.create', compact('event', 'templates'));
+        $templates = CertTemplate::where('created_by', 1)->orWhereNull('created_by')->get();
+        return view('certificate.event_create', compact('event', 'templates'));
     }
     public function saveCanvas(Request $request)
     {
@@ -58,7 +58,7 @@ class CertificateController extends Controller
                 'cert_name' => 'required|string|max:255',
                 'canvas' => 'required|array',
                 'image' => 'required|string',
-                'certificate_id' => 'nullable|exists:certificates,id'
+                'certificate_id' => 'nullable|exists:cert_templates,id'
             ]);
 
             // Extract the canvas data and image data
@@ -76,9 +76,9 @@ class CertificateController extends Controller
             $imageBase64 = explode(',', $imageData)[1];
 
             // Generate file name and store the image temporarily
-            $imageName = 'certificate_' . $certName . time() . '.png';
-            $relativePath = 'storage/images/certificates/' . $imageName;
-            $imagePath = storage_path('app/public/images/certificates/' . $imageName);
+            $imageName = 'cert_template' . $certName . time() . '.png';
+            $relativePath = 'storage/images/certificates/cert_templates/' . $imageName;
+            $imagePath = storage_path('app/public/images/certificates/cert_templates/' . $imageName);
             $tempImagePath = $imagePath; // Store the temp path for rollback
 
             // Save the image to storage temporarily
@@ -87,13 +87,13 @@ class CertificateController extends Controller
             // If certificate ID is provided, update the existing certificate, else create a new one
             if ($certificateId) {
                 // Updating existing certificate
-                $certificate = Certificate::find($certificateId);
+                $certificate = CertTemplate::find($certificateId);
 
                 if (!$certificate) {
                     return response()->json(['message' => 'Certificate not found'], 404);
                 }
 
-                $relPath = 'public/images/certificates/' . basename($certificate->cert_path);
+                $relPath = 'public/images/certificates/cert_templates/' . basename($certificate->cert_path);
 
                 // Delete the old certificate image if it exists
                 if (Storage::exists($relPath)) {
@@ -102,9 +102,9 @@ class CertificateController extends Controller
 
                 // Update the certificate details
                 $certificate->update([
-                    'cert_name' => $certName,
+                    'template_name' => $certName,
                     'design' => json_encode($canvasData),
-                    'cert_path' => $relativePath,
+                    'path' => $relativePath,
                 ]);
 
                 Log::info('Certificate updated successfully: ' . $certName);
@@ -112,17 +112,17 @@ class CertificateController extends Controller
                 $message = 'Certificate updated!';
             } else {
                 // Creating a new certificate
-                $certificate = Certificate::create([
+                $certificate = CertTemplate::create([
                     'created_by' => Auth::id(),
-                    'cert_name' => $certName,
+                    'template_name' => $certName,
                     'design' => json_encode($canvasData),
-                    'cert_path' => $relativePath,
+                    'path' => $relativePath,
                     'status_id' => 1,  // Assuming status '1' is for active
                 ]);
 
-                Log::info('Certificate created successfully: ' . $certName);
+                Log::info('Certificate Template created successfully: ' . $certName);
 
-                $message = 'Certificate created!';
+                $message = 'Certificate Template created!';
             }
 
             // Commit the transaction
@@ -143,7 +143,7 @@ class CertificateController extends Controller
                 unlink($tempImagePath);
             }
 
-            Log::error('Error saving certificate: ' . $e->getMessage());
+            Log::error('Error saving certificate template: ' . $e->getMessage());
 
             return response()->json([
                 'message' => 'An error occurred while saving the certificate. Please try again.'
@@ -210,9 +210,11 @@ class CertificateController extends Controller
         if ($certificate === null) {
             // Create a new certificate
             $certificate = new Certificate();
+            $certificate->created_by = Auth::id();
             $certificate->event_id = $id;
             $certificate->design = json_encode($canvasData);
             $certificate->cert_path = $relativePath;
+            $certificate->status_id = 2;
             $certificate->save();
         } else {
             // Update existing certificate
@@ -225,9 +227,114 @@ class CertificateController extends Controller
 
         return response()->json(['message' => 'Certificate saved!']);
     }
+
+    public function event_saveCanvas_asTemplate(Request $request)
+    {
+        // Log incoming data
+        // Start a database transaction
+        DB::beginTransaction();
+
+        try {
+            // Validate the incoming request
+            $request->validate([
+                'template_name' => 'required|string|max:255', // Validate template name
+                'canvas' => 'required|array', // Validate the canvas design (JSON)
+                'image' => 'required|string', // Validate base64 image data
+                'event_id' => 'required|exists:events,id', 
+
+            ]);
+
+            // Extract data from the request
+            $templateName = $request->input('template_name');
+            $canvasData = $request->input('canvas');
+            $imageData = $request->input('image');
+            $eventId = $request->input('event_id');
+
+            // Validate the image data format (base64)
+            if (strpos($imageData, ',') === false) {
+                return response()->json(['message' => 'Invalid image data format'], 400);
+            }
+
+            // Decode the base64 image data
+            $imageBase64 = explode(',', $imageData)[1];
+
+            // Generate the file name for the template image
+            $imageName = 'template_' . $templateName . '_' . time() . '.png';
+            $relativePath = 'storage/images/certificates/cert_templates/' . $imageName;
+            $imagePath = storage_path('app/public/images/certificates/cert_templates/' . $imageName);
+
+            // Save the image to storage
+            
+
+            $relation = EventTemplate::where('event_id', $eventId)->first();
+            // Check if this is an update or a new creation
+            if ($relation) {
+                // Updating an existing certificate template
+                $template = CertTemplate::find($relation->template_id);
+
+                if (!$template) {
+                    return response()->json(['message' => 'Template not found'], 404);
+                }
+
+                // Delete the old image if it exists
+                if (Storage::exists('public/images/certificates/cert_templates/' . basename($template->path))) {
+                    Storage::delete('public/images/certificates/cert_templates/' . basename($template->path));
+                }
+
+                // Update the existing template
+                $template->update([
+                    'template_name' => $templateName,
+                    'design' => json_encode($canvasData),
+                    'path' => $relativePath
+                ]);
+
+                
+                Log::info('Certificate template updated successfully: ' . $templateName);
+
+                $message = 'Template updated successfully!';
+            } else {
+                // Creating a new certificate template
+                $template = CertTemplate::create([
+                    'created_by' => Auth::id(),
+                    'template_name' => $templateName,
+                    'design' => json_encode($canvasData),
+                    'path' => $relativePath,
+                    'status_id' => 1,
+                ]);
+
+                EventTemplate::create([
+                    'event_id' => $eventId,
+                    'template_id' => $template->id,
+                ]);
+
+                Log::info('Certificate template created successfully: ' . $templateName);
+
+                $message = 'Template created successfully!';
+            }
+
+            
+            // Commit the transaction
+            DB::commit();
+            file_put_contents($imagePath, base64_decode($imageBase64));
+            // Return success response
+            return response()->json([
+                'message' => $message,
+                'templateId' => $template->id, 
+            ]);
+        } catch (\Exception $e) {
+            // Rollback transaction on error
+            DB::rollBack();
+
+            Log::error('Error saving certificate template: ' . $e->getMessage());
+
+            return response()->json([
+                'message' => 'An error occurred while saving the template. Please try again.',
+            ], 500);
+        }
+    }
     public function loadCanvas($id)
     {
-        $certificate = Certificate::find($id);
+        $certificate = CertTemplate::find($id);
 
         if ($certificate) {
             return response()->json(json_decode($certificate->design, true));
@@ -315,10 +422,10 @@ class CertificateController extends Controller
         return response()->json(json_decode($certificate->design));
     }
 
-    public function getCertificates()
+    public function getTemplates()
     {
         // Fetch all certificates (or only those meant to be templates)
-        $certificates = Certificate::where('status_id', 1)
+        $certificates = CertTemplate::where('status_id', 1)
                         ->where(function ($query) {
                             $query->where('created_by', Auth::id())
                                 ->orWhereNull('created_by'); // Add this condition for null values
@@ -329,9 +436,9 @@ class CertificateController extends Controller
         $templates = $certificates->map(function ($certificate) {
             return [
                 'id' => $certificate->id,
-                'name' => $certificate->cert_name,
+                'name' => $certificate->template_name,
                 'design' => $certificate->design,
-                'path' =>$certificate->cert_path  // The saved design JSON
+                'path' =>$certificate->path  // The saved design JSON
             ];
         });
 
@@ -341,7 +448,7 @@ class CertificateController extends Controller
 
     public function deactivate($id)
     {
-        $certificate = Certificate::findOrFail($id);
+        $certificate = CertTemplate::findOrFail($id);
 
         // Set status_id to 2 for deactivation
         $certificate->status_id = 2;

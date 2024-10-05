@@ -27,7 +27,7 @@ class EvaluationForm extends Model
 
     public function status()
     {
-        return $this->belongsTo(FormStatus::class, 'status_id');
+        return $this->belongsTo(Status::class, 'status_id');
     }
 
 }

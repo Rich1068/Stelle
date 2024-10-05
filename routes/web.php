@@ -109,11 +109,11 @@ Route::middleware('auth')->group(function () {
     Route::put('/certificates/{id}', [CertificateController::class, 'update'])->name('certificates.update');
 
     Route::get('/certificates/{id}/load', [CertificateController::class, 'loadCanvas'])->name('certificates.load');
-    Route::get('/certificates/get', [CertificateController::class, 'getCertificates'])->name('certificates.templates');
+    Route::get('/certificates/get', [CertificateController::class, 'getTemplates'])->name('certificates.templates');
 
     Route::patch('/certificates/{id}/deactivate', [CertificateController::class, 'deactivate'])->name('certificates.deactivate');
 
-
+    Route::post('/certificate-template/save', [CertificateController::class, 'event_saveCanvas_asTemplate']);
     
     //cert stuff 
     Route::post('/event/{id}/certificates/saveImage', [CertificateController::class, 'saveImage'])->name('certificates.saveImage');

@@ -20,6 +20,10 @@ class Event extends Model
     {
         return $this->hasOne(UserEvent::class);
     }
+    public function eventCertTemplates()
+    {
+        return $this->hasMany(CertTemplate::class);
+    }
 
     protected $fillable = [
         'title', 

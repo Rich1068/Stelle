@@ -3,16 +3,16 @@
 @section('body')
 
 <div class="container">
-    <h1 class="my-4">My Certificates</h1>
+    <h1 class="my-4">My Certificate Templates</h1>
 
     <!-- Create New Certificate Button -->
     <div class="mb-3">
-        <a href="{{ route('certificates.create') }}" class="btn btn-primary">Create New Certificate</a>
+        <a href="{{ route('certificates.create') }}" class="btn btn-primary">Create New Template</a>
     </div>
 
     <!-- Search Bar -->
     <div class="search-container mb-3">
-        <input type="text" id="searchInput" class="form-control" placeholder="Search certificates..." onkeyup="filterTable()">
+        <input type="text" id="searchInput" class="form-control" placeholder="Search templates..." onkeyup="filterTable()">
     </div>
 
     <!-- Certificates Table -->
@@ -20,8 +20,8 @@
         <table class="table table-striped" id="certificatesTable">
             <thead>
                 <tr>
-                    <th>Certificate ID</th>
-                    <th>Certificate Name</th>
+                    <th>Template ID</th>
+                    <th>Template Name</th>
                     <th>Date Created</th>
                     <th>Actions</th>
                 </tr>
@@ -30,13 +30,13 @@
                 @foreach($certificates as $certificate)
                 <tr>
                     <td>{{ $certificate->id }}</td>
-                    <td>{{ $certificate->cert_name }}</td>
+                    <td>{{ $certificate->template_name }}</td>
                     <td>{{ $certificate->created_at->format('Y-m-d') }}</td>
                     <td>
                         <!-- View/Edit/Delete buttons -->
                         <div class="d-flex">
                             <!-- View button triggers modal -->
-                            <button type="button" class="btn btn-info btn-sm mr-2" data-toggle="modal" data-target="#viewCertificateModal" onclick="loadCertificate('{{ $certificate->cert_path }}', '{{ $certificate->cert_name }}')">View</button>
+                            <button type="button" class="btn btn-info btn-sm mr-2" data-toggle="modal" data-target="#viewCertificateModal" onclick="loadCertificate('{{ $certificate->path }}', '{{ $certificate->template_name }}')">View</button>
                             
                             <a href="{{ route('certificates.create', $certificate->id) }}" class="btn btn-warning btn-sm mr-2">Edit</a>
                             <form action="{{ route('certificates.deactivate', $certificate->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this certificate?')">

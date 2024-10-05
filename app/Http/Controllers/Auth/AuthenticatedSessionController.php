@@ -8,7 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
-
+use Illuminate\Support\Facades\Log;
 class AuthenticatedSessionController extends Controller
 {
     /**
@@ -24,6 +24,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
+        Log::info('User attempting to log in', ['email' => $request->input('email')]);
         // Authenticate the user
         $request->authenticate();
 
@@ -44,7 +45,7 @@ class AuthenticatedSessionController extends Controller
         } elseif ($request->user()->role_id == 3) {
             return redirect()->route('user.dashboard');
         }
-
+        Log::info('Default login redirection for user', ['user_id' => $request->user()->id]);
         // Default redirect if no role matches
         return redirect()->intended(route('auth.login', absolute: false));
     }

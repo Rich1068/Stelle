@@ -12,6 +12,7 @@ import { PagesTimeline } from 'polotno/pages-timeline';
 import { ZoomButtons } from 'polotno/toolbar/zoom-buttons';
 import { createStore } from 'polotno/model/store';
 import { getImageSize } from 'polotno/utils/image';
+import TemplateNameModal from './TemplateNameModal';
 import SendButton from './sendButton';
 
 import {
@@ -44,70 +45,72 @@ const store = createStore({
 
 store.addPage();
 
-export const PhotosPanel = observer(({ store }) => {
-  const [images, setImages] = React.useState([]);
+export const TemplatesPanel = observer(({ store }) => {
+  const [templates, setTemplates] = useState([]);
 
-  async function loadImages() {
-    setImages([]);
-    await new Promise((resolve) => setTimeout(resolve, 3000));
+  // Function to load existing templates from backend
+  async function loadTemplates() {
+    try {
+      const response = await axios.get('/certificates/get');
+      setTemplates(response.data); // Set the loaded templates
 
-    setImages([
-      { url: '/storage/images/certificates/cert_templates/template1.jpg' },
-    ]);
+    } catch (error) {
+      console.error('Error loading templates:', error);
+    }
   }
 
-  React.useEffect(() => {
-    loadImages();
+  useEffect(() => {
+    loadTemplates(); // Load templates on mount
   }, []);
 
   return (
     <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
       <InputGroup
         leftIcon="search"
-        placeholder="Search..."
+        placeholder="Search templates..."
         onChange={(e) => {
-          loadImages();
+          loadTemplates(); // Reload templates on search (adjust as needed)
         }}
         style={{
           marginBottom: '20px',
         }}
       />
-      <p>Demo images: </p>
+      <p>Available Templates: </p>
       <ImagesGrid
-        images={images}
-        getPreview={(image) => image.url}
-        onSelect={async (image, pos) => {
-          const { width, height } = await getImageSize(image.url);
-          store.activePage.addElement({
-            type: 'image',
-            src: image.url,
-            width,
-            height,
-            x: pos ? pos.x : store.width / 2 - width / 2,
-            y: pos ? pos.y : store.height / 2 - height / 2,
-          });
-        }}
-        rowsNumber={2}
-        isLoading={!images.length}
-        loadMore={false}
+          images={templates.map((template) => ({
+              name: template.name,          
+              design: template.design,      
+              preview_image: template.path, 
+              id: template.id               
+          }))}
+          getPreview={(template) => `/${template.preview_image}`} // Display the preview image
+          onSelect={async (template) => {
+              const design = JSON.parse(template.design);
+              console.log('Loading template design:', design);  // Log the design JSON
+              store.loadJSON(design);  // Load the template's design into Polotno
+          }}
+          rowsNumber={2}   // Define the number of rows for displaying templates
+          isLoading={!templates.length}   // Show loading indicator if templates haven't loaded
+          loadMore={false}   // If you have pagination, handle it here, but it's not needed in this case
       />
     </div>
   );
 });
 
-const CustomPhotos = {
-  name: 'photos',
+// Register this panel as a new custom section in Polotno
+const CustomTemplates = {
+  name: 'templates',
   Tab: (props) => (
-    <SectionTab name="Borders" {...props}>
+    <SectionTab name="Templates" {...props}>
       <MdPhotoLibrary />
     </SectionTab>
   ),
-  Panel: PhotosPanel,
+  Panel: TemplatesPanel,
 };
 
 const sections = [
   TextSection,
-  CustomPhotos,
+  CustomTemplates,
   ElementsSection,
   UploadSection,
   BackgroundSection,
@@ -151,6 +154,7 @@ const saveDesign = async (eventId, setCertificateId) => {
   }
 };
 
+
 const loadDesign = async (eventId, certId) => {
   try {
     const response = await axios.get(`/event/${eventId}/certificates/load/${certId}`);
@@ -161,8 +165,10 @@ const loadDesign = async (eventId, certId) => {
   }
 };
 
+
 export const App = () => {
   // Get the eventId from the DOM
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const eventId = document.getElementById('container').getAttribute('data-event-id');
   const [certificateId, setCertificateId] = useState(null);
 
@@ -189,6 +195,26 @@ export const App = () => {
     }
   }, [certificateId, eventId]);
 
+  const handleSaveAsTemplate = async (templateName) => {
+    const canvasData = store.toJSON();
+    try {
+      const dataURLPromise = store.toDataURL();
+      const dataURL = await dataURLPromise;
+  
+      const response = await axios.post(`/certificate-template/save`, {
+        canvas: canvasData,
+        image: dataURL,
+        template_name: templateName,
+        event_id: eventId,           
+      });
+  
+      alert('Template saved successfully!');
+
+    } catch (error) {
+      console.error('Error saving template:', error);
+    }
+  };
+
   return (
     <PolotnoContainer className="polotno-app-container">
       <SidePanelWrap>
@@ -203,7 +229,15 @@ export const App = () => {
         <Button onClick={() => saveDesign(eventId, setCertificateId)} style={{ top: 10, right: -100 }}>
           Save Design
         </Button>
+        <Button onClick={() => setIsModalOpen(true)} style={{ top: 10, right: -100 }}>
+          Save as Template
+        </Button>
       </WorkspaceWrap>
+      <TemplateNameModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSave={(templateName) => handleSaveAsTemplate(templateName)}
+      />
     </PolotnoContainer>
   );
 };

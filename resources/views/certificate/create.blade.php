@@ -34,8 +34,8 @@
             type="text"
             id="certName"
             name="cert_name"
-            placeholder="Enter Certificate Name"
-            value="{{ old('cert_name', $certificate->cert_name ?? '') }}"
+            placeholder="Enter Template Name"
+            value="{{ old('cert_name', $certificate->template_name ?? '') }}"
         />
     </div>
 
