@@ -263,6 +263,8 @@ class CertificateController extends Controller
             $relativePath = 'storage/images/certificates/cert_templates/' . $imageName;
             $imagePath = storage_path('app/public/images/certificates/cert_templates/' . $imageName);
 
+            $tempImagePath = $imagePath;
+
             
             $relation = EventTemplate::where('event_id', $eventId)->first();
             // Check if this is an update or a new creation
@@ -323,6 +325,10 @@ class CertificateController extends Controller
             // Rollback transaction on error
             DB::rollBack();
 
+            if ($tempImagePath && file_exists($tempImagePath)) {
+                unlink($tempImagePath);
+            }
+            
             Log::error('Error saving certificate template: ' . $e->getMessage());
 
             return response()->json([
