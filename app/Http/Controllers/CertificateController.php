@@ -259,16 +259,14 @@ class CertificateController extends Controller
             $imageBase64 = explode(',', $imageData)[1];
 
             // Generate the file name for the template image
-            $imageName = 'template_' . $templateName . '_' . time() . '.png';
+            $imageName = 'template_' . $templateName. '_' . time() . '.png';
             $relativePath = 'storage/images/certificates/cert_templates/' . $imageName;
             $imagePath = storage_path('app/public/images/certificates/cert_templates/' . $imageName);
 
-            // Save the image to storage
             
-
             $relation = EventTemplate::where('event_id', $eventId)->first();
             // Check if this is an update or a new creation
-            if ($relation) {
+            if ($relation != null) {
                 // Updating an existing certificate template
                 $template = CertTemplate::find($relation->template_id);
 
@@ -277,10 +275,10 @@ class CertificateController extends Controller
                 }
 
                 // Delete the old image if it exists
-                if (Storage::exists('public/images/certificates/cert_templates/' . basename($template->path))) {
-                    Storage::delete('public/images/certificates/cert_templates/' . basename($template->path));
+                if (Storage::exists('images/certificates/cert_templates/' . basename($template->path))) {
+                    Storage::delete('images/certificates/cert_templates/' . basename($template->path));
                 }
-
+                Log::info('path name: ' . basename($template->path));
                 // Update the existing template
                 $template->update([
                     'template_name' => $templateName,

@@ -120,7 +120,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/event/{id}/certificates/getDesign', [CertificateController::class, 'getCertificateDesign']);
     Route::get('/event/{id}/certificates/create', [CertificateController::class, 'event_create'])->name('event_certificates.create');
     Route::post('/event/{id}/certificates/save', [CertificateController::class, 'event_saveCanvas']);
-    Route::get('/event/{id}/certificates/load/{certId}', [CertificateController::class, 'loadCanvas']);
+    Route::get('/event/{id}/certificates/load/{certId}', [CertificateController::class, 'event_loadCanvas']);
     Route::get('/event/{id}/certificates/get-id', [CertificateController::class, 'getCertificateId']);
     Route::get('/event/{id}/certificates/viewCert/{certId}', [CertificateController::class, 'viewImage'])->name('certificates.view');
     Route::get('/event/{id}/certificates/{certId}/show', [CertificateController::class, 'showCertificateImage'])->name('certificates.show');
