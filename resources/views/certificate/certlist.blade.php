@@ -25,12 +25,10 @@
 
 <div class="container-fluid" style="padding: 0;">
     <!-- Search Bar -->
-          <!-- Search Bar -->
-          <div class="search-container" style="margin: 40px auto; max-width: 60%;">
-            <input type="text" id="searchInput" placeholder="Search for forms..." class="search-input" onkeyup="filterTable()">
-            <button class="search-button"><i class="fas fa-search"></i></button>
-        </div>
-
+    <div class="search-container" style="margin: 40px auto; max-width: 60%;">
+        <input type="text" id="searchInput" placeholder="Search for forms..." class="search-input" onkeyup="filterTable()">
+        <button class="search-button"><i class="fas fa-search"></i></button>
+    </div>
 
     <!-- Certificates Table -->
     <div class="table-responsive">
@@ -50,40 +48,39 @@
                     <td>{{ $certificate->template_name }}</td>
                     <td>{{ $certificate->created_at->format('Y-m-d') }}</td>
                     <td>
-    <!-- View/Edit/Delete buttons -->
-    <div class="button-group" style="display: flex; justify-content: center; align-items: center; gap: 10px;">
-    <!-- View button (Dark Cyan) -->
-    <button type="button" class="btn rounded-circle" 
-            data-toggle="modal" 
-            data-target="#viewCertificateModal" 
-            onclick="loadCertificate('{{ $certificate->path }}', '{{ $certificate->template_name }}')"
-            style="width: 40px; height: 40px; background-color: #008b8b; color: white; display: flex; align-items: center; justify-content: center;" 
-            title="View Certificate">
-        <i class="fas fa-eye"></i>
-    </button>
+                        <!-- View/Edit/Delete buttons -->
+                        <div class="button-group" style="display: flex; justify-content: center; align-items: center; gap: 10px;">
+                            <!-- View button (Dark Cyan) -->
+                            <button type="button" class="btn rounded-circle" 
+                                    data-toggle="modal" 
+                                    data-target="#viewCertificateModal" 
+                                    onclick="loadCertificate('{{ $certificate->path }}', '{{ $certificate->template_name }}')"
+                                    style="width: 40px; height: 40px; background-color: #008b8b; color: white; display: flex; align-items: center; justify-content: center;" 
+                                    title="View Certificate">
+                                <i class="fas fa-eye"></i>
+                            </button>
 
-    <!-- Edit button (Dark Blue) -->
-    <a href="{{ route('certificates.create', $certificate->id) }}" 
-       class="btn rounded-circle" 
-       style="width: 40px; height: 40px; background-color: #001e54; color: white; display: flex; align-items: center; justify-content: center;" 
-       title="Edit Certificate">
-        <i class="fas fa-edit"></i>
-    </a>
+                            <!-- Edit button (Dark Blue) -->
+                            <a href="{{ route('certificates.create', $certificate->id) }}" 
+                               class="btn rounded-circle" 
+                               style="width: 40px; height: 40px; background-color: #001e54; color: white; display: flex; align-items: center; justify-content: center;" 
+                               title="Edit Certificate">
+                                <i class="fas fa-edit"></i>
+                            </a>
 
-    <!-- Delete button (Dark Red) -->
-    <form action="{{ route('certificates.deactivate', $certificate->id) }}" method="POST" style="display:inline; margin: 0;">
-        @csrf
-        @method('PATCH')
-        <button type="submit" class="btn rounded-circle" 
-                style="width: 40px; height: 40px; background-color: #c9302c; color: white; display: flex; align-items: center; justify-content: center;" 
-                onclick="return confirm('Are you sure you want to delete this certificate?')" title="Delete Certificate">
-            <i class="fas fa-times"></i>
-        </button>
-    </form>
-</div>
-
-</td>
- </tr>
+                            <!-- Delete button (Dark Red) -->
+                            <form action="{{ route('certificates.deactivate', $certificate->id) }}" method="POST" style="display:inline; margin: 0;">
+                                @csrf
+                                @method('PATCH')
+                                <button type="submit" class="btn rounded-circle" 
+                                        style="width: 40px; height: 40px; background-color: #c9302c; color: white; display: flex; align-items: center; justify-content: center;" 
+                                        onclick="return confirm('Are you sure you want to delete this certificate?')" title="Delete Certificate">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
                 @endforeach
             </tbody>
         </table>
@@ -153,17 +150,16 @@ document.getElementById("toggleButton").addEventListener("click", function() {
         arrowIcon.classList.add("fa-chevron-down");
     }
 });
-
 </script>
 
 <!-- Styles -->
 <style>
+    /* Your existing styles... */
 
-
-.btn-primary {
+    .btn-primary {
         background-color: #001e54;
         color: white;
-        border-radius: 20px;
+        border-radius: 15px;
         padding: 10px 15px;
         font-size: 15px;
         font-weight: bold;
@@ -174,39 +170,38 @@ document.getElementById("toggleButton").addEventListener("click", function() {
         margin-bottom: 10px;
     }
 
-.button-group .btn i {
-    margin: 0; /* Ensure no extra margin for icons */
-}
+    .button-group .btn i {
+        margin: 0; /* Ensure no extra margin for icons */
+    }
 
+    .custom-thead {
+        background-color: #001e54;
+        color: white;
+    }
 
-.custom-thead {
-    background-color: #001e54;
-    color: white;
-}
+    .custom-thead th {
+        padding: 1rem;
+        cursor: pointer;
+    }
 
-.custom-thead th {
-    padding: 1rem;
-    cursor: pointer;
-}
+    .custom-table {
+        border: none;
+        width: 100%;
+    }
 
-.custom-table {
-    border: none;
-    width: 100%;
-}
+    .custom-table td, .custom-table th {
+        border: none; 
+        text-align: center; 
+        vertical-align: middle; 
+        padding: 10px; /* Reduced padding to fit more content */
+        overflow-wrap: break-word; /* Ensure long text wraps */
+    }
 
-.custom-table td, .custom-table th {
-    border: none; 
-    text-align: center; 
-    vertical-align: middle; 
-    padding: 10px; /* Reduced padding to fit more content */
-    overflow-wrap: break-word; /* Ensure long text wraps */
-}
+    .custom-table tbody tr:hover {
+        background-color: #f2f2f2; 
+    }
 
-.custom-table tbody tr:hover {
-    background-color: #f2f2f2; 
-}
-
-.search-container {
+    .search-container {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -241,6 +236,30 @@ document.getElementById("toggleButton").addEventListener("click", function() {
     .search-button:hover {
         background-color: #0d3b76; 
     }
+
+    /* Mobile styles */
+    @media (max-width: 576px) { /* Adjust max-width as needed */
+        .btn-primary {
+            padding: 5px 10px; /* Reduce padding */
+            font-size: 12px; /* Smaller font size */
+            border-radius: 15px; /* Smaller border radius */
+        }
+
+        .button-group .btn {
+            width: 100%; /* Make buttons full width */
+            height: auto; /* Auto height for buttons */
+            margin: 5px 0; /* Add margin for spacing */
+        }
+
+        .button-group {
+            flex-direction: column; /* Stack buttons vertically */
+        }
+
+        .custom-table {
+            height: auto; /* Adjust height for the table on mobile */
+        }
+    }
 </style>
+
 
 @endsection
