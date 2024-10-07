@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Email Verification</title>
 </head>
-<body style="margin: 0; padding: 0; background-color: #F8C8C8;">
+<body style="margin: 0; padding: 0; background: linear-gradient(to bottom right, #F99C9C, #ACDFF6) !important;">
 
-    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #B8E1F9; padding: 50px 0;">
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="padding: 50px 0;">
         <tr>
             <td align="center">
                 <table width="450" cellpadding="0" cellspacing="0" border="0" style="background-color: #ffffff; border-radius: 10px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);">

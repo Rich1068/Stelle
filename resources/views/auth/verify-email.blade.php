@@ -32,9 +32,9 @@
                 @csrf
 
                 <div>
-                    <x-primary-button class="resetpass" id="sendButton" onclick="changeButtonText()">
+                    <x-primary-button class="resetpass" id="sendButton" style="width: 200px; height: 50px; padding: 0; background-color: #1E3A8A; color: white; border-radius: 5px; font-weight: bold; text-align: center; cursor: pointer; border: none;" onclick="changeButtonText()">
                         {{ __('Send Verification') }}
-                    </x-primary-button>
+                    </button>
                 </div>
             </form>
             @if (session('status') == 'verification-link-sent')
@@ -50,7 +50,11 @@
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
 
+<<<<<<< HEAD
                 <span class="text-sm logout-span" onclick="this.closest('form').submit();">
+=======
+                <span class="text-sm logout-span" onclick="this.closest('form').submit();" style="cursor: pointer;">
+>>>>>>> 134d7b2b5c700a544d45581636521792f1bf8904
                     {{ __('Log Out') }}
                 </span>
 
