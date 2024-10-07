@@ -14,11 +14,12 @@ import { createStore } from 'polotno/model/store';
 import { getImageSize } from 'polotno/utils/image';
 import TemplateNameModal from './TemplateNameModal';
 import SendButton from './sendButton';
+import CustomUploadSection from './UploadSection';
+
 
 import {
   TextSection,
   ElementsSection,
-  UploadSection,
   BackgroundSection,
   LayersSection,
   SizeSection,
@@ -112,7 +113,7 @@ const sections = [
   TextSection,
   CustomTemplates,
   ElementsSection,
-  UploadSection,
+  CustomUploadSection,
   BackgroundSection,
   LayersSection,
   SizeSection,
