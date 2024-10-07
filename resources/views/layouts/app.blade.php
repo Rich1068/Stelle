@@ -136,14 +136,14 @@
                                 Settings
                             </a>
                             @if(auth()->user()->role_id == 3)
-                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#adminModal">
-                                <i class="fas fa-solid fa-code fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Become An Admin
-                                
-                            </a>
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#adminRegistrationModal">
+                                    <i class="fas fa-solid fa-code fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Become An Admin
+                                </a>
                             @endif
+
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutUserModal">
                                 <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Logout
                             </a>
@@ -176,71 +176,11 @@
         <i class="fas fa-angle-up"></i>
     </a>
  
-    <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit" class="btn btn-primary" style="color: white;">
-                        {{ __('Log Out') }}
-                    </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal fade" id="adminModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Want to be an Admin?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                <p>Becoming an admin unlocks several powerful features, including:</p>
-                <ul>
-                    <li><strong>Create and Manage Events:</strong> Plan and manage events for users to join in.</li>
-                    <li><strong>Create Evaluation Forms:</strong> customize and distribute evaluation forms to gather feedback from event participants.</li>
-                    <li><strong>Create and Issue Certificates:</strong> Generate and issue personalized certificates for event participants, recognizing their participation.</li>
-                </ul>
-                </div>
-                <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
 
-                @if($isPending)
-                    <!-- Show the 'Pending' button if the admin request is pending -->
-                    <button class="btn btn-primary" disabled>
-                        {{ __('Pending') }}
-                    </button>
-                @else
-                    <!-- Show the 'Register' button if the user hasn't applied for admin or is approved/rejected -->
-                    <form method="POST" action="{{ route('register.admin') }}">
-                        @csrf
-                        <button type="submit" class="btn btn-primary" style="color: white;">
-                            {{ __('Register') }}
-                        </button>
-                    </form>
-                @endif
-            </div>
-            </div>
-        </div>
-    </div>
-    
-    
+        
+    <script>document.getElementById('logoutForm').addEventListener('submit', function(e) {
+    console.log('Logout form submitted');
+        });</script>
     <!-- Bootstrap core JavaScript-->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="{{asset('assets/vendor/jquery/jquery.min.js')}}"></script>
@@ -265,6 +205,78 @@
 
     @yield('scripts')
 </body>
+<div class="modal fade" id="adminRegistrationModal" tabindex="-1" role="dialog" aria-labelledby="adminModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="adminModalLabel">Want to be an Admin?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Becoming an admin unlocks several powerful features, including:</p>
+                <ul>
+                    <li><strong>Create and Manage Events:</strong> Plan and manage events for users to join in.</li>
+                    <li><strong>Create Evaluation Forms:</strong> Customize and distribute evaluation forms to gather feedback from event participants.</li>
+                    <li><strong>Create and Issue Certificates:</strong> Generate and issue personalized certificates for event participants, recognizing their participation.</li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                @if(auth()->user()->status_id != 3)
+                @else
+                <!-- Admin Register Form -->
+                @if($adminRequest->status_id == 2)
+                    <!-- Show the 'Pending' button if the admin request is pending -->
+                    <button class="btn btn-primary" disabled>
+                        {{ __('Pending') }}
+                    </button>
+                @else
+                    <!-- Show the 'Register' button if the user hasn't applied for admin or is approved/rejected -->
+                    <form method="POST" action="{{ route('register.admin') }}">
+                        @csrf
+                        <button type="submit" class="btn btn-primary" style="color: white;">
+                            {{ __('Register') }}
+                        </button>
+                    </form>
+                @endif
+                @endif
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Logout Modal -->
+<div class="modal fade" id="logoutUserModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="logoutModalLabel">Ready to Leave?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Select "Logout" below if you are ready to end your current session.
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+
+                <!-- Correct Logout Form -->
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="btn btn-primary" style="color: white;">
+                        {{ __('Log Out') }}
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 </html>
 
 

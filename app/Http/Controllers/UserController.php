@@ -13,9 +13,7 @@ class UserController extends Controller
 
         $adminRequest = Auth::user()->registerAdminRequest;
 
-        $isPending = $adminRequest ? $adminRequest->status_id == 3 : false;
-
-        return view('user.dashboard', compact('isPending'));
+        return view('user.dashboard', compact('adminRequest'));
     }
     public function getEvents()
     {

@@ -73,10 +73,7 @@ Route::middleware(['auth', 'checkRole:1,2'])->group(function () {
 
 });
 
-//check role if user
-Route::middleware(['auth', 'checkRole:3'])->group(function () {
-    Route::post('/register-admin', [ProfileController::class, 'registerAdmin'])->name('register.admin');
-});
+
 
 
 Route::middleware('auth')->group(function () {
@@ -158,6 +155,11 @@ Route::middleware(['auth', 'checkEventCreator'])->group(function () {
     Route::put('/events/{id}/evaluation-form/{form}/toggle', [EvaluationFormController::class, 'toggleActivation'])->name('evaluation-forms.toggle');
     
 
+});
+
+//check role if user
+Route::middleware(['auth', 'checkRole:3'])->group(function () {
+    Route::post('/register-admin', [ProfileController::class, 'registerAdmin'])->name('register.admin');
 });
 //check the event owner through form
 Route::group(['middleware' => ['auth', 'checkFormOwner']], function() {

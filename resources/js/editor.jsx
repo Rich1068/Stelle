@@ -105,6 +105,7 @@ export const TemplatesPanel = observer(({ store }) => {
     Panel: TemplatesPanel,
   };
 
+
 const sections = [TextSection, CustomTemplates, ElementsSection, UploadSection, BackgroundSection, LayersSection, SizeSection];
 
 const saveDesign = async (setCertificateId, certificateId) => {
@@ -120,7 +121,6 @@ const saveDesign = async (setCertificateId, certificateId) => {
       const dataURLPromise = store.toDataURL();
       const dataURL = await dataURLPromise;
   
-      console.log('Saving design...', canvasData); // Debug log
       console.log('Image Data URL:', dataURL); // Debug log
   
       if (typeof dataURL !== 'string') {
