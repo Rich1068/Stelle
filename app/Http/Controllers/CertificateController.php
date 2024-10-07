@@ -99,7 +99,7 @@ class CertificateController extends Controller
                 if (Storage::exists($relPath)) {
                     Storage::delete($relPath);
                 }
-
+                Log::info('Design data length: ' . strlen(json_encode($canvasData)));
                 // Update the certificate details
                 $certificate->update([
                     'template_name' => $certName,
@@ -124,7 +124,7 @@ class CertificateController extends Controller
 
                 $message = 'Certificate Template created!';
             }
-
+            
             // Commit the transaction
             DB::commit();
 

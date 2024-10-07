@@ -12,11 +12,11 @@ import { PagesTimeline } from 'polotno/pages-timeline';
 import { ZoomButtons } from 'polotno/toolbar/zoom-buttons';
 import { createStore } from 'polotno/model/store';
 import { getImageSize } from 'polotno/utils/image';
+import CustomUploadSection from './UploadSection';
 
 import {
   TextSection,
   ElementsSection,
-  UploadSection,
   BackgroundSection,
   LayersSection,
   SizeSection,
@@ -93,7 +93,7 @@ export const TemplatesPanel = observer(({ store }) => {
       </div>
     );
 });
-  
+
   // Register this panel as a new custom section in Polotno
   const CustomTemplates = {
     name: 'templates',
@@ -106,7 +106,7 @@ export const TemplatesPanel = observer(({ store }) => {
   };
 
 
-const sections = [TextSection, CustomTemplates, ElementsSection, UploadSection, BackgroundSection, LayersSection, SizeSection];
+const sections = [TextSection, CustomTemplates, ElementsSection, CustomUploadSection, BackgroundSection, LayersSection, SizeSection];
 
 const saveDesign = async (setCertificateId, certificateId) => {
     const canvasData = store.toJSON();
@@ -121,6 +121,7 @@ const saveDesign = async (setCertificateId, certificateId) => {
       const dataURLPromise = store.toDataURL();
       const dataURL = await dataURLPromise;
   
+      console.log('Saving design...', canvasData); // Debug log
       console.log('Image Data URL:', dataURL); // Debug log
   
       if (typeof dataURL !== 'string') {

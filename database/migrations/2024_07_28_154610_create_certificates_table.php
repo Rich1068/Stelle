@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('event_id')->constrained('events')->onDelete('cascade');
             $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
-            $table->text('design');
+            $table->longText('design');
             $table->string('cert_path');
             $table->foreignId('status_id')->constrained('statuses')->onDelete('cascade');
             $table->timestamps();
@@ -24,7 +24,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
             $table->string('template_name');
-            $table->text('design')->nullable();
+            $table->longText('design')->nullable();
             $table->string('path');
             $table->foreignId('status_id')->constrained('statuses')->onDelete('cascade');
             $table->timestamps();
