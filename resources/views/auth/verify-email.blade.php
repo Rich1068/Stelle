@@ -26,17 +26,15 @@
         <!-- Divider Below Text -->
         <hr style="border-top: 2px solid darkblue; margin: 5px 0;"> <!-- Reduced margin for the divider -->
 
-
-
         <!-- Resend Verification Email -->
         <div class="flex items-center justify-between"> <!-- Removed additional vertical spacing here -->
             <form method="POST" action="{{ route('verification.send') }}">
                 @csrf
 
                 <div>
-                    <x-primary-button class="resetpass">
+                    <button class="resetpass" style="min-width: 150px; height: 40px; padding: 10px 20px; background-color: #1E3A8A; color: white; border-radius: 5px; font-weight: bold; text-align: center; cursor: pointer; border: none;">
                         {{ __('Send Verification') }}
-                    </x-primary-button>
+                    </button>
                 </div>
             </form>
             @if (session('status') == 'verification-link-sent')
@@ -47,17 +45,16 @@
         @endif
         </div>
 
-
         <!-- Centered Log Out Text -->
         <div class="LogOuttext mt-2 text-center">
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
 
-                <span class="text-sm logout-span" onclick="this.closest('form').submit();">
-    {{ __('Log Out') }}
-</span>
+                <span class="text-sm logout-span" onclick="this.closest('form').submit();" style="cursor: pointer;">
+                    {{ __('Log Out') }}
+                </span>
 
             </form>
         </div>
     </div>
-</div>  
+</div>
