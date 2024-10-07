@@ -9,9 +9,6 @@
             <i class="fas fa-clipboard-list"></i> Manage Evaluation Forms
         </h2>
         <!-- Arrow Button (Dropdown Trigger) -->
-        <button id="toggleButton" class="btn custom-btn-light ms-2" type="button" aria-expanded="false" style="border: none; background-color: transparent;">
-            <i id="arrowIcon" class="fas fa-chevron-down" style="font-size: 1.5rem; color: #002060;"></i>
-        </button>
     </div>
 
     <!-- Right: Hidden Button -->
