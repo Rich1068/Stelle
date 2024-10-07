@@ -36,7 +36,13 @@
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Event Calendar</h6>
             </div>
-        
+            <div class="dropdown mt-3">
+                <select id="calendarFilter" class="form-control">
+                    <option value="all">All Events</option>
+                    <option value="own">Own Events</option>
+                    <option value="join">Joined Events</option>
+                </select>
+            </div>
             <div id="calendar" class="p-3" style="height: 400px; overflow-y: auto;"> <!-- Set height for the calendar and added overflow -->
                 <!-- Calendar will be inserted here -->
             </div>

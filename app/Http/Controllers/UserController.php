@@ -11,7 +11,11 @@ class UserController extends Controller
     {
         $user = Auth::user()->id;
 
-        return view('user.dashboard', compact('user'));
+        $adminRequest = Auth::user()->registerAdminRequest;
+
+        $isPending = $adminRequest ? $adminRequest->status_id == 3 : false;
+
+        return view('user.dashboard', compact('isPending'));
     }
     public function getEvents()
     {
