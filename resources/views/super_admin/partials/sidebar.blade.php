@@ -90,7 +90,7 @@
     <li class="nav-item">
         <a href="{{ route('certificate.list') }}" class="nav-link {{ request()->routeIs('certificate.list') ? 'active' : '' }}">
             <span>Manage Certificate Templates</span>
-            <i class="fas fa-clipboard-list"></i>
+            <i class="fas fa-folder"></i>
         </a>
     </li>
 </ul>
