@@ -373,7 +373,7 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center; /* Center the content vertically */
-    padding: 20px;
+    padding: 10px;
     width: 100%; /* Ensure logo section spans the full width */
 }
 
@@ -574,12 +574,16 @@ body {
     padding: 12px 0;
     font-size: 1rem;
     font-weight: bold;
-    width: 70%; /* Consistent width for both buttons */
-    margin: 0 auto 10px; /* Center align and adjust bottom margin */
+    width: 70%;
+    max-width: 250px; /* Ensure the button doesn't grow too wide */
+    min-width: 150px; /* Prevent text from wrapping */
+    margin: 0 auto 10px;
     cursor: pointer;
     border: none;
-    display: block; /* Ensure button is a block-level element */
+    display: block;
     margin-top: 20px;
+    text-align: center; /* Ensure text is centered */
+    white-space: nowrap; /* Prevent text from wrapping */
 }
 
 .resetpass:hover {

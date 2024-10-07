@@ -11,7 +11,7 @@
         </div>
         
         <!-- Divider Below Logo -->
-        <hr style="border-top: 2px solid darkblue; margin: 5px 0;"> <!-- Reduced margin for the divider -->
+        <hr style="border-top: 2px solid darkblue; margin: 5px; width: 100%;"> <!-- Reduced margin for the divider -->
 
         <!-- Session Status -->
         <div class="mb-2 text-sm" style="color: #00008B; font-weight: bold; text-align: center;">
@@ -24,17 +24,15 @@
         </div>
 
         <!-- Divider Below Text -->
-        <hr style="border-top: 2px solid darkblue; margin: 5px 0;"> <!-- Reduced margin for the divider -->
-
-
+        <hr style="border-top: 2px solid darkblue; margin: 5px 0; width: 100%;"> <!-- Reduced margin for the divider -->
 
         <!-- Resend Verification Email -->
         <div class="flex items-center justify-between"> <!-- Removed additional vertical spacing here -->
-            <form method="POST" action="{{ route('verification.send') }}">
+            <form id="verificationForm" method="POST" action="{{ route('verification.send') }}">
                 @csrf
 
                 <div>
-                    <x-primary-button class="resetpass">
+                    <x-primary-button class="resetpass" id="sendButton" onclick="changeButtonText()">
                         {{ __('Send Verification') }}
                     </x-primary-button>
                 </div>
@@ -44,9 +42,8 @@
                 {{ __('A verification link has been sent to your email.') }}
             </div>
             <br>
-        @endif
+            @endif
         </div>
-
 
         <!-- Centered Log Out Text -->
         <div class="LogOuttext mt-2 text-center">
@@ -54,10 +51,24 @@
                 @csrf
 
                 <span class="text-sm logout-span" onclick="this.closest('form').submit();">
-    {{ __('Log Out') }}
-</span>
+                    {{ __('Log Out') }}
+                </span>
 
             </form>
         </div>
     </div>
 </div>
+
+<!-- Add JavaScript for changing button text -->
+<script>
+    function changeButtonText() {
+        // Change the button text to "Sending..."
+        var sendButton = document.getElementById('sendButton');
+        sendButton.innerHTML = 'Sending...';
+        // Disable the button to prevent multiple clicks
+        sendButton.disabled = true;
+        
+        // Optionally, submit the form after changing the text
+        document.getElementById('verificationForm').submit();
+    }
+</script>
