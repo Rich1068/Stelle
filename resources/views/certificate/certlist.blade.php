@@ -8,17 +8,7 @@
         <h2 class="font-weight-bold mb-0" style="color: #002060;">
             <i class="fas fa-certificate"></i> My Certificate Templates
         </h2>
-        <!-- Arrow Button (Dropdown Trigger) -->
-        <button id="toggleButton" class="btn custom-btn-light ms-2" type="button" aria-expanded="false" style="border: none; background-color: transparent;">
-            <i id="arrowIcon" class="fas fa-chevron-down" style="font-size: 1.5rem; color: #002060;"></i>
-        </button>
-    </div>
 
-    <!-- Right: Create New Template Button -->
-    <div id="buttonContainer" style="display: none; margin-left: 10px;" class="button-group">
-        <a href="{{ route('certificates.create') }}" class="btn btn-primary" style="border-radius: 20px;">
-            <i class="fas fa-plus"></i> <span style="margin-left: 5px;"></span>Create New Template
-        </a>
     </div>
 </div>
 
@@ -105,6 +95,11 @@
     </div>
 </div>
 
+
+<button onclick="location.href='{{ route('certificates.create') }}'" class="btn btn-primary" style="margin-left: 30px;">
+    <i class="fas fa-plus"></i> <span style="margin-left: 5px;"></span>Create New Template
+</button>
+
 <script>
 // Filter table by certificate name
 function filterTable() {
@@ -151,6 +146,7 @@ document.getElementById("toggleButton").addEventListener("click", function() {
     }
 });
 </script>
+
 
 <!-- Styles -->
 <style>

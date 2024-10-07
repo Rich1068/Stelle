@@ -16,11 +16,7 @@
 
     <!-- Right: Hidden Button -->
     <div id="buttonContainer" style="display: none; margin-left: 10px;" class="button-group">
-        <form action="{{ route('evaluation-forms.create') }}" method="get" style="display: inline;">
-            <button type="submit" class="btn btn-primary-2" style="border-radius: 20px;">
-                <i class="fas fa-plus"></i> Add Evaluation Form
-            </button>
-        </form>
+  
     </div>
 </div>
 
@@ -76,6 +72,15 @@
         </div>
     @endif
 </div>
+
+
+<form action="{{ route('evaluation-forms.create') }}" method="get" style="display: inline;">
+    <div style="margin-top: 10px;">
+        <button type="submit" class="btn btn-primary-2" style="margin-left: 30px; border-radius: 15px;">
+            <i class="fas fa-plus"></i> Add Evaluation Form
+        </button>
+    </div>
+</form>
 
 <!-- Styles -->
 <style>
@@ -217,7 +222,9 @@
     }
 </style>
 
-<!-- JavaScript -->
+
+
+
 <script>
     document.getElementById("toggleButton").addEventListener("click", function() {
         var buttonContainer = document.getElementById("buttonContainer");
