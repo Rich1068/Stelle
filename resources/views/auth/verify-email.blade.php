@@ -1,7 +1,6 @@
 <link rel="stylesheet" href="/css/bootstrap.min.css">
 <link rel="stylesheet" href="/css/custom.css"> <!-- Ensure custom styles are linked -->
 
-<!-- Forgot Password Form Section -->
 <div class="white-container">
     <div class="fpassword-container text-center w-100" style="max-width: 400px;">
         
@@ -32,7 +31,7 @@
                 @csrf
 
                 <div>
-                    <button class="resetpass" style="min-width: 150px; height: 40px; padding: 10px 20px; background-color: #1E3A8A; color: white; border-radius: 5px; font-weight: bold; text-align: center; cursor: pointer; border: none;">
+                    <button class="resetpass" style="min-width: 200px; height: 40px; padding: 10px 20px; background-color: #1E3A8A; color: white; border-radius: 5px; font-weight: bold; text-align: center; cursor: pointer; border: none;">
                         {{ __('Send Verification') }}
                     </button>
                 </div>
