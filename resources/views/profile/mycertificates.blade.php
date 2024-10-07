@@ -23,7 +23,7 @@
 
                         <div class="certificate-actions">
                             <!-- View Button to open modal -->
-                            <button type="button" class="btn btn-primary view-certificate-btn" data-image-url="{{ asset($certificate->cert_path) }}" data-bs-toggle="modal" data-bs-target="#viewCertificateModal">
+                            <button type="button" class="btn btn-primary" data-image-url="{{ asset($certificate->cert_path) }}" data-bs-toggle="modal" data-bs-target="#viewCertificateModal">
                                 Preview
                             </button>
 
