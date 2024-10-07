@@ -1,7 +1,6 @@
 <link rel="stylesheet" href="/css/bootstrap.min.css">
 <link rel="stylesheet" href="/css/custom.css"> <!-- Ensure custom styles are linked -->
 
-<!-- Forgot Password Form Section -->
 <div class="white-container">
     <div class="fpassword-container text-center w-100" style="max-width: 400px;">
         
@@ -11,7 +10,7 @@
         </div>
         
         <!-- Divider Below Logo -->
-        <hr style="border-top: 2px solid darkblue; margin: 5px; width: 100%;"> <!-- Reduced margin for the divider -->
+        <hr style="border-top: 2px solid darkblue; margin: 5px 0;"> <!-- Reduced margin for the divider -->
 
         <!-- Session Status -->
         <div class="mb-2 text-sm" style="color: #00008B; font-weight: bold; text-align: center;">
@@ -20,29 +19,29 @@
 
         <!-- Verification Message -->
         <div class="mb-2 text-sm" style="color: #00008B; font-weight: bold; text-align: center;">
-            {{ __("Please verify your email by clicking the link we sent. If you didn't receive it, we can send another.") }}
+            {{ __('Please verify your email by clicking the link we sent. If you didn’t receive it, we can send another.') }}
         </div>
 
         <!-- Divider Below Text -->
-        <hr style="border-top: 2px solid darkblue; margin: 5px 0; width: 100%;"> <!-- Reduced margin for the divider -->
+        <hr style="border-top: 2px solid darkblue; margin: 5px 0;"> <!-- Reduced margin for the divider -->
 
         <!-- Resend Verification Email -->
         <div class="flex items-center justify-between"> <!-- Removed additional vertical spacing here -->
-            <form id="verificationForm" method="POST" action="{{ route('verification.send') }}">
+            <form method="POST" action="{{ route('verification.send') }}">
                 @csrf
 
                 <div>
-                    <x-primary-button class="resetpass" id="sendButton" style="width: 200px; height: 50px; padding: 0; background-color: #1E3A8A; color: white; border-radius: 5px; font-weight: bold; text-align: center; cursor: pointer; border: none;" onclick="changeButtonText()">
+                    <button class="resetpass" style="min-width: 200px; height: 40px; padding: 10px 20px; background-color: #1E3A8A; color: white; border-radius: 5px; font-weight: bold; text-align: center; cursor: pointer; border: none;">
                         {{ __('Send Verification') }}
-                    </x-primary-button>
+                    </button>
                 </div>
             </form>
-            @if(session('status') == 'verification-link-sent')
+            @if (session('status') == 'verification-link-sent')
             <div class="mb-2 font-medium text-sm" style="color: #00008B; text-align: center;">
                 {{ __('A verification link has been sent to your email.') }}
             </div>
-            @endif
             <br>
+        @endif
         </div>
 
         <!-- Centered Log Out Text -->
@@ -58,17 +57,3 @@
         </div>
     </div>
 </div>
-
-<!-- Add JavaScript for changing button text -->
-<script>
-    function changeButtonText() {
-        // Change the button text to "Sending..."
-        var sendButton = document.getElementById('sendButton');
-        sendButton.innerHTML = 'Sending...';
-        // Disable the button to prevent multiple clicks
-        sendButton.disabled = true;
-        
-        // Optionally, submit the form after changing the text
-        document.getElementById('verificationForm').submit();
-    }
-</script>

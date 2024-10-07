@@ -2536,16 +2536,27 @@ h2 {
 .participant-list-item input[type="checkbox"]:checked::before {
   content: none; /* Remove any additional content */
 }
+.side-by-side-container {
+  display: flex; /* Align child elements horizontally */
+  gap: 20px; /* Space between the sections */
+  padding: 20px; /* Optional: Add padding around the container */
+  margin: 0 auto; /* Center the container horizontally */
+}
 
-        .side-by-side-container {
-          display: flex; /* Align child elements horizontally */
-          gap: 20px; /* Space between the sections */
-          padding: 20px; /* Optional: Add padding around the container */
-          margin: 0 auto; /* Center the container horizontally */
-          margin: auto; /* Center this container horizontally */
-        }
+/* Mobile-friendly styles */
+@media (max-width: 768px) {
+  .side-by-side-container {
+    flex-direction: column; /* Stack child elements vertically on smaller screens */
+    padding: 10px; /* Reduce padding for mobile */
+  }
+  
+  /* Optional: Adjust gap for smaller screens */
+  .side-by-side-container > * {
+    margin-bottom: 10px; /* Space between stacked elements */
+  }
+}
 
-        /* Existing styles for profile edit section */
+     
           .profile-edit-section {
             padding: 20px;
             border-radius: 15px;
