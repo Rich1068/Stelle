@@ -132,8 +132,7 @@ class ProfileController extends Controller
             'status_id' => 3, 
         ]);
 
-        // Redirect or return a response
-        return back()->with('success', 'You have registered to be an Event Admin, Please wait for approval!');
+        return redirect()->route('user.dashboard')->with('success', 'You have registered to be an Admin, Please wait for approval!');
     }
 
     public function myCertificates()
