@@ -9,18 +9,11 @@
             <i class="fas fa-clipboard-list"></i> Manage Evaluation Forms
         </h2>
         <!-- Arrow Button (Dropdown Trigger) -->
-        <button id="toggleButton" class="btn custom-btn-light ms-2" type="button" aria-expanded="false" style="border: none; background-color: transparent;">
-            <i id="arrowIcon" class="fas fa-chevron-down" style="font-size: 1.5rem; color: #002060;"></i>
-        </button>
     </div>
 
     <!-- Right: Hidden Button -->
     <div id="buttonContainer" style="display: none; margin-left: 10px;" class="button-group">
-        <form action="{{ route('evaluation-forms.create') }}" method="get" style="display: inline;">
-            <button type="submit" class="btn btn-primary-2" style="border-radius: 20px;">
-                <i class="fas fa-plus"></i> Add Evaluation Form
-            </button>
-        </form>
+  
     </div>
 </div>
 
@@ -76,6 +69,15 @@
         </div>
     @endif
 </div>
+
+
+<form action="{{ route('evaluation-forms.create') }}" method="get" style="display: inline;">
+    <div style="margin-top: 10px;">
+        <button type="submit" class="btn btn-primary-2" style="margin-left: 30px; border-radius: 15px;">
+            <i class="fas fa-plus"></i> Add Evaluation Form
+        </button>
+    </div>
+</form>
 
 <!-- Styles -->
 <style>
@@ -217,7 +219,9 @@
     }
 </style>
 
-<!-- JavaScript -->
+
+
+
 <script>
     document.getElementById("toggleButton").addEventListener("click", function() {
         var buttonContainer = document.getElementById("buttonContainer");

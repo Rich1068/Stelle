@@ -1,31 +1,12 @@
 @extends('layouts.app')
 
 @section('body')
-<div class="top-container mb-4 d-flex align-items-left justify-content-between" style="background-color: #fff; border-radius: 15px; padding: 20px; box-shadow: none;">
-    <!-- Left: User List Title and Arrow Button -->
+<div class="top-container mb-4 d-flex align-items-left justify-content-between" style="background-color: #fff; border-radius: 15px; padding: 20px; box-shadow: none; margin-bottom: 100px;">
+    <!-- Left: User List Title -->
     <div class="d-flex align-items-center">
         <h2 class="font-weight-bold mb-0" style="color: #002060;">
             <i class="fas fa-users"></i> User List
         </h2>
-        <!-- Arrow Button (Dropdown Trigger) -->
-        <button id="toggleButton" class="btn custom-btn-light ms-2" type="button" aria-expanded="false" style="border: none; background-color: transparent;">
-            <i id="arrowIcon" class="fas fa-chevron-down" style="font-size: 1.5rem; color: #002060;"></i> <!-- Arrow icon -->
-        </button>
-    </div>
-
-    <!-- Right: Hidden Buttons -->
-    <div class="d-flex align-items-center">
-        <!-- Hidden Buttons (Initially Hidden) -->
-        <div id="buttonContainer" style="display: none; margin-left: 10px;">
-            <a href="{{ route('superadmin.usercreate') }}" class="btn custom-btn-primary" style="border-radius: 20px; margin-right: 10px;">
-                <i class="fas fa-plus"></i> Add User
-            </a>
-            <form action="{{ route('super_admin.requestingAdmins') }}" method="get" style="display: inline;">
-                <button type="submit" class="btn custom-btn-primary" style="border-radius: 20px;">
-                    <i class="fas fa-user-shield"></i> View Requesting Admin
-                </button>
-            </form>
-        </div>
     </div>
 </div>
 
@@ -67,30 +48,7 @@
 }
 </style>
 
-<!-- JavaScript to toggle the visibility of the buttons and change the arrow direction -->
-<script>
-    document.getElementById("toggleButton").addEventListener("click", function() {
-        var buttonContainer = document.getElementById("buttonContainer");
-        var arrowIcon = document.getElementById("arrowIcon");
-
-        // Toggle button container visibility
-        if (buttonContainer.style.display === "none") {
-            buttonContainer.style.display = "block"; // Show the buttons
-            arrowIcon.classList.remove("fa-chevron-down"); // Change arrow direction
-            arrowIcon.classList.add("fa-chevron-up"); // Point upward
-        } else {
-            buttonContainer.style.display = "none"; // Hide the buttons
-            arrowIcon.classList.remove("fa-chevron-up"); // Change arrow direction back
-            arrowIcon.classList.add("fa-chevron-down"); // Point downward
-        }
-    });
-</script> 
-
-
-
-
-
-<div class="card shadow mb-4">
+<div class="card mb-4" style="margin-top: 50px; border: none;"> <!-- Removed shadow and added border: none; -->
     <div class="card-header py-3">
         <h6 class="m-0 font-weight-bold text-primary">Users List</h6>
     </div>
@@ -135,6 +93,15 @@
     </div>
 </div>
 
-
+<div style="display: flex; align-items: center; margin-bottom: 50px; margin-left: 20px;">
+    <a href="{{ route('superadmin.usercreate') }}" class="btn custom-btn-primary" style="border-radius: 15px; padding: 10px 20px; margin-right: 10px; font-size: 16px;">
+        <i class="fas fa-plus"></i> Add User
+    </a>
+    <form action="{{ route('super_admin.requestingAdmins') }}" method="get" style="display: inline;">
+        <button type="submit" class="btn custom-btn-primary" style="border-radius: 15px; padding: 10px 20px; font-size: 16px;">
+            <i class="fas fa-user-shield"></i> View Requesting Admin
+        </button>
+    </form>
+</div>
 
 @endsection
