@@ -20,7 +20,7 @@
 
         <!-- Verification Message -->
         <div class="mb-2 text-sm" style="color: #00008B; font-weight: bold; text-align: center;">
-            {{ __('Please verify your email by clicking the link we sent. If you didn’t receive it, we can send another.') }}
+            {{ __("Please verify your email by clicking the link we sent. If you didn't receive it, we can send another.") }}
         </div>
 
         <!-- Divider Below Text -->
@@ -34,15 +34,15 @@
                 <div>
                     <x-primary-button class="resetpass" id="sendButton" style="width: 200px; height: 50px; padding: 0; background-color: #1E3A8A; color: white; border-radius: 5px; font-weight: bold; text-align: center; cursor: pointer; border: none;" onclick="changeButtonText()">
                         {{ __('Send Verification') }}
-                    </button>
+                    </x-primary-button>
                 </div>
             </form>
-            @if (session('status') == 'verification-link-sent')
+            @if(session('status') == 'verification-link-sent')
             <div class="mb-2 font-medium text-sm" style="color: #00008B; text-align: center;">
                 {{ __('A verification link has been sent to your email.') }}
             </div>
-            <br>
             @endif
+            <br>
         </div>
 
         <!-- Centered Log Out Text -->
@@ -50,11 +50,7 @@
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
 
-<<<<<<< HEAD
-                <span class="text-sm logout-span" onclick="this.closest('form').submit();">
-=======
                 <span class="text-sm logout-span" onclick="this.closest('form').submit();" style="cursor: pointer;">
->>>>>>> 134d7b2b5c700a544d45581636521792f1bf8904
                     {{ __('Log Out') }}
                 </span>
 
