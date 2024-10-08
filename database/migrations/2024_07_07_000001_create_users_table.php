@@ -46,6 +46,7 @@ return new class extends Migration
             'last_name' => 'Admin',
             'email' => 'rs106848@gmail.com',
             'password' => Hash::make('12345678'),
+            'email_verified_at' => now(),
             'role_id' => DB::table('roles')->where('role_name', 'Super Admin')->first()->id,
         ]);
         DB::table('users')->insert([

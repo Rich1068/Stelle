@@ -18,9 +18,9 @@ class Certificate extends Model
     ];
 
 
-    public function template()
+    public function event()
     {
-        return $this->belongsTo(CertTemplate::class);
+        return $this->belongsTo(Event::class);
     }
 }
 

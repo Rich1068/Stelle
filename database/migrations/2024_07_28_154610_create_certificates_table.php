@@ -3,14 +3,22 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;  // Add DB facade
+use Illuminate\Support\Facades\File;  // Add File facade for file handling
+
 
 return new class extends Migration
 {
     /**
      * Run the migrations.
      */
+
+
     public function up(): void
     {
+        $jsonFilePath = storage_path('json_files/template1.json');
+        $jsonContent = file_get_contents($jsonFilePath);
+
         Schema::create('certificates', function (Blueprint $table) {
             $table->id();
             $table->foreignId('event_id')->constrained('events')->onDelete('cascade');
@@ -22,14 +30,20 @@ return new class extends Migration
         });
         Schema::create('cert_templates', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
+            $table->foreignId('created_by')->nullable()->constrained('users')->onDelete('cascade');
             $table->string('template_name');
             $table->longText('design')->nullable();
             $table->string('path');
             $table->foreignId('status_id')->constrained('statuses')->onDelete('cascade');
             $table->timestamps();
         });
-
+        DB::table('cert_templates')->insert([
+            'template_name' => 'sample_1',
+            'design' => $jsonContent,
+            'path' => 'storage/images/certificates/cert_templates/template1.png',
+            'status_id' => '1',
+            'created_at'=> now(),
+        ]);
         Schema::create('event_templates', function (Blueprint $table) {
             $table->id();
             $table->foreignId('event_id')->constrained('events')->onDelete('cascade');
