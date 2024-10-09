@@ -9,7 +9,7 @@ class EventParticipant extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['event_id', 'user_id', 'status_id'];
+    protected $fillable = ['event_id', 'user_id', 'status_id', 'reminder_sent'];
 
     public function user()
     {

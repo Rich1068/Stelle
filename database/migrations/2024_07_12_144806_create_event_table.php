@@ -36,6 +36,7 @@ return new class extends Migration
             $table->foreignId('event_id')->constrained('events')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('status_id')->constrained('participant_statuses')->onDelete('cascade'); 
+            $table->boolean('reminder_sent')->default(false);
             $table->timestamps();
         });
 
