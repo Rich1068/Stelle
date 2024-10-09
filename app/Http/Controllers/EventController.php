@@ -13,6 +13,7 @@ use App\Models\CertUser;
 use App\Models\EvaluationForm;
 use App\Models\EventEvaluationForm;
 use App\Models\EventCertificate;
+use App\Events\UserAcceptedToEvent;
 use Illuminate\View\View;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
@@ -332,7 +333,7 @@ class EventController extends Controller
 
         $participants = EventParticipant::where('event_id', $id)
                 ->where('status_id', 3)
-                ->get();
+                ->paginate(10);
 
         return view('event.pendingparticipants', compact('eventuser', 'participants', 'event'));
     }
@@ -350,9 +351,17 @@ class EventController extends Controller
 
 
         $participant = EventParticipant::where('user_id', $participantId);
-
         // Update the participant's status
         $participant->update(['status_id' => $request->status_id]);
+
+        if ($request->status_id == 1) {
+            // Find the user and event
+            $user = User::findOrFail($participantId);
+            $eventDetails = Event::findOrFail($eventId);
+    
+            // Fire the event to send email notification
+            event(new UserAcceptedToEvent($user, $eventDetails));
+        }
 
         return back()->with('success', 'Participant status updated successfully.');
 
