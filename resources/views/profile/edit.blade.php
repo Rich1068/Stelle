@@ -88,7 +88,7 @@
         /* Individual Sections (Update Password, Delete Profile) */
         .password-update-container,
         .delete-account-container {
-            background-color: #f9f9f9; /* Background color for sections */
+            background-color: #ffffff; /* Background color for sections */
             padding: 20px; /* Padding for sections */
             border-radius: 10px; /* Rounded corners */
             box-shadow: none; /* No box shadow */
