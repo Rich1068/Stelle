@@ -2565,12 +2565,14 @@ h2 {
           }
           
 
-          /* Additional container to ensure alignment */
-          .profile-edit-container-wrapper {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-          }
+/* Updated container to ensure alignment */
+.profile-edit-container-wrapper {
+  display: flex;
+  flex-direction: column; /* Stack items vertically */
+  align-items: stretch; /* Make child elements fill the available space */
+  width: 100%; /* Ensure the container takes the full width */
+  gap: 20px; /* Add some spacing between elements */
+}
 
           /* Ensure the description is styled properly */
           .profile-edit-description {
@@ -2616,18 +2618,41 @@ h2 {
             align-items: center;
             gap: 8px;
           }
-
           .profile-edit-input,
           .profile-edit-textarea,
           .profile-edit-select {
-            background-color: #f0f0f0;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            padding: 8px 12px;
-            color: #555;
-            font-weight: bold;
-            box-shadow: none; /* Remove shadow */
+              background-color: #f0f0f0;
+              border: 1px solid #ddd;
+              border-radius: 10px;
+              padding: 8px 12px;
+              color: #555;
+              font-weight: bold;
+              box-shadow: none; /* Remove shadow */
+              width: 100%; /* Ensure inputs take full width */
+              box-sizing: border-box; /* Make padding and borders count in the width */
+              max-width: 100%; /* Prevent inputs from exceeding container width */
+              margin-bottom: 15px; /* Add space between input fields */
           }
+          
+          /* Mobile responsiveness */
+          @media (max-width: 768px) {
+              .profile-edit-input,
+              .profile-edit-textarea,
+              .profile-edit-select {
+                  padding: 6px 10px; /* Adjust padding for smaller screens */
+                  border-radius: 8px; /* Smaller border radius on mobile */
+              }
+          }
+          
+          @media (max-width: 480px) {
+              .profile-edit-input,
+              .profile-edit-textarea,
+              .profile-edit-select {
+                  padding: 4px 8px;
+                  border-radius: 6px;
+              }
+          }
+          
 
           .profile-edit-input::placeholder,
           .profile-edit-textarea::placeholder {
