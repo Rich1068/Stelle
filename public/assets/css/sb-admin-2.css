@@ -71,16 +71,6 @@
   border: none; /* No border */
 }
 
-.custom-event {
-  background-color: rgba(255, 255, 255, 0); /* Dark blue for the circle */
-  color: rgb(47, 2, 66); /* White text for the date */
-  border-radius: 10%; /* Make it circular */
-  display: flex; /* Centering */
-  align-items: center; /* Centering vertically */
-  justify-content: center; /* Centering horizontally */
-  margin: 0 auto; /* Centering in the cell */
-  position: relative; /* Relative positioning for tooltip */
-}
 
 .tooltip {
   background-color: #333; /* Tooltip background color */
