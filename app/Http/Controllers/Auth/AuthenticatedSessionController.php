@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 class AuthenticatedSessionController extends Controller
 {
     /**
@@ -16,6 +17,12 @@ class AuthenticatedSessionController extends Controller
      */
     public function create(): View
     {
+        Auth::guard('web')->logout();
+
+    // Invalidate and regenerate the session to prevent issues with stale data
+        request()->session()->invalidate();
+        request()->session()->regenerateToken();
+
         return view('auth.login');
     }
 
@@ -24,30 +31,33 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        Log::info('User attempting to log in', ['email' => $request->input('email')]);
-        // Authenticate the user
-        $request->authenticate();
+        try {
+            Log::info('Attempting to authenticate user', ['email' => $request->input('email')]);
+            
+            // Authenticate the user
+            $request->authenticate();
 
-        // Regenerate session
-        $request->session()->regenerate();
+            // Regenerate session
+            $request->session()->regenerate();
 
-        // Check if the user's email is verified
-        if (!$request->user()->hasVerifiedEmail()) {
-            // If not verified, redirect to the email verification notice page
-            return redirect()->route('verification.notice');
+            // Redirect based on roles, or handle unverified email
+            if (!$request->user()->hasVerifiedEmail()) {
+                return redirect()->route('verification.notice');
+            }
+
+            if ($request->user()->role_id == 1) {
+                return redirect()->route('super_admin.dashboard');
+            } elseif ($request->user()->role_id == 2) {
+                return redirect()->route('admin.dashboard');
+            } elseif ($request->user()->role_id == 3) {
+                return redirect()->route('user.dashboard');
+            }
+
+            return redirect()->intended(route('auth.login'));
+        } catch (\Exception $e) {
+            Log::error('Login failed: ' . $e->getMessage());
+            return back()->withErrors(['login' => 'Authentication failed.']);
         }
-
-        // Check the role and redirect accordingly
-        if ($request->user()->role_id == 1) {
-            return redirect()->route('super_admin.dashboard');
-        } elseif ($request->user()->role_id == 2) {
-            return redirect()->route('admin.dashboard');
-        } elseif ($request->user()->role_id == 3) {
-            return redirect()->route('user.dashboard');
-        }
-        Log::info('Default login redirection for user', ['user_id' => $request->user()->id]);
-        // Default redirect if no role matches
-        return redirect()->intended(route('auth.login', absolute: false));
     }
 
     /**

@@ -23,6 +23,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'checkFormOwner' => \App\Http\Middleware\CheckFormOwner::class,
             'checkUserJoinedEvent' => \App\Http\Middleware\CheckUserJoinedEvent::class,
             'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+            'redirectIfAuthenticatedToDashboard' => \App\Http\Middleware\RedirectIfAuthenticatedToDashboard::class,
         ]);
 
     })

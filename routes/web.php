@@ -12,7 +12,24 @@ use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\Auth\GoogleController;
 
 Route::get('/', function () {
-    return view('auth.login');
+    if (Auth::check()) {
+        $user = Auth::user();
+
+        // Redirect based on the user's role
+        if ($user->role_id == 1) {
+            return redirect()->route('super_admin.dashboard');
+        } elseif ($user->role_id == 2) {
+            return redirect()->route('admin.dashboard');
+        } elseif ($user->role_id == 3) {
+            return redirect()->route('user.dashboard');
+        }
+
+        // Default redirect if no role matches
+        return redirect()->route('home');
+    }
+
+    // If the user is not authenticated, redirect to the login page
+    return redirect()->route('login');
 });
 Route::get('auth/google/redirect', [GoogleController::class, 'googlepage'])->name('google.redirect');
 Route::get('auth/google/callback', [GoogleController::class, 'googlecallback'])->name('google.callback');
