@@ -6,9 +6,9 @@
         <div class="d-flex" style="width: 100%;">
             <!-- First Section -->
             <div class="flex-fill" style="padding: 2rem; border-radius: 15px 0 0 15px; background-color: white;"> <!-- Set background color to white -->
-                <h2 class="text-primary font-weight-bold mb-0" style="color: darkcyan !important;"> <!-- Set text color to dark grey -->
+                <h3 class="text-primary font-weight-bold mb-0" style="color: darkcyan !important;"> <!-- Set text color to dark grey -->
                     Good Evening <span style="color: darkblue !important;">User!</span>
-                </h2>
+                </h3>
                 <p class="text-muted mb-0 font-weight-bold" style="color: darkblue;"> <!-- Set text color to dark blue -->
                     How are you feeling?
                 </p>
@@ -19,9 +19,9 @@
 
             <!-- Second Section -->
             <div class="flex-fill" style="padding: 2rem; border-radius: 15px 15px 15px 0; background-color: white;"> <!-- Set background color to white -->
-                <h2 class="text-primary font-weight-bold mb-0" style="color: darkcyan !important;"> <!-- Set text color to dark grey -->
+                <h3 class="text-primary font-weight-bold mb-0" style="color: darkcyan !important;"> <!-- Set text color to dark grey -->
                     Here are your scheduled events <span style="color: darkblue !important;">for this month</span>
-                </h2>
+                </h3>
             </div>
         </div>
     </div>
@@ -31,7 +31,7 @@
     
     <div class="row justify-content-center  custom-bg-white mt-4 mb-4 pt-4"> <!-- Added custom class for border radius -->
     <!-- Calendar Column -->
-    <div class="col-xl-5 col-md-12 mb-4"> <!-- Adjusted width for the calendar -->
+    <div class="col-xl-6 col-md-12 mb-4"> <!-- Adjusted width for the calendar -->
         <div class="card shadow mb-4" style="height: 500px;"> <!-- Increased height for the calendar -->
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Event Calendar</h6>
@@ -60,7 +60,7 @@
         </div>
     </div>
 
-    <div class="col-xl-5 col-md-12"> <!-- Adjusted to occupy remaining space for cards -->
+    <div class="col-xl-6 col-md-12"> <!-- Adjusted to occupy remaining space for cards -->
         <div class="row mb-4">
             <!-- Stack all cards on top of each other -->
             <div class="col-12 mb-4"> <!-- Increased margin for space between cards -->
@@ -139,7 +139,7 @@
 
 
     <!-- User Roles Card -->
-    <div class="col-xl-5 col-lg-6 mb-4"> 
+    <div class="col-xl-6 col-lg-6 mb-4"> 
         <div class="card shadow h-100"> 
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">User Roles</h6>
@@ -153,7 +153,7 @@
     </div>
 
     <!-- User Genders Card -->
-    <div class="col-xl-5 col-lg-6 mb-4">
+    <div class="col-xl-6 col-lg-6 mb-4">
         <div class="card shadow h-100">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">User Genders</h6>
@@ -166,7 +166,7 @@
         </div>
     </div> 
 
-    <div class="row mb-5 col-md-11">
+    <div class="row mb-5 col-md-12">
     <div class="col-md-12">
         <div class="card border-left-info shadow h-100" style="height: 500px; width: 90%;">
             <div class="card-body p-4 d-flex flex-column"> <!-- Added padding and flexbox for layout -->
@@ -182,7 +182,7 @@
 </div>
 
     <!-- New Monthly Participants Chart -->
-    <div class="row mb-5 col-md-11 mt-2"> 
+    <div class="row mb-5 col-md-12 mt-2"> 
         <div class="col-md-12">
             <div class="card border-left-info shadow h-100" style="height: 500px; width: 90%;">
                 <div class="card-body p-4 d-flex flex-column">
@@ -202,7 +202,7 @@
 <style>
 .custom-bg-white {
     border-radius: 15px; /* Add border radius */
-    max-width: 80%;
+    max-width: 95%;
     align-items: center; /* This is not necessary unless you're using flexbox */
     margin: auto; /* Center the element */
     background-color: white; /* Set background color */

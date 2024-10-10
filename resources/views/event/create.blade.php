@@ -169,7 +169,50 @@
     background-color: rgba(255, 255, 255, 0.4) !important; /* Semi-transparent white */
     margin-bottom: 20px !important;
 }
+.custom-bg-white {
+    border-radius: 15px; /* Add border radius */
+    width: 100%; /* Use 100% width for responsiveness */
+    max-width: 1200px; /* Set a max-width to prevent excessive stretching */
+    padding: 20px;
+    background-color: white; /* Set background color */
+    background-color: rgba(255, 255, 255, 0.4) !important; /* Semi-transparent white */
+    margin: 0 auto 20px; /* Center the element and add space at the bottom */
+}
 
+@media (min-width: 1200px) {
+    .custom-bg-white {
+        max-width: 1000px; /* Adjust max-width for larger screens */
+        padding: 30px; /* Increase padding for larger screens */
+    }
+}
+
+
+@media (min-width: 768px) and (max-width: 1199px) {
+    .custom-bg-white {
+        max-width: 90%;
+        padding: 20px;
+    }
+
+    .event-form-container {
+        margin: 0 auto;
+        width: 95%; 
+}
+
+/* Media query for tablets and smaller devices */
+@media (max-width: 767px) {
+    .custom-bg-white {
+        max-width: 100%; 
+        padding: 15px;
+    }
+
+    .event-form-container {
+        width: 100%;
+        margin: 0; /
+    }
+
+
+}
+}
     </style>
 <script>
 function previewImage(event) {

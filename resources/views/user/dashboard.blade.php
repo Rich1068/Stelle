@@ -37,7 +37,7 @@
     <!-- Calendar Container -->
     <div class="row justify-content-center custom-bg-white mt-4 mb-4 pt-4">
         <!-- Calendar Column -->
-        <div class="col-xl-5 col-md-12 mb-4">
+        <div class="col-xl-6 col-md-12 mb-4">
             <div class="card shadow mb-4" style="height: 500px;">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                     <h6 class="m-0 font-weight-bold text-primary">Event Calendar</h6>
@@ -62,7 +62,7 @@
         </div>
 
 <!-- Request as Admin Column -->
-<div class="col-xl-5 col-md-2 d-flex flex-column justify-content-center"> 
+<div class="col-xl-6 col-md-2 d-flex flex-column justify-content-center"> 
     <form id="registerAdminForm" action="{{ route('register.admin') }}" method="POST">
         @csrf
         
@@ -140,7 +140,7 @@
             </div>
         </div>
 </div>
-<div class="row mb-4 col-md-11">
+<div class="row mb-4 col-md-12">
     <div class="col-md-12">
         <div class="card border-left-info shadow h-100" style="height: 500px; width: 90%;">
             <div class="card-body p-4 d-flex flex-column"> <!-- Added padding and flexbox for layout -->
@@ -187,7 +187,7 @@
 
     .custom-bg-white {
         border-radius: 15px;
-        max-width: 80%;
+        max-width: 95%;
         margin: auto;
         background-color: rgba(255, 255, 255, 0.4);
     }

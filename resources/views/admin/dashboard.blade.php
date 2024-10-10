@@ -50,7 +50,7 @@
         </div>
 
         <!-- Cards Column -->
-        <div class="col-xl-4 col-md-12 mb-4"> <!-- Adjusted to occupy remaining space for cards -->
+        <div class="col-xl-6 col-md-12 mb-4"> <!-- Adjusted to occupy remaining space for cards -->
             <div class="row mb-4">
                 <!-- Certificates Card -->
                 <div class="col-12 mb-4">
@@ -121,7 +121,7 @@
 
             </div>
         </div>
-        <div class="row mb-5 col-md-11">
+        <div class="row mb-5 col-md-12">
     <div class="col-md-12">
         <div class="card border-left-info shadow h-100" style="height: 500px; width: 90%;">
             <div class="card-body p-4 d-flex flex-column"> <!-- Added padding and flexbox for layout -->
@@ -137,7 +137,7 @@
 </div>
 
     <!-- New Monthly Participants Chart -->
-    <div class="row mb-5 col-md-11 mt-2"> 
+    <div class="row mb-5 col-md-12 mt-2"> 
         <div class="col-md-12">
             <div class="card border-left-info shadow h-100" style="height: 500px; width: 90%;">
                 <div class="card-body p-4 d-flex flex-column">
@@ -247,7 +247,7 @@ const ctxParticipants = document.getElementById('monthlyParticipantsChart').getC
 
     .custom-bg-white {
         border-radius: 15px;
-        max-width: 80%;
+        max-width: 95%;
         margin: auto;
         background-color: rgba(255, 255, 255, 0.4);
     }
