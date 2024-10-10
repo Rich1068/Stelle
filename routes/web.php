@@ -23,9 +23,6 @@ Route::get('/', function () {
         } elseif ($user->role_id == 3) {
             return redirect()->route('user.dashboard');
         }
-
-        // Default redirect if no role matches
-        return redirect()->route('home');
     }
 
     // If the user is not authenticated, redirect to the login page
