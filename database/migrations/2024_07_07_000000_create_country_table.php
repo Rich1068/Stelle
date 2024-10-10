@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('country', function (Blueprint $table) {
+        Schema::create('countries', function (Blueprint $table) {
             $table->id()->primary();
             $table->char('countrycode', 3);
             $table->string('countryname', 200);
@@ -21,7 +21,7 @@ return new class extends Migration
         });
 
         // Insert data
-        DB::table('country')->insert([
+        DB::table('countries')->insert([
             ['countrycode' => 'AFG', 'countryname' => 'Afghanistan', 'code' => 'AF'],
             ['countrycode' => 'ALA', 'countryname' => 'Åland', 'code' => 'AX'],
             ['countrycode' => 'ALB', 'countryname' => 'Albania', 'code' => 'AL'],
@@ -277,6 +277,6 @@ return new class extends Migration
     }
     public function down(): void
     {
-        Schema::dropIfExists('country');
+        Schema::dropIfExists('countries');
     }
 };    

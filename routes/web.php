@@ -37,12 +37,14 @@ require __DIR__.'/auth.php';
 Route::middleware(['auth','super_admin'])->group(function () {
 
     route::get('/super-admin/dashboard', [SuperAdminController::class, 'index'])->middleware('verified')->name('super_admin.dashboard');
-    route::get('/super_admin/userlist',[SuperAdminController::class,'userlist'])->name('super_admin.userlist');
-    route::get('/super_admin/viewRequestingAdmins',[SuperAdminController::class,'viewRequestingAdmins'])->name('super_admin.requestingAdmins');
+    route::get('/super-admin/userlist',[SuperAdminController::class,'userlist'])->name('super_admin.userlist');
+    route::get('/super-admin/viewRequestingAdmins',[SuperAdminController::class,'viewRequestingAdmins'])->name('super_admin.requestingAdmins');
     Route::post('/handle-admin-request/{id}/{action}', [SuperAdminController::class, 'handleAdminRequest'])->name('super_admin.adminRequest');
-    Route::get('/super_admin/users/create', [SuperAdminController::class, 'usercreate'])->name('superadmin.usercreate');
-    Route::post('/super_admin/users', [SuperAdminController::class, 'storeuser'])->name('superadmin.storeuser');
-   
+    Route::get('/super-admin/users/create', [SuperAdminController::class, 'usercreate'])->name('superadmin.usercreate');
+    Route::post('/super-admin/users', [SuperAdminController::class, 'storeuser'])->name('superadmin.storeuser');
+    Route::get('/super-admin/users/edit/{id}', [ProfileController::class, 'superadmin_edit'])->name('superadmin.editProfile');
+    Route::patch('/super-admin/users/update/{id}', [ProfileController::class, 'superadmin_update'])->name('superadmin.updateProfile');
+    Route::delete('/super-admin/users/delete/{id}', [ProfileController::class, 'superadmin_destroy'])->name('superadmin.destroyUser');
 });
 
 //admin
@@ -51,12 +53,9 @@ Route::middleware(['auth','admin'])->group(function () {
     route::get('/admin/dashboard', [AdminController::class, 'index'])->middleware('verified')->name('admin.dashboard');
 
 });
-
 //user
 Route::middleware(['auth','user'])->group(function () {
-
     route::get('/user/dashboard', [UserController::class, 'index'])->middleware('verified')->name('user.dashboard');
-
 });
 
 route::get('/unauthorized', function () {
@@ -71,22 +70,6 @@ Route::middleware(['auth', 'checkRole:1,2'])->group(function () {
     route::get('/event/create', [EventController::class, 'create'])->name('event.create');
     Route::get('/event/myEventlist', [EventController::class, 'myEventlist'])->name('event.myeventlist');
 
-});
-
-
-
-
-Route::middleware('auth')->group(function () {
-
-
-    //overall event view and join
-    route::resource('events', EventController::class);
-    route::get('/events', [EventController::class, 'list'])->name('event.list');
-    route::get('/event/{id}', [EventController::class, 'view'])->name('event.view');
-    Route::post('/event/{id}/join', [EventController::class, 'join'])->name('event.join');
-    Route::post('/event/{id}/participants/send-certificates', [CertificateController::class, 'sendCertificates'])->name('sendCertificates');
-    Route::get('/event/{id}/get-participants', [EventController::class, 'getParticipants']);
-
     //new Eval
     Route::get('/evaluation-forms', [EvaluationFormController::class, 'evalList'])->name('evaluation.evaluationlist');
 
@@ -94,7 +77,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/evaluation-forms/store', [EvaluationFormController::class, 'store'])->name('evaluation-forms.store');
     Route::get('/evaluation-forms/{id}/edit', [EvaluationFormController::class, 'edit'])->name('evaluation-forms.edit');
     Route::put('/evaluation-forms/{id}/update', [EvaluationFormController::class, 'update'])->name('evaluation-forms.update');
-    Route::patch('evaluation-forms/{id}/deactivate', [EvaluationFormController::class, 'deactivate'])->name('evaluation-forms.deactivate');
+    Route::patch('/evaluation-forms/{id}/deactivate', [EvaluationFormController::class, 'deactivate'])->name('evaluation-forms.deactivate');
 
     //new cert
     Route::get('/certificate-list', [CertificateController::class, 'certlist'])->name('certificate.list');
@@ -121,6 +104,23 @@ Route::middleware('auth')->group(function () {
     Route::get('/event/{id}/certificates/get-id', [CertificateController::class, 'getCertificateId']);
     Route::get('/event/{id}/certificates/viewCert/{certId}', [CertificateController::class, 'viewImage'])->name('certificates.view');
     Route::get('/event/{id}/certificates/{certId}/show', [CertificateController::class, 'showCertificateImage'])->name('certificates.show');
+
+});
+
+
+
+
+Route::middleware('auth')->group(function () {
+
+
+    //overall event view and join
+    route::resource('events', EventController::class);
+    route::get('/events', [EventController::class, 'list'])->name('event.list');
+    route::get('/event/{id}', [EventController::class, 'view'])->name('event.view');
+    Route::post('/event/{id}/join', [EventController::class, 'join'])->name('event.join');
+    Route::post('/event/{id}/participants/send-certificates', [CertificateController::class, 'sendCertificates'])->name('sendCertificates');
+    Route::get('/event/{id}/get-participants', [EventController::class, 'getParticipants']);
+
 });
 
 //check if user joined the event
@@ -161,14 +161,5 @@ Route::middleware(['auth', 'checkEventCreator'])->group(function () {
 Route::middleware(['auth', 'checkRole:3'])->group(function () {
     Route::post('/register-admin', [ProfileController::class, 'registerAdmin'])->name('register.admin');
 });
-//check the event owner through form
-Route::group(['middleware' => ['auth', 'checkFormOwner']], function() {
-    // create question
-    // Route::get('/event/{id}/evaluation-form/{form}/questions/create', [QuestionController::class, 'create'])->name('questions.create');
-    // Route::post('/event/{id}/evaluation-forms/{form}/questions', [QuestionController::class, 'store'])->name('questions.store');
 
-    // // update question
-    // Route::get('/event/{id}/evaluation-form/{form}/questions/edit', [QuestionController::class, 'edit'])->name('questions.edit');
-    // Route::put('/event/{id}/evaluation-form/{form}/questions/update', [QuestionController::class, 'update'])->name('questions.update');
-});
 

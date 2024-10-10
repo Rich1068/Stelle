@@ -9,8 +9,6 @@ class Country extends Model
 {
     use HasFactory;
 
-    protected $table = 'country';
-
     public function users()
     {
         return $this->hasMany(User::class);

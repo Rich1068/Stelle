@@ -31,6 +31,11 @@
                 </span>
             </p>
         </div>
+        @if(Auth::user()->role_id == 1)
+        <a href="{{ route('superadmin.editProfile', ['id' => $user->id]) }}" class="btn-edit">
+            <i class="fas fa-pencil-alt"></i> <span>Edit</span>
+        </a>
+        @endif
     </div>
 
     <!-- Profile Body Grid Layout with Specific View -->

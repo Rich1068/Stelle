@@ -5,19 +5,24 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;  // Add this for email verification
+use Illuminate\Contracts\Auth\MustVerifyEmail;  //for email verification
 use Illuminate\Contracts\Auth\CanResetPassword;
-use App\Notifications\ResetPassword as CustomResetPasswordNotification;  // Import the custom notification class
+use App\Notifications\ResetPassword as CustomResetPasswordNotification;  //custom notification class
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, SoftDeletes;
 
+    
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
+
+    protected $dates = ['deleted_at'];
+
     protected $fillable = [
         'first_name',
         'middle_name',

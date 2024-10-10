@@ -38,7 +38,8 @@ return new class extends Migration
             $table->date('birthdate')->nullable();
             $table->string('description')->nullable();
             $table->string('contact_number')->nullable();
-            $table->foreignId('country_id')->nullable()->constrained('country')->onDelete('cascade');;
+            $table->foreignId('country_id')->nullable()->constrained('countries')->onDelete('cascade');
+            $table->softDeletes();
             $table->timestamps();
         });
         DB::table('users')->insert([
