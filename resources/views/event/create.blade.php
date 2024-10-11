@@ -75,16 +75,15 @@
 
                 <!-- Description -->
                 <div class="col-md-12 mb-4">
-                    <div class="event-field">
-                        <label for="description" class="flex items-center">
-                            <i class="fas fa-file-alt mr-2"></i>
-                            <span class="font-bold">{{ __('Description') }}</span>
-                        </label>
-                        <textarea id="description" name="description" class="mt-1 block w-full event-input" required>{{ old('description') }}</textarea>
-                        <x-input-error class="mt-2" :messages="$errors->get('description')" />
-                    </div>
-                </div>
-
+    <div class="event-field">
+        <label for="description" class="flex items-center">
+            <i class="fas fa-file-alt mr-2"></i>
+            <span class="font-bold">{{ __('Description') }}</span>
+        </label>
+        <textarea id="description" name="description" class="mt-1 block w-full event-input" oninput="autoResize(this)" rows="1" style="overflow:hidden;" required>{{ old('description') }}</textarea>
+        <x-input-error class="mt-2" :messages="$errors->get('description')" />
+    </div>
+</div>
                 <!-- Capacity, Mode, and Address in One Column -->
                 <div class="col-md-12 mb-4">
                     <div class="row">
@@ -215,6 +214,10 @@
 }
     </style>
 <script>
+     function autoResize(textarea) {
+    textarea.style.height = 'auto';  // Reset height to auto to shrink if needed
+    textarea.style.height = (textarea.scrollHeight) + 'px';  // Set the height based on the scroll height
+  }
 function previewImage(event) {
     var reader = new FileReader();
     reader.onload = function() {

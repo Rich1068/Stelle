@@ -1421,10 +1421,12 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 }
 
 .event-view-banner {
-  width: 100%;
-  max-height: 300px;
-  border-radius: 15px;
+  width: 90%;              
+  border-radius: 15px;   
+  display: block;        
+  margin: 20px auto;       
 }
+
 
 /* Divider */
 .event-view-divider {
