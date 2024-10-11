@@ -16,6 +16,7 @@ class SuperAdminController extends Controller
 {
     public function index()
     {
+        $currentYear = date('Y');
         $user = Auth::user()->id;
 
         $totalUsers = User::count();
@@ -35,13 +36,54 @@ class SuperAdminController extends Controller
             'labels' => ['User', 'Admin', 'Super Admin'],
             'values' => [$userCount, $adminCount, $superAdminCount]
         ];
+        $events = Event::selectRaw('MONTH(date) as month, COUNT(*) as total')
+        ->whereYear('date', $currentYear)
+        ->groupBy('month')
+        ->get();
+
+        // Prepare data for the chart
+        $monthlyData = array_fill(1, 12, 0); // Initialize all months with 0
+        foreach ($events as $event) {
+            $monthlyData[$event->month] = $event->total;
+        }
+
+        $monthlyEventsData = [
+            'labels' => ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+            'values' => array_values($monthlyData)
+        ];
+        
 
         $genderData = [
             'labels' => ['Male', 'Female', 'N/A'],
             'values' => [$maleGender, $femaleGender, $unknownGender]
         ];
 
-        return view('super_admin.dashboard',compact('user', 'totalUsers', 'totalEvents', 'userCountData','totalCreatedEvents','genderData'));
+        return view('super_admin.dashboard',compact('user', 'totalUsers', 'totalEvents', 'userCountData','totalCreatedEvents','genderData', 'monthlyEventsData', 'currentYear'));
+    }
+
+    public function getEventsData(Request $request)
+    {
+        // Get the year from the request, or default to the current year
+        $year = $request->input('year', date('Y'));
+
+        // Get event data for the specified year
+        $events = Event::selectRaw('MONTH(date) as month, COUNT(*) as total')
+            ->whereYear('date', $year)
+            ->groupBy('month')
+            ->get();
+
+        // Prepare the data for the chart (showing all months, even if empty)
+        $monthlyData = array_fill(1, 12, 0); // Initialize all months with 0
+        foreach ($events as $event) {
+            $monthlyData[$event->month] = $event->total;
+        }
+
+        $chartData = [
+            'labels' => ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+            'values' => array_values($monthlyData)
+        ];
+
+        return response()->json($chartData);
     }
 
     public function userlist()

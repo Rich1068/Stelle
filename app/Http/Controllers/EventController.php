@@ -113,6 +113,10 @@ class EventController extends Controller
             ->where('created_by', Auth::id())
             ->get();
         $hasAnswered = false;
+
+        $pendingParticipantsCount = EventParticipant::where('event_id', $event->id)
+        ->where('status_id', 3) // Assuming status_id 3 represents pending status
+        ->count();
         $evaluationForm = $event->evaluationForm;
         if ($evaluationForm) {
             $questions = Question::where('form_id', $evaluationForm->form_id)->pluck('id');
@@ -182,6 +186,7 @@ class EventController extends Controller
             'userAgeData' => $userAgeData,
             'genderLabels' => $genderLabels,
             'genderCounts' => $genderCounts,
+            'pendingParticipantsCount' => $pendingParticipantsCount,
         ]);
     }
 
@@ -321,6 +326,7 @@ class EventController extends Controller
 
         return redirect()->route('event.view', $event->id)->with('error', 'You have already requested to join this event.');
     }
+    
 
     public function showPendingParticipants($id)
     {

@@ -34,8 +34,7 @@
 
                 <h3 class="event-view-about">
                     <i class="fas fa-info-circle"></i>
-                    <b>About:</b><br>
-                    {{ $event->description }}
+                    <b>About: &nbsp;</b>{{ $event->description }}
                 </h3>
 
                 <div class="event-view-divider">
@@ -43,12 +42,12 @@
                 </div>
 
                 <div class="event-view-info">
-                    <div><i class="fas fa-calendar-alt"></i><span data-label="Date:">{{ $event->date }}</span></div>
-                    <div><i class="fas fa-map-marker-alt"></i><span data-label="Address:">{{ $event->address }}</span></div>
-                    <div><i class="fas fa-clock"></i><span data-label="Duration:">{{ $event->start_time }} to {{ $event->end_time }}</span></div>
-                    <div><i class="fas fa-users"></i><span data-label="Capacity:">{{ $currentParticipants }}/{{ $event->capacity }}</span></div>
-                    <div><i class="fas fa-desktop"></i><span data-label="Mode:">{{ $event->mode }}</span></div>
-                    <div><i class="fas fa-user"></i><span data-label="By:">{{ $userevent->user->first_name }} {{ $userevent->user->last_name }}</span></div>
+                    <div><i class="fas fa-calendar-alt"></i><span data-label="Date: ">{{ $event->date }}</span></div>
+                    <div><i class="fas fa-map-marker-alt"></i><span data-label="Address: ">{{ $event->address }}</span></div>
+                    <div><i class="fas fa-clock"></i><span data-label="Duration: ">{{ $event->start_time }} to {{ $event->end_time }}</span></div>
+                    <div><i class="fas fa-users"></i><span data-label="Capacity: ">{{ $currentParticipants }}/{{ $event->capacity }}</span></div>
+                    <div><i class="fas fa-desktop"></i><span data-label="Mode: ">{{ $event->mode }}</span></div>
+                    <div><i class="fas fa-user"></i><span data-label="By: ">{{ $userevent->user->first_name }} {{ $userevent->user->last_name }}</span></div>
                 </div>
 
                 @if($userevent->user_id == Auth::user()->id)
@@ -110,9 +109,14 @@
         <div class="tab-pane" id="participants">
             @include('event.partials.participantlist', ['event' => $event, 'participants' => $participants, 'currentUser' => $currentUser, 'userevent' =>$userevent])
             @if ($currentUser == $userevent->user->id)
-                <a href="{{ route('events.pendingparticipants', $event->id) }}">
-                <button type="submit" class="btn btn-primary-2">View Pending Participants</button>
-                </a>
+            <a href="{{ route('events.pendingparticipants', $event->id) }}" class="position-relative">
+                <button type="submit" class="btn btn-primary-2 position-relative">
+                    View Pending Participants
+                    @if($pendingParticipantsCount > 0)
+                        <span class="badge bg-danger pending-badge">{{ $pendingParticipantsCount }}</span>
+                    @endif
+                </button>
+            </a>
             @endif
         </div>
     </div>
@@ -251,6 +255,23 @@
         </div>
     </div>
 </div>
+<style>
+    .pending-badge {
+        position: absolute;
+        top: 0px;
+        right: -10px;
+        padding: 8px 10px;
+        border-radius: 50%;
+        background-color: red;
+        color: white;
+        font-size: 12px;
+        font-weight: bold;
+    }
+
+    .position-relative {
+        position: relative;
+    }
+</style>
 
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

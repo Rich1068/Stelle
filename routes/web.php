@@ -59,6 +59,7 @@ Route::middleware(['auth','super_admin'])->group(function () {
     Route::get('/super-admin/users/edit/{id}', [ProfileController::class, 'superadmin_edit'])->name('superadmin.editProfile');
     Route::patch('/super-admin/users/update/{id}', [ProfileController::class, 'superadmin_update'])->name('superadmin.updateProfile');
     Route::delete('/super-admin/users/delete/{id}', [ProfileController::class, 'superadmin_destroy'])->name('superadmin.destroyUser');
+    Route::get('/super-admin/events-data', [SuperAdminController::class, 'getEventsData']);
 });
 
 //admin

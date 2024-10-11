@@ -14,7 +14,11 @@
                     <!-- User Information -->
                     <div class="participant-info">
                         <div class="participant-profile">
-                            <img src="{{ $participant->user->profile_picture_url }}" alt="{{ $participant->user->first_name }}" class="profile-picture">
+                            @if($participant->user->profile_picture_url == null)
+                                <img src="{{ asset('storage/images/profile_pictures/default.jpg') }}" alt="Default profile picture" class="profile-picture"> 
+                            @else 
+                                <img src="{{ $participant->user->profile_picture_url }}" alt="{{ $participant->user->first_name }}" class="profile-picture">
+                            @endif
                             <div class="participant-details">
                                 <a href="{{ route('profile.view', $participant->user->id) }}" class="participant-name">
                                     {{ $participant->user->first_name }} {{ $participant->user->last_name }}

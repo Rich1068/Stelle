@@ -169,12 +169,18 @@
     <div class="row mb-5 col-md-12">
     <div class="col-md-12">
         <div class="card border-left-info shadow h-100" style="height: 500px; width: 90%;">
-            <div class="card-body p-4 d-flex flex-column"> <!-- Added padding and flexbox for layout -->
-                <div class="text-xs font-weight-bold text-dark-blue text-uppercase mb-3"> <!-- Use dark blue text -->
-                   Total Events Created Monthly
+            <div class="card-body p-4 d-flex flex-column">
+                <div class="text-xs font-weight-bold text-dark-blue text-uppercase mb-3">
+                Total Events Created Monthly
+
+                <div class="year-navigation">
+                    <button id="prev-year">Back</button>
+                    <span id="current-year">{{ $currentYear }}</span> <!-- Display the current year -->
+                    <button id="next-year">Next</button>
                 </div>
-                <div class="chart-container flex-grow-1"> <!-- Use flex-grow to fill space -->
-                    <canvas id="monthlyEventsChart" style="height: 100%; width: 100%;"></canvas> <!-- Set canvas to 100% -->
+                </div>
+                <div class="chart-container flex-grow-1">
+                    <canvas id="monthlyEventsChart" style="height: 100%; width: 100%;"></canvas>
                 </div>
             </div>
         </div>
@@ -330,32 +336,69 @@
     });
 
     document.addEventListener('DOMContentLoaded', function () {
+        let currentYear = {{ $currentYear }};
+    
+    // Function to update the chart with new data
+    function updateChart(chart, data) {
+        chart.data.labels = data.labels;
+        chart.data.datasets[0].data = data.values;
+        chart.update();
+    }
+
+    // Event listener for 'Back' button
+    document.getElementById('prev-year').addEventListener('click', function() {
+        currentYear--;
+        fetchYearData(currentYear);
+    });
+
+    // Event listener for 'Next' button
+    document.getElementById('next-year').addEventListener('click', function() {
+        currentYear++;
+        fetchYearData(currentYear);
+    });
+
+    // Fetch data for the selected year
+    function fetchYearData(year) {
+        fetch(`/super-admin/events-data?year=${year}`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('current-year').innerText = year; // Update the displayed year
+                updateChart(monthlyEventsChart, data); // Update the chart with the new data
+            })
+            .catch(error => console.error('Error fetching data:', error));
+    }
+
     const ctx = document.getElementById('monthlyEventsChart').getContext('2d');
+    const chartData = @json($monthlyEventsData);
+
     const monthlyEventsChart = new Chart(ctx, {
-        type: 'bar',
+        type: 'line',
         data: {
-            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+            labels: chartData.labels, // Month names: January to December
             datasets: [{
-                label: 'Events Joined',
-                data: [12, 19, 3, 5, 2, 3, 10, 7, 8, 15, 4, 9],
-                backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                label: 'Total Events Created',
+                data: chartData.values.length ? chartData.values : Array(12).fill(0), // Ensure 12 data points even if no data
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
                 borderColor: 'rgba(54, 162, 235, 1)',
-                borderWidth: 1
+                borderWidth: 2,
+                fill: true,
+                tension: 0.4,
+                pointBackgroundColor: 'rgba(54, 162, 235, 1)',
+                pointRadius: 4
             }]
         },
         options: {
-            responsive: true,
-            scales: {
-                y: {
+        scales: {
+            yAxes: [{ 
+                ticks: {
                     beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: 'Number of Events'
-                    }
+                    stepSize: 1 
                 }
-            }
+            }]
         }
-    });
+    }
+        
+});
 
     const ctxParticipants = document.getElementById('monthlyParticipantsChart').getContext('2d');
     const monthlyParticipantsChart = new Chart(ctxParticipants, {
