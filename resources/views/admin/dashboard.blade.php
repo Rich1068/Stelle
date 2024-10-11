@@ -46,6 +46,17 @@
                     </select>
                 </div>
                 <div id="calendar" class="p-3" style="height: 400px; overflow-y: auto;"></div>
+
+                    <!-- Modal for event details -->
+                <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-body" id="modalContent">
+                                <!-- Modal content will be dynamically inserted here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -153,16 +164,7 @@
     </div>
 
 
-    <!-- Modal for event details -->
-    <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-body" id="modalContent">
-                    <!-- Modal content will be dynamically inserted here -->
-                </div>
-            </div>
-        </div>
-    </div>
+
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
