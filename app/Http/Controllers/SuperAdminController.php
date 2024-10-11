@@ -51,6 +51,19 @@ class SuperAdminController extends Controller
             'labels' => ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
             'values' => array_values($monthlyData)
         ];
+
+        $monthlyUsersData = User::selectRaw('MONTH(created_at) as month, COUNT(*) as count')
+            ->whereYear('created_at', now()->year) // For the current year
+            ->groupBy('month')
+            ->orderBy('month')
+            ->get()
+            ->mapWithKeys(function ($item) {
+                return [$item['month'] => $item['count']];
+        });
+        $monthlyUsers = [];
+        for ($i = 1; $i <= 12; $i++) {
+            $monthlyUsers[] = $monthlyUsersData[$i] ?? 0; // Set to 0 if no data for the month
+        }
         
 
         $genderData = [
@@ -58,7 +71,7 @@ class SuperAdminController extends Controller
             'values' => [$maleGender, $femaleGender, $unknownGender]
         ];
 
-        return view('super_admin.dashboard',compact('user', 'totalUsers', 'totalEvents', 'userCountData','totalCreatedEvents','genderData', 'monthlyEventsData', 'currentYear'));
+        return view('super_admin.dashboard',compact('user', 'totalUsers', 'totalEvents', 'userCountData','totalCreatedEvents','genderData', 'monthlyEventsData', 'currentYear', 'monthlyUsers'));
     }
 
     public function getEventsData(Request $request)
@@ -84,6 +97,32 @@ class SuperAdminController extends Controller
         ];
 
         return response()->json($chartData);
+    }
+
+    public function getUsersDataByYear(Request $request)
+    {
+        $year = $request->input('year', now()->year); // Get the year from the request, default to current year
+
+        // Fetch the number of users created each month in the specified year
+        $monthlyUsersData = User::selectRaw('MONTH(created_at) as month, COUNT(*) as count')
+            ->whereYear('created_at', $year)
+            ->groupBy('month')
+            ->orderBy('month')
+            ->get()
+            ->mapWithKeys(function ($item) {
+                return [$item['month'] => $item['count']];
+            });
+
+        // Fill in months with 0 if no data exists
+        $monthlyUsers = [];
+        for ($i = 1; $i <= 12; $i++) {
+            $monthlyUsers[] = $monthlyUsersData[$i] ?? 0; // Set to 0 if no data for the month
+        }
+
+        return response()->json([
+            'labels' => ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+            'values' => $monthlyUsers
+        ]);
     }
 
     public function userlist()

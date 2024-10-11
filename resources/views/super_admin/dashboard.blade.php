@@ -189,18 +189,23 @@
 
     <!-- New Monthly Participants Chart -->
     <div class="row mb-5 col-md-12 mt-2"> 
-        <div class="col-md-12">
-            <div class="card border-left-info shadow h-100" style="height: 500px; width: 90%;">
-                <div class="card-body p-4 d-flex flex-column">
-                    <div class="text-xs font-weight-bold text-dark-blue text-uppercase mb-3">
-                        Total Users Created Monthly
-                    </div>
-                    <div class="chart-container flex-grow-1">
-                        <canvas id="monthlyParticipantsChart" style="height: 100%; width: 100%;"></canvas>
-                    </div>
+    <div class="col-md-12 mt-4">
+        <div class="card border-left-info shadow h-100" style="height: 500px; width: 90%;">
+            <div class="card-body p-4 d-flex flex-column">
+                <div class="text-xs font-weight-bold text-dark-blue text-uppercase mb-3">
+                Total Users Registered Monthly
+                <div class="year-navigation">
+                    <button id="prev-year-users" class="btn btn-outline-primary me-2">Back</button>
+                    <span id="current-year-users">{{ $currentYear }}</span>
+                    <button id="next-year-users" class="btn btn-outline-primary ms-2">Next</button>
+                </div>
+                </div>
+                <div class="chart-container flex-grow-1">
+                    <canvas id="monthlyUsersChart" style="height: 100%; width: 100%;"></canvas>
                 </div>
             </div>
         </div>
+    </div>
 </div>
     
 
@@ -400,33 +405,69 @@
         
 });
 
-    const ctxParticipants = document.getElementById('monthlyParticipantsChart').getContext('2d');
-    const monthlyParticipantsChart = new Chart(ctxParticipants, {
-        type: 'bar',
-        data: {
-            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-            datasets: [{
-                label: 'Participants Joined',
-                data: [82, 121, 52, 72, 120, 83, 32, 15, 56, 69, 144, 90],
-                backgroundColor: 'rgba(255, 99, 132, 0.6)',
-                borderColor: 'rgba(255, 99, 132, 1)',
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: 'Number of Participants'
-                    }
+    let currentYearUsers = {{ $currentYear }}; // Use the current year
+
+        // Function to update the chart with new data
+        function updateUserChart(chart, data) {
+            chart.data.labels = data.labels;
+            chart.data.datasets[0].data = data.values;
+            chart.update();
+        }
+
+        // Event listener for 'Back' button
+        document.getElementById('prev-year-users').addEventListener('click', function() {
+            currentYearUsers--;
+            fetchYearUserData(currentYearUsers);
+        });
+
+        // Event listener for 'Next' button
+        document.getElementById('next-year-users').addEventListener('click', function() {
+            currentYearUsers++;
+            fetchYearUserData(currentYearUsers);
+        });
+
+        // Fetch data for the selected year
+        function fetchYearUserData(year) {
+            fetch(`/super-admin/users-data?year=${year}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('current-year-users').innerText = year; // Update displayed year
+                    updateUserChart(monthlyUsersChart, data); // Update chart with new data
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        }
+
+        const usersCtx = document.getElementById('monthlyUsersChart').getContext('2d');
+        const monthlyUsersData = @json($monthlyUsers);
+
+        const monthlyUsersChart = new Chart(usersCtx, {
+            type: 'line',
+            data: {
+                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                datasets: [{
+                    label: 'Total Users Registered',
+                    data: monthlyUsersData, // User data for each month
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4,
+                    pointBackgroundColor: 'rgba(75, 192, 192, 1)',
+                    pointRadius: 4
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{ 
+                        ticks: {
+                            beginAtZero: true,
+                            stepSize: 1 
+                        }
+                    }]
                 }
             }
-        }
+        });
     });
-});
 
 </script>
 @vite('resources/js/calendar.js')
