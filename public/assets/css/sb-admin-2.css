@@ -5314,6 +5314,7 @@ fieldset:disabled a.btn {
   justify-content: center;
   height: 55px; /* Fixed height for consistency */
   margin-bottom: 10px;
+  margin-top: 10px;
 }
 
 .btn-success:hover {
@@ -5435,6 +5436,7 @@ fieldset:disabled a.btn {
   justify-content: center;
   height: 55px; /* Fixed height for consistency */
   margin-bottom: 10px;
+  margin-top: 10px;
 }
 
 .btn-danger:hover {
