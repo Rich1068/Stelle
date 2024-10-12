@@ -140,16 +140,26 @@
 
                 <!-- Event Banner -->
                 <div class="col-md-12 mb-4">
-                    <div class="event-field">
-                        <label for="event_banner" class="flex items-center">
-                            <i class="fas fa-image mr-2"></i>
-                            <span class="font-bold">{{ __('Event Banner') }}</span>
-                        </label>
-                        <x-text-input id="event_banner" name="event_banner" type="file" class="mt-1 block w-full event-input" accept="image/*" onchange="previewImage(event)" />
-                        <x-input-error class="mt-2" :messages="$errors->get('event_banner')" />
-                        <img id="image_preview" class="event-image-preview" style="display: none; max-width: 50%; margin-top: 10px;" />
-                    </div>
-                </div>
+    <div class="event-field">
+        <label for="event_banner" class="flex items-center">
+            <i class="fas fa-image mr-2"></i>
+            <span class="font-bold">{{ __('Event Banner') }}</span>
+        </label>
+        
+
+        <input id="event_banner" name="event_banner" type="file" accept="image/*" class="mt-1 block w-full event-input" onchange="previewImage(event)" style="display: none;" />
+
+   
+        <button type="button" class="custom-file-button" onclick="document.getElementById('event_banner').click()">
+            <i class="fas fa-upload"></i> <span class="bold-text">Update Event Banner</span>
+        </button>
+        
+        <x-input-error class="mt-2" :messages="$errors->get('event_banner')" />
+
+        <!-- Image preview section for the selected file -->
+        <img id="image_preview" class="event-image-preview" style="display: none; max-width: 50%; margin-top: 10px;" />
+    </div>
+</div>
 
                 <div class="flex items-center gap-4 mb-4">
                     <x-primary-button id="editEventButton" type="submit" class="btn-primary" onclick="disableButton(this)">
@@ -162,6 +172,27 @@
 </section>
 
 <style>
+    .custom-file-button {
+        background-color: #001e54; /* LightSeaGreen */
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 15px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background-color 0.3s ease;
+    }
+
+    .custom-file-button:hover {
+        background-color: #004d80;
+    }
+
+    .custom-file-button i {
+        margin-right: 8px;
+    }
+    .bold-text {
+        font-weight: bold;
+    }
 .custom-bg-white {
     border-radius: 15px; /* Add border radius */
     max-width: 120%;

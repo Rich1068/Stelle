@@ -131,14 +131,20 @@
                     </div>
                 </div>
 
-                <!-- Event Banner -->
                 <div class="col-md-12 mb-4">
                     <div class="event-field">
                         <label for="event_banner" class="flex items-center">
                             <i class="fas fa-image mr-2"></i>
                             <span class="font-bold">{{ __('Event Banner') }}</span>
                         </label>
-                        <x-text-input id="event_banner" name="event_banner" type="file" class="mt-1 block w-full event-input" accept="image/*" onchange="previewImage(event)" />
+                        <!-- Hide the original file input -->
+                        <input id="event_banner" name="event_banner" type="file" accept="image/*" onchange="previewImage(event)" style="display: none;" />
+                        
+                        <!-- Custom button to trigger file input -->
+                        <button type="button" class="custom-file-button" onclick="document.getElementById('event_banner').click()">
+    <i class="fas fa-upload"></i> <span class="bold-text">Choose File</span>
+</button>
+                        
                         <x-input-error class="mt-2" :messages="$errors->get('event_banner')" />
                         <img id="image_preview" class="event-image-preview" style="display: none; max-width: 50%; margin-top: 10px;" />
                     </div>
@@ -158,6 +164,29 @@
 </section>
 
 <style>
+
+.custom-file-button {
+        background-color: #001e54; /* LightSeaGreen */
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 15px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background-color 0.3s ease;
+    }
+
+    .custom-file-button:hover {
+        background-color: #004d80;
+    }
+
+    .custom-file-button i {
+        margin-right: 8px;
+    }
+
+    .bold-text {
+        font-weight: bold;
+    }
 .custom-bg-white {
     border-radius: 15px; /* Add border radius */
     max-width: 120%;
@@ -214,6 +243,16 @@
 }
     </style>
 <script>
+
+function previewImage(event) {
+        const reader = new FileReader();
+        reader.onload = function () {
+            const preview = document.getElementById('image_preview');
+            preview.src = reader.result;
+            preview.style.display = 'block';
+        }
+        reader.readAsDataURL(event.target.files[0]);
+    }
      function autoResize(textarea) {
     textarea.style.height = 'auto';  // Reset height to auto to shrink if needed
     textarea.style.height = (textarea.scrollHeight) + 'px';  // Set the height based on the scroll height
