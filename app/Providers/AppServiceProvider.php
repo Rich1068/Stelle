@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Auth;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -27,6 +28,7 @@ class AppServiceProvider extends ServiceProvider
         View::composer('layouts.app', function ($view) {
             $user = auth()->user(); // Fetch the currently authenticated user
             $sidebar = '';
+            $adminRequest = null;
 
             switch ($user->role_id) {
                 case '1':
@@ -35,13 +37,13 @@ class AppServiceProvider extends ServiceProvider
                 case '2':
                     $sidebar = 'admin.partials.sidebar';
                     break;
-                // Add more cases as needed
                 case '3':
                     $sidebar = 'user.partials.sidebar';
                     break;
             }
+            $adminRequest = Auth::user()->registerAdminRequest;
 
-            $view->with('sidebar', $sidebar); // Pass the sidebar name to the view
+            $view->with(compact('sidebar', 'adminRequest')); 
         });
     }
 }

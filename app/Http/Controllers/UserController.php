@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\EventParticipant;
+use App\Models\CertUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Event;
@@ -10,10 +12,13 @@ class UserController extends Controller
     public function index()
     {
         $user = Auth::user()->id;
+        $eventsAttendedTotal = EventParticipant::where('user_id', $user)
+                                                ->where('status_id', 1)
+                                                ->count();
+        $totalCertificates = CertUser::where('user_id', $user)
+                                    ->count();
 
-        $adminRequest = Auth::user()->registerAdminRequest;
-
-        return view('user.dashboard', compact('adminRequest'));
+        return view('user.dashboard', compact('user', 'eventsAttendedTotal', 'totalCertificates'));
     }
     public function getEvents()
     {

@@ -61,11 +61,7 @@
             </div>
         </div>
 
-<!-- Request as Admin Column -->
-<div class="col-xl-6 col-md-2 d-flex flex-column justify-content-center"> 
-    <form id="registerAdminForm" action="{{ route('register.admin') }}" method="POST">
-        @csrf
-        
+    <div class="col-xl-6 col-md-12 mb-4"> 
         <div class="col-12 mb-4"> <!-- Increased margin for space between cards -->
             <div class="card border-left-info shadow h-100" style="height: 220px !imortant;">
                 <div class="card-body d-flex align-items-center"> <!-- Added d-flex and align-items-center -->
@@ -79,7 +75,7 @@
                             </div>
                         </div>
                         <div class="col-auto">
-                            <i class="fas fa-user-plus fa-2x icon-dark-blue" onclick="confirmSubmission()"></i> <!-- Dark blue icon with hover effect -->
+                            <i class="fas fa-user-plus fa-2x icon-dark-blue"></i> <!-- Dark blue icon with hover effect -->
                         </div>
                     </div>
                 </div>
@@ -94,7 +90,7 @@
                             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
                                 Certificates
                             </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">0</div> <!-- Placeholder number -->
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{$totalCertificates}}</div> <!-- Placeholder number -->
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-certificate fa-2x text-info"></i> <!-- Icon for certificates -->
@@ -112,7 +108,7 @@
                             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
                                 Evaluation Forms Answered
                             </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">0</div> <!-- Placeholder number -->
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"></div> <!-- Placeholder number -->
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-check-square fa-2x text-info"></i> <!-- Icon for evaluation forms -->
@@ -128,9 +124,9 @@
                     <div class="row no-gutters align-items-center w-100"> <!-- Ensure the row takes full width -->
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                Events Completed
+                                Events attended
                             </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">0</div> <!-- Placeholder number -->
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{$eventsAttendedTotal}}</div> <!-- Placeholder number -->
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-user-check fa-2x text-info"></i> 
@@ -139,22 +135,21 @@
                 </div>
             </div>
         </div>
-</div>
-<div class="row mb-4 col-md-12">
-    <div class="col-md-12">
-        <div class="card border-left-info shadow h-100" style="height: 500px; width: 90%;">
-            <div class="card-body p-4 d-flex flex-column"> <!-- Added padding and flexbox for layout -->
-                <div class="text-xs font-weight-bold text-dark-blue text-uppercase mb-3"> <!-- Use dark blue text -->
-                    Monthly Events Joined
-                </div>
-                <div class="chart-container flex-grow-1"> <!-- Use flex-grow to fill space -->
-                    <canvas id="monthlyEventsChart" style="height: 100%; width: 100%;"></canvas> <!-- Set canvas to 100% -->
+    </div>
+    <div class="row mb-4 col-md-12">
+        <div class="col-md-12">
+            <div class="card border-left-info shadow h-100" style="height: 500px; width: 90%;">
+                <div class="card-body p-4 d-flex flex-column"> <!-- Added padding and flexbox for layout -->
+                    <div class="text-xs font-weight-bold text-dark-blue text-uppercase mb-3"> <!-- Use dark blue text -->
+                        Monthly Events Joined
+                    </div>
+                    <div class="chart-container flex-grow-1"> <!-- Use flex-grow to fill space -->
+                        <canvas id="monthlyEventsChart" style="height: 100%; width: 100%;"></canvas> <!-- Set canvas to 100% -->
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
 
 <!-- CSS Styling -->
 <style>
@@ -225,14 +220,6 @@ const monthlyEventsChart = new Chart(ctx, {
     }
 });
         
-    function confirmSubmission() {
-        // Show confirmation dialog
-        if (confirm('Are you sure you want to register as an event admin?')) {
-            // If confirmed, submit the form
-            document.getElementById('registerAdminForm').submit();
-        }
-        // If not confirmed, do nothing
-    }
 </script>
 
 @vite('resources/js/calendar.js')

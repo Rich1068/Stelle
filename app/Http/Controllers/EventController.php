@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class EventController extends Controller
@@ -45,7 +46,8 @@ class EventController extends Controller
             // Filter events occurring on the selected date
             $query->whereDate('date', '=', $selectedDate);
         }
-    
+        $query->orderBy('date', 'asc')
+              ->orderBy('start_time', 'asc');
         // Paginate the results (10 per page)
         $events = $query->paginate(10);
     
@@ -76,6 +78,7 @@ class EventController extends Controller
             $selectedDate = Carbon::parse($request->date)->format('Y-m-d');
             $query->whereDate('date', '=', $selectedDate);
         }
+        $query->orderBy('date', 'asc')->orderBy('start_time', 'asc');
 
         // Paginate the results (10 per page)
         $events = $query->paginate(10);
@@ -193,6 +196,7 @@ class EventController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
+        // Validate the request data
         $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string', 'max:500'],
@@ -204,35 +208,56 @@ class EventController extends Controller
             'capacity' => ['required', 'integer', 'min:1'],
             'event_banner' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048']
         ]);
-        if ($request->hasFile('event_banner')) {
-            $file = $request->file('event_banner');
-            $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
-            $relativePath = 'storage/images/event_banners/' . $filename;
-            // Move the uploaded file to the desired directory
-            $file->storeAs('/images/event_banners', $filename);
-        
+
+        // Start a database transaction
+        DB::beginTransaction();
+        try {
+            // Handle file upload if present
+            $relativePath = null;
+            if ($request->hasFile('event_banner')) {
+                $file = $request->file('event_banner');
+                $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
+                $relativePath = 'storage/images/event_banners/' . $filename;
+                // Move the uploaded file to the desired directory
+                $file->storeAs('/images/event_banners', $filename);
+            }
+
+            // Create the event record
+            $event = Event::create([
+                'title' => $request->title,
+                'description' => $request->description,
+                'date' => $request->date,
+                'address' => $request->address,
+                'start_time' => $request->start_time,
+                'end_time' => $request->end_time,
+                'capacity' => $request->capacity,
+                'event_banner' => $relativePath ?? $request->event_banner,
+                'mode' => $request->mode
+            ]);
+
+            // Create a user-event record
+            UserEvent::create([
+                'user_id' => Auth::id(),
+                'event_id' => $event->id,
+            ]);
+
+            // Commit the transaction
+            DB::commit();
+
+            return redirect()->route('event.view', $event->id)->with('success', 'Event created successfully.');
+        } catch (\Exception $e) {
+            // Rollback the transaction if any errors occur
+            DB::rollBack();
+
+            // Optionally delete the uploaded file if something goes wrong
+            if ($relativePath && Storage::exists($relativePath)) {
+                Storage::delete($relativePath);
+            }
+
+            // Log the error (optional) and redirect back with an error message
+            \Log::error('Error creating event: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Failed to create event. Please try again.');
         }
-        $event = Event::create([
-            'title' => $request->title,
-            'description' => $request->description,
-            'date' => $request->date,
-            'address' => $request->address,
-            'start_time' => $request->start_time,
-            'end_time' => $request->end_time,
-            'capacity' => $request->capacity,
-            'event_banner' => $relativePath ?? $request->event_banner,
-            'mode' => $request->mode
-        ]);
-        $event->save();
-
-        $userEvent = UserEvent::create([
-            'user_id' => Auth::id(),
-            'event_id' => $event->id,
-        ]);
-        
-        
-
-        return redirect()->route('event.view', $event->id)->with('success', 'Event created successfully.');
     }
 
     //main view of update
@@ -252,10 +277,14 @@ class EventController extends Controller
     public function update(EventUpdateRequest $request, $id): RedirectResponse
     {
         $event = Event::findOrFail($id);
-        // Validation rules
+    
+        // Start a database transaction
+        DB::beginTransaction();
+    
         try {
+            // Validate the request data
             $validatedData = $request->validated();
-
+    
             // Check if the remove event banner checkbox is checked
             if ($request->has('remove_event_banner') && $request->remove_event_banner) {
                 $oldfile = $event->event_banner;
@@ -269,27 +298,37 @@ class EventController extends Controller
                 $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
                 $relativePath = 'storage/images/event_banners/' . $filename;
                 $oldfile = $event->event_banner;
+    
                 if (!empty($event->event_banner) && File::exists($oldfile)) {
                     File::delete($oldfile);
                 }
-
+    
                 // Move the uploaded file to the desired directory
-                $path = $file->storeAs('/images/event_banners', $filename);
+                $file->storeAs('/images/event_banners', $filename);
                 $validatedData['event_banner'] = $relativePath;
             } else {
                 // Remove event_banner from validated data if no new file is uploaded
                 unset($validatedData['event_banner']);
             }
-
+    
+            // Update the event with validated data
             $event->fill($validatedData);
             $event->save();
+    
+            // Commit the transaction
+            DB::commit();
+    
+            return back()->with('status', 'event-updated')->with('success', 'Event updated successfully');
         } catch (\Exception $e) {
-            // Log the error or handle it as needed
+            // Rollback the transaction if an error occurs
+            DB::rollBack();
+    
+            // Optionally log the error
+            \Log::error('Error updating event: ' . $e->getMessage());
+    
+            // Redirect with an error message
             return Redirect::route('event.edit', ['id' => $id])->with('error', 'Failed to update event');
         }
-
-        // Redirect to a route, for example, the event view page
-        return back()->with('status', 'event-updated')->with('success', 'Event updated successfully');
     }
 
 

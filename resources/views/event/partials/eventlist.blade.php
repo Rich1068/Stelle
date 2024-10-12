@@ -30,7 +30,7 @@
                     </div>
                     <div class="event-list-actions">
                         <a href="{{ route('event.view', $event->id) }}" class="event-list-view-btn">View</a>
-                        <a href="{{ route('event.edit', $event->id) }}" class="event-list-edit-btn">Edit</a>
+                        
                     </div>
                 </div>
             </div>

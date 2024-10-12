@@ -129,6 +129,6 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
     }
     public function registerAdminRequest()
     {
-        return $this->hasOne(RegisterAdmin::class); // Assuming user_id is the foreign key
+        return $this->hasOne(RegisterAdmin::class); 
     }
 }

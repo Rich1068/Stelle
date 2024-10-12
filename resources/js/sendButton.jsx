@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { Button, Classes, Dialog, Checkbox } from '@blueprintjs/core';
 import axios from 'axios';
 
-const ExportModal = ({ isOpen, store, onClose, eventId }) => {
+// Export Modal for Certificate Selection and Preview
+const ExportModal = ({ isOpen, store, onClose, eventId, showLoadingModal }) => {
   const [loading, setLoading] = useState(false);
   const [names, setNames] = useState([]); // To store names fetched from the database
   const [selectedNames, setSelectedNames] = useState([]); // To store selected names for image generation
   const [images, setImages] = useState([]);
 
-  // Function to fetch names (event participants) from the database using eventId
+  // Fetch event participants
   const fetchNames = async () => {
     try {
       const response = await axios.get(`/event/${eventId}/get-participants`);
@@ -22,9 +23,8 @@ const ExportModal = ({ isOpen, store, onClose, eventId }) => {
     if (eventId) {
       fetchNames(); // Fetch names when the modal opens and eventId is available
     }
-  }, [eventId]); // Re-fetch if eventId changes
+  }, [eventId]);
 
-  // Handle checkbox change
   const handleCheckboxChange = (name) => {
     setSelectedNames((prevSelected) => {
       if (prevSelected.includes(name)) {
@@ -35,11 +35,9 @@ const ExportModal = ({ isOpen, store, onClose, eventId }) => {
     });
   };
 
-  // Function to replace {{name}} in the JSON structure
   const replaceNameInStore = (json, name) => {
     const clonedJson = JSON.parse(JSON.stringify(json)); // Clone the JSON to make it mutable
 
-    // Traverse through pages and elements in the cloned JSON
     clonedJson.pages.forEach((page) => {
       page.children.forEach((element) => {
         if (element.type === 'text' && element.text.includes('{{name}}')) {
@@ -50,109 +48,83 @@ const ExportModal = ({ isOpen, store, onClose, eventId }) => {
     return clonedJson;
   };
 
+  // Generate previews
   const handleGenerate = async () => {
     if (selectedNames.length === 0) {
       alert('Please select at least one user before generating the preview.');
       return;
     }
-  
+
     setLoading(true); // Start loading state
     const json = store.toJSON(); // Get the original design as JSON
-  
-    const newImages = []; // Array to store generated images
-  
+
+    const newImages = [];
+
     try {
       for (let name of selectedNames) {
-        // Clone and modify the store's JSON
         const modifiedJson = replaceNameInStore(json, name);
-  
-        // Load the modified JSON into the store
-        await store.loadJSON(modifiedJson);  // Ensure it's properly awaited
-  
-        // Wait for the store to finish loading changes (if necessary)
+        await store.loadJSON(modifiedJson);
         await store.waitLoading();
-  
-        // Render the current canvas to a data URL (an image)
         const dataURL = await store.toDataURL();
-  
-        // Add the generated image to the list
         newImages.push(dataURL);
       }
-  
-      // Set the generated images in the state for display
       setImages(newImages);
     } catch (e) {
       alert('Something went wrong');
       console.error(e);
     } finally {
-      setLoading(false); // Stop loading state
-      // Revert back to the original JSON
-      if (json) {
-        await store.loadJSON(json); // Ensure it's properly awaited
-        await store.waitLoading();
-      }
+      setLoading(false);
+      await store.loadJSON(json);
+      await store.waitLoading();
     }
   };
-  
+
+  // Generate and send certificates
   const handleGenerateAndSave = async () => {
     if (selectedNames.length === 0) {
       alert('Please select at least one user before sending the certificate.');
       return;
     }
-  
-    setLoading(true); // Start loading state
-    const json = store.toJSON(); // Get the original design as JSON
-  
-    const certificateData = []; // Array to store certificate data
-  
+
+    setLoading(true);
+    showLoadingModal(true); // Show the loading modal when "Send" is clicked
+
+    const json = store.toJSON();
+    const certificateData = [];
+
     try {
       for (let name of selectedNames) {
-        // Clone and modify the store's JSON
         const modifiedJson = replaceNameInStore(json, name);
-  
-        // Load the modified JSON into the store
-        await store.loadJSON(modifiedJson);  // Ensure it's properly awaited
-  
-        // Wait for the store to finish loading changes (if necessary)
+        await store.loadJSON(modifiedJson);
         await store.waitLoading();
-  
-        // Render the current canvas to a data URL (an image)
         const dataURL = await store.toDataURL();
-  
-        // Map the user ID with their generated image
-        const userId = getUserIdByName(name); // You need to implement getUserIdByName function
+        const userId = getUserIdByName(name);
         certificateData.push({
           userId,
-          imageData: dataURL, // The base64 image data
+          imageData: dataURL,
         });
       }
-  
-      // Send the generated certificate data to your backend to save the image paths
+
       const response = await axios.post(`/event/${eventId}/participants/send-certificates`, {
         data: certificateData,
       });
-  
+
       if (response.data.message === 'Certificates saved successfully!') {
         alert('Certificates saved successfully!');
       }
     } catch (error) {
       console.error('Error generating and saving certificates:', error);
     } finally {
-      setLoading(false); // Stop loading state
-  
-      // Revert back to the original JSON
-      if (json) {
-        await store.loadJSON(json); // Ensure it's properly awaited
-        await store.waitLoading();
-      }
+      setLoading(false);
+      showLoadingModal(false); // Hide the loading modal when done
+      await store.loadJSON(json);
+      await store.waitLoading();
     }
   };
 
-  // This function should map the user's name to their user ID
   const getUserIdByName = (name) => {
-    // You would need to fetch this or maintain a map of names to user IDs when fetching participants
     const user = names.find(n => n.full_name === name);
-    return user ? user.user_id : null; // Assuming you have user_id in your response data
+    return user ? user.user_id : null;
   };
 
   return (
@@ -169,7 +141,7 @@ const ExportModal = ({ isOpen, store, onClose, eventId }) => {
           {names.map((name, index) => (
             <Checkbox
               key={index}
-              label={name.full_name}  // Access the full_name property here
+              label={name.full_name}
               checked={selectedNames.includes(name.full_name)}
               onChange={() => handleCheckboxChange(name.full_name)}
             />
@@ -203,9 +175,26 @@ const ExportModal = ({ isOpen, store, onClose, eventId }) => {
   );
 };
 
-// The sendButton component passes eventId to ExportModal
+// Loading Modal Component
+const LoadingModal = ({ isOpen }) => {
+  return (
+    <Dialog
+      icon="cloud-upload"
+      title="Processing"
+      isOpen={isOpen}
+      style={{ width: '400px' }}
+    >
+      <div className={Classes.DIALOG_BODY}>
+        <p>Your certificates are being generated and sent. Please wait...</p>
+      </div>
+    </Dialog>
+  );
+};
+
+// SendButton Component with Loading Modal
 export const SendButton = ({ store, eventId }) => {
   const [modalVisible, setModalVisible] = useState(false);
+  const [loadingModalVisible, setLoadingModalVisible] = useState(false);
 
   return (
     <>
@@ -219,11 +208,12 @@ export const SendButton = ({ store, eventId }) => {
         store={store}
         isOpen={modalVisible}
         onClose={() => setModalVisible(false)}
-        eventId={eventId} // Pass the eventId to ExportModal
+        eventId={eventId}
+        showLoadingModal={setLoadingModalVisible} // Pass loading modal controller
       />
+      <LoadingModal isOpen={loadingModalVisible} />
     </>
   );
 };
 
-// Ensure SendButton is exported like this
 export default SendButton;

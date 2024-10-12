@@ -27,8 +27,6 @@
     </div>
 </div>
 
-
-
     <!-- Main Container -->
     <div class="row justify-content-center  custom-bg-white mt-4 mb-4 pt-4"> <!-- Added custom class for border radius -->
         <!-- Calendar Column -->
@@ -165,8 +163,7 @@
 
 
 
-
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     const ctx = document.getElementById('monthlyEventsChart').getContext('2d');
 const monthlyEventsChart = new Chart(ctx, {
