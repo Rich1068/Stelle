@@ -7,7 +7,7 @@
             <!-- First Section -->
             <div class="flex-fill" style="padding: 2rem; border-radius: 15px 0 0 15px; background-color: white;"> <!-- Set background color to white -->
                 <h3 class="text-primary font-weight-bold mb-0" style="color: darkcyan !important;"> <!-- Set text color to dark grey -->
-                    Good Evening <span style="color: darkblue !important;">User!</span>
+                Welcome back, <span style="color: darkblue !important;">{{Auth::user()->first_name}}</span>
                 </h3>
                 <p class="text-muted mb-0 font-weight-bold" style="color: darkblue;"> <!-- Set text color to dark blue -->
                     How are you feeling?
@@ -20,7 +20,7 @@
             <!-- Second Section -->
             <div class="flex-fill" style="padding: 2rem; border-radius: 15px 15px 15px 0; background-color: white;"> <!-- Set background color to white -->
                 <h3 class="text-primary font-weight-bold mb-0" style="color: darkcyan !important;"> <!-- Set text color to dark grey -->
-                    Here are your scheduled events <span style="color: darkblue !important;">for this month</span>
+                Here is your dashboard.  <span style="color: darkblue !important;">Let’s make today productive!</span>
                 </h3>
             </div>
         </div>
@@ -125,7 +125,7 @@
                                 <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
                                     Joined Events
                                 </div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ isset($totalJoinedEvents) ? $totalJoinedEvents : 0 }}</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totalJoinedEvents }}</div>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-user-check fa-2x text-info"></i>
@@ -312,6 +312,7 @@
         /* Dark Blue Background */
     }
 </style>
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     // Pass Laravel data to JavaScript
@@ -440,7 +441,8 @@
             yAxes: [{ 
                 ticks: {
                     beginAtZero: true,
-                    stepSize: 1 
+                    stepSize: 1,
+                     
                 }
             }]
         }
@@ -504,7 +506,9 @@
                     yAxes: [{ 
                         ticks: {
                             beginAtZero: true,
-                            stepSize: 1 
+                            stepSize: 1 ,
+                            min: 0,
+                            precision: 0, 
                         }
                     }]
                 }

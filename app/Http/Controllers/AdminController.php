@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Event;
 use App\Models\UserEvent;
 use App\Models\EvaluationForm;
+use App\Models\CertUser;
 use App\Models\EventParticipant;
 class AdminController extends Controller
 {
@@ -16,8 +17,8 @@ class AdminController extends Controller
         $totalCreatedEvents = UserEvent::where('user_id', $user)->count();
         $totalCreatedEvalForm = EvaluationForm::where('created_by', $user)->count();
         $totalJoinedEvent = EventParticipant::where('user_id', $user)->count();
-
-        return view('admin.dashboard', compact('user', 'totalCreatedEvents', 'totalCreatedEvalForm', 'totalJoinedEvent'));
+        $totalCertReceived = CertUser::where('user_id', $user)->count();
+        return view('admin.dashboard', compact('user', 'totalCreatedEvents', 'totalCreatedEvalForm', 'totalJoinedEvent', 'totalCertReceived'));
     }
     public function getEvents()
     {

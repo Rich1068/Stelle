@@ -44,8 +44,8 @@
                 </div>
                 <div class="dropdown mt-3">
                     <select id="calendarFilter" class="form-control">
-                        <option value="all">All Events</option>
                         <option value="join">Joined Events</option>
+                        <option value="all">All Events</option>
                     </select>
                 </div>
                 <div id="calendar" class="p-3" style="height: 400px; overflow-y: auto;"></div>
@@ -60,28 +60,10 @@
             </div>
             </div>
         </div>
+        
 
     <div class="col-xl-6 col-md-12 mb-4"> 
-        <div class="col-12 mb-4"> <!-- Increased margin for space between cards -->
-            <div class="card border-left-info shadow h-100" style="height: 220px !imortant;">
-                <div class="card-body d-flex align-items-center"> <!-- Added d-flex and align-items-center -->
-                    <div class="row no-gutters align-items-center w-100"> <!-- Ensure the row takes full width -->
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                Request as Admin
-                            </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                Click to Register
-                            </div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-user-plus fa-2x icon-dark-blue"></i> <!-- Dark blue icon with hover effect -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+   
         <div class="col-12 mb-4"> <!-- Increased margin for space between cards -->
             <div class="card border-left-info shadow h-100" style="height: 220px !imortant;">
                 <div class="card-body d-flex align-items-center"> <!-- Added d-flex and align-items-center -->
@@ -150,7 +132,7 @@
             </div>
         </div>
     </div>
-
+</div>
 <!-- CSS Styling -->
 <style>
 

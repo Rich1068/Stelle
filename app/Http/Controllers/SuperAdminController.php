@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use App\Models\RegisterAdmin;
+use App\Models\EventParticipant;
 use App\Models\Event;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
@@ -22,7 +23,7 @@ class SuperAdminController extends Controller
         $totalUsers = User::count();
         $totalEvents = Event::count();
         $totalCreatedEvents = UserEvent::where('user_id', $user)->count();
-        
+        $totalJoinedEvents = EventParticipant::where('user_id', $user)->count();
         $userCount = User::where('role_id', '3')->count();
         $adminCount = User::where('role_id', '2')->count();
         $superAdminCount = User::where('role_id', '1')->count();
@@ -71,7 +72,7 @@ class SuperAdminController extends Controller
             'values' => [$maleGender, $femaleGender, $unknownGender]
         ];
 
-        return view('super_admin.dashboard',compact('user', 'totalUsers', 'totalEvents', 'userCountData','totalCreatedEvents','genderData', 'monthlyEventsData', 'currentYear', 'monthlyUsers'));
+        return view('super_admin.dashboard',compact('user', 'totalUsers', 'totalEvents', 'userCountData','totalCreatedEvents','genderData', 'monthlyEventsData', 'currentYear', 'monthlyUsers', 'totalJoinedEvents'));
     }
 
     public function getEventsData(Request $request)

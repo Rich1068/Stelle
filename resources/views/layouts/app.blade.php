@@ -245,7 +245,6 @@
     </a>
     <!-- jQuery (only include it once) -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
     <!-- FullCalendar and moment.js -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar/main.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar/index.global.min.js"></script>
