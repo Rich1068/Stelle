@@ -166,18 +166,25 @@
         </div>
     </div> 
 
-    <div class="row mb-5 col-md-12">
+<!-- Updated Total Events Created Monthly Section with Text Centered and Navigation Below -->
+<div class="row mb-5 col-md-12">
     <div class="col-md-12">
         <div class="card border-left-info shadow h-100" style="height: 500px; width: 90%;">
-            <div class="card-body p-4 d-flex flex-column">
-                <div class="text-xs font-weight-bold text-dark-blue text-uppercase mb-3">
-                Total Events Created Monthly
-
-                <div class="year-navigation">
-                    <button id="prev-year">Back</button>
-                    <span id="current-year">{{ $currentYear }}</span> <!-- Display the current year -->
-                    <button id="next-year">Next</button>
+            <div class="card-body p-4 d-flex flex-column align-items-center"> <!-- Center content -->
+                <div class="text-xs font-weight-bold text-dark-blue text-uppercase mb-1 text-center">
+                    Total Events Created Monthly
                 </div>
+                <!-- Year navigation buttons below the text and centered -->
+                <div class="year-navigation d-flex align-items-center mb-3 justify-content-center"> <!-- Center navigation -->
+                    <!-- Back Button -->
+                    <button id="prev-year" class="btn circular-btn mx-2">
+                        <i class="fas fa-chevron-left"></i> <!-- Simplified arrow -->
+                    </button>
+                    <span id="current-year" class="mx-2">{{ $currentYear }}</span> <!-- Display the current year -->
+                    <!-- Next Button -->
+                    <button id="next-year" class="btn circular-btn mx-2">
+                        <i class="fas fa-chevron-right"></i> <!-- Simplified arrow -->
+                    </button>
                 </div>
                 <div class="chart-container flex-grow-1">
                     <canvas id="monthlyEventsChart" style="height: 100%; width: 100%;"></canvas>
@@ -187,18 +194,25 @@
     </div>
 </div>
 
-    <!-- New Monthly Participants Chart -->
-    <div class="row mb-5 col-md-12 mt-2"> 
+<!-- Updated Total Users Registered Monthly Section with Text Centered and Navigation Below -->
+<div class="row mb-5 col-md-12 mt-2">
     <div class="col-md-12 mt-4">
         <div class="card border-left-info shadow h-100" style="height: 500px; width: 90%;">
-            <div class="card-body p-4 d-flex flex-column">
-                <div class="text-xs font-weight-bold text-dark-blue text-uppercase mb-3">
-                Total Users Registered Monthly
-                <div class="year-navigation">
-                    <button id="prev-year-users" class="btn btn-outline-primary me-2">Back</button>
-                    <span id="current-year-users">{{ $currentYear }}</span>
-                    <button id="next-year-users" class="btn btn-outline-primary ms-2">Next</button>
+            <div class="card-body p-4 d-flex flex-column align-items-center"> <!-- Center content -->
+                <div class="text-xs font-weight-bold text-dark-blue text-uppercase mb-1 text-center">
+                    Total Users Registered Monthly
                 </div>
+                <!-- Year navigation buttons below the text and centered -->
+                <div class="year-navigation d-flex align-items-center mb-3 justify-content-center"> <!-- Center navigation -->
+                    <!-- Back Button -->
+                    <button id="prev-year-users" class="btn circular-btn mx-2">
+                        <i class="fas fa-chevron-left"></i> <!-- Simplified arrow -->
+                    </button>
+                    <span id="current-year-users" class="mx-2">{{ $currentYear }}</span> <!-- Display the current year -->
+                    <!-- Next Button -->
+                    <button id="next-year-users" class="btn circular-btn mx-2">
+                        <i class="fas fa-chevron-right"></i> <!-- Simplified arrow -->
+                    </button>
                 </div>
                 <div class="chart-container flex-grow-1">
                     <canvas id="monthlyUsersChart" style="height: 100%; width: 100%;"></canvas>
@@ -207,10 +221,39 @@
         </div>
     </div>
 </div>
-    
-
 
 <style>
+    .circular-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: #003366; /* Dark blue background */
+        color: white; /* White arrow color */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        padding: 0; /* Ensure no extra padding for centering */
+        margin: 0; /* Remove any default margins */
+        position: relative;
+    }
+
+    .circular-btn i {
+        font-size: 16px; /* Arrow size */
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%); /* Precisely center the arrow inside the button */
+    }
+
+    .circular-btn:hover {
+        background-color: #002244; /* Slightly darker blue on hover */
+    }
+
+    .year-navigation {
+        display: flex;
+        align-items: center;
+    }
 .custom-bg-white {
     border-radius: 15px; /* Add border radius */
     max-width: 95%;
