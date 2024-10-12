@@ -35,7 +35,7 @@
             /* Optional: Add padding or margin to adjust position if needed */
         }
     </style>
-
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.0.6/dist/cdn.min.js"></script>
 
 </head>
  
@@ -250,8 +250,7 @@
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar/index.global.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/moment/min/moment.min.js"></script>
 
-    <!-- Alpine.js -->
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.0.6/dist/cdn.min.js"></script>
+
 
     <!-- Bootstrap (ensure it's Bootstrap 5 or compatible version) -->
     <script src="{{asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>

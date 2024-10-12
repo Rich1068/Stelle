@@ -33,7 +33,13 @@ class AuthenticatedSessionController extends Controller
     {
         try {
             Log::info('Attempting to authenticate user', ['email' => $request->input('email')]);
-            
+
+            $user = \App\Models\User::withTrashed()->where('email', $request->input('email'))->first();
+
+            if ($user && $user->trashed()) {
+                // If the user is soft-deleted, redirect to the account deleted page
+                return redirect()->route('account.deleted');
+            }
             // Authenticate the user
             $request->authenticate();
 

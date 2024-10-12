@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\File;
 use App\Models\Country;
 use App\Models\User;
 use App\Models\Event;
+use App\Events\UserDeleted;
 use App\Models\Roles;
 use App\Models\RegisterAdmin;
 
@@ -202,6 +203,9 @@ class ProfileController extends Controller
         // Soft delete the user
         $user->delete();
 
+        event(new UserDeleted($user));
+        Log::info('account deleted');
+
         return redirect()->route('super_admin.userlist')->with('status', 'User account has been soft deleted.');
     }
     //view someones profile
@@ -236,6 +240,11 @@ class ProfileController extends Controller
 
         // Return the view with the user and their certificates
         return view('profile.mycertificates', compact('user'));
+    }
+
+    public function accountDeleted()
+    {
+        return view('auth.account-deleted');
     }
 
 }

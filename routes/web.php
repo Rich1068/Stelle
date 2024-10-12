@@ -31,6 +31,8 @@ Route::get('/', function () {
 Route::get('auth/google/redirect', [GoogleController::class, 'googlepage'])->name('google.redirect');
 Route::get('auth/google/callback', [GoogleController::class, 'googlecallback'])->name('google.callback');
 
+Route::get('/account-deleted', [ProfileController::class, 'accountDeleted'])->name('account.deleted');
+
 //check if logged in
 Route::middleware('auth')->group(function () {
     Route::get('/get-events', [EventController::class, 'getCalendarEvents'])->name('events.get');

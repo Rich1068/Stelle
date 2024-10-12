@@ -23,7 +23,7 @@
                 <p>{{ __('Once the account is deleted, all of its resources and data will be permanently deleted.') }}</p>
                 <div class="mt-4 flex justify-end space-x-2">
                     <button @click="show = false" class="btn btn-secondary">{{ __('Cancel') }}</button>
-                    <button type="button" @click="show = false" data-bs-toggle="modal" data-bs-target="#finalDeleteModal" class="btn btn-danger">{{ __('Yes, Proceed') }}</button>
+                    <button type="button" @click="show = false; triggerBootstrapModal();" class="btn btn-danger">{{ __('Yes, Proceed') }}</button>
                 </div>
             </div>
         </div>
@@ -41,7 +41,7 @@
                     {{ __('This action is irreversible. Are you sure you want to proceed?') }}
                 </div>
                 <div class="modal-footer">
-                    <form method="post" action="{{ route('superadmin.destroyUser', ['id' => $user->id]) }}">
+                    <form id="deleteAccountForm" method="POST" action="{{ route('superadmin.destroyUser', ['id' => $user->id]) }}">
                         @csrf
                         @method('delete')
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('Cancel') }}</button>
@@ -55,3 +55,11 @@
 
 <!-- Include Bootstrap JS (if not already included) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Script to trigger Bootstrap modal -->
+<script>
+    function triggerBootstrapModal() {
+        const finalDeleteModal = new bootstrap.Modal(document.getElementById('finalDeleteModal'));
+        finalDeleteModal.show();
+    }
+</script>
