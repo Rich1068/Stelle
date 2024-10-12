@@ -15,6 +15,7 @@ use App\Models\EventEvaluationForm;
 use App\Models\EventCertificate;
 use App\Events\UserAcceptedToEvent;
 use Illuminate\View\View;
+use App\Events\UserDeniedFromEvent;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
@@ -398,15 +399,18 @@ class EventController extends Controller
         $participant = EventParticipant::where('user_id', $participantId);
         // Update the participant's status
         $participant->update(['status_id' => $request->status_id]);
+        $user = User::findOrFail($participantId);
+        $eventDetails = Event::findOrFail($eventId);
 
         if ($request->status_id == 1) {
-            // Find the user and event
-            $user = User::findOrFail($participantId);
-            $eventDetails = Event::findOrFail($eventId);
-    
-            // Fire the event to send email notification
+            // User accepted
             event(new UserAcceptedToEvent($user, $eventDetails));
+        } elseif ($request->status_id == 2) {
+            // User denied (assuming status_id 2 means 'denied')
+            event(new UserDeniedFromEvent($user, $eventDetails));
         }
+
+        
 
         return back()->with('success', 'Participant status updated successfully.');
 

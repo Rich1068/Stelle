@@ -93,7 +93,41 @@
             <i class="fas fa-folder"></i>
         </a>
     </li>
+    
+    <hr class="sidebar-divider">
+
+    <li class="nav-item">
+        <a href="#" class="nav-link" data-toggle="modal" data-target="#logoutModal">
+            <span>Log Out</span>
+            <i class="fas fa-sign-out-alt"></i> <!-- Changed the icon for clarity -->
+        </a>
+    </li>
 </ul>
+
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="logoutModalLabel">Log Out Confirmation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to log out?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+
+                <!-- Logout Form -->
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="btn btn-primary">Log Out</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- End of Sidebar -->
 
 <script> 

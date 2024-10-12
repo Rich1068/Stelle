@@ -95,7 +95,7 @@
                                     <i class="fas fa-users mr-2"></i>
                                     <span class="font-bold">{{ __('Capacity') }}</span>
                                 </label>
-                                <x-text-input id="capacity" name="capacity" type="number" class="mt-1 block w-full event-input" :value="old('capacity')" required />
+                                <x-text-input id="capacity" name="capacity" type="number" class="mt-1 block w-full event-input" :value="old('capacity')" min="1" required />
                                 <x-input-error class="mt-2" :messages="$errors->get('capacity')" />
                             </div>
                         </div>
@@ -105,7 +105,7 @@
                             <div class="event-field">
                                 <label for="address" class="flex items-center">
                                     <i class="fas fa-map-marker-alt mr-2"></i>
-                                    <span class="font-bold">{{ __('Address') }}</span>
+                                    <span class="font-bold">{{ __('Address/Link') }}</span>
                                 </label>
                                 <x-text-input id="address" name="address" type="text" class="mt-1 block w-full event-input" :value="old('address')" required />
                                 <x-input-error class="mt-2" :messages="$errors->get('address')" />

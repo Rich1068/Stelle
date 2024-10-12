@@ -39,7 +39,11 @@
             <!-- User Information -->
             <div class="participant-info">
                 <div class="participant-profile">
-                    <img src="{{ $participant->user->profile_picture_url }}" alt="{{ $participant->user->first_name }}" class="profile-picture">
+                    @if($participant->user->profile_picture_url == null)
+                        <img src="{{ asset('storage/images/profile_pictures/default.jpg') }}" alt="Default profile picture" class="profile-picture"> 
+                    @else 
+                        <img src="{{ $participant->user->profile_picture_url }}" alt="{{ $participant->user->first_name }}" class="profile-picture">
+                    @endif
                     <div class="participant-details">
                         <a href="{{ route('profile.view', $participant->user->id) }}" class="participant-name">
                             {{ $participant->user->first_name }} {{ $participant->user->last_name }}
@@ -63,7 +67,7 @@
         {{ $participants->appends(request()->query())->links('vendor.pagination.custom1') }}
     </div>
 </div>
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 $(document).ready(function() {
     // Search filter
@@ -78,35 +82,35 @@ $(document).ready(function() {
             }
         });
     });
+});
+    $(document).on('click', '.accept-btn', function(e) {
+    e.preventDefault();
+    var userId = $(this).data('user-id');
+    var eventId = $(this).data('event-id');
+    var statusId = 1;  // Accepted
 
-    // Handle the Accept button click
-    $('.accept-btn').on('click', function(e) {
-        e.preventDefault();
-        var userId = $(this).data('user-id');
-        var eventId = $(this).data('event-id');
-        var statusId = 1;  // Accepted
-
-        $.ajax({
-            url: '/event/' + eventId + '/participants/' + userId + '/update',
-            type: 'POST',
-            data: {
-                _token: '{{ csrf_token() }}',
-                status_id: statusId
-            },
-            success: function(response) {
-                var participantItem = $('.participant-list-item[data-user-id="' + userId + '"]');
-                if (participantItem.length) {
-                    participantItem.remove();
-                } 
-            },
-            error: function(xhr) {
-                alert('Error: ' + xhr.responseText);
-            }
-        });
+    $.ajax({
+        url: '/event/' + eventId + '/participants/' + userId + '/update',
+        type: 'POST',
+        data: {
+            _token: '{{ csrf_token() }}',
+            status_id: statusId
+        },
+        success: function(response) {
+            var participantItem = $('.participant-list-item[data-user-id="' + userId + '"]');
+            if (participantItem.length) {
+                participantItem.remove();
+            } 
+            alert('Participant accepted successfully');
+        },
+        error: function(xhr) {
+            alert('Error: ' + xhr.responseText);
+        }
     });
+});
 
     // Handle the Decline button click
-    $('.decline-btn').on('click', function(e) {
+    $(document).on('click', '.decline-btn', function(e) {
         e.preventDefault();
         var userId = $(this).data('user-id');
         var eventId = $(this).data('event-id');
@@ -124,13 +128,14 @@ $(document).ready(function() {
                 if (participantItem.length) {
                     participantItem.remove();
                 }
+                alert('Participant declined successfully');
             },
             error: function(xhr) {
                 alert('Error: ' + xhr.responseText);
             }
         });
     });
-});
+
 </script>
 
 <style>
