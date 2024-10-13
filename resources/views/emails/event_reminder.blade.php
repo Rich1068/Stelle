@@ -23,6 +23,7 @@
             margin: 20px auto; /* Center the container */
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Box shadow */
             overflow: hidden; /* Ensure no content overflows */
+            box-sizing: border-box; /* Include padding in width */
         }
         h1 {
             color: #1a1a5e; /* Dark blue color for heading */
@@ -36,7 +37,7 @@
         .button {
             background-color: #1a1a5e; /* Dark blue */
             border: none;
-            color:  #ffff !important; /* White text */
+            color: #ffff !important; /* White text */
             padding: 12px 24px; /* Padding for button */
             text-align: center;
             text-decoration: none;
@@ -67,6 +68,25 @@
             width: 100%; /* Full width */
             height: auto; /* Maintain aspect ratio */
             margin: 40px 0 25px; /* Space around the logo */
+        }
+        /* Media query for smaller screens */
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px; /* Reduce padding for smaller screens */
+            }
+            h1 {
+                font-size: 20px; /* Smaller heading size on mobile */
+            }
+            p {
+                font-size: 14px; /* Smaller font size for mobile */
+            }
+            .logo {
+                max-width: 180px; /* Smaller logo for mobile */
+            }
+            .button {
+                font-size: 14px; /* Smaller button text */
+                padding: 10px 20px; /* Adjust padding for button */
+            }
         }
     </style>
 </head>

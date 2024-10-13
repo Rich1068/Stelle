@@ -4,13 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Email Verification</title>
+    <style>
+        /* Responsive styles */
+        @media (max-width: 600px) {
+            .responsive-table {
+                width: 90% !important; /* Set width to 90% on mobile */
+                max-width: 90%; /* Ensure max width is 90% */
+                box-shadow: none; /* Optional: remove shadow on mobile for a cleaner look */
+            }
+        }
+    </style>
 </head>
-<body style="margin: 0; padding: 0; background-color: #F8C8C8;">
+<body style="margin: 0; padding: 0; background: linear-gradient(to bottom right, #F99C9C, #ACDFF6) !important;">
 
-    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background: linear-gradient(to bottom right, #F99C9C, #ACDFF6) !important;">
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="padding: 50px 0;">
         <tr>    
             <td align="center">
-                <table width="450" cellpadding="0" cellspacing="0" border="0" style="background-color: #ffffff; border-radius: 10px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);">
+                <table width="450" cellpadding="0" cellspacing="0" border="0" class="responsive-table" style="background-color: #ffffff; border-radius: 10px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);">
                     <tr>
                         <td align="center" style="padding: 30px;">
                             <img src="https://i.postimg.cc/vTVtk9nL/stellelogo.png" alt="Logo" style="max-width: 240px; width: 100%; height: auto; margin-bottom: 20px;">

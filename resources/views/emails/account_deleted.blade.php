@@ -13,21 +13,22 @@
         .container {
             background-color: white;
             border-radius: 20px;
-            width: 100%; /* Full width */
+            width: 90%;
             max-width: 600px; /* Max width for container */
-            padding: 30px; /* Padding inside the container */
+            padding: 30px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             text-align: center; /* Centered text for content */
-            margin: 0 auto; /* Center the container */
+            margin: 0 auto;
+            box-sizing: border-box; /* Ensure padding is included in width calculation */
         }
         h1 {
-            color: #1a1a5e; /* Dark blue */
+            color: #1a1a5e;
             font-size: 24px;
-            margin-top: 30px; /* Space above the heading */
-            margin-bottom: 25px; /* Space below the heading */
+            margin-top: 30px;
+            margin-bottom: 25px;
         }
         p {
-            margin: 20px 0; /* Vertical space for paragraphs */
+            margin: 20px 0;
             font-size: 16px;
             color: #1a1a5e;
         }
@@ -35,14 +36,29 @@
             max-width: 240px;
             width: 100%;
             height: auto;
-            margin: 40px 0 25px; /* Space around the logo */
+            margin: 40px 0 25px;
         }
         .divider {
-            margin: 20px 0; /* Divider space */
-            border-bottom: 2px solid #1a1a5e; /* Dark blue line */
+            margin: 20px 0;
+            border-bottom: 2px solid #1a1a5e;
         }
         .username {
-            font-weight: bold; /* Bold styling for user name */
+            font-weight: bold;
+        }
+        /* Media query for smaller screens */
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px; /* Reduce padding for smaller screens */
+            }
+            h1 {
+                font-size: 20px; /* Smaller heading size on mobile */
+            }
+            p {
+                font-size: 14px; /* Smaller font size for mobile */
+            }
+            .logo {
+                max-width: 180px; /* Smaller logo for mobile */
+            }
         }
     </style>
 </head>
