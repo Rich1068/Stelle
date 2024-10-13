@@ -12,6 +12,14 @@
 </div>
 
 <div class="container-fluid" style="padding: 0;">
+
+@if($certificates->isEmpty())
+    <!-- No templates available message -->
+    <div class="no-events-container">
+    <i class="fas fa-file-alt"></i> <!-- Icon representing no forms -->
+    <p>No Certificate Template Found.</p>
+</div>
+    @else
     <!-- Search Bar -->
     <div class="search-container" style="margin: 40px auto; max-width: 60%;">
         <input type="text" id="searchInput" placeholder="Search for forms..." class="search-input" onkeyup="filterTable()">
@@ -19,13 +27,7 @@
     </div>
 
     
-    @if($certificates->isEmpty())
-    <!-- No templates available message -->
-    <div class="no-events-container">
-    <i class="fas fa-file-alt"></i> <!-- Icon representing no forms -->
-    <p>No Certificate Template Found.</p>
-</div>
-    @else
+
     <!-- Certificates Table -->
     <div class="table-responsive">
         <table class="table table-striped custom-table text-center" id="certificatesTable" style="width: 90%; table-layout: fixed; margin: auto;">
