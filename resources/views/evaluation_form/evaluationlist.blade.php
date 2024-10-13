@@ -1,12 +1,28 @@
 @extends('layouts.app')
 
 @section('body')
+@if(session('success'))
+    <div class="alert alert-success">{{ session('success') }}</div>
+@endif
+
+@if(session('error'))
+    <div class="alert alert-danger">{{ session('error') }}</div>
+@endif
 
 <div class="top-container mb-4 d-flex align-items-left justify-content-between" style="background-color: #fff; border-radius: 15px; padding: 20px; box-shadow: none;">
     <!-- Left: Manage Evaluation Forms Title -->
     <div class="d-flex align-items-center">
         <h2 class="font-weight-bold mb-0" style="color: #002060;">
             <i class="fas fa-clipboard-list"></i> Manage Evaluation Forms
+            @if($evaluationForms->isEmpty())
+            <form action="{{ route('evaluation-forms.create') }}" method="get" style="display: inline;">
+                <div style="margin-top: 10px;">
+                    <button type="submit" class="btn btn-primary-2" style="margin-left: 30px; border-radius: 15px;">
+                        <i class="fas fa-plus"></i> Add Evaluation Form
+                    </button>
+                </div>
+            @endif
+            </form>
         </h2>
         <!-- Arrow Button (Dropdown Trigger) -->
     </div>
@@ -70,17 +86,18 @@
                 </tbody>
             </table>
         </div>
+        <form action="{{ route('evaluation-forms.create') }}" method="get" style="display: inline;">
+            <div style="margin-top: 10px;">
+                <button type="submit" class="btn btn-primary-2" style="margin-left: 30px; border-radius: 15px;">
+                    <i class="fas fa-plus"></i> Add Evaluation Form
+                </button>
+            </div>
+        </form>
     @endif
 </div>
 
 
-<form action="{{ route('evaluation-forms.create') }}" method="get" style="display: inline;">
-    <div style="margin-top: 10px;">
-        <button type="submit" class="btn btn-primary-2" style="margin-left: 30px; border-radius: 15px;">
-            <i class="fas fa-plus"></i> Add Evaluation Form
-        </button>
-    </div>
-</form>
+
 
 <!-- Styles -->
 <style>

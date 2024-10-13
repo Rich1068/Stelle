@@ -14,7 +14,6 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
 {
     use HasFactory, Notifiable, SoftDeletes;
 
-    
     /**
      * The attributes that are mass assignable.
      *

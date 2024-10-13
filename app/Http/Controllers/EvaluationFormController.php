@@ -343,6 +343,12 @@ class EvaluationFormController extends Controller
     {
         // Find the form by ID
         $evaluationForm = EvaluationForm::findOrFail($id);
+        
+        $linkedEvents = EventEvaluationForm::where('form_id', $evaluationForm->id)->exists();
+
+        if ($linkedEvents) {
+            return back()->with('error', 'This form is associated with an event and cannot be deleted.');
+        }
 
         $evaluationForm->update([
             'status_id' => 2, // Setting status to 'Inactive'
@@ -460,12 +466,17 @@ class EvaluationFormController extends Controller
                     $compiledCounts = collect($staticRadioOptions)->mapWithKeys(function ($option) use ($answerCounts) {
                         return [$option => $answerCounts->get($option, 0)];
                     });
+
+                    $totalResponses = $question->answers()->count();
+                    $totalScore = $question->answers()->sum('answer'); // Assuming answers are stored as numeric values
+                    $averageScore = $totalResponses > 0 ? round($totalScore / $totalResponses, 2) : 0;
     
                     $questionsData[] = [
                         'type' => 'radio',
                         'question' => $question->question,
                         'labels' => $staticRadioOptions,
                         'values' => $compiledCounts->values(),
+                        'average' => $averageScore
                     ];
                 }
             }

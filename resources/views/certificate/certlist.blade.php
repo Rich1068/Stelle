@@ -7,6 +7,11 @@
     <div class="d-flex align-items-center">
         <h2 class="font-weight-bold mb-0" style="color: #002060;">
             <i class="fas fa-certificate"></i> My Certificate Templates
+            @if($certificates->isEmpty())
+            <button onclick="location.href='{{ route('certificates.create') }}'" class="btn btn-primary" style="margin-left: 30px;">
+                <i class="fas fa-plus"></i> <span style="margin-left: 5px;"></span>Create New Template
+            </button>
+            @endif
         </h2>
     </div>
 </div>
@@ -83,6 +88,9 @@
             </tbody>
         </table>
     </div>
+    <button onclick="location.href='{{ route('certificates.create') }}'" class="btn btn-primary" style="margin-left: 30px;">
+        <i class="fas fa-plus"></i> <span style="margin-left: 5px;"></span>Create New Template
+    </button>
     @endif
 </div>
 
@@ -104,9 +112,7 @@
     </div>
 </div>
 
-<button onclick="location.href='{{ route('certificates.create') }}'" class="btn btn-primary" style="margin-left: 30px;">
-    <i class="fas fa-plus"></i> <span style="margin-left: 5px;"></span>Create New Template
-</button>
+
 
 <script>
 // Filter table by certificate name

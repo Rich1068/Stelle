@@ -19,11 +19,12 @@
             color: #8B0000; /* Dark red */
             font-weight: bold;
             text-align: center;
-            text-decoration: underline; /* Underline the text */
+            
         }
         .divider {
             border-top: 2px solid darkblue;
             margin: 10px 0;
+            width: 100%
         }
         .logo-section img {
             max-width: 240px;
@@ -49,7 +50,7 @@
 
         <!-- Alert Title -->
         <div class="alert-title">
-            <h2>Your account has been deleted</h2>
+            <h2>YOUR ACCOUNT HAS BEEN DELETED</h2>
         </div>
 
         <!-- Divider Below Title -->

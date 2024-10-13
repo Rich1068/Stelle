@@ -69,7 +69,9 @@ class EventController extends Controller
         $userId = Auth::id(); // Use Auth::id() to get the currently logged-in user's ID
 
         // Get event IDs where the user is the creator
-        $eventIds = UserEvent::where('user_id', $userId)->pluck('event_id');
+        $eventIds = UserEvent::where('user_id', $userId)
+                                ->whereHas('user')
+                                ->pluck('event_id');
 
         // Start the event query
         $query = Event::whereIn('id', $eventIds);
@@ -97,9 +99,10 @@ class EventController extends Controller
     
     public function view($id): View
     {
-        $userevent = UserEvent::with('user')->where('event_id', $id)->firstOrFail();
+        $userevent = UserEvent::with('user')->where('event_id', $id)->whereHas('user')->firstOrFail();
         $currentParticipants = EventParticipant::where('event_id', $id)
-            ->where('status_id', 1) // Only accepted will show
+            ->where('status_id', 1)
+            ->whereHas('user')
             ->count();
         $event = Event::findOrFail($id);
 
@@ -107,10 +110,12 @@ class EventController extends Controller
         
         $eventParticipant = EventParticipant::where('event_id', $id)
             ->where('user_id', Auth::user()->id)
+            ->whereHas('user')
             ->first();
 
         $participants = EventParticipant::where('event_id', $id)
             ->where('status_id', 1)
+            ->whereHas('user')
             ->get();
         $currentUser = Auth::user()->id;
         $existingForms = EvaluationForm::where('status_id', 1)
@@ -120,6 +125,7 @@ class EventController extends Controller
 
         $pendingParticipantsCount = EventParticipant::where('event_id', $event->id)
         ->where('status_id', 3) // Assuming status_id 3 represents pending status
+        ->whereHas('user')
         ->count();
         $evaluationForm = $event->evaluationForm;
         if ($evaluationForm) {
@@ -140,6 +146,7 @@ class EventController extends Controller
         $usersBirthdate = User::whereHas('eventParticipant', function ($query) use ($id) {
             $query->where('event_id', $id);
             })->select('birthdate')->get();
+
         $userAges = $usersBirthdate->map(function ($user) {
             return $user->birthdate ? Carbon::parse($user->birthdate)->age : 'N/A';
         });
@@ -341,6 +348,7 @@ class EventController extends Controller
         // Check if the user is already a participant
         $participant = EventParticipant::where('user_id', Auth::user()->id)
             ->where('event_id', $event->id)
+            ->whereHas('user')
             ->first();
 
         if (!$participant) {
@@ -379,6 +387,7 @@ class EventController extends Controller
 
         $participants = EventParticipant::where('event_id', $id)
                 ->where('status_id', 3)
+                ->whereHas('user')
                 ->paginate(10);
 
         return view('event.pendingparticipants', compact('eventuser', 'participants', 'event'));
@@ -396,7 +405,8 @@ class EventController extends Controller
         }
 
 
-        $participant = EventParticipant::where('user_id', $participantId);
+        $participant = EventParticipant::where('user_id', $participantId)
+                                        ->whereHas('user');
         // Update the participant's status
         $participant->update(['status_id' => $request->status_id]);
         $user = User::findOrFail($participantId);

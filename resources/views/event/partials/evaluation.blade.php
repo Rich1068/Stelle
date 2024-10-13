@@ -108,6 +108,9 @@
                                 <div class="text-xs font-weight-bold text-info text-uppercase mb-1" style="font-size: 1.1rem; padding: 10px;"> <!-- Add padding to the question text -->
                                     {{ $questionData['question'] }}
                                 </div>
+                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1" style="font-size: 0.9rem; padding-left: 10px;">
+                                    Average Score: {{ $questionData['average'] }}/5
+                                </div>
                                 <div class="chart-container mt-2" style="position: relative; height: calc(100% - 50px); width: 100%; padding: 10px;"> <!-- Adjust the height and add padding -->
                                     <canvas id="radioChart_{{ $index }}" style="height: 100%; width: 100%; margin: 0;"> <!-- Ensure canvas takes full width and height -->
                                     </canvas>
