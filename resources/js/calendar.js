@@ -28,7 +28,7 @@
                 
                     return {
                         html: `
-                            <div class="custom-event" style="background-color: #003366; color: white; padding: 2px 6px; border-radius: 5px; text-align: center; display: inline-block; font-size: 10px; margin: 2px;">
+                            <div class="custom-event" style="background-color: #003366; color: white; padding: 2px 6px; border-radius: 5px; text-align: center; display: inline-block; font-size: 10px; margin: 2px; width: 100px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                                 <strong>${eventTitle}</strong><br>
                             </div>
                         `

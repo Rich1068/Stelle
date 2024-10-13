@@ -46,6 +46,21 @@
 *::after {
   box-sizing: border-box;
 }
+.fc-customToday-button {
+  background-color: #003366; /* Dark blue */
+  border-radius: 50%; /* Make it circular */
+  width: 40px; /* Adjust size as needed */
+  height: 40px; /* Adjust size as needed */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fc-customToday-button .fas.fa-calendar {
+  color: white; /* Icon color */
+  font-size: 18px; /* Adjust icon size as needed */
+}
+
 
 .card {
   margin-bottom: 20px; /* Spacing between cards */

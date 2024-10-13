@@ -1,26 +1,26 @@
 @extends('layouts.app')
 
 @section('body')
-<div class="col-lg-12 d-flex justify-content-center">
-    <div class="card shadow-sm rounded" style="border-radius: 15px !important; width: 100% !important; background-color: white;"> <!-- Set background color to white -->
-        <div class="d-flex" style="width: 100%;">
+<div class="col-lg-12 d-flex justify-content-center" style="padding: 0; margin: 0;"> 
+    <div class="card shadow-sm rounded responsive-card" style="border-radius: 15px !important; width: 90% !important; background-color: white;"> 
+        <div class="d-flex flex-column flex-lg-row" style="width: 100%;">
             <!-- First Section -->
-            <div class="flex-fill" style="padding: 2rem; border-radius: 15px 0 0 15px; background-color: white;"> <!-- Set background color to white -->
-                <h3 class="text-primary font-weight-bold mb-0" style="color: darkcyan !important;"> <!-- Set text color to dark grey -->
-                Welcome back, <span style="color: darkblue !important;">{{Auth::user()->first_name}}</span>
+            <div class="flex-fill" style="padding: 2rem; border-radius: 15px 0 0 15px; background-color: white;"> 
+                <h3 class="text-primary font-weight-bold mb-0" style="color: darkcyan !important;"> 
+                    Welcome back, <span style="color: darkblue !important;">{{Auth::user()->first_name}}</span>
                 </h3>
-                <p class="text-muted mb-0 font-weight-bold" style="color: darkblue;"> <!-- Set text color to dark blue -->
+                <p class="text-muted mb-0 font-weight-bold" style="color: darkblue;"> 
                     How are you feeling?
                 </p>
             </div>
 
             <!-- Divider -->
-            <div class="divider" style="width: 2px; background-color: #dee2e6;"></div>
+            <div class="d-none d-lg-block" style="width: 2px; background-color: #dee2e6;"></div> <!-- Hide on smaller screens -->
 
             <!-- Second Section -->
-            <div class="flex-fill" style="padding: 2rem; border-radius: 15px 15px 15px 0; background-color: white;"> <!-- Set background color to white -->
-                <h3 class="text-primary font-weight-bold mb-0" style="color: darkcyan !important;"> <!-- Set text color to dark grey -->
-                Here is your dashboard.  <span style="color: darkblue !important;">Let’s make today productive!</span>
+            <div class="flex-fill" style="padding: 2rem; border-radius: 0 15px 15px 0; background-color: white;"> 
+                <h3 class="text-primary font-weight-bold mb-0" style="color: darkcyan !important;"> 
+                    Here is your dashboard.  <span style="color: darkblue !important;">Let’s make today productive!</span>
                 </h3>
             </div>
         </div>
@@ -28,7 +28,6 @@
 </div>
 
 
-    
     <div class="row justify-content-center  custom-bg-white mt-4 mb-4 pt-4"> <!-- Added custom class for border radius -->
     <!-- Calendar Column -->
     <div class="col-xl-6 col-md-12 mb-4"> <!-- Adjusted width for the calendar -->
@@ -223,6 +222,14 @@
 </div>
 
 <style>
+    
+
+.container {
+    display: flex; /* Use flexbox to center */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically if needed */
+    height: 100vh; /* Full height of the viewport for centering */
+}
     .circular-btn {
         width: 40px;
         height: 40px;
