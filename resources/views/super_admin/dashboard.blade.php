@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('body')
-<div class="col-lg-12 d-flex justify-content-center" style="padding: 0; margin: 0;"> 
+<div class="col-lg-12 d-flex justify-content-center" style="padding: 0;"> <!-- Added padding: 0 to the parent -->
     <div class="card shadow-sm rounded responsive-card" style="border-radius: 15px !important; width: 90% !important; background-color: white;"> 
         <div class="d-flex flex-column flex-lg-row" style="width: 100%;">
             <!-- First Section -->
@@ -26,8 +26,9 @@
         </div>
     </div>
 </div>
+</div>
 
-
+    
     <div class="row justify-content-center  custom-bg-white mt-4 mb-4 pt-4"> <!-- Added custom class for border radius -->
     <!-- Calendar Column -->
     <div class="col-xl-6 col-md-12 mb-4"> <!-- Adjusted width for the calendar -->
@@ -222,14 +223,69 @@
 </div>
 
 <style>
-    
+    /* Mobile-specific styles (for screens 768px or less) */
+@media (max-width: 768px) {
+    /* Only target the specific calendar container for centering */
+    .calendar-container {
+        display: flex; /* Use flexbox */
+        justify-content: center; /* Center horizontally */
+        align-items: center; /* Center vertically */
+        flex-direction: column; /* Stack items vertically */
+        width: 100%; /* Full width for mobile */
+        padding: 0; /* Remove padding */
+        margin: 0; /* Remove margin */
+    }
 
-.container {
-    display: flex; /* Use flexbox to center */
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically if needed */
-    height: 100vh; /* Full height of the viewport for centering */
+    /* Ensure the card inside the calendar takes full width on mobile */
+    .calendar-container .card {
+        width: 100%; /* Full width for mobile */
+        max-width: 100%; /* Prevent white space */
+        height: auto; /* Auto height */
+        padding: 0; /* Remove padding */
+        margin: 0; /* Remove margin */
+        box-sizing: border-box; /* Ensure padding doesn't cause overflow */
+    }
+
+    /* Ensure calendar content takes full width */
+    #calendar {
+        width: 100%; /* Full width */
+        padding: 0.5rem; /* Minimal padding */
+        box-sizing: border-box; /* Prevent overflow due to padding */
+    }
+
+    /* Ensure the dropdown inside the calendar is full width */
+    #calendarFilter {
+        width: 100%; /* Full width for dropdown */
+        margin-bottom: 1rem; /* Space below the dropdown */
+    }
+
+    /* Adjust text size for mobile */
+    .calendar-container .card-header h6 {
+        font-size: 1.2rem; /* Slightly smaller text on mobile */
+    }
+
+    /* Adjust modal dialog width on mobile */
+    .modal-dialog {
+        width: 100%; /* Full width for modal on mobile */
+        margin: 0 auto;
+    }
+
+    /* Other non-calendar cards (if any) */
+    .col-xl-6.col-md-12 {
+        flex: 0 0 100%; /* Full width on mobile */
+        max-width: 100%; /* Prevent white space */
+        padding: 0; /* Remove padding */
+        margin: 0; /* Stack vertically with no extra space */
+    }
 }
+
+@media (max-width: 768px) { /* Adjust the max-width as needed */
+    .responsive-card {
+        transform: scale(0.9); /* Adjust the scale value to make it smaller */
+        transform-origin: top center; /* Ensures it scales down from the top */
+    }
+}
+
     .circular-btn {
         width: 40px;
         height: 40px;

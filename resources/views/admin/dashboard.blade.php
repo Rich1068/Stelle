@@ -221,6 +221,62 @@ const ctxParticipants = document.getElementById('monthlyParticipantsChart').getC
     });
     </script>
 <style>
+    /* Mobile-specific styles (for screens 768px or less) */
+@media (max-width: 768px) {
+    /* Only target the specific calendar container for centering */
+    .calendar-container {
+        display: flex; /* Use flexbox */
+        justify-content: center; /* Center horizontally */
+        align-items: center; /* Center vertically */
+        flex-direction: column; /* Stack items vertically */
+        width: 100%; /* Full width for mobile */
+        padding: 0; /* Remove padding */
+        margin: 0; /* Remove margin */
+    }
+
+    /* Ensure the card inside the calendar takes full width on mobile */
+    .calendar-container .card {
+        width: 100%; /* Full width for mobile */
+        max-width: 100%; /* Prevent white space */
+        height: auto; /* Auto height */
+        padding: 0; /* Remove padding */
+        margin: 0; /* Remove margin */
+        box-sizing: border-box; /* Ensure padding doesn't cause overflow */
+    }
+
+    /* Ensure calendar content takes full width */
+    #calendar {
+        width: 100%; /* Full width */
+        padding: 0.5rem; /* Minimal padding */
+        box-sizing: border-box; /* Prevent overflow due to padding */
+    }
+
+    /* Ensure the dropdown inside the calendar is full width */
+    #calendarFilter {
+        width: 100%; /* Full width for dropdown */
+        margin-bottom: 1rem; /* Space below the dropdown */
+    }
+
+    /* Adjust text size for mobile */
+    .calendar-container .card-header h6 {
+        font-size: 1.2rem; /* Slightly smaller text on mobile */
+    }
+
+    /* Adjust modal dialog width on mobile */
+    .modal-dialog {
+        width: 100%; /* Full width for modal on mobile */
+        margin: 0 auto;
+    }
+
+    /* Other non-calendar cards (if any) */
+    .col-xl-6.col-md-12 {
+        flex: 0 0 100%; /* Full width on mobile */
+        max-width: 100%; /* Prevent white space */
+        padding: 0; /* Remove padding */
+        margin: 0; /* Stack vertically with no extra space */
+    }
+}
+
     .icon-dark-blue {
         color: #003366; /* Initial dark blue color */
         cursor: pointer; /* Cursor changes to pointer */
