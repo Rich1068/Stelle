@@ -1,5 +1,9 @@
 @if ($events->isEmpty())
+<div class="no-events-container">
+    <i class="fas fa-calendar-times"></i> <!-- Font Awesome icon for "No events" -->
     <p>No events available.</p>
+</div>
+
 @else
     <div class="event-list">
         @foreach ($events as $event)

@@ -8,10 +8,8 @@
         <h2 class="font-weight-bold mb-0" style="color: #002060;">
             <i class="fas fa-certificate"></i> My Certificate Templates
         </h2>
-
     </div>
 </div>
-
 
 <div class="container-fluid" style="padding: 0;">
     <!-- Search Bar -->
@@ -20,6 +18,14 @@
         <button class="search-button"><i class="fas fa-search"></i></button>
     </div>
 
+    
+    @if($certificates->isEmpty())
+    <!-- No templates available message -->
+    <div class="no-events-container">
+    <i class="fas fa-file-alt"></i> <!-- Icon representing no forms -->
+    <p>No Certificate Template Found.</p>
+</div>
+    @else
     <!-- Certificates Table -->
     <div class="table-responsive">
         <table class="table table-striped custom-table text-center" id="certificatesTable" style="width: 90%; table-layout: fixed; margin: auto;">
@@ -75,6 +81,7 @@
             </tbody>
         </table>
     </div>
+    @endif
 </div>
 
 <!-- View Certificate Modal -->
@@ -94,7 +101,6 @@
         </div>
     </div>
 </div>
-
 
 <button onclick="location.href='{{ route('certificates.create') }}'" class="btn btn-primary" style="margin-left: 30px;">
     <i class="fas fa-plus"></i> <span style="margin-left: 5px;"></span>Create New Template
@@ -130,23 +136,7 @@ function loadCertificate(certPath, certName) {
     certificateImage.src = "/" + certPath;
     modalTitle.textContent = certName;
 }
-
-document.getElementById("toggleButton").addEventListener("click", function() {
-    var buttonContainer = document.getElementById("buttonContainer");
-    var arrowIcon = document.getElementById("arrowIcon");
-    
-    if (buttonContainer.style.display === "none") {
-        buttonContainer.style.display = "block";
-        arrowIcon.classList.remove("fa-chevron-down");
-        arrowIcon.classList.add("fa-chevron-up");
-    } else {
-        buttonContainer.style.display = "none";
-        arrowIcon.classList.remove("fa-chevron-up");
-        arrowIcon.classList.add("fa-chevron-down");
-    }
-});
 </script>
-
 
 <!-- Styles -->
 <style>
@@ -233,29 +223,32 @@ document.getElementById("toggleButton").addEventListener("click", function() {
         background-color: #0d3b76; 
     }
 
-    /* Mobile styles */
-    @media (max-width: 576px) { /* Adjust max-width as needed */
-        .btn-primary {
-            padding: 5px 10px; /* Reduce padding */
-            font-size: 12px; /* Smaller font size */
-            border-radius: 15px; /* Smaller border radius */
-        }
+    .no-templates-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-color: white;
+        color: #001e54;
+        border-radius: 15px;
+        padding: 20px;
+        margin: 20px auto;
+        max-width: 80%;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
 
-        .button-group .btn {
-            width: 100%; /* Make buttons full width */
-            height: auto; /* Auto height for buttons */
-            margin: 5px 0; /* Add margin for spacing */
-        }
+    .no-templates-container i {
+        font-size: 40px; 
+        color: #001e54;
+        margin-bottom: 10px;
+    }
 
-        .button-group {
-            flex-direction: column; /* Stack buttons vertically */
-        }
-
-        .custom-table {
-            height: auto; /* Adjust height for the table on mobile */
-        }
+    .no-templates-container p {
+        font-size: 18px; 
+        color: #555;
+        margin: 0;
     }
 </style>
-
 
 @endsection

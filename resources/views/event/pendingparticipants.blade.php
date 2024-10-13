@@ -13,13 +13,15 @@
 <div id="notifications" class="position-fixed top-0 end-0 p-3">
     <!-- Notifications will be appended here -->
 </div>
-
-<div class="top-container">
-    <div class="answer-forms-event-title">
-        Pending Participants For
-    </div>
-    <div class="answer-forms-event-subtitle">
-        {{ $event->title }}
+<div class="top-container mb-4" style="background-color: #fff; border-radius: 15px; padding: 20px; box-shadow: none;">
+    <!-- Left: My Certificate Templates Title -->
+    <div class="d-block">
+        <h2 class="font-weight-bold mb-0" style="color: #002060;">
+            <i class="fas fa-users"></i> Pending Participants For
+        </h2>
+        <h2 class="font-weight-bold mt-2" style="color: grey;">
+            {{ $event->title }}
+        </h2>
     </div>
 </div>
 
@@ -34,33 +36,36 @@
 
     <!-- Participant List -->
     <div class="participant-list-container">
-        @foreach($participants as $participant)
-        <div class="participant-list-item" data-user-id="{{ $participant->user_id }}" data-name="{{ strtolower($participant->user->first_name . ' ' . $participant->user->last_name) }}">
-            <!-- User Information -->
-            <div class="participant-info">
-                <div class="participant-profile">
-                    @if($participant->user->profile_picture_url == null)
-                        <img src="{{ asset('storage/images/profile_pictures/default.jpg') }}" alt="Default profile picture" class="profile-picture"> 
-                    @else 
-                        <img src="{{ $participant->user->profile_picture_url }}" alt="{{ $participant->user->first_name }}" class="profile-picture">
-                    @endif
-                    <div class="participant-details">
-                        <a href="{{ route('profile.view', $participant->user->id) }}" class="participant-name">
-                            {{ $participant->user->first_name }} {{ $participant->user->last_name }}
-                        </a>
-                        <div class="participant-status">{{ $participant->status->status }}</div>
-                    </div>
+    @foreach($participants as $participant)
+    <div class="participant-list-item" data-user-id="{{ $participant->user_id }}" data-name="{{ strtolower($participant->user->first_name . ' ' . $participant->user->last_name) }}">
+        <!-- User Information -->
+        <div class="participant-info">
+            <div class="participant-profile">
+                @if($participant->user->profile_picture_url == null)
+                    <img src="{{ asset('storage/images/profile_pictures/default.jpg') }}" alt="Default profile picture" class="profile-picture"> 
+                @else 
+                    <img src="{{ $participant->user->profile_picture_url }}" alt="{{ $participant->user->first_name }}" class="profile-picture">
+                @endif
+                <div class="participant-details">
+                    <a href="{{ route('profile.view', $participant->user->id) }}" class="participant-name">
+                        {{ $participant->user->first_name }} {{ $participant->user->last_name }}
+                    </a>
+                    <div class="participant-status">{{ $participant->status->status }}</div>
                 </div>
             </div>
+        </div>
 
-            <!-- Actions -->
-            <div class="participant-actions">
+        <!-- Actions -->
+        <div class="participant-actions">
+            <div class="button-container">
                 <button type="button" class="btn btn-success accept-btn" data-user-id="{{ $participant->user_id }}" data-event-id="{{ $event->id }}">Accept</button>
                 <button type="button" class="btn btn-danger decline-btn" data-user-id="{{ $participant->user_id }}" data-event-id="{{ $event->id }}">Decline</button>
             </div>
         </div>
-        @endforeach
     </div>
+    @endforeach
+</div>
+
 
     <!-- Pagination Links with custom template -->
     <div class="d-flex justify-content-center" id="pagination-links">

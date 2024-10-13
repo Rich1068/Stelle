@@ -19,7 +19,10 @@
 
 <div class="container-fluid" style="padding: 0;">
     @if($evaluationForms->isEmpty())
-        <p class="text-center">No evaluation forms found.</p>
+    <div class="no-events-container">
+    <i class="fas fa-file-alt"></i> <!-- Icon representing no forms -->
+    <p>No evaluation forms found.</p>
+</div>
     @else
         <!-- Search Bar -->
         <div class="search-container" style="margin: 40px auto; max-width: 60%;">

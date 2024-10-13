@@ -1763,9 +1763,32 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
     margin-bottom: 10px; /* Space below meta items */
   }
 }
+.no-events-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  color: #001e54; /* Matches general styling, adjust as needed */
+  border-radius: 10px;
+  padding: 20px;
+  max-width: 300px; /* Adjust as needed */
+  margin: 50px auto; /* Centers the container */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  text-align: center;
+}
 
+.no-events-container i {
+  font-size: 40px;
+  color: #e74a3b; /* Red color for the icon to signify absence */
+  margin-bottom: 10px;
+}
 
-
+.no-events-container p {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0;
+}
 
 
 
@@ -2306,18 +2329,35 @@ h2 {
   
 }
 .top-container {
-  width: 100% !important; /* Ensure it takes full width */
-  max-width: 90% !important; /* Set a maximum width to avoid it stretching too wide */
+  width: 100% !important; /* Full width */
+  max-width: 90% !important; /* Limit max width */
   background-color: white !important; /* White background */
-  margin: 20px auto !important; /* Center the container with margin */
-  padding: 20px !important; /* Padding inside the container */
+  margin: 20px auto !important; /* Center the container */
+  padding: 20px !important; /* Padding */
   border-radius: 15px !important; /* Rounded corners */
   text-align: left !important; /* Align text to the left */
-  display: flex !important; /* Flexbox for alignment */
+  display: flex !important; /* Flexbox layout */
   flex-direction: column !important; /* Stack items vertically */
-  align-items: flex-start !important; /* Align items to the start */
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1) !important; /* Add box shadow */
+  align-items: flex-start !important; /* Align to the start */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1) !important; /* Shadow */
+  
+  /* Force text to stay inside the container */
+  word-break: break-word !important;
+  overflow-wrap: break-word !important;
+  white-space: normal !important; /* Prevents text from staying in one line */
 }
+
+@media (max-width: 768px) {
+  .top-container {
+    max-width: 100% !important; /* Full width on mobile */
+    padding: 30px !important; /* More padding on mobile */
+  }
+
+  h2 {
+    font-size: 1.5rem !important; /* Slightly smaller font on mobile */
+  }
+}
+
 
 @media (max-width: 768px) {
   .top-container {
@@ -5323,7 +5363,7 @@ fieldset:disabled a.btn {
   padding: 15px;
   font-size: 15px;
   font-weight: bold;
-  text-align: center; /* Center text */
+  text-align: center;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -5331,6 +5371,17 @@ fieldset:disabled a.btn {
   margin-bottom: 10px;
   margin-top: 10px;
 }
+
+@media (max-width: 768px) {
+  .btn-success {
+    padding: 10px; /* Reduce padding */
+    font-size: 14px; /* Smaller font size */
+    height: 45px; /* Reduced height for mobile */
+    margin-bottom: 8px; /* Adjust margins for mobile */
+    margin-top: 8px;
+  }
+}
+
 
 .btn-success:hover {
   color: #fff;
@@ -5452,6 +5503,66 @@ fieldset:disabled a.btn {
   height: 55px; /* Fixed height for consistency */
   margin-bottom: 10px;
   margin-top: 10px;
+}
+.btn-danger {
+  color: #fff;
+  background-color: #e74a3b;
+  border-color: #e74a3b;
+  border-radius: 20px; /* Rounded corners */
+  padding: 15px;
+  font-size: 15px;
+  font-weight: bold;
+  text-align: center; /* Center text */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 55px; /* Fixed height for consistency */
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+@media (max-width: 768px) {
+  .btn-danger {
+    padding: 10px; /* Reduce padding */
+    font-size: 14px; /* Smaller font size */
+    height: 45px; /* Reduced height for mobile */
+    margin-bottom: 8px; /* Adjust margins for mobile */
+    margin-top: 8px;
+  }
+}
+@media (max-width: 768px) { /* Mobile styles */
+  .participant-list-container {
+      padding-top: 10px; /* Reduce padding at the top of the container */
+      padding-bottom: 10px; /* Reduce padding at the bottom of the container */
+      overflow: hidden; /* Prevent overflow of content */
+      box-sizing: border-box; /* Ensure padding is included in width calculations */
+  }
+
+  .participant-list-item {
+      margin: 5px 0; /* Reduce margin around each participant item */
+      padding: 5px; /* Optional: Reduce padding within the participant item */
+      box-sizing: border-box; /* Include padding in width */
+      overflow: hidden; /* Prevent content overflow */
+  }
+
+  .participant-actions {
+      margin: 5px 0; /* Reduce space around the actions */
+  }
+
+  .button-container {
+      display: flex; /* Ensure flex layout */
+      flex-direction: column; /* Stack buttons vertically */
+      align-items: stretch; /* Stretch buttons to full width */
+      gap: 5px; /* Small gap between buttons */
+      width: 100%; /* Full width to prevent overflow */
+  }
+
+  .button-container button {
+      width: 100%; /* Make buttons full width on mobile */
+      max-width: 100%; /* Ensure buttons do not exceed container width */
+      margin: 0; /* Remove all margins */
+      padding: 10px; /* Adjust padding for buttons if needed */
+  }
 }
 
 .btn-danger:hover {
