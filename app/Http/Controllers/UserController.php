@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\EventParticipant;
 use App\Models\CertUser;
+use App\Models\Answer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Event;
@@ -19,6 +20,10 @@ class UserController extends Controller
                                     ->count();
         
         $currentYear = now()->year;
+
+        $totalEvalAnswered = Answer::where('user_id', $user)
+                            ->distinct('event_form_id') 
+                            ->count('event_form_id'); 
 
         // Eloquent query to get the count of participants who attended (status_id = 1) per month
         $eventsJoinedPerMonth = EventParticipant::selectRaw('MONTH(updated_at) as month, COUNT(*) as total')
@@ -42,7 +47,7 @@ class UserController extends Controller
         ];
 
 
-        return view('user.dashboard', compact('user', 'eventsAttendedTotal', 'totalCertificates', 'monthlyEventsData', 'currentYear'));
+        return view('user.dashboard', compact('user', 'eventsAttendedTotal', 'totalCertificates', 'monthlyEventsData', 'currentYear', 'totalEvalAnswered'));
     }
 
     public function getEventsData(Request $request)

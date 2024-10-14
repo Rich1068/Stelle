@@ -36,19 +36,32 @@ class EventController extends Controller
 
     public function list(Request $request)
     {
-        // Start with the Event query
         $query = Event::query();
     
         // Check if date filter is applied
         if ($request->has('date') && $request->date != '') {
             // Parse the date input
             $selectedDate = Carbon::parse($request->date)->format('Y-m-d');
-    
             // Filter events occurring on the selected date
             $query->whereDate('date', '=', $selectedDate);
         }
+    
+        // Check if the user wants to hide old events
+        if ($request->has('hide_old') && $request->hide_old == 'true') {
+            $now = Carbon::now();
+            $query->where(function ($query) use ($now) {
+                $query->where('date', '>', $now->toDateString()) // Future events
+                      ->orWhere(function ($query) use ($now) {
+                          // Events happening today but still ongoing
+                          $query->where('date', '=', $now->toDateString())
+                                ->where('end_time', '>', $now->toTimeString());
+                      });
+            });
+        }
+    
         $query->orderBy('date', 'asc')
               ->orderBy('start_time', 'asc');
+    
         // Paginate the results (10 per page)
         $events = $query->paginate(10);
     

@@ -24,6 +24,13 @@
             <input type="date" name="date" class="form-control date-input" id="date-input">
             <button class="btn btn-outline-secondary ms-2" id="clear-date-btn" type="button">Clear Date</button>
         </div>
+
+        <div class="form-check ms-3">
+            <input class="form-check-input" type="checkbox" id="hide-old-events">
+            <label class="form-check-label" for="hide-old-events">
+                Hide Finished Events
+            </label>
+        </div>
     </div>
 </div>
 
@@ -99,6 +106,42 @@
                 console.error(xhr.responseText);
             }
         });
+    });
+
+        // Automatically submit form when the date is changed or hide old events is toggled using AJAX
+    document.getElementById('date-input').addEventListener('change', fetchFilteredEvents);
+    document.getElementById('hide-old-events').addEventListener('change', fetchFilteredEvents);
+
+    function fetchFilteredEvents() {
+        const selectedDate = document.getElementById('date-input').value;
+        const hideOldEvents = document.getElementById('hide-old-events').checked;
+
+        // Send AJAX request to filter events by date and hide past events if selected
+        $.ajax({
+            url: '{{ route('event.list') }}', // Ensure this is the correct route
+            type: 'GET',
+            data: {
+                date: selectedDate,
+                hide_old: hideOldEvents ? 'true' : 'false'
+            },
+            success: function(data) {
+                // Update the event list and pagination with the new filtered data
+                $('#event-list-container').html(data.eventsHtml);
+                $('#pagination-links').html(data.paginationHtml);
+            },
+            error: function(xhr) {
+                console.error(xhr.responseText);
+            }
+        });
+    }
+
+    // Clear date filter and fetch all events
+    document.getElementById('clear-date-btn').addEventListener('click', function() {
+        // Clear the date input
+        document.getElementById('date-input').value = '';
+        document.getElementById('hide-old-events').checked = false; // Reset the checkbox
+
+        fetchFilteredEvents(); // Fetch all events without filters
     });
 </script>
 
