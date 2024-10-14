@@ -10,7 +10,9 @@
  * Copyright 2011-2021 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
-:root {
+
+
+:root { 
   --blue: #4e73df;
   --indigo: #6610f2;
   --purple: #6f42c1;
@@ -2072,9 +2074,6 @@ h2 {
 
 
 
-/* Media query for mobile devices */
-/* Media query for mobile devices */
-/* Media query for mobile devices */
 @media (max-width: 768px) {
   .admin-sidebar .nav-link.collapsed {
     /* Style for the collapsed state */
@@ -14313,3 +14312,4 @@ footer.sticky-footer .copyright {
 body.sidebar-toggled footer.sticky-footer {
   width: 100%;
 }
+

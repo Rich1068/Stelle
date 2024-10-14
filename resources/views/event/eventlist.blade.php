@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('body')
+
+<!-- Include the global CSS in your main layout -->
+<link href="{{ asset('assets/css/sb-admin-2.css') }}" rel="stylesheet">
+<link href="{{ asset('assets/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet">
+
 <div class="top-container">
 <h2 class="font-weight-bold mb-0">
         <i class="fas fa-calendar-alt me-2"></i> <!-- Calendar icon -->

@@ -108,7 +108,7 @@
                     <li class="nav-item dropdown no-arrow">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{auth()->user()->first_name}} {{auth()->user()->last_name}}</span>
+                            <span class="mr-2 d-none d-lg-inline small" style="color: #00008B; font-weight: 700;">{{auth()->user()->first_name}} {{auth()->user()->last_name}}</span>
                             @if(auth()->user()->profile_picture == null)
                             <img src="{{ asset('storage/images/profile_pictures/default.jpg') }}" alt="Profile pic" class="circular-image" style="max-width: 50px; max-height: 50px;">
                             @else 
@@ -155,14 +155,18 @@
 
  
              <!-- Footer -->
-             <footer class="sticky-footer bg-white">
-                <div class="container my-auto">
-                    <div class="copyright text-center my-auto">
-                        <span>Copyright © Stelle 2024</span>
-                    </div>
-                </div>
-            </footer>
-            <!-- End of Footer -->
+            
+             <footer class="sticky-footer" style="background: linear-gradient(to right, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.4)); padding: 20px; border-radius: 10px;">
+  <div class="container my-auto">
+    <div class="copyright text-center my-auto">
+      <span style="font-weight: bolder; font-size: 1.4em; color: white; text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.7); letter-spacing: 1.5px;">
+        Copyright © Stelle 2024
+      </span>
+    </div>
+  </div>
+</footer>
+
+
     </div>
 
         <!-- Admin Registration Modal -->
