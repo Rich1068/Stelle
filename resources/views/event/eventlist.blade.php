@@ -13,6 +13,7 @@
     </h2>
 </div> 
 
+
 <!-- Filter Form -->
 <div class="event-filter-container p-3 mb-3">
     <div class="d-flex justify-content-center align-items-center">
@@ -30,13 +31,15 @@
             <button class="btn btn-outline-secondary ms-2" id="clear-date-btn" type="button">Clear Date</button>
         </div>
 
-        <div class="form-check ms-3">
-            <input class="form-check-input" type="checkbox" id="hide-old-events">
-            <label class="form-check-label" for="hide-old-events">
-                Hide Finished Events
-            </label>
-        </div>
+
+
     </div>
+</div>
+<div class="form-switch hide-finished-container">
+    <input class="form-check-input" type="checkbox" id="hide-old-events">
+    <label class="form-check-label" for="hide-old-events">
+        Hide Finished Events
+    </label>
 </div>
 
 <!-- Event List -->
@@ -151,4 +154,69 @@
 </script>
 
 <style>
+.hide-finished-container {
+    background-color: #003366; 
+    border-radius: 15px;
+    padding: 10px 10px;
+    display: inline-flex; /* Use inline-flex to limit the container width to its content */
+    align-items: center; /* Vertically center the switch and label */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-left: 20px; /* Adjust as needed to move the container to the right */
+    width: auto; /* Ensure the container fits the content */
+    color: white; /* Set text color to white */
+}
+
+/* Input switch styling */
+.form-switch .form-check-input {
+    width: 40px;
+    height: 20px;
+    background-color: #003366;
+    border-radius: 20px;
+    border: none;
+    appearance: none;
+    cursor: pointer;
+    outline: none;
+    transition: background-color 0.3s ease-in-out;
+    position: relative;
+    margin-left: 1px;
+    margin-right: 10px; /* Add space between switch and label */
+    margin-top: 1px; /* Slightly adjust the vertical position of the switch */
+}
+
+/* Styling for the circle inside the switch */
+.form-switch .form-check-input::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 16px;
+    height: 16px;
+    background-color: white;
+    border-radius: 50%;
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Change background and move the circle when checked */
+.form-switch .form-check-input:checked {
+    background-color: LightSeaGreen; /* This will show the light sea green when checked */
+}
+
+.form-switch .form-check-input:checked::before {
+    transform: translateX(20px);
+}
+
+/* Label styling */
+.form-check-label {
+    font-size: 1rem;
+    font-weight: bold;
+    color: white; /* Set label color to white */
+    cursor: pointer;
+    display: flex; /* Use flex to align items in the label */
+    align-items: center; /* Center the icon and text */
+    line-height: 1; /* Set line height to ensure consistent alignment */
+    margin-top: 2px; /* Slightly adjust the vertical position of the text */
+}
+
+
+</style>
 @endsection
