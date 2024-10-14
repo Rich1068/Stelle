@@ -155,14 +155,18 @@
 
  
              <!-- Footer -->
-             <footer class="sticky-footer bg-white">
-                <div class="container my-auto">
-                    <div class="copyright text-center my-auto">
-                        <span>Copyright © Stelle 2024</span>
-                    </div>
-                </div>
-            </footer>
-            <!-- End of Footer -->
+            
+             <footer class="sticky-footer" style="background: linear-gradient(to right, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.4)); padding: 20px; border-radius: 10px;">
+  <div class="container my-auto">
+    <div class="copyright text-center my-auto">
+      <span style="font-weight: bolder; font-size: 1.4em; color: white; text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.7); letter-spacing: 1.5px;">
+        Copyright © Stelle 2024
+      </span>
+    </div>
+  </div>
+</footer>
+
+
     </div>
 
         <!-- Admin Registration Modal -->
