@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
+<nav x-data="{ open: false, sidebarOpen: sessionStorage.getItem('sidebarState') === 'expanded' ? true : false }" class="bg-white border-b border-gray-100">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -98,3 +98,39 @@
         </div>
     </div>
 </nav>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const sidebarContainer = document.getElementById('accordionSidebar');
+        
+        // Function to apply the saved sidebar state
+        function applySidebarState() {
+            const savedState = sessionStorage.getItem('sidebarState');
+            if (savedState === 'collapsed') {
+                sidebarContainer.classList.add('collapsed');
+            } else {
+                sidebarContainer.classList.remove('collapsed');
+            }
+        }
+
+        // Run the function on page load
+        applySidebarState();
+
+        // Event listener to update sidebar state on link clicks or toggle actions
+        document.querySelectorAll('.admin-sidebar .nav-link').forEach(link => {
+            link.addEventListener('click', function () {
+                if (window.innerWidth <= 1024) {
+                    const isCollapsed = sidebarContainer.classList.contains('collapsed');
+                    sessionStorage.setItem('sidebarState', isCollapsed ? 'collapsed' : 'expanded');
+                }
+            });
+        });
+
+        // Event listener to toggle the sidebar state manually if needed
+        document.getElementById('sidebarToggleTop').addEventListener('click', function () {
+            sidebarContainer.classList.toggle('collapsed');
+            const isCollapsed = sidebarContainer.classList.contains('collapsed');
+            sessionStorage.setItem('sidebarState', isCollapsed ? 'collapsed' : 'expanded');
+        });
+    });
+</script>
