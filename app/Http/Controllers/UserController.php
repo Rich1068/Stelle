@@ -106,4 +106,9 @@ class UserController extends Controller
 
         return response()->json($formattedEvents); // Return the formatted events in JSON
     }
+
+    public function help()
+    {
+        return view('help');
+    }
 }

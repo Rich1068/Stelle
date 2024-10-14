@@ -41,6 +41,16 @@
 
     <hr class="sidebar-divider">
 
+    <!-- Nav Item - My Certificates -->
+    <li class="nav-item">
+        <a href="{{ route('help.page') }}" class="nav-link {{ request()->routeIs('profile.mycertificates') ? 'active' : '' }}">
+            <span>Help & Support</span>
+            <i class="fas fa-certificate"></i>
+        </a>
+    </li>
+
+    <hr class="sidebar-divider">
+
     <!-- Nav Item - Logout -->
     <li class="nav-item">
         <a href="#" class="nav-link" data-toggle="modal" data-target="#logoutModal">

@@ -43,7 +43,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile/{id}', [ProfileController::class, 'view'])->name('profile.view');
     Route::patch('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile/destroy', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    
+    Route::get('/help', [UserController::class, 'help'])->name('help.page');
 });
 
 require __DIR__.'/auth.php';
