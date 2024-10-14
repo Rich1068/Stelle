@@ -20,23 +20,28 @@ class SuperAdminController extends Controller
         $currentYear = date('Y');
         $user = Auth::user()->id;
 
+        // General statistics
         $totalUsers = User::count();
         $totalEvents = Event::count();
         $totalCreatedEvents = UserEvent::where('user_id', $user)->count();
         $totalJoinedEvents = EventParticipant::where('user_id', $user)->count();
+
+        //get total per user role
         $userCount = User::where('role_id', '3')->count();
         $adminCount = User::where('role_id', '2')->count();
         $superAdminCount = User::where('role_id', '1')->count();
 
+        //get gender totals
         $maleGender = User::where('gender', 'male')->count();
         $femaleGender = User::where('gender', 'female')->count();
         $unknownGender = User::where('gender', null)->count();
 
-        // Data to pass to the view
+        // Data to pass to the view for the role chart
         $userCountData = [
             'labels' => ['User', 'Admin', 'Super Admin'],
             'values' => [$userCount, $adminCount, $superAdminCount]
         ];
+        // get the events per month
         $events = Event::selectRaw('MONTH(date) as month, COUNT(*) as total')
         ->whereYear('date', $currentYear)
         ->groupBy('month')
@@ -47,12 +52,12 @@ class SuperAdminController extends Controller
         foreach ($events as $event) {
             $monthlyData[$event->month] = $event->total;
         }
-
+        //get the labels per month
         $monthlyEventsData = [
             'labels' => ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
             'values' => array_values($monthlyData)
         ];
-
+        //get users registering per month
         $monthlyUsersData = User::selectRaw('MONTH(created_at) as month, COUNT(*) as count')
             ->whereYear('created_at', now()->year) // For the current year
             ->groupBy('month')

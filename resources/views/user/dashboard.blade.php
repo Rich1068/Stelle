@@ -118,15 +118,27 @@
             </div>
         </div>
     </div>
-    <div class="row mb-4 col-md-12">
-        <div class="col-md-12">
+    <div class="row mb-5 col-md-12 mt-2">
+        <div class="col-md-12 mt-4">
             <div class="card border-left-info shadow h-100" style="height: 500px; width: 90%;">
-                <div class="card-body p-4 d-flex flex-column"> <!-- Added padding and flexbox for layout -->
-                    <div class="text-xs font-weight-bold text-dark-blue text-uppercase mb-3"> <!-- Use dark blue text -->
-                        Monthly Events Joined
+                <div class="card-body p-4 d-flex flex-column align-items-center"> <!-- Center content -->
+                    <div class="text-xs font-weight-bold text-dark-blue text-uppercase mb-1 text-center">
+                        Events Joined Per Month
                     </div>
-                    <div class="chart-container flex-grow-1"> <!-- Use flex-grow to fill space -->
-                        <canvas id="monthlyEventsChart" style="height: 100%; width: 100%;"></canvas> <!-- Set canvas to 100% -->
+                    <!-- Year navigation buttons below the text and centered -->
+                    <div class="year-navigation d-flex align-items-center mb-3 justify-content-center"> <!-- Center navigation -->
+                        <!-- Back Button -->
+                        <button id="prev-year" class="btn circular-btn mx-2">
+                            <i class="fas fa-chevron-left"></i> <!-- Simplified arrow -->
+                        </button>
+                        <span id="current-year" class="mx-2">{{ $currentYear }}</span> <!-- Display the current year -->
+                        <!-- Next Button -->
+                        <button id="next-year" class="btn circular-btn mx-2">
+                            <i class="fas fa-chevron-right"></i> <!-- Simplified arrow -->
+                        </button>
+                    </div>
+                    <div class="chart-container flex-grow-1">
+                        <canvas id="eventsJoinedChart" style="height: 100%; width: 100%;"></canvas>
                     </div>
                 </div>
             </div>
@@ -136,69 +148,232 @@
 <!-- CSS Styling -->
 <style>
 
+/* Mobile-specific styles (for screens 768px or less) */
+@media (max-width: 768px) {
+    /* Only target the specific calendar container for centering */
+    .calendar-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+    }
+
+    /* Ensure the card inside the calendar takes full width on mobile */
+    .calendar-container .card {
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+    }
+
+    /* Ensure calendar content takes full width */
+    #calendar {
+        width: 100%;
+        padding: 0.5rem;
+        box-sizing: border-box;
+    }
+
+    /* Ensure the dropdown inside the calendar is full width */
+    #calendarFilter {
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+
+    /* Adjust text size for mobile */
+    .calendar-container .card-header h6 {
+        font-size: 1.2rem;
+    }
+
+    /* Adjust modal dialog width on mobile */
+    .modal-dialog {
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    /* Other non-calendar cards */
+    .col-xl-6.col-md-12 {
+        flex: 0 0 100%;
+        max-width: 100%;
+        padding: 0;
+        margin: 0;
+    }
+
+    /* Adjust the max-width as needed */
+    .responsive-card {
+        transform: scale(0.9);
+        transform-origin: top center;
+    }
+}
+
+/* Circular button styles */
+.circular-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #003366; /* Dark blue background */
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    padding: 0;
+    margin: 0;
+    position: relative;
+    cursor: pointer; /* Make it clickable */
+}
+
+.circular-btn i {
+    font-size: 16px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.circular-btn:hover {
+    background-color: #002244; /* Darker blue on hover */
+}
+
+/* Year navigation container */
+.year-navigation {
+    display: flex;
+    align-items: center;
+}
+
+/* General button styles */
+.btn-dark-blue {
+    background-color: #003366;
+    color: white;
+    border-radius: 15px;
+    padding: 10px 20px;
+    border: none;
+    font-weight: bold;
+}
+
+.btn-dark-blue:hover {
+    background-color: #002244;
+}
+
+/* Custom background */
+.custom-bg-white {
+    border-radius: 15px;
+    max-width: 95%;
+    margin: auto;
+    background-color: rgba(255, 255, 255, 0.4); /* Semi-transparent white */
+}
+
+/* Card styles */
+.card {
+    border: none;
+}
+
+.card-header {
+    border-radius: 15px 15px 0 0;
+}
+
+/* Table styles */
+.table thead th {
+    background-color: #003366; /* Dark blue for table header */
+    color: white;
+}
+
+.table tbody td {
+    background-color: #f8f9fc; /* Light background for table cells */
+}
+
+.table tbody tr:nth-child(odd) td {
+    background-color: #e9ecef; /* Alternate row color */
+}
+
+/* Icon styles */
 .icon-dark-blue {
-        color: #003366; /* Initial dark blue color */
-        cursor: pointer; /* Cursor changes to pointer */
-        transition: color 0.3s; /* Smooth transition effect */
-    }
-    
-    .icon-dark-blue:hover {
-        color: #007bff; /* Change to a lighter blue on hover */
-    }
-    .btn-dark-blue {
-        background-color: #003366; /* Dark Blue Color */
-        color: white;
-        border-radius: 15px; /* Circular but consistent */
-        padding: 10px 20px; /* Adjust padding as needed */
-        border: none;
-        font-weight: bold; /* Make button text bold */
-    }
+    color: #003366; /* Initial dark blue color */
+    cursor: pointer;
+    transition: color 0.3s; /* Smooth transition effect */
+}
 
-    .btn-dark-blue:hover {
-        background-color: #002244; /* Darker shade on hover */
-    }
+.icon-dark-blue:hover {
+    color: #007bff; /* Lighter blue on hover */
+}
 
+/* Dark blue background */
+.bg-dark-blue {
+    background-color: #003366;
+}
 
-    .custom-bg-white {
-        border-radius: 15px;
-        max-width: 95%;
-        margin: auto;
-        background-color: rgba(255, 255, 255, 0.4);
-    }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<!-- JavaScript -->
 <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        let currentYear = {{ $currentYear }};
+        const ctx = document.getElementById('eventsJoinedChart').getContext('2d');
+        let chartData = @json($monthlyEventsData);
 
-         // Mock data for the chart
-const ctx = document.getElementById('monthlyEventsChart').getContext('2d');
-const monthlyEventsChart = new Chart(ctx, {
-    type: 'bar', // Change to 'bar' for a bar chart
-    data: {
-        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-        datasets: [{
-            label: 'Events Joined',
-            data: [12, 19, 3, 5, 2, 3, 10, 7, 8, 15, 4, 9], // Mock data
-            backgroundColor: 'rgba(54, 162, 235, 0.6)',
-            borderColor: 'rgba(54, 162, 235, 1)',
-            borderWidth: 1
-        }]
-    },
-    options: {
-        responsive: true,
-        scales: {
-            y: {
-                beginAtZero: true,
-                title: {
-                    display: true,
-                    text: 'Number of Events'
+        // Initialize the chart
+        let eventsJoinedChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: chartData.labels,
+                datasets: [{
+                    label: 'Events Joined',
+                    data: chartData.values,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4,
+                    pointBackgroundColor: 'rgba(75, 192, 192, 1)',
+                    pointRadius: 4
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{ 
+                        ticks: {
+                            beginAtZero: true,
+                            stepSize: 1 ,
+                            min: 0,
+                            precision: 0, 
+                        }
+                    }]
                 }
             }
+        });
+
+        // Function to update the chart with new data
+        function updateChart(data) {
+            eventsJoinedChart.data.labels = data.labels;
+            eventsJoinedChart.data.datasets[0].data = data.values;
+            eventsJoinedChart.update();
         }
-    }
-});
-        
+
+        // Event listeners for year navigation
+        document.getElementById('prev-year').addEventListener('click', function () {
+            currentYear--;
+            fetchYearData(currentYear);
+        });
+
+        document.getElementById('next-year').addEventListener('click', function () {
+            currentYear++;
+            fetchYearData(currentYear);
+        });
+
+        // Fetch data for the selected year
+        function fetchYearData(year) {
+            fetch(`/user/dashboard/events-data?year=${year}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('current-year').innerText = year;
+                    updateChart(data);
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        }
+    });
 </script>
 
 @vite('resources/js/calendar.js')

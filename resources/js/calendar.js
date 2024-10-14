@@ -73,12 +73,13 @@
             calendar.render();
         }
 
-        // Load the calendar initially with all events
-        loadCalendarEvents();
+        // Load the calendar initially based on the selected filter when the page is loaded
+        const initialFilter = document.getElementById('calendarFilter').value; // Get the current value of the filter dropdown
+        loadCalendarEvents(initialFilter); // Load the calendar with the initial filter
 
         // Listen for changes in the dropdown and reload the calendar based on the selected filter
         document.getElementById('calendarFilter').addEventListener('change', function() {
             const selectedFilter = this.value;
-            loadCalendarEvents(selectedFilter);
+            loadCalendarEvents(selectedFilter); // Reload calendar with the new filter
         });
     });

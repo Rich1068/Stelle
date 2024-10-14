@@ -17,8 +17,57 @@ class UserController extends Controller
                                                 ->count();
         $totalCertificates = CertUser::where('user_id', $user)
                                     ->count();
+        
+        $currentYear = now()->year;
 
-        return view('user.dashboard', compact('user', 'eventsAttendedTotal', 'totalCertificates'));
+        // Eloquent query to get the count of participants who attended (status_id = 1) per month
+        $eventsJoinedPerMonth = EventParticipant::selectRaw('MONTH(updated_at) as month, COUNT(*) as total')
+                                ->where('user_id', $user)
+                                ->where('status_id', 1) // Assuming status_id 1 means "joined"
+                                ->whereYear('updated_at', $currentYear)
+                                ->groupBy('month')
+                                ->orderBy('month')
+                                ->get();
+
+        // Prepare data for the chart
+        $monthlyData = array_fill(1, 12, 0);
+
+        foreach ($eventsJoinedPerMonth as $event) {
+            $monthlyData[$event->month] = $event->total;
+        }
+    
+        $monthlyEventsData = [
+            'labels' => ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+            'values' => array_values($monthlyData),
+        ];
+
+
+        return view('user.dashboard', compact('user', 'eventsAttendedTotal', 'totalCertificates', 'monthlyEventsData', 'currentYear'));
+    }
+
+    public function getEventsData(Request $request)
+    {
+        $userId = Auth::user()->id;
+        $year = $request->input('year', now()->year);
+
+        // Query for events joined per month for the given year
+        $eventsJoinedPerMonth = EventParticipant::selectRaw('MONTH(updated_at) as month, COUNT(*) as total')
+            ->where('user_id', $userId)
+            ->where('status_id', 1)
+            ->whereYear('updated_at', $year)
+            ->groupBy('month')
+            ->orderBy('month')
+            ->get();
+
+        $monthlyData = array_fill(1, 12, 0);
+        foreach ($eventsJoinedPerMonth as $event) {
+            $monthlyData[$event->month] = $event->total;
+        }
+
+        return response()->json([
+            'labels' => ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+            'values' => array_values($monthlyData)
+        ]);
     }
     public function getEvents()
     {

@@ -74,6 +74,7 @@ Route::middleware(['auth','admin'])->group(function () {
 //user
 Route::middleware(['auth','user'])->group(function () {
     route::get('/user/dashboard', [UserController::class, 'index'])->middleware('verified')->name('user.dashboard');
+    Route::get('/user/dashboard/events-data', [UserController::class, 'getEventsData']);
 });
 
 route::get('/unauthorized', function () {
