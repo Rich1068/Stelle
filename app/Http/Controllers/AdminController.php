@@ -14,12 +14,65 @@ class AdminController extends Controller
     public function index()
     {
         $user = Auth::user()->id;
+        $currentYear = now()->year;
+
         $totalCreatedEvents = UserEvent::where('user_id', $user)->count();
         $totalCreatedEvalForm = EvaluationForm::where('created_by', $user)->count();
         $totalJoinedEvent = EventParticipant::where('user_id', $user)->count();
         $totalCertReceived = CertUser::where('user_id', $user)->count();
-        return view('admin.dashboard', compact('user', 'totalCreatedEvents', 'totalCreatedEvalForm', 'totalJoinedEvent', 'totalCertReceived'));
+
+        $monthlyEventsData = UserEvent::selectRaw('MONTH(created_at) as month, COUNT(*) as total')
+        ->whereYear('created_at', $currentYear)
+        ->where('user_id', $user) // Filter by admin's ID
+        ->groupBy('month')
+        ->orderBy('month')
+        ->get();
+
+        // Initialize monthly data with 0 for all 12 months
+        $monthlyData = array_fill(1, 12, 0);
+
+        foreach ($monthlyEventsData as $event) {
+            $monthlyData[$event->month] = $event->total;
+        }
+
+        $chartData = [
+            'labels' => ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+            'values' => array_values($monthlyData),
+        ];
+
+
+        return view('admin.dashboard', compact('user', 'totalCreatedEvents', 'totalCreatedEvalForm', 'totalJoinedEvent', 'totalCertReceived', 'chartData', 'currentYear'));
     }
+
+    public function getAdminCreatedEventsData(Request $request)
+    {
+        $adminId = Auth::id(); // Get the admin's user ID
+        $year = $request->input('year', date('Y')); // Get the year from request or default to the current year
+
+        // Query for events created by the admin per month for the given year
+        $eventsCreatedPerMonth = UserEvent::selectRaw('MONTH(created_at) as month, COUNT(*) as total')
+            ->where('user_id', $adminId) // Filter events created by this admin
+            ->whereYear('created_at', $year) // Filter by the selected year
+            ->groupBy('month')
+            ->orderBy('month')
+            ->get();
+
+        // Prepare monthly data with default 0 values
+        $monthlyData = array_fill(1, 12, 0); // Initialize all 12 months with 0
+        foreach ($eventsCreatedPerMonth as $event) {
+            $monthlyData[$event->month] = $event->total;
+        }
+
+        // Return the data in JSON format
+        return response()->json([
+            'labels' => ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+            'values' => array_values($monthlyData)
+        ]);
+    }
+
+
+
+
     public function getEvents()
     {
         $events = Event::with('userEvent')->get(); // Fetch events with related user information

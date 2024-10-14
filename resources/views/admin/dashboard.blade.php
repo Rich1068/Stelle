@@ -130,21 +130,34 @@
 
             </div>
         </div>
+
         <div class="row mb-5 col-md-12">
     <div class="col-md-12">
         <div class="card border-left-info shadow h-100" style="height: 500px; width: 90%;">
-            <div class="card-body p-4 d-flex flex-column"> <!-- Added padding and flexbox for layout -->
-                <div class="text-xs font-weight-bold text-dark-blue text-uppercase mb-3"> <!-- Use dark blue text -->
-                    Created Events Per Month
+            <div class="card-body p-4 d-flex flex-column align-items-center"> <!-- Center content -->
+                <div class="text-xs font-weight-bold text-dark-blue text-uppercase mb-1 text-center">
+                    Events Personally Created Per Month
                 </div>
-                <div class="chart-container flex-grow-1"> <!-- Use flex-grow to fill space -->
-                    <canvas id="monthlyEventsChart" style="height: 100%; width: 100%;"></canvas> <!-- Set canvas to 100% -->
+                <!-- Year navigation buttons below the text and centered -->
+                <div class="year-navigation d-flex align-items-center mb-3 justify-content-center"> <!-- Center navigation -->
+                    <!-- Back Button -->
+                    <button id="prev-year" class="btn circular-btn mx-2">
+                        <i class="fas fa-chevron-left"></i> <!-- Simplified arrow -->
+                    </button>
+                    <span id="current-year" class="mx-2">{{ $currentYear }}</span> <!-- Display the current year -->
+                    <!-- Next Button -->
+                    <button id="next-year" class="btn circular-btn mx-2">
+                        <i class="fas fa-chevron-right"></i> <!-- Simplified arrow -->
+                    </button>
+                </div>
+                <div class="chart-container flex-grow-1">
+                    <canvas id="adminCreatedEventsChart" style="height: 100%; width: 100%;"></canvas>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
+        
     <!-- New Monthly Participants Chart -->
     <div class="row mb-5 col-md-12 mt-2"> 
         <div class="col-md-12">
@@ -163,63 +176,74 @@
 
 
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    const ctx = document.getElementById('monthlyEventsChart').getContext('2d');
-const monthlyEventsChart = new Chart(ctx, {
-    type: 'bar', // Change to 'bar' for a bar chart
-    data: {
-        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-        datasets: [{
-            label: 'Events Joined',
-            data: [12, 19, 3, 5, 2, 3, 10, 7, 8, 15, 4, 9], // Mock data
-            backgroundColor: 'rgba(54, 162, 235, 0.6)',
-            borderColor: 'rgba(54, 162, 235, 1)',
-            borderWidth: 1
-        }]
-    },
-    options: {
-        responsive: true,
-        scales: {
-            y: {
-                beginAtZero: true,
-                title: {
-                    display: true,
-                    text: 'Number of Events'
-                }
-            }
-        }
-    }
-});
+    document.addEventListener('DOMContentLoaded', function () {
+        const ctx = document.getElementById('adminCreatedEventsChart').getContext('2d');
+        let currentYear = {{ now()->year }};
 
-// Monthly Participants Chart
-const ctxParticipants = document.getElementById('monthlyParticipantsChart').getContext('2d');
-    const monthlyParticipantsChart = new Chart(ctxParticipants, {
-        type: 'bar',
-        data: {
-            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-            datasets: [{
-                label: 'Participants Joined',
-                data: [8, 11, 5, 7, 10, 13, 12, 15, 6, 9, 14, 10],
-                backgroundColor: 'rgba(255, 99, 132, 0.6)',
-                borderColor: 'rgba(255, 99, 132, 1)',
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: 'Number of Participants'
-                    }
+        // Initialize the chart
+        let adminCreatedEventsChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                datasets: [{
+                    label: 'Events Created',
+                    data: [], // Initial empty data
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4,
+                    pointBackgroundColor: 'rgba(75, 192, 192, 1)',
+                    pointRadius: 4
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            stepSize: 1
+                        }
+                    }]
                 }
             }
+        });
+
+        // Function to update the chart with new data
+        function updateChart(data) {
+            adminCreatedEventsChart.data.datasets[0].data = data.values;
+            adminCreatedEventsChart.update();
         }
+
+        // Fetch data for a specific year
+        function fetchYearData(year) {
+            fetch(`/admin/dashboard/get-events-data?year=${year}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('current-year').innerText = year; // Update the year label
+                    updateChart(data); // Update chart with new data
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        }
+
+        // Initial chart load for the current year
+        fetchYearData(currentYear);
+
+        // Event listener for 'Back' button
+        document.getElementById('prev-year').addEventListener('click', function () {
+            currentYear--;
+            fetchYearData(currentYear);
+        });
+
+        // Event listener for 'Next' button
+        document.getElementById('next-year').addEventListener('click', function () {
+            currentYear++;
+            fetchYearData(currentYear);
+        });
     });
-    </script>
+</script>
 <style>
     /* Mobile-specific styles (for screens 768px or less) */
 @media (max-width: 768px) {

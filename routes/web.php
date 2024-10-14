@@ -69,7 +69,7 @@ Route::middleware(['auth','super_admin'])->group(function () {
 Route::middleware(['auth','admin'])->group(function () {
 
     route::get('/admin/dashboard', [AdminController::class, 'index'])->middleware('verified')->name('admin.dashboard');
-
+    Route::get('/admin/dashboard/get-events-data', [AdminController::class, 'getAdminCreatedEventsData'])->name('admin.getEventsData');
 });
 //user
 Route::middleware(['auth','user'])->group(function () {
