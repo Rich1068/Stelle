@@ -52,10 +52,10 @@
 <style>
 body {
   font-family: 'Hind', sans-serif;
-  background: #e8f5e9; /* Light green background */
+  background: #e8f5e9;
   margin: 0;
   padding: 0;
-  color: #333;
+  color: #003d80; /* Set default text color */
 }
 
 .top-container {
@@ -74,16 +74,17 @@ body {
 
 .faq-container, .email-container {
   background-color: white;
-  border-radius: 10px; /* More pronounced border radius */
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15); /* Softer shadow */
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   padding: 2rem;
   width: 50%;
   max-width: 1000px;
-  transition: transform 0.3s ease; /* Animation effect */
+  transition: transform 0.3s ease;
+  color: #003d80; /* Text color in all containers */
 }
 
 .faq-container:hover, .email-container:hover {
-  transform: translateY(-5px); /* Hover effect */
+  transform: translateY(-5px);
 }
 
 .email-container {
@@ -93,17 +94,17 @@ body {
 }
 
 .email-header, .accordion-title {
-  color: #003d80; /* Updated dark blue */
+  color: #003d80;
   font-weight: bold;
 }
 
 .email-text {
-  color: #003d80; /* Updated dark blue */
+  color: #003d80;
   font-weight: normal;
 }
 
 .email-divider, .divider {
-  border-top: 2px solid #003d80; /* Updated divider color */
+  border-top: 2px solid #003d80;
   margin: 1rem 0;
 }
 
@@ -117,7 +118,7 @@ body {
 .custom-faq .accordion-content,
 .custom-email .email-header,
 .custom-email .email-text {
-  color: #003d80; /* Updated consistent dark blue color */
+  color: #003d80;
 }
 
 .accordion-button {
@@ -135,10 +136,11 @@ body {
   transition: color 0.3s ease;
   position: relative;
   height: 70px;
+  color: #003d80;
 }
 
 .accordion-button:hover {
-  color: #1abc9c; /* Unique color on hover */
+  color: #1abc9c;
 }
 
 .icon {
@@ -150,8 +152,8 @@ body {
 }
 
 .icon::before {
-  content: '+'; 
-  color: #003d80; /* Updated icon color */
+  content: '+';
+  color: #003d80;
   font-size: 1.2rem;
 }
 
@@ -165,6 +167,7 @@ body {
   overflow: hidden;
   opacity: 0;
   transition: max-height 0.3s ease, opacity 0.3s ease;
+  color: #003d80;
 }
 
 .accordion-button[aria-expanded='true'] + .accordion-content {
@@ -189,6 +192,7 @@ body {
     overflow-wrap: break-word;
     text-align: left;
     margin-right: 20px;
+    color: #003d80;
   }
 
   .accordion-button {
