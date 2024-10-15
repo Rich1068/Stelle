@@ -55,7 +55,7 @@
                 <p><i class="fas fa-flag"></i> <strong class="label-blue">Country:</strong> 
                     @if($user->country_id == null) 
                         N/A 
-                    @else 
+                    @el
                         {{ $countryTable->countryname }} 
                         <img src="{{ asset('storage/images/flags/' . $countryTable->code . '.png') }}" alt="Flag of {{ $countryTable->countryname }}" class="flag-icon"> 
                     @endif
