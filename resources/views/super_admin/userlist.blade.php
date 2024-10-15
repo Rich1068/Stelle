@@ -17,45 +17,7 @@
     </div>
 </div>
 
-<!-- Custom Styles for this Page -->
-<style>
-.custom-btn-primary,
-.custom-btn-light {
-    outline: none; /* Remove focus outline */
-    box-shadow: none; /* Remove any box shadow */
-}
-
-/* Keep the existing styles */
-.custom-btn-primary {
-    background-color: #001e54;
-    color: white;
-    border-radius: 20px; /* Rounded corners */
-    padding: 15px;
-    font-size: 15px;
-    font-weight: bold;
-    text-align: center; /* Center text */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 10px;
-}
-
-.custom-btn-primary:hover {
-    background-color: #004080; /* Darker shade for hover */
-}
-
-.custom-btn-light {
-    background-color: transparent; /* Transparent background */
-    color: #002060; /* Custom text color */
-    border: none; /* Remove border */
-}
-
-.custom-btn-light:hover {
-    color: #004080; /* Darker shade on hover */
-}
-</style>
-
-<div class="input-group mb-3">
+<div class="input-group mb-3 form-control-container">
     <input type="text" id="userSearch" class="form-control" placeholder="Search for users...">
     <div class="input-group-append">
         <button class="btn btn-primary" type="button">
@@ -63,6 +25,10 @@
         </button>
     </div>
 </div>
+
+
+
+
 <div class="card mb-4" style="margin-top: 50px; border: none;">
      <!-- Removed shadow and added border: none; -->
     <div class="card-header py-3">
@@ -110,16 +76,80 @@
 </div>
 
 <div style="display: flex; align-items: center; margin-bottom: 50px; margin-left: 20px;">
-    <a href="{{ route('superadmin.usercreate') }}" class="btn custom-btn-primary" style="border-radius: 15px; padding: 10px 20px; margin-right: 10px; font-size: 16px;">
+    <a href="{{ route('superadmin.usercreate') }}"  class="btn custom-btn-primary" style="border-radius: 15px; padding: 10px 20px; margin-right: 10px; font-size: 16px;">
         <i class="fas fa-plus"></i> Add User
     </a>
     <form action="{{ route('super_admin.requestingAdmins') }}" method="get" style="display: inline;">
-        <button type="submit" class="btn custom-btn-primary" style="border-radius: 15px; padding: 10px 20px; font-size: 16px;">
+        <button type="submit"  class="btn custom-btn-primary" style="border-radius: 15px; padding: 10px 20px; font-size: 16px;">
             <i class="fas fa-user-shield"></i> View Requesting Admin
         </button>
     </form>
 </div>
 
+<style>
+.custom-btn-primary,
+.custom-btn-light {
+    outline: none; /* Remove focus outline */
+    box-shadow: none; /* Remove any box shadow */
+}
+
+/* Keep the existing styles */
+.custom-btn-primary {
+    background-color: #001e54;
+    color: white;
+    border-radius: 20px; /* Rounded corners */
+    padding: 15px;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center; /* Center text */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.custom-btn-primary:hover {
+    background-color: #004080; /* Darker shade for hover */
+}
+
+.custom-btn-light {
+    background-color: transparent; 
+    color: #002060; 
+    border: none; 
+}
+
+.custom-btn-light:hover {
+    color: #004080; /* Darker shade on hover */
+}
+.form-control-container {
+    display: flex;                
+    justify-content: center;     
+    align-items: stretch;         
+    margin-top: 40px;             
+}
+
+.form-control {
+    padding: 12px !important;  
+    border-radius: 20px 0 0 20px !important;
+    border: 1px solid #ccc !important;
+    transition: border-color 0.3s !important;
+    border-right: none !important; 
+    font-size: 14px !important;
+    color: #1a2a5c !important;
+    max-width: 50% !important;  
+    height: auto;               
+}
+
+.input-group .btn {
+    padding: 12px !important;     
+    border-radius: 0 15px 15px 0 !important; 
+    display: flex;               
+    align-items: center;         
+    justify-content: center;      
+    height: auto;                
+}
+
+    </style>
 <script>
     document.getElementById('userSearch').addEventListener('input', function () {
         const searchTerm = this.value.toLowerCase();
