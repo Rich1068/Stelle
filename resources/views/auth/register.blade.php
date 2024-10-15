@@ -1,5 +1,13 @@
-<link rel="stylesheet" href="/css/bootstrap.min.css">
-<link rel="stylesheet" href="/css/custom.css"> <!-- Ensure custom styles are linked -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Page</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/custom.css"> <!-- Ensure custom styles are linked -->
+</head>
+<body>
 
 <div class="registration-container">
     <!-- Left Side: Image Carousel -->
@@ -14,7 +22,7 @@
             </div>
         </div>
         <button class="carousel-arrow right-arrow">&rarr;</button>
-        
+
         <!-- Progress bar -->
         <div class="carousel-progress">
             <div class="progress-fill"></div>
@@ -94,6 +102,133 @@
     </div>
 </div>
 
+<!-- Inline CSS to hide carousel on mobile screens and fix form layout -->
+<style>
+
+    /* Right side: Registration form */
+    .registration-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* Two equal columns */
+        max-height: 100vh; /* Full height of the viewport */
+        width: 100vw; /* Full width of the viewport */
+        padding: 0 75px; /* Add padding to bring the sections closer */
+        gap: 10px; /* Optional: Add gap between the columns for more control */
+    }
+
+    .register-account {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.21);
+        padding: 20px;
+        width: 70%; /* Use most of the grid column width */
+        margin: auto; /* Center within the grid cell */
+        text-align: center;
+        box-sizing: border-box; /* Ensure padding is included in width calculation */
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 768px) {
+        .registration-container {
+            display: block;
+            padding: 0; /* Reset padding for mobile */
+            max-width: 100%; /* Use full width on mobile */
+            margin: 0 auto;
+        }
+
+        .register-account {
+            width: 90% !important; /* Ensure it takes up more space */
+            max-width: 600px !important; /* Set a maximum width for better control */
+            padding: 30px 20px !important; /* Add more padding for spacious look */
+            margin: 20px auto !important; /* Add margin for breathing room */
+            box-sizing: border-box !important; /* Ensure padding is included in width */
+        }
+
+        .register-input {
+            width: calc(100% - 30px) !important; /* Ensure inputs don't overflow */
+            margin-bottom: 20px !important; /* Add more space between inputs */
+            padding: 14px 20px !important; /* Increase padding for better usability */
+            font-size: 1.1rem !important; /* Increase font size for readability */
+            box-sizing: border-box !important; /* Include padding in width calculation */
+        }
+
+        .login-button, .google-button {
+            width: 100% !important; /* Full width for buttons */
+            margin: 20px auto !important; /* Add some spacing below */
+            padding: 14px 0 !important; /* More padding for better appearance */
+        }
+
+        .google-button img {
+            max-width: 24px !important; /* Keep the Google icon size appropriate */
+            margin-right: 10px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        /* Hide the carousel on mobile */
+        .image-carousel {
+            display: none !important;
+        }
+
+        /* Widen the registration container */
+        .registration-container {
+            width: 90% !important;
+            max-width: 500px !important; /* Set a max-width for better responsiveness */
+            margin: 0 auto !important; /* Center the form on mobile */
+        }
+
+        /* Make sure the form fields and buttons take up more space */
+        .register-account {
+            width: 100% !important;
+            padding: 20px !important; /* Add some padding for better spacing */
+            box-sizing: border-box !important; /* Include padding in width calculation */
+        }
+
+        /* Ensure inputs and buttons are full-width on mobile */
+        .register-input, .login-button, .google-button {
+            width: 100% !important;
+            font-size: 1rem !important; /* Adjust font size for better readability */
+            padding: 12px !important; /* Adjust padding for input fields */
+            margin-bottom: 20px !important; /* Ensure there's enough space between elements */
+        }
+
+       /* Fix the Google button width and alignment */
+.google-button {
+    width: 100% !important; /* Full width of the container */
+    padding: 12px !important; /* Add padding for better appearance */
+    margin-top: 20px !important; /* Space above the Google button */
+    box-sizing: border-box !important; /* Include padding and borders in the width calculation */
+    border-radius: 10px !important; /* Match the style of other buttons */
+    display: flex !important; /* Align content horizontally */
+    align-items: center !important; /* Vertically center icon and text */
+    justify-content: center !important; /* Horizontally center icon and text */
+}
+
+.google-button img {
+    max-width: 24px !important; /* Adjust icon size */
+    margin-right: 10px !important; /* Add space between icon and text */
+}
+
+.google-button a {
+    text-decoration: none;
+    color: #7c7c7c !important; /* Ensure the text color stays gray */
+    font-size: 1rem !important;
+    font-weight: bold !important;
+}
+
+.google-button:hover {
+    background-color: #001f60 !important; /* Background color on hover */
+    color: white !important; /* Text color on hover */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2) !important; /* Slight shadow for depth */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease !important; /* Smooth hover transition */
+}
+
+.google-button:hover a {
+    color: white !important; /* Change the text color to white on hover */
+}
+
+    }
+</style>
+
 <script src="/js/jquery.min.js"></script>
 <script src="/js/bootstrap.bundle.min.js"></script>
 
@@ -165,5 +300,7 @@ document.querySelector('.right-arrow').addEventListener('click', () => {
         behavior: 'smooth'
     });
 });
-
 </script>
+
+</body>
+</html>
