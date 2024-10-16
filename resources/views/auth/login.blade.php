@@ -6,6 +6,33 @@
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/custom.css"> <!-- Ensure custom styles are linked -->
     <style>
+        
+        .login-container input[type="email"], .login-container input[type="password"] {
+            background-color: #f0f0f0;
+            border: 1px solid #D9D9D9;
+            border-radius: 10px;
+            font-size: 1rem;
+            width: 85%;
+            margin-bottom: 1rem;
+        }
+
+        /* Image section adjustments */
+        .image-section {
+            position: relative;
+            text-align: center;
+            margin-bottom: 20px; /* Add some space below the image section */
+        }
+
+        /* Position stellelogo at the bottom of the illustration */
+        .image-section img.stelle-logo {
+            position: absolute;
+            bottom: 0;
+            left: 57%;
+            transform: translateX(-50%);
+            max-width: 260px; /* Adjust the size of the logo */
+            padding-bottom: 35px;
+        }
+
         /* Hide image section and all non-login elements on mobile devices */
         @media (max-width: 768px) {
             .image-section,
@@ -26,14 +53,15 @@
                 flex-direction: column; /* Stack contents vertically */
                 align-items: center; /* Center items horizontally */
             }
+
             .login-container input[type="email"], .login-container input[type="password"] {
-    background-color: #f0f0f0;
-    border: 1px solid #D9D9D9;
-    border-radius: 10px;
-    font-size: 1rem;
-    width: 95%;
-    margin-bottom: 1rem;
-}
+                background-color: #f0f0f0;
+                border: 1px solid #D9D9D9;
+                border-radius: 10px;
+                font-size: 1rem;
+                width: 95%;
+                margin-bottom: 1rem;
+            }
 
             /* Adjust child elements' width */
             .login-title, .mb-4, .remember-me, .actions-container, .or-divider, .google-button, .signup-text {
@@ -52,11 +80,11 @@
                 margin-top: 15px; /* Add margin above */
             }
 
-                .actions-container {
-                    display: flex;
-                    flex-direction: column; /* Stack actions vertically */
-                    align-items: center; /* Center items */
-                }
+            .actions-container {
+                display: flex;
+                flex-direction: column; /* Stack actions vertically */
+                align-items: center; /* Center items */
+            }
 
             .or-divider {
                 margin: 10px 0; /* Add margin */
@@ -72,8 +100,8 @@
     <div class="main-container">
         <!-- Image Section -->
         <div class="image-section">
-            <!-- Include your desired image here -->
-            <img src="/images/illustration1.png" alt="Illustration">
+            <img src="/images/illustration1.png" alt="Illustration" class="illustration">
+            <img src="/images/stellelogo.png" alt="Stelle Logo" class="stelle-logo"> <!-- Stelle logo positioned at the bottom -->
         </div>
 
         <!-- Divider Line -->
