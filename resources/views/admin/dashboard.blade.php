@@ -159,28 +159,142 @@
 </div>
         
     <!-- New Monthly Participants Chart -->
-    <div class="row mb-5 col-md-12 mt-2"> 
-        <div class="col-md-12">
-            <div class="card border-left-info shadow h-100" style="height: 500px; width: 90%;">
-                <div class="card-body p-4 d-flex flex-column align-items-center"> 
-                    <div class="text-xs font-weight-bold text-dark-blue text-uppercase mb-1 text-center">
-                        Participants per Event
-                    </div>
-                    <!-- Chart Container -->
-                    <div class="chart-container flex-grow-1">
-                        <canvas id="participantsPerEventChart" style="height: 100%; width: 100%;"></canvas>
-                    </div>
+  <!-- New Monthly Participants Chart -->
+  <div class="row mb-5 col-md-12 mt-2"> 
+    <div class="col-md-12">
+    <div class="col-md-12">
+    <div class="card border-left-info shadow h-100" style="height: 500px; width: 90%;">
+        <div class="card-body p-4 d-flex flex-column align-items-center">
+            <div class="text-xs font-weight-bold text-dark-blue text-uppercase mb-1 text-center">
+                Participants per Event
+            </div>
 
-                    <!-- Pagination Controls -->
-                    <div class="pagination-controls mt-4 d-flex justify-content-center">
-                        <button id="prevPage" class="btn btn-secondary me-2" disabled>Previous</button>
-                        <span id="pageInfo">Page 1</span>
-                        <button id="nextPage" class="btn btn-secondary ms-2">Next</button>
-                    </div>
-                </div>
+            <!-- Pagination Controls with Circular Buttons Moved Here -->
+            <div class="pagination-controls mb-4 d-flex justify-content-center align-items-center">
+                <button id="prevPage" class="btn circular-btn mx-2" disabled>
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <!-- Centering the text inside the span -->
+                <span id="pageInfo" class="mx-2" style="font-size: 14px; display: flex; align-items: center; justify-content: center;">
+                    Page 1
+                </span>
+                <button id="nextPage" class="btn circular-btn mx-2">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+
+            <!-- Chart Container -->
+            <div class="chart-container flex-grow-1">
+                <canvas id="participantsPerEventChart" style="height: 100%; width: 100%;"></canvas>
             </div>
         </div>
     </div>
+
+    <style>
+           /* Mobile-specific styles (for screens 768px or less) */
+@media (max-width: 768px) {
+    /* Only target the specific calendar container for centering */
+    .calendar-container {
+        display: flex; /* Use flexbox */
+        justify-content: center; /* Center horizontally */
+        align-items: center; /* Center vertically */
+        flex-direction: column; /* Stack items vertically */
+        width: 100%; /* Full width for mobile */
+        padding: 0; /* Remove padding */
+        margin: 0; /* Remove margin */
+    }
+
+    /* Ensure the card inside the calendar takes full width on mobile */
+    .calendar-container .card {
+        width: 100%; /* Full width for mobile */
+        max-width: 100%; /* Prevent white space */
+        height: auto; /* Auto height */
+        padding: 0; /* Remove padding */
+        margin: 0; /* Remove margin */
+        box-sizing: border-box; /* Ensure padding doesn't cause overflow */
+    }
+
+    /* Ensure calendar content takes full width */
+    #calendar {
+        width: 100%; /* Full width */
+        padding: 0.5rem; /* Minimal padding */
+        box-sizing: border-box; /* Prevent overflow due to padding */
+    }
+
+    /* Ensure the dropdown inside the calendar is full width */
+    #calendarFilter {
+        width: 100%; /* Full width for dropdown */
+        margin-bottom: 1rem; /* Space below the dropdown */
+    }
+
+    /* Adjust text size for mobile */
+    .calendar-container .card-header h6 {
+        font-size: 1.2rem; /* Slightly smaller text on mobile */
+    }
+
+    /* Adjust modal dialog width on mobile */
+    .modal-dialog {
+        width: 100%; /* Full width for modal on mobile */
+        margin: 0 auto;
+    }
+
+    /* Other non-calendar cards (if any) */
+    .col-xl-6.col-md-12 {
+        flex: 0 0 100%; /* Full width on mobile */
+        max-width: 100%; /* Prevent white space */
+        padding: 0; /* Remove padding */
+        margin: 0; /* Stack vertically with no extra space */
+    }
+}
+
+@media (max-width: 768px) { /* Adjust the max-width as needed */
+    .responsive-card {
+        transform: scale(0.9); /* Adjust the scale value to make it smaller */
+        transform-origin: top center; /* Ensures it scales down from the top */
+    }
+}
+
+    .circular-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: #003366; /* Dark blue background */
+        color: white; /* White arrow color */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        padding: 0; /* Ensure no extra padding for centering */
+        margin: 0; /* Remove any default margins */
+        position: relative;
+    }
+
+    .circular-btn i {
+        font-size: 16px; /* Arrow size */
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%); /* Precisely center the arrow inside the button */
+    }
+
+    .circular-btn:hover {
+        background-color: #002244; /* Slightly darker blue on hover */
+    }
+
+    .year-navigation {
+        display: flex;
+        align-items: center;
+    }
+.custom-bg-white {
+    border-radius: 15px; /* Add border radius */
+    max-width: 95%;
+    align-items: center; /* This is not necessary unless you're using flexbox */
+    margin: auto; /* Center the element */
+    background-color: white; /* Set background color */
+    background-color: rgba(255, 255, 255, 0.4); /* Semi-transparent white */
+}
+
+        </style>
 
 
 
