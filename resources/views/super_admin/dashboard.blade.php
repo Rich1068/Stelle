@@ -220,30 +220,42 @@
             </div>
         </div>
     </div>
-</div>
+    </div>
     <!-- New Monthly Participants Chart -->
     <div class="row mb-5 col-md-12 mt-2"> 
-        <div class="col-md-12">
-            <div class="card border-left-info shadow h-100" style="height: 500px; width: 90%;">
-                <div class="card-body p-4 d-flex flex-column align-items-center"> 
-                    <div class="text-xs font-weight-bold text-dark-blue text-uppercase mb-1 text-center">
-                        Participants per Event
-                    </div>
-                    <!-- Chart Container -->
-                    <div class="chart-container flex-grow-1">
-                        <canvas id="participantsPerEventChart" style="height: 100%; width: 100%;"></canvas>
-                    </div>
+    <div class="col-md-12">
+    <div class="col-md-12">
+    <div class="card border-left-info shadow h-100" style="height: 500px; width: 90%;">
+        <div class="card-body p-4 d-flex flex-column align-items-center">
+            <div class="text-xs font-weight-bold text-dark-blue text-uppercase mb-1 text-center">
+                Participants per Event
+            </div>
 
-                    <!-- Pagination Controls -->
-                    <div class="pagination-controls mt-4 d-flex justify-content-center">
-                        <button id="prevPage" class="btn btn-secondary me-2" disabled>Previous</button>
-                        <span id="pageInfo">Page 1</span>
-                        <button id="nextPage" class="btn btn-secondary ms-2">Next</button>
-                    </div>
-                </div>
+            <!-- Pagination Controls with Circular Buttons Moved Here -->
+            <div class="pagination-controls mb-4 d-flex justify-content-center align-items-center">
+                <button id="prevPage" class="btn circular-btn mx-2" disabled>
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <!-- Centering the text inside the span -->
+                <span id="pageInfo" class="mx-2" style="font-size: 14px; display: flex; align-items: center; justify-content: center;">
+                    Page 1
+                </span>
+                <button id="nextPage" class="btn circular-btn mx-2">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+
+            <!-- Chart Container -->
+            <div class="chart-container flex-grow-1">
+                <canvas id="participantsPerEventChart" style="height: 100%; width: 100%;"></canvas>
             </div>
         </div>
     </div>
+</div>
+</div>
+
+</div>
+
 <style>
     /* Mobile-specific styles (for screens 768px or less) */
 @media (max-width: 768px) {
