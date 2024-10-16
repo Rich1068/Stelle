@@ -26,11 +26,13 @@
         <!-- Progress bar -->
         <div class="carousel-progress">
             <div class="progress-fill"></div>
+            <img src="/images/stellelogo.png" alt="Stelle Logo" class="stelle-logo"> <!-- Stelle logo positioned at the bottom -->
         </div>
     </div>
 
     <!-- Right Side: Registration Form -->
     <div class="register-account">
+
         <a class="back-to-login" href="{{ route('login') }}">Back To Login</a>
         <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
             @csrf
@@ -104,6 +106,28 @@
 
 <!-- Inline CSS to hide carousel on mobile screens and fix form layout -->
 <style>
+
+    .stelle-logo {
+        width: 200px; /* Adjust the width to make the logo smaller */
+        height: auto; /* Maintain the aspect ratio */
+        position: absolute; /* Position the logo at the bottom */
+        bottom: 20px; /* Add some space from the bottom */
+        left: 50%; /* Center the logo horizontally */
+        transform: translateX(-50%); /* Center alignment adjustment */
+        Position: Absolute;
+    }
+
+
+    body {
+            margin: 0;
+            background: linear-gradient(to bottom right, #F99C9C, #ACDFF6);
+            background-size: 200% 200%; /* Infinite gradient effect */
+            animation: gradientAnimation 10s ease infinite;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
     /* Right side: Registration form */
     .registration-container {
