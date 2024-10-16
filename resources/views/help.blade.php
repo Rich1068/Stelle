@@ -25,7 +25,7 @@
         <hr class="divider">
         <div class="accordion-item">
   <button class="accordion-button" id="accordion-button-3" aria-expanded="false">
-    <span class="accordion-title">Claiming Certificate</span>
+    <span class="accordion-title">How can I obtain Certificates?</span>
     <span class="icon" aria-hidden="true"></span>
   </button>
   <div class="accordion-content">
