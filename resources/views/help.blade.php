@@ -10,37 +10,42 @@
     </h2>
   </div> 
 
-  <div class="faq-email-container">
-    <div class="faq-container">
+  <div class="faq-email-wrapper" style="margin-top: 40px;">
+    <div class="faq-container custom-faq">
       <div class="accordion">
+          <div class="accordion-item">
+      <button class="accordion-button" id="accordion-button-2" aria-expanded="false">
+        <span class="accordion-title">Can I Create My Own Event?</span>
+        <span class="icon" aria-hidden="true"></span>
+      </button>
+      <div class="accordion-content">
+        <p>Yes, you can request admin privileges to create your own events. Once your request is approved, you will have the ability to not only create events but also manage associated features such as certificates and evaluation forms.</p>
+      </div>
+    </div>
+        <hr class="divider">
         <div class="accordion-item">
-          <button id="accordion-button-1" aria-expanded="false">
-            <span class="accordion-title">Why is the moon sometimes out during the day?</span>
-            <span class="icon" aria-hidden="true"></span>
-          </button>
-          <div class="accordion-content">
-            <p>Lorem ipsum dolor sit amet...</p>
-          </div>
-        </div>
-        <div class="accordion-item">
-          <button id="accordion-button-2" aria-expanded="false">
-            <span class="accordion-title">Why is the sky blue?</span>
-            <span class="icon" aria-hidden="true"></span>
-          </button>
-          <div class="accordion-content">
-            <p>Lorem ipsum dolor sit amet...</p>
-          </div>
-        </div>
+  <button class="accordion-button" id="accordion-button-3" aria-expanded="false">
+    <span class="accordion-title">How can I obtain Certificates?</span>
+    <span class="icon" aria-hidden="true"></span>
+  </button>
+  <div class="accordion-content">
+    <p>You can claim a certificate by attending events. Depending on the event creator's requirements, an evaluation form may or may not be necessary. The event creator is responsible for distributing the certificates to the participants after the event concludes.</p>
+  </div>
+</div>
+
+        <hr class="divider">
+        <!-- Add more items as needed -->
       </div>
     </div>
 
-    <div class="email-container">
+    <div class="email-container custom-email">
       <h3 class="email-header">
         <i class="fas fa-envelope"></i> Email Us
       </h3>
       <p>If you have a more specific question or encounter any issues, feel free to reach out:</p>
       <hr class="email-divider">
       <p class="email-text"><strong>stelle.psite@gmail.com</strong></p>
+      <hr class="email-divider">
     </div>
   </div>
 </div>
@@ -48,10 +53,10 @@
 <style>
 body {
   font-family: 'Hind', sans-serif;
-  background: #f3f3f3;
+  background: #e8f5e9;
   margin: 0;
   padding: 0;
-  color: #333;
+  color: #003d80; /* Set default text color */
 }
 
 .top-container {
@@ -59,48 +64,48 @@ body {
   padding: 2rem;
 }
 
-.faq-email-container {
+.faq-email-wrapper {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: stretch;
-  margin: 2rem auto;
+  margin: 40px auto 0;
   gap: 1rem;
-  width: 80%;
+  width: 100%;
 }
 
-.faq-container {
+.faq-container, .email-container {
   background-color: white;
-  border-radius: 15px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   padding: 2rem;
-  width: 60%;
-  max-width: 900px;
+  width: 50%;
+  max-width: 1000px;
+  transition: transform 0.3s ease;
+  color: #003d80; /* Text color in all containers */
+}
+
+.faq-container:hover, .email-container:hover {
+  transform: translateY(-5px);
 }
 
 .email-container {
-  background-color: white;
-  border-radius: 15px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  padding: 2rem;
-  width: 30%;
-  max-width: 300px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 
 .email-header, .accordion-title {
-  color: darkblue;
+  color: #003d80;
   font-weight: bold;
 }
 
 .email-text {
-  color: darkblue;
-  font-weight: bold;
+  color: #003d80;
+  font-weight: normal;
 }
 
-.email-divider {
-  border-top: 2px solid darkblue;
+.email-divider, .divider {
+  border-top: 2px solid #003d80;
   margin: 1rem 0;
 }
 
@@ -109,7 +114,15 @@ body {
   margin-bottom: 1rem;
 }
 
-button {
+.custom-faq .accordion-button,
+.custom-faq .accordion-title,
+.custom-faq .accordion-content,
+.custom-email .email-header,
+.custom-email .email-text {
+  color: #003d80;
+}
+
+.accordion-button {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -119,16 +132,16 @@ button {
   padding: 1.5rem;
   text-align: left;
   font-size: 1.5rem;
-  font-weight: bold;
-  color: darkblue;
+  font-weight: normal;
   outline: none;
   transition: color 0.3s ease;
   position: relative;
   height: 70px;
+  color: #003d80;
 }
 
-button:hover {
-  color: #00008b;
+.accordion-button:hover {
+  color: #1abc9c;
 }
 
 .icon {
@@ -141,11 +154,11 @@ button:hover {
 
 .icon::before {
   content: '+';
-  color: darkblue;
+  color: #003d80;
   font-size: 1.2rem;
 }
 
-button[aria-expanded='true'] .icon::before {
+.accordion-button[aria-expanded='true'] .icon::before {
   content: '-';
 }
 
@@ -155,16 +168,16 @@ button[aria-expanded='true'] .icon::before {
   overflow: hidden;
   opacity: 0;
   transition: max-height 0.3s ease, opacity 0.3s ease;
-  color: darkblue;
+  color: #003d80;
 }
 
-button[aria-expanded='true'] + .accordion-content {
+.accordion-button[aria-expanded='true'] + .accordion-content {
   max-height: 15em;
   opacity: 1;
 }
 
 @media only screen and (max-width: 768px) {
-  .faq-email-container {
+  .faq-email-wrapper {
     flex-direction: column;
     align-items: center;
   }
@@ -180,22 +193,22 @@ button[aria-expanded='true'] + .accordion-content {
     overflow-wrap: break-word;
     text-align: left;
     margin-right: 20px;
+    color: #003d80;
   }
 
-  button {
+  .accordion-button {
     font-size: 1.2rem;
     padding: 1rem;
     text-align: left;
-  
   }
 }
 
 @media only screen and (max-width: 480px) {
-  .faq-container {
-    width: 80%;
+  .faq-container, .email-container {
+    width: 90%;
   }
 
-  button {
+  .accordion-button {
     font-size: 1rem;
     padding: 0.8rem;
   }
@@ -207,10 +220,16 @@ button[aria-expanded='true'] + .accordion-content {
     right: 5px;
   }
 }
+
+/* Additional styles to avoid affecting logout modal */
+.logout-modal {
+  font-size: 1rem;
+  line-height: 1.5;
+}
 </style>
 
 <script>
-const items = document.querySelectorAll(".accordion button");
+const items = document.querySelectorAll(".accordion-button");
 
 function toggleAccordion() {
   const itemToggle = this.getAttribute('aria-expanded');

@@ -10,9 +10,9 @@
 
 <!-- Add a search input above the list -->
 <div class="event-filter-container p-3 mb-3">
-    <div class="d-flex justify-content-center align-items-center">
+    <div class="d-flex flex-column flex-md-row justify-content-center align-items-center">
         <!-- Search input with search icon inside the same container -->
-        <div class="search-wrapper position-relative">
+        <div class="search-wrapper position-relative mb-3 mb-md-0"> <!-- Added mb-3 for spacing -->
             <input type="text" id="eventSearch" class="form-control search-input" placeholder="Search for events...">
             <button class="search-btn end-0 me-2" type="button">
                 <i class="fas fa-search"></i>
@@ -20,7 +20,7 @@
         </div>
 
         <!-- Sort and date input inside the same container -->
-        <div class="d-flex align-items-center sort-date-wrapper ms-3">
+        <div class="d-flex align-items-center sort-date-wrapper ms-md-3">
             <input type="date" name="date" class="form-control date-input" id="date-input">
             <button class="btn btn-outline-secondary ms-2" id="clear-date-btn" type="button">Clear Date</button>
         </div>

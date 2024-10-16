@@ -7,19 +7,19 @@
 <link href="{{ asset('assets/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet">
 
 <div class="top-container">
-<h2 class="font-weight-bold mb-0">
+    <h2 class="font-weight-bold mb-0">
         <i class="fas fa-calendar-alt me-2"></i> <!-- Calendar icon -->
         Event List
     </h2>
-</div> 
+</div>
 
 @if ($events->isEmpty())
 @else
 <!-- Filter Form -->
 <div class="event-filter-container p-3 mb-3">
-    <div class="d-flex justify-content-center align-items-center">
+    <div class="d-flex flex-column flex-md-row justify-content-center align-items-center">
         <!-- Search input with search icon inside the same container -->
-        <div class="search-wrapper position-relative">
+        <div class="search-wrapper position-relative mb-3 mb-md-0 me-md-3">
             <input type="text" id="eventSearch" class="form-control search-input" placeholder="Search for events...">
             <button class="search-btn end-0 me-2" type="button">
                 <i class="fas fa-search"></i>
@@ -27,15 +27,13 @@
         </div>
 
         <!-- Sort and date input inside the same container -->
-        <div class="d-flex align-items-center sort-date-wrapper ms-3">
+        <div class="d-flex align-items-center sort-date-wrapper">
             <input type="date" name="date" class="form-control date-input" id="date-input">
             <button class="btn btn-outline-secondary ms-2" id="clear-date-btn" type="button">Clear Date</button>
         </div>
-
-
-
     </div>
 </div>
+
 <div class="form-switch hide-finished-container">
     <input class="form-check-input" type="checkbox" id="hide-old-events">
     <label class="form-check-label" for="hide-old-events">
@@ -43,6 +41,7 @@
     </label>
 </div>
 @endif
+
 <!-- Event List -->
 <div id="event-list-container">
     @include('event.partials.eventlist', ['events' => $events]) <!-- Separate partial for events -->
@@ -71,13 +70,10 @@
             const matches = title.includes(searchTerm) || description.includes(searchTerm) || location.includes(searchTerm);
 
             // Toggle visibility
-            if (matches) {
-                event.style.display = '';
-            } else {
-                event.style.display = 'none';
-            }
+            event.style.display = matches ? '' : 'none';
         });
     });
+
     // Automatically submit form when the date is changed using AJAX
     document.getElementById('date-input').addEventListener('change', function() {
         const selectedDate = this.value;
@@ -117,7 +113,7 @@
         });
     });
 
-        // Automatically submit form when the date is changed or hide old events is toggled using AJAX
+    // Automatically submit form when the date is changed or hide old events is toggled using AJAX
     document.getElementById('date-input').addEventListener('change', fetchFilteredEvents);
     document.getElementById('hide-old-events').addEventListener('change', fetchFilteredEvents);
 
@@ -217,7 +213,6 @@
     line-height: 1; /* Set line height to ensure consistent alignment */
     margin-top: 2px; /* Slightly adjust the vertical position of the text */
 }
-
 
 </style>
 @endsection

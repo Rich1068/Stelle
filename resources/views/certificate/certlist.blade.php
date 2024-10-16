@@ -167,6 +167,54 @@ function loadCertificate(certPath, certName) {
     .button-group .btn i {
         margin: 0; /* Ensure no extra margin for icons */
     }
+/* General button group styles for desktop */
+.button-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Style for each button */
+.button-group .btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1rem;
+}
+
+/* View button (Dark Cyan) */
+.button-group .btn-view {
+    background-color: #008b8b;
+}
+
+/* Edit button (Dark Blue) */
+.button-group .btn-edit {
+    background-color: #001e54;
+}
+
+/* Delete button (Dark Red) */
+.button-group .btn-delete {
+    background-color: #c9302c;
+}
+
+/* Mobile-specific adjustments */
+@media (max-width: 576px) {
+    .button-group {
+        flex-direction: column; /* Stack buttons vertically */
+        gap: 5px; /* Reduce gap between stacked buttons */
+    }
+
+    .button-group .btn {
+        width: 30px;  /* Reduced width */
+        height: 30px; /* Reduced height */
+        font-size: 0.8rem; /* Smaller font size */
+    }
+}
 
     .custom-thead {
         background-color: #001e54;
