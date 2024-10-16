@@ -19,7 +19,7 @@
         <span class="icon" aria-hidden="true"></span>
       </button>
       <div class="accordion-content">
-        <p>Yes, you can request admin privileges to create your own events. Once your request is approved, you will have the ability to not only create events but also manage associated features such as certificates and evaluation forms.</p>
+        <p>Only Admins can create events, but users can request admin privileges to create your own events. Once your request is approved, you will have the ability to not only create events but also manage associated features such as certificates and evaluation forms.</p>
       </div>
     </div>
         <hr class="divider">

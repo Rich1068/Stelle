@@ -50,7 +50,14 @@
                                     <i class="fas fa-calendar-day mr-2"></i>
                                     <span class="font-bold">{{ __('Date') }}</span>
                                 </label>
-                                <x-text-input id="date" name="date" type="date" class="mt-1 block w-full event-input" :value="old('date', $event->date)" :min="$today" required />
+
+                                @php
+                                    $eventDate = old('date', $event->date);
+                                    // Allow past dates if the event's date is before today, otherwise set the min to today's date
+                                    $minDate = $eventDate >= $today ? $today : null;
+                                @endphp
+
+                                <x-text-input id="date" name="date" type="date" class="mt-1 block w-full event-input" :value="$eventDate" :min="$minDate" required />
                                 <x-input-error class="mt-2" :messages="$errors->get('date')" />
                             </div>
                         </div>

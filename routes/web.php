@@ -96,7 +96,7 @@ Route::middleware(['auth', 'checkRole:1,2'])->group(function () {
 
     //new Eval
     Route::get('/evaluation-forms', [EvaluationFormController::class, 'evalList'])->name('evaluation.evaluationlist');
-
+    Route::post('/evaluation-forms/{id}/duplicate', [EvaluationFormController::class, 'duplicate'])->name('evaluation-forms.duplicate');
     Route::get('/evaluation-forms/create', [EvaluationFormController::class, 'create'])->name('evaluation-forms.create');
     Route::post('/evaluation-forms/store', [EvaluationFormController::class, 'store'])->name('evaluation-forms.store');
     Route::get('/evaluation-forms/{id}/edit', [EvaluationFormController::class, 'edit'])->name('evaluation-forms.edit');

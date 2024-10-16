@@ -78,6 +78,14 @@
             <i class="fas fa-folder"></i>
         </a>
     </li>
+
+    <hr class="sidebar-divider">
+    <li class="nav-item">
+        <a href="{{ route('help.page') }}" class="nav-link {{ request()->routeIs('help.page') ? 'active' : '' }}">
+            <span>FAQs</span>
+            <i class="fas fa-question-circle"></i> </i>
+        </a>
+    </li>
     <hr class="sidebar-divider">
     <li class="nav-item">
         <a href="#" class="nav-link" data-toggle="modal" data-target="#logoutModal">

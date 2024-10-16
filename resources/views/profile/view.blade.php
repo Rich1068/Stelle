@@ -114,7 +114,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($createdEvents as $event)
+                                        @foreach($attendedEvents as $event)
                                             <tr>
                                                 <td>
                                                     <a href="{{ route('event.view', $event->id) }}" class="profile-created-events-link">
@@ -136,7 +136,7 @@
                             @if($createdEvents->isEmpty())
                                 <p>N/A</p>
                             @else
-                                <table class="profile-created-events-table">
+                                <table class="profile-attended-events-table">
                                     <thead>
                                         <tr>
                                             <th>Title</th>

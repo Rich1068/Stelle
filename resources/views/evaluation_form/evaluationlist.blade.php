@@ -69,6 +69,12 @@
                         <td style="font-size: 14px; word-wrap: break-word;">{{ $form->created_at->format('Y-m-d') }}</td>
                         <td>
                             <div class="button-group" style="display: flex; justify-content: center; align-items: center;">
+                                <form action="{{ route('evaluation-forms.duplicate', $form->id) }}" method="POST" style="display:inline-block;">
+                                    @csrf
+                                    <button type="submit" class="btn btn-edit rounded-circle" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;" onclick="return confirm('Are you sure you want to duplicate this form?')">
+                                        <i class="fas fa-copy" style="color: white; margin: auto;"></i>
+                                    </button>
+                                </form>
                                 <a href="{{ route('evaluation-forms.edit', $form->id) }}" class="btn btn-edit rounded-circle me-2" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
                                     <i class="fas fa-edit" style="color: white; margin: auto;"></i>
                                 </a>

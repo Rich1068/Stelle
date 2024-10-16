@@ -44,8 +44,8 @@
     <!-- Nav Item - My Certificates -->
     <li class="nav-item">
         <a href="{{ route('help.page') }}" class="nav-link {{ request()->routeIs('help.page') ? 'active' : '' }}">
-            <span>Help & Support</span>
-            <i class="fas fa-certificate"></i>
+            <span>FAQs</span>
+            <i class="fas fa-question-circle"></i> </i>
         </a>
     </li>
 

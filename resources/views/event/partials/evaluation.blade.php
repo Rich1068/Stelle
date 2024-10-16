@@ -88,7 +88,7 @@
                 @endif
             @endforeach
         </div>
-
+        @endif
         <div class="top-container-2 mb-4">
             <h5 class="font-weight-bold">
                 <i class="fas fa-check-square"></i> Answers - Radio Questions
@@ -96,6 +96,7 @@
         </div>
 
    <!-- Grouped Radio Questions -->
+@if(!empty($questionsData))
 @php $radioCount = 0; @endphp
 <div class="row mb-4">
     @foreach ($questionsData as $index => $questionData)

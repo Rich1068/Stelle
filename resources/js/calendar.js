@@ -38,7 +38,8 @@
                 
                 eventClick: function(info) {
                     const date = moment(info.event.start).format('MMMM DD, YYYY');
-                    const time = moment(info.event.start).format('h:mm A'); // Only showing start time
+                    const start_time = moment(info.event.start).format('h:mm A');
+                    const end_time = moment(info.event.end).format('h:mm A');
                     const ownerName = info.event.extendedProps.first_name + " " +
                                     (info.event.extendedProps.middle_name || '') + " " +
                                     info.event.extendedProps.last_name;
@@ -54,7 +55,7 @@
                             <p><strong>Event:</strong> ${info.event.title}</p>
                             <p><strong>Description:</strong> ${info.event.extendedProps.description || 'No description available'}</p>
                             <p><strong>Date:</strong> ${date}</p>
-                            <p><strong>Time:</strong> ${time}</p> <!-- Simplified Time -->
+                            <p><strong>Time:</strong> ${start_time} - ${end_time}</p> <!-- Simplified Time -->
                             <p><strong>Owner:</strong> ${ownerName}</p>
                         </div>
                         <a href="/event/${info.event.id}" class="btn btn-primary">View Event</a>

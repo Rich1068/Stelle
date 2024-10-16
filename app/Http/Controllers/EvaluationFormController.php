@@ -217,6 +217,40 @@ class EvaluationFormController extends Controller
                          ->with('success', 'Evaluation Form and questions updated successfully!');
     }
 
+    public function duplicate($id)
+    {
+        DB::beginTransaction(); // Start the transaction
+    
+        try {
+            // Find the form to duplicate
+            $evaluationForm = EvaluationForm::with('questions')->findOrFail($id); // Load related questions
+    
+            // Duplicate the form
+            $newEvaluationForm = $evaluationForm->replicate(); // Clone the original form
+            $newEvaluationForm->form_name = $evaluationForm->form_name . ' copy'; // Modify the name
+            $newEvaluationForm->created_at = now(); // Set a new created_at timestamp
+            $newEvaluationForm->updated_at = null; // Set updated_at to null
+            $newEvaluationForm->save(); // Save the new form
+    
+            // Loop through the associated questions and duplicate them
+            foreach ($evaluationForm->questions as $question) {
+                $newQuestion = $question->replicate(); // Clone the original question
+                $newQuestion->evaluation_form_id = $newEvaluationForm->id; // Assign it to the new evaluation form
+                $newQuestion->created_at = now(); // Set a new created_at timestamp for each question
+                $newQuestion->updated_at = null; // Set updated_at to null for each question
+                $newQuestion->save(); // Save the new question
+            }
+    
+            DB::commit(); // Commit the transaction if everything is successful
+    
+            // Redirect back with a success message
+            return redirect()->route('evaluation.evaluationlist')->with('success', 'Evaluation form and questions duplicated successfully!');
+        } catch (\Exception $e) {
+            DB::rollBack(); // Rollback the transaction if an error occurs
+            return redirect()->route('evaluation.evaluationlist')->with('error', 'Error duplicating evaluation form: ' . $e->getMessage());
+        }
+    }
+
     public function event_edit($id, $form)
     {
         $evaluationForm = EvaluationForm::findOrFail($form);
@@ -436,6 +470,8 @@ class EvaluationFormController extends Controller
         $staticRadioOptions = [1, 2, 3, 4, 5];
     
         $form = $event->evaluationForm;
+        
+        $questionsData = [];
     
         //total user who answered
         $answeredUsers = User::whereHas('answers', function ($query) use ($id) {
@@ -447,7 +483,7 @@ class EvaluationFormController extends Controller
         ->count();
 
     
-        if ($form) {
+        if ($form && $form->evalForm->questions) {
             // Process questions for comments and radio questions
             foreach ($form->evalForm->questions as $question) {
                 if ($question->isComment()) {
