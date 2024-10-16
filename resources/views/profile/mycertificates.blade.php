@@ -48,11 +48,10 @@
             </div>
         </div>
     </div>
-</div>
+
 
 @endif
-
-
+</div>
     <!-- JavaScript to handle modal and image update -->
 <script>
 document.addEventListener('DOMContentLoaded', function () {
