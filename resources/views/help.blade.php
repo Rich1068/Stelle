@@ -13,25 +13,26 @@
   <div class="faq-email-wrapper" style="margin-top: 40px;">
     <div class="faq-container custom-faq">
       <div class="accordion">
-        <div class="accordion-item">
-          <button class="accordion-button" id="accordion-button-1" aria-expanded="false">
-            <span class="accordion-title">Why is the moon sometimes out during the day?</span>
-            <span class="icon" aria-hidden="true"></span>
-          </button>
-          <div class="accordion-content">
-            <p>The moon is often visible during the day due to its position relative to the Earth and Sun. During certain phases, it's illuminated by sunlight while still being in the daytime sky.</p>
-          </div>
-        </div>
+          <div class="accordion-item">
+      <button class="accordion-button" id="accordion-button-2" aria-expanded="false">
+        <span class="accordion-title">Can I Create My Own Event?</span>
+        <span class="icon" aria-hidden="true"></span>
+      </button>
+      <div class="accordion-content">
+        <p>Yes, you can request admin privileges to create your own events. Once your request is approved, you will have the ability to not only create events but also manage associated features such as certificates and evaluation forms.</p>
+      </div>
+    </div>
         <hr class="divider">
         <div class="accordion-item">
-          <button class="accordion-button" id="accordion-button-2" aria-expanded="false">
-            <span class="accordion-title">Why is the sky blue?</span>
-            <span class="icon" aria-hidden="true"></span>
-          </button>
-          <div class="accordion-content">
-            <p>The blue color of the sky is a result of Rayleigh scattering. Shorter blue wavelengths scatter more than other colors when sunlight passes through the Earth's atmosphere.</p>
-          </div>
-        </div>
+  <button class="accordion-button" id="accordion-button-3" aria-expanded="false">
+    <span class="accordion-title">Claiming Certificate</span>
+    <span class="icon" aria-hidden="true"></span>
+  </button>
+  <div class="accordion-content">
+    <p>You can claim a certificate by attending events. Depending on the event creator's requirements, an evaluation form may or may not be necessary. The event creator is responsible for distributing the certificates to the participants after the event concludes.</p>
+  </div>
+</div>
+
         <hr class="divider">
         <!-- Add more items as needed -->
       </div>
