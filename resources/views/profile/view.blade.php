@@ -119,7 +119,7 @@
                                     </thead>
                                     <tbody>
                                         @foreach($attendedEvents as $event)
-<<<<<<< HEAD
+
                                             <tr>
                                                 <td>
                                                     <a href="{{ route('event.view', $event->id) }}" class="profile-created-events-link">
@@ -150,8 +150,7 @@
                                     </thead>
                                     <tbody>
                                         @foreach($createdEvents as $event)
-=======
->>>>>>> 427f68841bbbcc01a4cf3bc7c14e245f7ed00434
+
                                             <tr>
                                                 <td>
                                                     <a href="{{ route('event.view', $event->id) }}" class="profile-created-events-link">
@@ -166,8 +165,6 @@
                             @endif
                         </div>
                     </div>
-<<<<<<< HEAD
-=======
 
                     <!-- Created Events Tab -->
                     <div class="tab-pane fade" id="created-events" role="tabpanel" aria-labelledby="created-events-tab">
