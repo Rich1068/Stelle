@@ -56,19 +56,32 @@
                 </div>
 
                 <!-- Profile Picture -->
-                <div class="profile-edit-item">
-                    <x-input-label for="profile_picture" class="profile-edit-label">
-                        <i class="fas fa-camera"></i> {{ __('Profile Picture:') }}
-                    </x-input-label>
-                    <x-text-input id="profile_picture" name="profile_picture" type="file" class="profile-edit-input" accept="image/*" onchange="previewImage(event)" />
-                    <x-input-error class="profile-edit-error" :messages="$errors->get('profile_picture')" />
+            
+                            <div class="profile-edit-item">
+                <x-input-label for="profile_picture" class="profile-edit-label">
+                    <i class="fas fa-camera"></i> {{ __('Profile Picture:') }}
+                </x-input-label>
+
+                <div class="custom-file-upload">
+                    <label for="profile_picture" class="custom-file-button">
+                        <i class="fas fa-upload"></i> Choose File
+                    </label>
+                    <input id="profile_picture" name="profile_picture" type="file" class="profile-edit-input hidden-input" accept="image/*" onchange="previewImage(event)" />
                     
-                    @if ($user->profile_picture)
-                        <img id="image_preview" src="{{ asset($user->profile_picture) }}" alt="Profile Picture" class="profile-edit-image-preview">
-                    @else
-                        <img id="image_preview" src="{{ asset('storage/images/profile_pictures/default.jpg') }}" alt="Default Profile Picture" class="profile-edit-image-preview">
-                    @endif
+                    <!-- File name text below the button -->
+                    <span id="file-name" class="file-name">No file chosen</span>
                 </div>
+
+                <x-input-error class="profile-edit-error" :messages="$errors->get('profile_picture')" />
+
+                @if ($user->profile_picture)
+                    <img id="image_preview" src="{{ asset($user->profile_picture) }}" alt="Profile Picture" class="profile-edit-image-preview">
+                @else
+                    <img id="image_preview" src="{{ asset('storage/images/profile_pictures/default.jpg') }}" alt="Default Profile Picture" class="profile-edit-image-preview">
+                @endif
+            </div>
+
+
             </div>
 
             <!-- New row for side-by-side display -->
@@ -150,8 +163,50 @@
         </form>
     </section>
 </div>
+<style>
+/* Hide the default file input */
+.hidden-input {
+    display: none;
+}
 
+.custom-file-upload {
+    display: flex;
+    flex-direction: column; /* Stack elements vertically */
+    max-width: 80%;
+    text-align: center;
+}
+
+.custom-file-button {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #003d80; /* Dark blue */
+    color: #fff;
+    border-radius: 15px; /* Rounded corners */
+    cursor: pointer;
+    font-size: 14px;
+    margin-bottom: 5px; /* Space between button and file name text */
+}
+
+.custom-file-button:hover {
+    background-color: #002b5c; /* Slightly darker shade for hover */
+}
+
+.file-name {
+    font-size: 14px;
+    color: #555;
+    text-align: center;
+}
+
+
+    </style>
 <script>
+
+document.getElementById('profile_picture').addEventListener('change', function() {
+    const fileName = this.files[0] ? this.files[0].name : 'No file chosen';
+    document.getElementById('file-name').textContent = fileName;
+});
+
+
 function previewImage(event) {
     var reader = new FileReader();
     reader.onload = function() {
