@@ -212,7 +212,8 @@ class ProfileController extends Controller
     public function view($id)
     {
         $user = User::findOrFail($id);
-        return view('profile.view', compact('user'));
+        $attendedEvents = $user->eventParticipant()->with('event')->get()->pluck('event');
+        return view('profile.view', compact('user', 'attendedEvents'));
     }
     
 
