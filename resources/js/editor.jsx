@@ -80,7 +80,10 @@ export const TemplatesPanel = observer(({ store }) => {
                 preview_image: template.path, 
                 id: template.id               
             }))}
-            getPreview={(template) => `/${template.preview_image}`} // Display the preview image
+            getPreview={(template) => {
+              console.log(`Template Preview Path: /${template.preview_image}`);
+              return `/${template.preview_image}`;
+            }} // Display the preview image
             onSelect={async (template) => {
                 const design = JSON.parse(template.design);
                 console.log('Loading template design:', design);  // Log the design JSON
