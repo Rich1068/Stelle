@@ -130,4 +130,8 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
     {
         return $this->hasOne(RegisterAdmin::class); 
     }
+    public function eventsCreated()
+    {
+        return $this->hasMany(UserEvent::class, 'user_id');
+    }
 }
