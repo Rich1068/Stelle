@@ -126,10 +126,10 @@
                                 <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                 {{ __('Profile') }}
                             </x-dropdown-link>
-                            <a class="dropdown-item" href="#">
+                            <x-dropdown-link :href="route('help.page')" class="dropdown-item">
                                 <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Settings
-                            </a>
+                                {{ __('Help & Support') }}
+                            </x-dropdown-link>
                             @if(auth()->user()->role_id == 3)
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#adminRegistrationModal">
                                     <i class="fas fa-solid fa-code fa-sm fa-fw mr-2 text-gray-400"></i>

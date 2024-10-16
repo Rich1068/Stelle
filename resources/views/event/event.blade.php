@@ -15,7 +15,7 @@
         <div class="tab-button active" data-tab="main">Event Details</div>
         <div class="tab-button" data-tab="participants">Participants</div>
         @if ($currentUser == $userevent->user->id)
-            <div class="tab-button" data-tab="feedback">Event Analytics</div>
+            <div class="tab-button" data-tab="feedback">Evaluation Form/Analytics</div>
         @endif
     </div>
 
@@ -59,9 +59,9 @@
                         <!-- Create and View Certificate Buttons Side by Side -->
                         <div class="certificate-buttons">
                             @if ($certificate == null)
-                                <a href="{{ route('event_certificates.create', $event->id) }}" class="btn btn-primary">Create Certificate</a>
+                                <a href="{{ route('event_certificates.create', $event->id) }}" class="btn btn-primary">Create/Send Certificate</a>
                             @else
-                                <a href="{{ route('event_certificates.create', $event->id) }}" class="btn btn-primary">Update Certificate</a>
+                                <a href="{{ route('event_certificates.create', $event->id) }}" class="btn btn-primary">Update/Send Certificate</a>
                             @endif
 
                             @if ($certificate)
@@ -163,13 +163,13 @@
     <button type="button" class="btn btn-primary-2" data-toggle="modal" data-target="#evaluationFormModal">
         Setup Evaluation Form
     </button>
-
+    @if($event->evaluationForm)
     <button type="button" class="btn btn-primary-2">
         <a href="{{ route('evaluation.results', ['id' => $event->id]) }}" style="color:white; text-decoration:none;">
             View Evaluation Results
         </a>
     </button>
-
+    @endif
     <!-- Activate Checkbox -->
     @if($event->evaluationForm)
         <form action="{{ route('evaluation-forms.toggle', ['id' => $event->id, 'form' => $event->evaluationForm->id]) }}" method="POST" class="full-width-button">
