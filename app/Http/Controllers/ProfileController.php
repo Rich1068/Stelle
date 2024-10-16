@@ -17,6 +17,10 @@ use Illuminate\Support\Facades\File;
 use App\Models\Country;
 use App\Models\User;
 use App\Models\Event;
+use App\Models\UserEvent;
+use App\Models\EventParticipant;
+use App\Models\EvaluationForm;
+use App\Models\CertUser;
 use App\Events\UserDeleted;
 use App\Models\Roles;
 use App\Models\RegisterAdmin;
@@ -212,9 +216,114 @@ class ProfileController extends Controller
     public function view($id)
     {
         $user = User::findOrFail($id);
-        return view('profile.view', compact('user'));
+        $attendedEvents = $user->eventParticipant()
+            ->with('event')
+            ->where('status_id', 1) // Filter by joined events
+            ->orderBy('updated_at', 'desc') // Order by most recent join
+            ->get()
+            ->pluck('event');
+
+        $createdEvents = $user->eventsCreated()->orderBy('created_at', 'desc')->get()->pluck('event');
+        Log::info($createdEvents);
+        $certificates = CertUser::where('user_id', $user->id)->get();
+
+        
+        $totalEventsCreated = UserEvent::where('user_id', $user->id)->count();
+        $totalEvaluationFormsCreated = EvaluationForm::where('created_by', $user->id)->count();
+        $totalAttendedEvents = EventParticipant::where('user_id', $user->id)->where('status_id', 1)->count();
+        $totalCertificates = CertUser::where('user_id', $user->id)->count();
+
+        // Monthly event participation (for the current year)
+        $currentYear = now()->year;
+        $monthlyParticipation = EventParticipant::selectRaw('MONTH(created_at) as month, COUNT(*) as total')
+            ->where('user_id', $user->id)
+            ->whereYear('created_at', $currentYear)
+            ->groupBy('month')
+            ->get()
+            ->pluck('total', 'month')
+            ->toArray();
+
+        // Fill in missing months with 0
+        $monthlyParticipationData = array_fill(1, 12, 0);
+        foreach ($monthlyParticipation as $month => $total) {
+            $monthlyParticipationData[$month] = $total;
+        }
+        return view('profile.view', compact('user','attendedEvents','createdEvents', 'totalEvaluationFormsCreated','totalEventsCreated', 'totalAttendedEvents', 'totalCertificates', 'monthlyParticipationData', 'certificates'));
     }
-    
+
+
+    //CHART INFO
+    public function getEventsData($id, Request $request)
+    {
+        $year = $request->input('year', now()->year); // Get the year from the request or default to the current year
+        
+        // Get the events the user has joined in the given year, grouped by month
+        $eventsJoinedPerMonth = EventParticipant::selectRaw('MONTH(updated_at) as month, COUNT(*) as total')
+            ->where('user_id', $id) 
+            ->where('status_id', 1) 
+            ->whereYear('updated_at', $year)
+            ->groupBy('month')
+            ->orderBy('month')
+            ->get();
+
+        // Prepare the monthly data with default 0 values for all 12 months
+        $monthlyData = array_fill(1, 12, 0);
+        foreach ($eventsJoinedPerMonth as $event) {
+            $monthlyData[$event->month] = $event->total;
+        }
+
+        // Return data in JSON format
+        return response()->json([
+            'labels' => ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+            'values' => array_values($monthlyData)
+        ]);
+    }
+
+    public function getEventsCreatedData(Request $request, $id)
+    {
+        $year = $request->input('year', now()->year);
+        
+        // Fetch the events created by the admin in the given year
+        $eventsCreated = UserEvent::selectRaw('MONTH(created_at) as month, COUNT(*) as total')
+            ->where('user_id', $id) // Admin's ID
+            ->whereYear('created_at', $year)
+            ->groupBy('month')
+            ->get();
+
+        $monthlyData = array_fill(1, 12, 0); // Initialize all months with 0
+        foreach ($eventsCreated as $event) {
+            $monthlyData[$event->month] = $event->total;
+        }
+
+        return response()->json([
+            'labels' => ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+            'values' => array_values($monthlyData),
+        ]);
+    }
+
+    public function getEventsJoinedData(Request $request, $id)
+    {
+        $year = $request->input('year', now()->year);
+
+        // Fetch the events joined by the admin in the given year
+        $eventsJoined = EventParticipant::selectRaw('MONTH(updated_at) as month, COUNT(*) as total')
+            ->where('user_id', $id) // Admin's ID
+            ->where('status_id', 1) // Only confirmed participations
+            ->whereYear('updated_at', $year)
+            ->groupBy('month')
+            ->get();
+
+        $monthlyData = array_fill(1, 12, 0); // Initialize all months with 0
+        foreach ($eventsJoined as $event) {
+            $monthlyData[$event->month] = $event->total;
+        }
+
+        return response()->json([
+            'labels' => ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+            'values' => array_values($monthlyData),
+        ]);
+    }
+    ///////////////////////////////////////////////////////////////////////////////////////
 
     //users to become admins
     public function registerAdmin(Request $request)

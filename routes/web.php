@@ -64,6 +64,9 @@ Route::middleware(['auth','super_admin'])->group(function () {
     Route::get('/super-admin/events-data', [SuperAdminController::class, 'getEventsData']);
     Route::get('/super-admin/users-data', [SuperAdminController::class, 'getUsersDataByYear']);
     Route::get('/super-admin/dashboard/participants-per-event', [SuperAdminController::class, 'getPaginatedParticipantsPerEvent'])->name('superadmin.participants.per.event');
+    Route::get('/profile/{id}/events-data', [ProfileController::class, 'getEventsData'])->name('profile.eventsData');
+    Route::get('/profile/{id}/events-created-data', [ProfileController::class, 'getEventsCreatedData'])->name('profile.getAdminCreatedEventsData');
+    Route::get('/profile/{id}/events-joined-data', [ProfileController::class, 'getEventsJoinedData'])->name('profile.getAdminJoinedEventsData');
 });
 
 //admin
