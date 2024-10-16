@@ -1881,7 +1881,40 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 .flex.items-center i {
   margin-right: 0.5rem;
 }
+@media (max-width: 1200px) {
+  .event-form {
+    grid-template-columns: 1fr; /* Single column on mobile */
+    gap: 20px;
+    padding: 20px;
+    max-width: 80%; /* Maximum width */
+  }
 
+  .event-field {
+    padding: 15px;
+  }
+
+  .event-field label {
+    font-size: 18px;
+  }
+
+  .event-field input,
+  .event-field textarea {
+    padding: 10px;
+  }
+
+  .event-datetime {
+    gap: 20px;
+  }
+
+  .event-datetime > div {
+    padding: 15px;
+  }
+
+  .event-submit {
+    width: 100%;
+    padding: 15px 20px;
+  }
+}
 /* Mobile View Adjustments */
 @media (max-width: 768px) {
   .event-form {
