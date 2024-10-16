@@ -13,7 +13,8 @@
     </h2>
 </div> 
 
-
+@if ($events->isEmpty())
+@else
 <!-- Filter Form -->
 <div class="event-filter-container p-3 mb-3">
     <div class="d-flex justify-content-center align-items-center">
@@ -41,7 +42,7 @@
         Hide Finished Events
     </label>
 </div>
-
+@endif
 <!-- Event List -->
 <div id="event-list-container">
     @include('event.partials.eventlist', ['events' => $events]) <!-- Separate partial for events -->

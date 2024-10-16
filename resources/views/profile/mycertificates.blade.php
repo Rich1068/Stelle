@@ -1,40 +1,39 @@
 @extends('layouts.app')
 
 @section('body') 
-    <div class="top-container mb-4 d-flex align-items-left">
+<div class="top-container mb-4 d-flex align-items-left">
     <h2 class="font-weight-bold mb-0">
-    <i class="fas fa-certificate"></i> My Certificate
+        <i class="fas fa-certificate"></i> My Certificate
     </h2>
+</div>
+<div class="certificates-page">
+    @if($user->certUser->isEmpty())
+    <!-- No templates available message -->
+    <div class="no-events-container">
+        <i class="fas fa-file-alt"></i> <!-- Icon representing no forms -->
+        <p>No Certificates Found.</p>
     </div>
-    <div class="certificates-page">
-
-        @if($user->certUser->isEmpty())
-            <p>No certificates found.</p>
-        @else
-            <div class="certificates-container">
-                @foreach($user->certUser as $certificate)
-                    <div class="certificate-list">
-                        <div class="certificate-header">{{ $certificate->certificate->event->title }}</div> <!-- Added header -->
-                        <img src="{{ asset($certificate->cert_path)}}" class="certificate-image">
-
-                        <div class="certificate-actions">
-                            <!-- View Button to open modal -->
-                            <button type="button" class="btn btn-primary view-certificate-btn" data-image-url="{{ asset($certificate->cert_path) }}" data-bs-toggle="modal" data-bs-target="#viewCertificateModal">
-                                Preview
-                            </button>
-
-                            <!-- Download Button -->
-                            <a href="{{ asset($certificate->cert_path) }}" download class="btn btn-primary">
-                                Download
-                            </a>
-                        </div>
-                    </div>
-                @endforeach
+    @else
+        <div class="certificates-container">
+            @foreach($user->certUser as $certificate)
+            <div class="certificate-list">
+                <div class="certificate-header">{{ $certificate->certificate->event->title }}</div> <!-- Added header -->
+                    <img src="{{ asset($certificate->cert_path)}}" class="certificate-image">
+                    <div class="certificate-actions">
+                        <!-- View Button to open modal -->
+                    <button type="button" class="btn btn-primary view-certificate-btn" data-image-url="{{ asset($certificate->cert_path) }}" data-bs-toggle="modal" data-bs-target="#viewCertificateModal">
+                        Preview
+                    </button>
+                    <!-- Download Button -->
+                    <a href="{{ asset($certificate->cert_path) }}" download class="btn btn-primary">
+                        Download
+                    </a>
+                </div>
             </div>
-        @endif
-
-            <!-- Modal -->
-            <div class="modal fade" id="viewCertificateModal" tabindex="-1" aria-labelledby="viewCertificateModalLabel" aria-hidden="true">
+            @endforeach
+        </div>
+<!-- Modal -->
+<div class="modal fade" id="viewCertificateModal" tabindex="-1" aria-labelledby="viewCertificateModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -50,8 +49,8 @@
         </div>
     </div>
 </div>
-    </div>
 
+@endif
 
 
     <!-- JavaScript to handle modal and image update -->

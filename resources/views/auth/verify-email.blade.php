@@ -10,7 +10,7 @@
         </div>
         
         <!-- Divider Below Logo -->
-        <hr style="border-top: 2px solid darkblue; margin: 5px 0;"> <!-- Reduced margin for the divider -->
+        <hr style="border-top: 2px solid darkblue; margin: 5px 0; width: 100%"> <!-- Reduced margin for the divider -->
 
         <!-- Session Status -->
         <div class="mb-2 text-sm" style="color: #00008B; font-weight: bold; text-align: center;">
@@ -23,7 +23,7 @@
         </div>
 
         <!-- Divider Below Text -->
-        <hr style="border-top: 2px solid darkblue; margin: 5px 0;"> <!-- Reduced margin for the divider -->
+        <hr style="border-top: 2px solid darkblue; margin: 5px 0; width: 100%"> <!-- Reduced margin for the divider -->
 
         <!-- Resend Verification Email -->
         <div class="flex items-center justify-between"> <!-- Removed additional vertical spacing here -->

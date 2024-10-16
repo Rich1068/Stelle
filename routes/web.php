@@ -63,6 +63,7 @@ Route::middleware(['auth','super_admin'])->group(function () {
     Route::delete('/super-admin/users/delete/{id}', [ProfileController::class, 'superadmin_destroy'])->name('superadmin.destroyUser');
     Route::get('/super-admin/events-data', [SuperAdminController::class, 'getEventsData']);
     Route::get('/super-admin/users-data', [SuperAdminController::class, 'getUsersDataByYear']);
+    Route::get('/super-admin/dashboard/participants-per-event', [SuperAdminController::class, 'getPaginatedParticipantsPerEvent'])->name('superadmin.participants.per.event');
 });
 
 //admin
@@ -70,6 +71,7 @@ Route::middleware(['auth','admin'])->group(function () {
 
     route::get('/admin/dashboard', [AdminController::class, 'index'])->middleware('verified')->name('admin.dashboard');
     Route::get('/admin/dashboard/get-events-data', [AdminController::class, 'getAdminCreatedEventsData'])->name('admin.getEventsData');
+    Route::get('/admin/dashboard/participants-per-event', [AdminController::class, 'getPaginatedParticipantsPerEvent'])->name('admin.participants.per.event');
 });
 //user
 Route::middleware(['auth','user'])->group(function () {

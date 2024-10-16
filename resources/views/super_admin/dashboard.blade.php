@@ -221,7 +221,29 @@
         </div>
     </div>
 </div>
+    <!-- New Monthly Participants Chart -->
+    <div class="row mb-5 col-md-12 mt-2"> 
+        <div class="col-md-12">
+            <div class="card border-left-info shadow h-100" style="height: 500px; width: 90%;">
+                <div class="card-body p-4 d-flex flex-column align-items-center"> 
+                    <div class="text-xs font-weight-bold text-dark-blue text-uppercase mb-1 text-center">
+                        Participants per Event
+                    </div>
+                    <!-- Chart Container -->
+                    <div class="chart-container flex-grow-1">
+                        <canvas id="participantsPerEventChart" style="height: 100%; width: 100%;"></canvas>
+                    </div>
 
+                    <!-- Pagination Controls -->
+                    <div class="pagination-controls mt-4 d-flex justify-content-center">
+                        <button id="prevPage" class="btn btn-secondary me-2" disabled>Previous</button>
+                        <span id="pageInfo">Page 1</span>
+                        <button id="nextPage" class="btn btn-secondary ms-2">Next</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 <style>
     /* Mobile-specific styles (for screens 768px or less) */
 @media (max-width: 768px) {
@@ -579,6 +601,77 @@
         });
     });
 
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const ctx = document.getElementById('participantsPerEventChart').getContext('2d');
+        let currentPage = 1;
+        let lastPage = 1;
+
+        // Initialize the chart
+        let participantsPerEventChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: [], // Event names
+                datasets: [{
+                    label: 'Participants',
+                    data: [], // Participants count
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 2,
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            stepSize: 1
+                        }
+                    }]
+                }
+            }
+        });
+
+        // Function to update the chart with new data
+        function updateChart(data) {
+            participantsPerEventChart.data.labels = data.labels;
+            participantsPerEventChart.data.datasets[0].data = data.values;
+            participantsPerEventChart.update();
+
+            currentPage = data.current_page;
+            lastPage = data.last_page;
+            document.getElementById('pageInfo').innerText = `Page ${currentPage}`;
+            document.getElementById('prevPage').disabled = currentPage === 1;
+            document.getElementById('nextPage').disabled = currentPage === lastPage;
+        }
+
+        // Fetch and update the chart for the specified page
+        function fetchPageData(page) {
+            fetch(`/admin/dashboard/participants-per-event?page=${page}`)
+                .then(response => response.json())
+                .then(data => updateChart(data))
+                .catch(error => console.error('Error fetching data:', error));
+        }
+
+        // Initial load for page 1
+        fetchPageData(currentPage);
+
+        // Event listener for 'Previous' button
+        document.getElementById('prevPage').addEventListener('click', function () {
+            if (currentPage > 1) {
+                currentPage--;
+                fetchPageData(currentPage);
+            }
+        });
+
+        // Event listener for 'Next' button
+        document.getElementById('nextPage').addEventListener('click', function () {
+            if (currentPage < lastPage) {
+                currentPage++;
+                fetchPageData(currentPage);
+            }
+        });
+    });
 </script>
 @vite('resources/js/calendar.js')
 @endsection

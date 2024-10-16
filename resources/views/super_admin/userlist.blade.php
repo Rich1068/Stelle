@@ -55,7 +55,16 @@
 }
 </style>
 
-<div class="card mb-4" style="margin-top: 50px; border: none;"> <!-- Removed shadow and added border: none; -->
+<div class="input-group mb-3">
+    <input type="text" id="userSearch" class="form-control" placeholder="Search for users...">
+    <div class="input-group-append">
+        <button class="btn btn-primary" type="button">
+            <i class="fas fa-search"></i>
+        </button>
+    </div>
+</div>
+<div class="card mb-4" style="margin-top: 50px; border: none;">
+     <!-- Removed shadow and added border: none; -->
     <div class="card-header py-3">
         <h6 class="m-0 font-weight-bold text-primary">Users List</h6>
     </div>
@@ -110,5 +119,21 @@
         </button>
     </form>
 </div>
+
+<script>
+    document.getElementById('userSearch').addEventListener('input', function () {
+        const searchTerm = this.value.toLowerCase();
+        const rows = document.querySelectorAll('#dataTable tbody tr');
+
+        rows.forEach(row => {
+            const name = row.querySelector('td:nth-child(2)').textContent.toLowerCase(); // 2nd column contains the name
+            if (name.includes(searchTerm)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    });
+</script>
 
 @endsection

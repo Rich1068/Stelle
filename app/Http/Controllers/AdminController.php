@@ -70,6 +70,37 @@ class AdminController extends Controller
         ]);
     }
 
+    public function getPaginatedParticipantsPerEvent(Request $request)
+    {
+        $adminId = Auth::user()->id;
+        $perPage = 10; // Number of events per page
+        $page = $request->input('page', 1); // Current page
+
+        // Fetch events created by admin, along with the count of participants for each event
+        $events = UserEvent::with('event') // Fetch the associated event
+            ->where('user_id', $adminId)
+            ->paginate($perPage, ['*'], 'page', $page);
+
+        $eventNames = [];
+        $participantsCount = [];
+
+        foreach ($events as $userEvent) {
+            $event = $userEvent->event;
+            $eventNames[] = $event->title;
+
+            // Count participants using the EventParticipant relationship
+            $participantCount = EventParticipant::where('event_id', $event->id)->where('status_id', 1)->count();
+            $participantsCount[] = $participantCount;
+        }
+
+        return response()->json([
+            'labels' => $eventNames,
+            'values' => $participantsCount,
+            'current_page' => $events->currentPage(),
+            'last_page' => $events->lastPage(),
+        ]);
+    }
+
 
 
 
