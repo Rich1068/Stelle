@@ -1422,7 +1422,13 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 .event-view-about b {
   color: #001e54;
   font-weight: bold;
-}
+    text-align: center; 
+    margin-bottom: 10px; 
+    white-space: normal; 
+    overflow-wrap: break-word; 
+    margin: 10px 15px; 
+  
+  }
 
 /* Title and Banner */
 .event-view-header {
