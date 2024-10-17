@@ -122,9 +122,9 @@
 
                                             <tr>
                                                 <td>
-                                                    <a href="{{ route('event.view', $event->id) }}" class="profile-created-events-link">
-                                                        {{ $event->title }}
-                                                    </a>
+                                                <a href="{{ route('event.view', $event->id) }}" class="profile-created-events-link">
+                                                    {{ Str::limit($event->title, 40, '...') }}  <!-- Limit to 30 characters -->
+                                                </a>
                                                 </td>
                                                 <td>{{ $event->date }}</td>
                                             </tr>
@@ -153,9 +153,9 @@
 
                                             <tr>
                                                 <td>
-                                                    <a href="{{ route('event.view', $event->id) }}" class="profile-created-events-link">
-                                                        {{ $event->title }}
-                                                    </a>
+                                                <a href="{{ route('event.view', $event->id) }}" class="profile-created-events-link">
+                                                    {{ Str::limit($event->title, 40, '...') }}  <!-- Limit to 30 characters -->
+                                                </a>
                                                 </td>
                                                 <td>{{ $event->date }}</td>
                                             </tr>
