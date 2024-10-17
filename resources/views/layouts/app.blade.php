@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="icon" href="{{ asset('images/icon.png') }}" type="image/x-icon">
+    <link rel="icon" href="{{ asset('images/stelle_icon.png') }}" type="image/x-icon">
     @viteReactRefresh 
     <title>STELLE</title>
     <!-- Custom fonts for this template-->

@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="/css/bootstrap.min.css">
 <link rel="stylesheet" href="/css/custom.css"> <!-- Ensure custom styles are linked -->
 <title>Stelle</title>
-<link rel="icon" href="{{ asset('images/icon.png') }}" type="image/x-icon">
+<link rel="icon" href="{{ asset('images/stelle_icon.png') }}" type="image/x-icon">
 
 <div class="white-container">
     <div class="fpassword-container text-center w-100" style="max-width: 400px;">

@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="/css/bootstrap.min.css">
 <title>Stelle</title>
-<link rel="icon" href="{{ asset('images/icon.png') }}" type="image/x-icon">
+<link rel="icon" href="{{ asset('images/stelle_icon.png') }}" type="image/x-icon">
 
 <div class="white-container"> 
     <!-- Forgot Password Form Section -->
