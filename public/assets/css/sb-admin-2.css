@@ -1503,7 +1503,14 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   }
 
   .event-view-about {
-    font-size: 16px; /* Smaller text size for the about section */
+    font-size: 15px; 
+    padding-top: 10px; 
+    text-align: center; 
+    margin-bottom: 10px; 
+    white-space: normal; 
+    overflow-wrap: break-word; 
+    margin: 10px 15px; 
+  
   }
 
   .modal-dialog {
