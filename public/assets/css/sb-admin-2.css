@@ -1403,15 +1403,15 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 
 /* About Section */
 .event-view-about {
-  font-size: 20px;
-  color: #333;
-  margin-bottom: 20px;
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-}
+  color: #001e54;
+  font-weight: bold;
+    text-align: center; 
+    margin-bottom: 10px; 
+    white-space: normal; 
+    overflow-wrap: break-word; 
+    margin: 10px 15px; 
+    
+  } 
 
 .event-view-about i {
   margin-right: 10px;
