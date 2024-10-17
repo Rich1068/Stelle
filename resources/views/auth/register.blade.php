@@ -26,17 +26,18 @@
         <!-- Progress bar -->
         <div class="carousel-progress">
             <div class="progress-fill"></div>
-            <img src="/images/stellelogo.png" alt="Stelle Logo" class="stelle-logo"> <!-- Stelle logo positioned at the bottom -->
+         
         </div>
     </div>
 
     <!-- Right Side: Registration Form -->
     <div class="register-account">
 
+
         <a class="back-to-login" href="{{ route('login') }}">Back To Login</a>
         <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
             @csrf
-
+            <img src="/images/stellelogo.png" alt="Stelle Logo" class="stelle-logo"> <!-- Stelle logo positioned at the bottom -->
             <!-- First Name -->
             <div class="input-group">
                 <x-input-label for="first_name" class="register-label">
@@ -107,15 +108,25 @@
 <!-- Inline CSS to hide carousel on mobile screens and fix form layout -->
 <style>
 
-    .stelle-logo {
-        width: 200px; /* Adjust the width to make the logo smaller */
-        height: auto; /* Maintain the aspect ratio */
-        position: absolute; /* Position the logo at the bottom */
-        bottom: 20px; /* Add some space from the bottom */
-        left: 50%; /* Center the logo horizontally */
-        transform: translateX(-50%); /* Center alignment adjustment */
-        Position: Absolute;
-    }
+.stelle-logo {
+    width: 130px; /* Adjust the width to fit better */
+    height: auto; /* Maintain the aspect ratio */
+    bottom: 20px; /* Distance from the bottom of the registration container */
+    margin-bottom: 20px;
+
+}
+
+.register-account {
+    position: relative; /* Ensure child elements (like the logo) can be positioned absolutely */
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.21);
+    padding: 20px;
+    width: 70%; /* Width of the registration form */
+    margin: auto;
+    text-align: center;
+    box-sizing: border-box; /* Ensure padding is included in width calculation */
+}
 
 
     body {
