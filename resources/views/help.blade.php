@@ -15,11 +15,11 @@
       <div class="accordion">
           <div class="accordion-item">
       <button class="accordion-button" id="accordion-button-2" aria-expanded="false">
-        <span class="accordion-title">Can I Create My Own Event?</span>
+        <span class="accordion-title">What Is "Stelle"?</span>
         <span class="icon" aria-hidden="true"></span>
       </button>
       <div class="accordion-content">
-        <p>Only Admins can create events, but users can request admin privileges to create your own events. Once your request is approved, you will have the ability to not only create events but also manage associated features such as certificates and evaluation forms.</p>
+        <p>Stelle is an event management system designed to streamline the planning and execution of tech conferences. The name Stelle, meaning 'star' in French, reflects our commitment to delivering standout events with efficiency and precise tools.</p>
       </div>
     </div>
         <hr class="divider">
@@ -31,10 +31,19 @@
   <div class="accordion-content">
     <p>You can claim a certificate by attending events. Depending on the event creator's requirements, an evaluation form may or may not be necessary. The event creator is responsible for distributing the certificates to the participants after the event concludes.</p>
   </div>
-</div>
+  </div>
 
         <hr class="divider">
-        <!-- Add more items as needed -->
+        <div class="accordion-item">
+      <button class="accordion-button" id="accordion-button-2" aria-expanded="false">
+        <span class="accordion-title">Can I Create My Own Event?</span>
+        <span class="icon" aria-hidden="true"></span>
+      </button>
+      <div class="accordion-content">
+        <p>Yes, you can request admin privileges to create your own events. Once your request is approved, you will have the ability to not only create events but also manage associated features such as certificates and evaluation forms.</p>
+      </div>
+    </div>
+         
       </div>
     </div>
 
