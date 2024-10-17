@@ -44,8 +44,16 @@ class GoogleController extends Controller
                         return redirect()->intended('user/dashboard');
                 }
             } else {
+                $existingUserWithEmail = User::where('email', $user->email)->first();
+                
+                // If email already exists but no google_id, show an error
+                if ($existingUserWithEmail && !$existingUserWithEmail->google_id) {
+                    return redirect()->route('login')
+                        ->withErrors(['google_login_error' => 'An account with this email already exists. Please log in using your email and password.']);
+                }
 
-                $file= null;  // Default if no profile picture is uploaded
+                // Now that all checks have passed, we proceed with storing the user's profile picture
+                $filedatabase = null;  // Default if no profile picture is uploaded
             
                 if ($user->avatar) {
                     // Download the user's profile picture from Google
@@ -60,6 +68,8 @@ class GoogleController extends Controller
                     // Store the profile picture in the specified directory
                     Storage::disk('public')->put($filepath, $file);
                 }
+
+                // Create the new user in the database
                 $newUser = User::create([
                     'first_name' => $firstname,
                     'middle_name' => $middlename,  // If available, set middle name
@@ -72,11 +82,17 @@ class GoogleController extends Controller
                     'email_verified_at' => now()
                 ]);
 
+                // Log in the new user
                 Auth::login($newUser);
                 return redirect()->intended('user/dashboard');
             }
         } catch (Exception $e) {
-            dd($e->getMessage());
+            // Log the error message for debugging purposes
+            \Log::error('Google login error: ' . $e->getMessage());
+    
+            // Redirect back to the login page with a user-friendly error message
+            return redirect()->route('login')
+                ->withErrors(['google_login_error' => 'There was an issue logging in with Google. Please try again later.']);
         }
     }
 }
