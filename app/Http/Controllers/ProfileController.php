@@ -251,6 +251,22 @@ class ProfileController extends Controller
         return view('profile.view', compact('user','attendedEvents','createdEvents', 'totalEvaluationFormsCreated','totalEventsCreated', 'totalAttendedEvents', 'totalCertificates', 'monthlyParticipationData', 'certificates'));
     }
 
+    public function updateRole(Request $request, $id)
+    {
+        // Validate the role input
+        $validatedData = $request->validate([
+            'role_id' => 'required|in:1,2,3',  // Ensures the selected value is one of the allowed roles
+        ]);
+    
+        // Find the user
+        $user = User::findOrFail($id);
+    
+        // Update the role
+        $user->role_id = $validatedData['role_id'];
+        $user->save();
+        return back()->with('status', 'profile-updated');
+    }
+
 
     //CHART INFO
     public function getEventsData($id, Request $request)

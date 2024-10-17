@@ -198,15 +198,6 @@
                 </div>
             </div>
         </div>
-    </div>
-
-    <!-- Certificates Tab Content -->
-    <div class="tab-pane fade" id="certificates" role="tabpanel" aria-labelledby="certificates-tab">
-        @include('profile.partials.viewUserCertificate')
-    </div>
-</div>
-
-<!-- Analytics Section (Always Visible Below the Tabs) -->
         <div class="info-container">
             <div class="info-section">
                 <h3 class="bold-blue">
@@ -220,6 +211,16 @@
                 @include('profile.partials.user-analytics')
             @endif
         </div>  
+    </div>
+
+    <!-- Certificates Tab Content -->
+    <div class="tab-pane fade" id="certificates" role="tabpanel" aria-labelledby="certificates-tab">
+        @include('profile.partials.viewUserCertificate')
+    </div>
+</div>
+
+<!-- Analytics Section (Always Visible Below the Tabs) -->
+
 </div>
 </div>
 

@@ -25,18 +25,25 @@
                     <div class="profile-edit-section">
                         <h3 class="profile-edit-header">{{ __('Edit Profile') }}</h3>
                         <div class="profile-edit-description">
-                            {{ __('Update your profile information.') }}
+                            {{ __('Update profile information.') }}
                         </div>
                         @include('super_admin.partials.superadmin-update-profile-information-form')
                     </div>
 
+
                     <!-- Container for vertical alignment of password update and delete account sections (right) -->
                     <div class="vertical-align-container">
+
+                        <!-- Separate Container for Password Update Section -->
+                        <div class="password-update-container">
+                            <h3 class="password-update-header">{{ __('Change Role') }}</h3>
+                            @include('super_admin.partials.superadmin-update-role')
+                        </div>
                         <!-- Separate Container for Delete Account Section -->
                         <div class="delete-account-container">
                             <h3 class="delete-profile-header">{{ __('Delete Account') }}</h3>
                             <div class="delete-profile-description">
-                                {{ __('Permanently delete your account.') }}
+                                {{ __('Permanently delete account.') }}
                             </div>
                             @include('super_admin.partials.superadmin-delete-user-form')
                         </div>

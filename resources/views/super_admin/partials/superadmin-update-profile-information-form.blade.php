@@ -6,7 +6,7 @@
             </h2>
 
             <p class="profile-edit-description mt-1 text-sm text-gray-600">
-                {{ __("Update your account's profile information") }}
+                {{ __("Update account's profile information") }}
             </p>
         </header>
 
