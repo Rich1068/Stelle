@@ -1402,31 +1402,28 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 }
 
 /* About Section */
-.event-view-about {
+.event-view-about  {
   color: #001e54;
     margin-bottom: 10px; 
     white-space: normal; 
     overflow-wrap: break-word; 
-    margin: 10px 15px; 
+    font-size: 20px;
     
   } 
 
-.event-view-about i {
-  margin-right: 10px;
-  font-size: 22px;
-  color: #001e54;
-}
-
-.event-view-about b {
-  color: #001e54;
-  font-weight: bold;
-    text-align: center; 
-    margin-bottom: 10px; 
-    white-space: normal; 
-    overflow-wrap: break-word; 
-    margin: 10px 15px; 
-  
+  .event-view-about i {
+    color: #001e54;
   }
+
+  .event-view-about b {
+    color: #001e54;
+    font-weight: bold;
+      text-align: center; 
+      white-space: normal; 
+      overflow-wrap: break-word;  
+
+    }
+
 
 /* Title and Banner */
 .event-view-header {
@@ -1491,10 +1488,11 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   }
 
   .event-view-event-title {
-    font-size: 24px;
-    white-space: normal; 
-    overflow-wrap: break-word;
-    margin: 0 15px; 
+    font-size: 24px; /* Slightly smaller text on small screens */
+    white-space: normal; /* Allow text to wrap */
+    overflow-wrap: break-word; /* Ensure long words break to the next line */
+    margin-top: 10px;
+
   }
 
   .tab-button {
@@ -1507,7 +1505,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   }
 
   .event-view-about {
-    font-size: 15px; 
+    font-size: 17px; 
     padding-top: 10px; 
     text-align: center; 
     margin-bottom: 10px; 
@@ -1516,12 +1514,10 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
     margin: 10px 15px; 
   
   }
-
   .modal-dialog {
     width: 95%; /* Ensure modal fits well on small screens */
   }
 }
-
 
 
 /* Event Information */
