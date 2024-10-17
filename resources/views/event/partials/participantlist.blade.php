@@ -18,7 +18,7 @@
                             @if($participant->user->profile_picture == null)
                                 <img src="{{ asset('storage/images/profile_pictures/default.jpg') }}" alt="Default profile picture" class="profile-picture"> 
                             @else 
-                                <img src="{{ $participant->user->profile_picture }}" alt="{{ $participant->user->first_name }}" class="profile-picture">
+                                <img src= "/{{ $participant->user->profile_picture }}" alt="{{ $participant->user->first_name }}" class="profile-picture">
                             @endif
                             <div class="participant-details">
                                 <a href="{{ route('profile.view', $participant->user->id) }}" class="participant-name">

@@ -248,7 +248,7 @@
 
                 <div class="google-button">
                     <a href="{{ route('google.redirect') }}">
-                        <img src="/images/googleicon.png" alt="Google Icon" class="google-icon">
+                        <img src="images/googleIcon.png" alt="Google Icon" class="google-icon">
                         Login with Google
                     </a>
                 </div>

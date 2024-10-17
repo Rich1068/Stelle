@@ -11,7 +11,11 @@ export default defineConfig({
                 'resources/css/blueprint.css',  // Include your Blueprint CSS
                 'resources/js/polotno.bundle.js',  // Include Polotno bundle
                 'resources/js/editor.jsx',
-                'resources/js/calendar.js',  // Include your renamed JSX file
+                'resources/js/calendar.js',
+                'resources/js/event_editor.jsx',
+                'resources/js/sendButton.jsx',
+                'resources/js/TemplateNameModal.jsx',
+                'resources/js/UploadSection.jsx'
             ],
             refresh: true,
         }),

@@ -18,7 +18,7 @@
             <div class="carousel-images">
                 <img src="/images/ILLUSTRATION2.png" alt="Image 1">
                 <img src="/images/illustration3.png" alt="Image 2">
-                <img src="/images/illustration4.png" alt="Image 3">
+                <img src="/images/ILLUSTRATION4.png" alt="Image 3">
                 <!-- Add more images as needed -->
             </div>
         </div>
@@ -98,7 +98,7 @@
             <!-- Google Login -->
             <div class="google-button">
                 <a href="{{ route('google.redirect') }}">
-                    <img src="/images/googleicon.png" alt="Google Icon" class="google-icon">
+                    <img src="/images/googleIcon.png" alt="Google Icon" class="google-icon">
                     Login with Google
                 </a>
             </div>
