@@ -1404,8 +1404,6 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 /* About Section */
 .event-view-about {
   color: #001e54;
-  font-weight: bold;
-    text-align: center; 
     margin-bottom: 10px; 
     white-space: normal; 
     overflow-wrap: break-word; 
