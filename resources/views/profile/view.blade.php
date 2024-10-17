@@ -198,6 +198,7 @@
                 </div>
             </div>
         </div>
+        @if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2)
         <div class="info-container">
             <div class="info-section">
                 <h3 class="bold-blue">
@@ -205,11 +206,13 @@
                 </h3>
             </div>
 
-            @if($user->role_id == 2)
+            @if($user->role_id == 1 || $user->role_id == 2)
                 @include('profile.partials.admin-analytics')
             @elseif ($user->role_id == 3)
                 @include('profile.partials.user-analytics')
             @endif
+        </div>  
+        @endif
         </div>  
     </div>
 
