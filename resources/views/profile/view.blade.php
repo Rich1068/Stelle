@@ -71,7 +71,7 @@
                         N/A 
                     @else 
                         {{ $countryTable->countryname }} 
-                        <img src="{{ asset('storage/images/flags/' . $countryTable->code . '.png') }}" alt="Flag of {{ $countryTable->countryname }}" class="flag-icon"> 
+                        <img src="{{ asset('storage/images/flags/' . strtolower($countryTable->code) . '.png') }}" alt="Flag of {{ $countryTable->countryname }}" class="flag-icon"> 
                     @endif
                 </p>
                 <div class="info-divider"></div>
@@ -213,7 +213,7 @@
             @endif
         </div>  
         @endif
-        </div>  
+
     </div>
 
     <!-- Certificates Tab Content -->

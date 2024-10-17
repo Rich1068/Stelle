@@ -31,12 +31,20 @@ class ProfileController extends Controller
     public function profile()
     {
         $user = Auth::user(); 
-        $user->load('country');
-        $user->load('role');
+        
+        // Eager load the 'country' and 'role' relationships with the user.
+        $user = User::with(['country', 'role'])->where('id', $user->id)->first();
+        
+        // Fetch attended events and related event data
         $attendedEvents = $user->eventParticipant()->with('event')->get()->pluck('event');
+        
+        // Access the country via the eager-loaded 'country' relation
         $countryTable = $user->country;
+        
+        // Fetch all events (optional, based on your use case)
         $event = Event::all();
-        return view('profile.profile', ['user' => $user, 'countryTable' => $countryTable, 'attendedEvents' => $attendedEvents, 'event' => $event]); 
+    
+        return view('profile.profile', compact('user', 'countryTable', 'attendedEvents', 'event'));
     }
     /**
      * Display the user's profile form.
@@ -222,7 +230,7 @@ class ProfileController extends Controller
             ->orderBy('updated_at', 'desc') // Order by most recent join
             ->get()
             ->pluck('event');
-
+        $countryTable = $user->country;
         $createdEvents = $user->eventsCreated()->orderBy('created_at', 'desc')->get()->pluck('event');
         Log::info($createdEvents);
         $certificates = CertUser::where('user_id', $user->id)->get();
@@ -248,7 +256,7 @@ class ProfileController extends Controller
         foreach ($monthlyParticipation as $month => $total) {
             $monthlyParticipationData[$month] = $total;
         }
-        return view('profile.view', compact('user','attendedEvents','createdEvents', 'totalEvaluationFormsCreated','totalEventsCreated', 'totalAttendedEvents', 'totalCertificates', 'monthlyParticipationData', 'certificates'));
+        return view('profile.view', compact('user','attendedEvents','createdEvents','countryTable', 'totalEvaluationFormsCreated','totalEventsCreated', 'totalAttendedEvents', 'totalCertificates', 'monthlyParticipationData', 'certificates'));
     }
 
     public function updateRole(Request $request, $id)
