@@ -13,7 +13,6 @@
 <div class="registration-container">
     <!-- Left Side: Image Carousel -->
     <div class="image-carousel">
-        <button class="carousel-arrow left-arrow">&larr;</button>
         <div class="carousel-wrapper"> <!-- Wrapper to contain the scrolling -->
             <div class="carousel-images">
                 <img src="/images/ILLUSTRATION2.png" alt="Image 1">
@@ -22,7 +21,7 @@
                 <!-- Add more images as needed -->
             </div>
         </div>
-        <button class="carousel-arrow right-arrow">&rarr;</button>
+    
 
         <!-- Progress bar -->
         <div class="carousel-progress">
@@ -123,7 +122,7 @@
     border-radius: 20px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.21);
     padding: 20px; /* Fixed padding in pixels */
-    width: 600px !important; /* Fixed width */
+    width: 800px !important; /* Fixed width */
     height: auto; /* Allows for dynamic height based on content */
     margin: 20px auto; /* Center the container with fixed margin */
     text-align: center;
@@ -148,8 +147,6 @@
         display: grid;
         grid-template-columns: 1fr 1fr; /* Two equal columns */
         max-height: 100vh; /* Full height of the viewport */
-        width: 100vw; /* Full width of the viewport */
-        padding: 0 75px; /* Add padding to bring the sections closer */
         gap: 10px; /* Optional: Add gap between the columns for more control */
     }
 
@@ -166,11 +163,15 @@
 
     /* Mobile responsiveness */
     @media (max-width: 1300px) {
+
+        
         .registration-container {
             display: block;
             padding: 0; /* Reset padding for mobile */
             max-width: 100%; /* Use full width on mobile */
             margin: 0 auto;
+            margin-bottom: 20px;
+            margin-top: 20px;
         }
 
         .register-account {
@@ -220,6 +221,8 @@
             width: 100% !important;
             padding: 20px !important; /* Add some padding for better spacing */
             box-sizing: border-box !important; /* Include padding in width calculation */
+            margin-bottom: 20px;
+            margin-top: 20px;
         }
 
         /* Ensure inputs and buttons are full-width on mobile */
