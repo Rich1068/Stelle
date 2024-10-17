@@ -28,8 +28,8 @@ Route::get('/', function () {
     // If the user is not authenticated, redirect to the login page
     return redirect()->route('login');
 });
-Route::get('auth/google/redirect', [GoogleController::class, 'googlepage'])->name('google.redirect');
-Route::get('auth/google/callback', [GoogleController::class, 'googlecallback'])->name('google.callback');
+Route::get('/auth/google/redirect', [GoogleController::class, 'googlepage'])->name('google.redirect');
+Route::get('/auth/google/callback', [GoogleController::class, 'googlecallback'])->name('google.callback');
 
 Route::get('/account-deleted', [ProfileController::class, 'accountDeleted'])->name('account.deleted');
 
