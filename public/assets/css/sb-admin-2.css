@@ -1441,7 +1441,9 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   width: 90%;              
   border-radius: 15px;   
   display: block;        
-  margin: 20px auto;       
+  margin: 20px auto;    
+  max-width: 80%;  
+  max-height: 80%;   
 }
 
 

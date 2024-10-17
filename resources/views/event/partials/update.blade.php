@@ -160,6 +160,11 @@
         <button type="button" class="custom-file-button" onclick="document.getElementById('event_banner').click()">
             <i class="fas fa-upload"></i> <span class="bold-text">Update Event Banner</span>
         </button>
+        <div class="mt-2">
+            <label for="remove_event_banner">
+                <input type="checkbox" name="remove_event_banner" id="remove_event_banner"> {{ __('Remove Event Banner') }}
+            </label>
+        </div>
         
         <x-input-error class="mt-2" :messages="$errors->get('event_banner')" />
 
