@@ -34,7 +34,7 @@
 
                 <h3 class="event-view-about">
                     <i class="fas fa-info-circle"></i>
-                    <b>About: &nbsp;</b>{{ $event->description }}
+                    <b>About: </b>{{ $event->description }}
                 </h3>
 
                 <div class="event-view-divider">
