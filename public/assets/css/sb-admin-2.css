@@ -125,7 +125,7 @@
 .fc-toolbar-chunk button:not(.fc-today-button) {
   border: none !important;
   box-shadow: none !important;
-  background-color: #003366 !important; 
+  background-color: #022344 !important; 
   color: white !important;                /* White text color */
   border-radius: 50% !important;         /* Make buttons circular */
   width: 40px !important;                 /* Set a fixed width */
@@ -141,7 +141,7 @@
 
 /* Hover effect for Prev and Next navigation buttons */
 .fc-toolbar-chunk button:not(.fc-today-button):hover {
-  background-color: #012d59 !important; /* Slightly lighter blue on hover */
+  background-color:  #022344 !important; /* Slightly lighter blue on hover */
   color: white !important;               /* Keep text white on hover */
 }
 
@@ -231,7 +231,7 @@
 
 /* Hover effect for Prev and Next navigation buttons */
 .fc-toolbar-chunk button:not(.fc-today-button):hover {
-  background-color: #012d59 !important; /* Slightly lighter blue on hover */
+  background-color: #022344 !important; /* Slightly lighter blue on hover */
   color: white !important; /* Keep text white on hover */
 }
 
@@ -643,7 +643,7 @@ th, td {
 }
 
 .page-link:hover {
-  background-color: rgb(33, 3, 48) !important;
+  background-color:  #022344 !important;
   color: white !important;
 }
 
@@ -1002,7 +1002,7 @@ th, td {
 }
 
 .answer-forms-submit:hover {
-  background-color: #003c8f !important; /* Slightly lighter dark blue for hover effect */
+  background-color:  #022344 !important;
 }
 
 
@@ -1111,7 +1111,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 
 /* Hover and Active States for Add Question Buttons */
 .add-question-btn:hover {
-  background-color: #002a63;
+  background-color:  #022344 !important;
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
@@ -1136,7 +1136,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 
 /* Hover and Active States for Save Button */
 .save-questions-btn:hover {
-  background-color: #001e40;
+  background-color: #022344 !important;
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
@@ -1387,7 +1387,8 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 }
 
 .event-view-buttons .btn:hover {
-  background-color: #002b80;
+  background-color:  #022344 !important;
+  color: white !important;
 }
 
 /* Ensure modal looks good on mobile */
@@ -1434,7 +1435,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 .event-view-event-title {
   font-size: 30px;
   font-weight: bold;
-  color: #001e54;
+  color: #003366 !important;
   margin-bottom: 10px;
 }
 
@@ -1458,7 +1459,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 .event-view-divider span {
   background: #fff;
   padding: 0 10px;
-  color: #001e54;
+  color: #003366 !important;
   font-weight: bold;
   position: relative;
   z-index: 1;
@@ -1537,7 +1538,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 .event-view-info div i {
   font-size: 20px;
   margin-right: 10px;
-  color: #001e54;
+  color: #003366 !important;
 }
 
 .event-view-info div span {
@@ -1562,7 +1563,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 
 .event-view-buttons .btn {
   margin-top: 19px;
-  background-color: #001e54;
+  background-color: #003366 !important;
   color: white;
   border-radius: 20px;
   padding: 15px;
@@ -1576,7 +1577,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 }
 
 .event-view-buttons .btn:hover {
-  background-color: #002b80;
+  background-color:  #022344 !important;
 }
 
 /* Responsive Layout for Mobile */
@@ -1730,11 +1731,12 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   text-align: center;
   font-weight: bold; /* Bold text */
   font-size: 15px; /* Increased font size */
-  transition: background 0.3s;
+  transition: background 0.3s;  
 }
 
 .event-list-view-btn:hover {
-  background: #7dff03; /* Darker shade on hover */
+  background:  #022344 !important;
+  color: white !important;
 }
 
 .event-list-header {
@@ -1881,7 +1883,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 
 /* Submit Button */
 .event-submit {
-  background-color: #003d80;
+  background-color: #003366;
   color: white;
   padding: 15px 25px;
   border-radius: 8px;
@@ -1889,7 +1891,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 }
 
 .event-submit:hover {
-  background-color: #002a60;
+  background-color: #022344 !important;
 }
 
 /* Icon Alignment */
@@ -2228,7 +2230,7 @@ h2 {
 }
 
 .btn-edit {
-    background-color: var(--dark-blue);
+  background-color: #003366 !important;
     color: #fff;
     padding: 10px 20px;
     text-decoration: none;
@@ -2239,7 +2241,8 @@ h2 {
 }
 
 .btn-edit:hover {
-    background-color: var(--dark-blue-hover);
+  background-color: #022344 !important;
+  color: white !important
 }
 
 .btn-edit i {
@@ -2775,7 +2778,7 @@ h2 {
 
 
           .profile-edit-save-button {
-            background-color: #003d80 !important; /* Darker blue */
+            background-color: #003366 !important; /* Darker blue */
             color: #fff;
             border-radius: 25px; /* Rounded corners */
             padding: 10px 20px;
@@ -2786,7 +2789,7 @@ h2 {
           }
 
           .profile-edit-save-button:hover {
-            background-color: #002a60 !important; /* Even darker blue for hover */
+            background-color: #022344 !important;
           }
 
           .profile-edit-save-message {
@@ -2868,7 +2871,7 @@ h2 {
         }
 
         .delete-profile-action-button:hover {
-            background-color: #002a60;
+            background-color: #962f00;
         }
 
         .delete-profile-secondary-button {
@@ -2899,7 +2902,7 @@ h2 {
         }
 
         .password-toggle:hover {
-          color: #054d94; /* Dark Blue Color */
+          color: #022344 !important;
         }
 
 
@@ -2984,7 +2987,7 @@ h2 {
         }
 
         .password-update-save-button:hover {
-          background-color: #002a60 !important; /* Even darker blue for hover */
+          background-color: #022344 !important;
         }
 
         .password-update-save-message {
@@ -3101,7 +3104,7 @@ a {
 }
 
 a:hover {
-  color: #224abe;
+  color: #022344 !important;
   text-decoration: underline;
 }
 

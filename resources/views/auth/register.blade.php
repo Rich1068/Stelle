@@ -118,15 +118,17 @@
 }
 
 .register-account {
-    position: relative; /* Ensure child elements (like the logo) can be positioned absolutely */
+    position: relative; 
     background: white;
     border-radius: 20px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.21);
-    padding: 20px;
-    width: 70%; /* Width of the registration form */
-    margin: auto;
+    padding: 20px; /* Fixed padding in pixels */
+    width: 600px !important; /* Fixed width */
+    height: auto; /* Allows for dynamic height based on content */
+    margin: 20px auto; /* Center the container with fixed margin */
     text-align: center;
-    box-sizing: border-box; /* Ensure padding is included in width calculation */
+    box-sizing: border-box; 
+    max-height: 900px !important;
 }
 
 
@@ -163,7 +165,7 @@
     }
 
     /* Mobile responsiveness */
-    @media (max-width: 768px) {
+    @media (max-width: 1300px) {
         .registration-container {
             display: block;
             padding: 0; /* Reset padding for mobile */
@@ -174,7 +176,7 @@
         .register-account {
             width: 90% !important; /* Ensure it takes up more space */
             max-width: 600px !important; /* Set a maximum width for better control */
-            padding: 30px 20px !important; /* Add more padding for spacious look */
+            padding:10px;
             margin: 20px auto !important; /* Add margin for breathing room */
             box-sizing: border-box !important; /* Ensure padding is included in width */
         }
@@ -199,7 +201,7 @@
         }
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 1300px) {
         /* Hide the carousel on mobile */
         .image-carousel {
             display: none !important;
@@ -209,6 +211,7 @@
         .registration-container {
             width: 90% !important;
             max-width: 500px !important; /* Set a max-width for better responsiveness */
+            padding:10px;
             margin: 0 auto !important; /* Center the form on mobile */
         }
 
