@@ -77,6 +77,8 @@
                 @if($userevent->user_id != Auth::user()->id)
                     @if ($participant && $participant->status_id == 1)
                         <p>You have been accepted to this event.</p>
+                    @elseif (\Carbon\Carbon::now()->isAfter(\Carbon\Carbon::parse($event->date . ' ' . $event->end_time)))
+                        <button type="button" class="btn btn-secondary" disabled>Closed</button>
                     @elseif ($currentParticipants < $event->capacity && $participant == null)
                         <form action="{{ route('event.join', $event->id) }}" method="POST" class="full-width-button">
                             @csrf

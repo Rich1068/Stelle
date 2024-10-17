@@ -29,7 +29,7 @@
                 @if($user->profile_picture == null)
                     <img src="{{ asset('storage/images/profile_pictures/default.jpg') }}" alt="Default profile picture"> 
                 @else 
-                    <img src="{{ asset('storage/' . $user->profile_picture) }}" alt="Profile picture of {{ $user->first_name }}"> 
+                    <img src="{{ asset($user->profile_picture) }}" alt="Profile picture of {{ $user->first_name }}"> 
                 @endif
             </div>
             

@@ -14,7 +14,7 @@
             @csrf
         </form>
 
-        <form method="post" action="{{ route('superadmin.updateProfile', ['id' => $user->id]) }}" class="profile-edit-form" enctype="multipart/form-data">
+        <form method="post" action="{{ route('profile.update', ['id' => $user->id]) }}" class="profile-edit-form" enctype="multipart/form-data">
             @csrf
             @method('patch')
 
