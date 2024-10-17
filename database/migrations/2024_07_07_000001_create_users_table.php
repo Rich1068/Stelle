@@ -43,25 +43,81 @@ return new class extends Migration
             $table->timestamps();
         });
         DB::table('users')->insert([
-            'first_name' => 'Super',
+            'first_name' => 'Super1',
             'last_name' => 'Admin',
-            'email' => 'rs106848@gmail.com',
+            'email' => 'superadmin1@gmail.com',
             'password' => Hash::make('12345678'),
             'email_verified_at' => now(),
+            'birthdate' => '2003-10-13',
+            'gender' => 'male',
             'role_id' => DB::table('roles')->where('role_name', 'Super Admin')->first()->id,
         ]);
         DB::table('users')->insert([
-            'first_name' => 'Admin',
+            'first_name' => 'Super2',
             'last_name' => 'Admin',
-            'email' => 'rich106848@gmail.com',
+            'email' => 'superadmin2@gmail.com',
             'password' => Hash::make('12345678'),
+            'email_verified_at' => now(),
+            'birthdate' => '1988-02-22',
+            'gender' => 'female',
+            'role_id' => DB::table('roles')->where('role_name', 'Super Admin')->first()->id,
+        ]);
+        DB::table('users')->insert([
+            'first_name' => 'Admin1',
+            'last_name' => 'Admin',
+            'email' => 'admin1@gmail.com',
+            'password' => Hash::make('12345678'),
+            'email_verified_at' => now(),
+            'birthdate' => '1998-03-12',
+            'gender' => 'male',
             'role_id' => DB::table('roles')->where('role_name', 'Admin')->first()->id,
         ]);
         DB::table('users')->insert([
-            'first_name' => 'User',
-            'last_name' => 'User',
-            'email' => 'sy.richarddarwin@auf.edu.ph',
+            'first_name' => 'Admin2',
+            'last_name' => 'Admin',
+            'email' => 'admin2@gmail.com',
             'password' => Hash::make('12345678'),
+            'email_verified_at' => now(),
+            'birthdate' => '1978-05-03',
+            'gender' => 'female',
+            'role_id' => DB::table('roles')->where('role_name', 'Admin')->first()->id,
+        ]);
+        DB::table('users')->insert([
+            'first_name' => 'Admin3',
+            'last_name' => 'Admin',
+            'email' => 'admin3@gmail.com',
+            'password' => Hash::make('12345678'),
+            'email_verified_at' => now(),
+            'birthdate' => '1990-07-21',
+            'role_id' => DB::table('roles')->where('role_name', 'Admin')->first()->id,
+        ]);
+        DB::table('users')->insert([
+            'first_name' => 'John',
+            'last_name' => 'Smith',
+            'email' => 'user@gmail.com',
+            'password' => Hash::make('12345678'),
+            'email_verified_at' => now(),
+            'birthdate' => '2001-12-12',
+            'gender' => 'male',
+            'role_id' => DB::table('roles')->where('role_name', 'User')->first()->id,
+        ]);
+        DB::table('users')->insert([
+            'first_name' => 'Jane',
+            'last_name' => 'Doe',
+            'email' => 'user2@gmail.com',
+            'password' => Hash::make('12345678'),
+            'email_verified_at' => now(),
+            'birthdate' => '2000-08-09',
+            'gender' => 'female',
+            'role_id' => DB::table('roles')->where('role_name', 'User')->first()->id,
+        ]);
+        DB::table('users')->insert([
+            'first_name' => 'Jane',
+            'last_name' => 'Doe',
+            'email' => 'user3@gmail.com',
+            'password' => Hash::make('12345678'),
+            'email_verified_at' => now(),
+            'birthdate' => '2000-08-09',
             'role_id' => DB::table('roles')->where('role_name', 'User')->first()->id,
         ]);
 

@@ -111,7 +111,7 @@ class ProfileController extends Controller
             return Redirect::route('profile.edit')->with('error', 'Failed to update profile');
         }
 
-        return back()->with('status', 'profile-updated');
+        return back()->with('status', 'profile successfully updated');
     }
 
 
