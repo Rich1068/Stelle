@@ -127,7 +127,6 @@
     margin: 20px auto; /* Center the container with fixed margin */
     text-align: center;
     box-sizing: border-box; 
-    max-height: 900px !important;
 }
 
 
@@ -160,6 +159,74 @@
         text-align: center;
         box-sizing: border-box; /* Ensure padding is included in width calculation */
     }
+
+    @media (max-width: 1800px) {
+    .registration-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* Keep equal columns */
+        gap: 30px; /* Reduce gap between form and carousel */
+        align-items: start; /* Align to the top */
+        padding: 10px; /* Reduce padding around the container */
+        max-width: 80% !important;
+        margin: 0 auto; /* Center the container */
+    }
+
+    .register-account {
+        width: 90% !important; /* Reduce form width */
+        padding: 15px 20px !important; /* Reduce padding */
+        margin: 10px auto; /* Center the form */
+        display: flex; /* Enable flexbox */
+        flex-direction: column; /* Stack elements vertically */
+        justify-content: flex-start; /* Align form elements to the top */
+        height: auto; /* Adjust height based on content */
+        overflow: visible; /* Allow overflow if necessary */
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* Lighter shadow */
+        border-radius: 10px; /* Slightly rounded corners */
+    }
+
+    /* Ensure input fields shrink with the container */
+    .register-input {
+        width: 100% !important; /* Full width for inputs */
+        padding: 8px !important; /* Reduce padding inside inputs */
+        font-size: 0.95rem !important; /* Slightly reduce font size */
+        flex: 1; /* Allow inputs to flex and fit */
+        box-sizing: border-box; /* Ensure padding fits inside */
+        margin-bottom: 10px; /* Reduce space below inputs */
+    }
+
+    .input-group {
+        margin-bottom: 8px !important; /* Minimize space between input groups */
+        flex: 1; /* Allow input groups to flex */
+    }
+
+    /* Adjust button styles */
+
+    .or-divider {
+        margin: 8px 0 !important; /* Reduce vertical space for the divider */
+    }
+
+    /* Adjust the logo size */
+    .stelle-logo {
+        width: 80px !important; /* Make the logo smaller */
+        margin-bottom: 15px !important; /* Reduce bottom margin */
+    }
+
+    /* Adjust the carousel */
+    .image-carousel {
+        width: 85% !important; /* Reduce carousel width */
+        max-width: 700px; /* Limit maximum width */
+        overflow: hidden; /* Prevent overflow */
+        margin: 0 auto; /* Center the carousel */
+    }
+
+    .carousel-images img {
+        width: 100%; /* Ensure images fit within the container */
+        object-fit: cover; /* Maintain aspect ratio */
+        border-radius: 8px; /* Slightly round the image corners */
+    }
+}
+
+
 
     /* Mobile responsiveness */
     @media (max-width: 1300px) {
