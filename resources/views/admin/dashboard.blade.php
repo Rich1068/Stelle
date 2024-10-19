@@ -395,10 +395,16 @@
                 }
             }
         });
+        function truncateLabel(label, maxLength = 20) {
+            if (label.length > maxLength) {
+                return label.substring(0, maxLength) + '...';
+            }
+            return label;
+        }
 
         // Function to update the chart with new data
         function updateChart(data) {
-            participantsPerEventChart.data.labels = data.labels;
+            participantsPerEventChart.data.labels = data.labels.map(label => truncateLabel(label));
             participantsPerEventChart.data.datasets[0].data = data.values;
             participantsPerEventChart.update();
 

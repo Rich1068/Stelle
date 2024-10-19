@@ -643,10 +643,16 @@
                 }
             }
         });
+        function truncateLabel(label, maxLength = 20) {
+            if (label.length > maxLength) {
+                return label.substring(0, maxLength) + '...';
+            }
+            return label;
+        }
 
         // Function to update the chart with new data
         function updateChart(data) {
-            participantsPerEventChart.data.labels = data.labels;
+            participantsPerEventChart.data.labels = data.labels.map(label => truncateLabel(label));
             participantsPerEventChart.data.datasets[0].data = data.values;
             participantsPerEventChart.update();
 
@@ -659,7 +665,7 @@
 
         // Fetch and update the chart for the specified page
         function fetchPageData(page) {
-            fetch(`/admin/dashboard/participants-per-event?page=${page}`)
+            fetch(`/super-admin/dashboard/participants-per-event?page=${page}`)
                 .then(response => response.json())
                 .then(data => updateChart(data))
                 .catch(error => console.error('Error fetching data:', error));
