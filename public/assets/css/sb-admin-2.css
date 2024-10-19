@@ -11,7 +11,7 @@
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
 
- 
+
 
 :root { 
   --blue: #4e73df;
@@ -1768,7 +1768,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 }
 
 /* Media Queries for Mobile Responsiveness */
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
   .event-list-item {
     flex-direction: column; /* Stack items vertically on mobile */
     margin-bottom: 20px; /* Space between event items */
@@ -1789,12 +1789,15 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 }
 
 
-  .event-list-description {
-    font-size: 15px; /* Adjusted font size for mobile */
-    padding-top: 10px;
-    text-align: center; /* Center description */
-    margin-bottom: 10px; /* Space below description */
-  }
+.event-list-description {
+  font-size: 15px; /* Adjusted font size for mobile */
+  padding-top: 10px;
+  text-align: center; /* Center description */
+  margin-bottom: 10px; /* Space below description */
+  word-wrap: break-word; /* Break long words */
+  word-break: break-all; /* Ensure breaking for long text */
+}
+
 
   .event-list-meta {
     flex-direction: column; /* Stack meta items vertically on mobile */
@@ -2013,6 +2016,7 @@ h2 {
   display: flex;
   align-items: center; /* Center items vertically */
   justify-content: center; /* Center items horizontally */
+  padding-left: 45px !important;
 }
 
 .sidebar-head .sidebar-brand-text {
@@ -2034,13 +2038,33 @@ h2 {
 
 .admin-sidebar {
   background-color: #f8f9fa !important; /* Light background for contrast */
+  position: sticky; /* Makes the sidebar sticky */
+  top: 0; /* Stick the sidebar to the top of the page */
+  max-height: 100vh !important; /* Ensure the sidebar occupies full viewport height */
+  z-index: 1000; /* Ensure the sidebar is on top */
+  overflow-y: auto !important; /* Allow vertical scrolling */
+  padding: 20px; /* Padding for the sidebar */
 }
+
+/* Hide scrollbar for WebKit browsers */
+.admin-sidebar::-webkit-scrollbar {
+  width: 0; /* Hide scrollbar width */
+  background: transparent; /* Make background transparent */
+}
+
+/* For Firefox */
+.admin-sidebar {
+  scrollbar-width: none; /* Hide scrollbar for Firefox */
+}
+
+
+
 
 .admin-sidebar .nav-link {
   color: #00008B !important; /* Dark blue text */
   font-weight: bold !important;
   font-size: 1.3rem !important; /* Larger text */
-  padding-right: 20px !important; /* Space between text and icon */
+  padding-right: 45px !important; /* Space between text and icon */
   padding-top: 15px !important; /* Space above items */
   padding-bottom: 15px !important; /* Space below items */
   transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for hover effect */
@@ -2089,12 +2113,13 @@ h2 {
   color: #00008B !important; /* Dark blue text for collapse headers */
   font-weight: bold !important;
   font-size: 1.3rem !important; /* Larger text */
+  padding-right: 0px !important; /* Space between text and icon */
 }
 
 .admin-sidebar .collapse-item {
   color: #00008B !important; /* Dark blue text for collapse items */
   font-weight: bold !important;
-  padding-right: 20px !important; /* Space between text and icon */
+  padding-right: 0px !important; /* Space between text and icon */
   padding-top: 15px !important; /* Space above items */
   padding-bottom: 15px !important; /* Space below items */
   transition: background-color 0.3s ease, color 0.3s ease;
@@ -2135,41 +2160,70 @@ h2 {
 
 
 @media (max-width: 768px) {
-  .admin-sidebar .nav-link.collapsed {
-    /* Style for the collapsed state */
-    justify-content: center; /* Center icon when collapsed */
-    width: 60px; /* Adjust the width */
-    overflow: hidden; /* Prevent text overflow */
-}
 
+  .sidebar-head {
 
-  .admin-sidebar .nav-link span {
-      display: none !important; /* Hide text on mobile devices */
+    padding-left: 15px !important;
+  }
+  /* Fully collapse the sidebar by reducing its width to 50px */
+  .admin-sidebar {
+      width: 50px; /* Narrow width when collapsed */
+      padding: 0; /* Remove all padding */
+      overflow: hidden; /* Hide any overflowing content */
+      transition: width 0.3s ease; /* Smooth transition for expanding/collapsing */
+      display: flex;
+      flex-direction: column;
+      align-items: center; /* Center contents horizontally */
   }
 
+  /* When the sidebar is toggled open (using an "active" class) */
+  .admin-sidebar.active {
+      width: 250px; /* Full width when expanded */
+      padding: 0; /* Keep padding removed on mobile */
+      overflow: visible;
+      transition: width 0.3s ease;
+  }
+
+  /* Nav links in collapsed state */
   .admin-sidebar .nav-link {
-      justify-content: center; /* Center the icon */
-      padding: 15px 0 !important; /* Adjust padding for better spacing */
+      justify-content: center; /* Center icons */
+      padding: 10px 0 !important; /* Remove extra padding */
+      display: flex;
+      flex-direction: column; /* Stack icons and text vertically */
+      align-items: center; /* Center items horizontally */
+      text-align: center; /* Ensure any visible text is centered */
   }
 
+  /* Hide the text inside the nav-link when collapsed */
+  .admin-sidebar .nav-link span {
+      display: none !important; /* Only show icons */
+  }
+
+  /* Center the icons inside the nav-link */
   .admin-sidebar .nav-link i {
-      margin: 0 auto; /* Center icons in their flex containers */
+      margin: 0 auto; /* Center icons */
       font-size: 1.5rem !important; /* Ensure icons are large enough */
   }
 
+  /* Adjust sidebar header (if any) */
   .sidebar-head {
-      flex-direction: column; /* Stack items vertically */
-      align-items: center; /* Center items vertically */
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
   }
 
+  /* Hide the sidebar brand text when collapsed */
   .sidebar-head .sidebar-brand-text {
-      display: none !important; /* Hide brand text on mobile */
+      display: none !important;
   }
 
+  /* Center the sidebar icon */
   .sidebar-head .sidebar-icon {
-      margin: 0; /* Remove margin to better center the icon */
+      margin: 0;
+      text-align: center;
   }
 }
+
 
 
   :root {
