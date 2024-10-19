@@ -235,7 +235,7 @@ class EvaluationFormController extends Controller
             // Loop through the associated questions and duplicate them
             foreach ($evaluationForm->questions as $question) {
                 $newQuestion = $question->replicate(); // Clone the original question
-                $newQuestion->evaluation_form_id = $newEvaluationForm->id; // Assign it to the new evaluation form
+                $newQuestion->form_id = $newEvaluationForm->id; // Assign it to the new evaluation form
                 $newQuestion->created_at = now(); // Set a new created_at timestamp for each question
                 $newQuestion->updated_at = null; // Set updated_at to null for each question
                 $newQuestion->save(); // Save the new question
