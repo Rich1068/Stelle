@@ -2402,10 +2402,6 @@ h2 {
   .top-container {
     max-width: 90% !important;
   }
-
-  h2 {
-    font-size: 1.5rem !important; /* Slightly smaller font on mobile */
-  }
 }
 
 
@@ -2418,7 +2414,7 @@ h2 {
   .top-container h1,
   .top-container h2,
   .top-container h3 {
-    font-size: 0.95em !important; /* Reduce text size slightly */
+    font-size: 1.80em !important; /* Reduce text size slightly */
   }
 
   .top-container input,
