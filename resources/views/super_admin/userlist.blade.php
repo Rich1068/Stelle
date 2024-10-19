@@ -25,6 +25,14 @@
         </button>
     </div>
 </div>
+<div class="input-group mb-3 form-control-container">
+    <select id="roleFilter" class="form-control">
+        <option value="">Filter by Role</option>
+        <option value="Super Admin">Super Admin</option>
+        <option value="Admin">Admin</option>
+        <option value="User">User</option>
+    </select>
+</div>
 
 
 
@@ -74,6 +82,9 @@
             </table>
         </div>
     </div>
+    <div class="d-flex justify-content-center">
+    {{ $users->links() }}
+</div>
 </div>
 
 <div style="display: flex; align-items: center; margin-bottom: 50px; margin-left: 20px;">
@@ -153,18 +164,32 @@
     </style>
 <script>
     document.getElementById('userSearch').addEventListener('input', function () {
-        const searchTerm = this.value.toLowerCase();
+        filterTable();
+    });
+
+    document.getElementById('roleFilter').addEventListener('change', function () {
+        filterTable();
+    });
+
+    function filterTable() {
+        const searchTerm = document.getElementById('userSearch').value.toLowerCase();
+        const roleFilter = document.getElementById('roleFilter').value.toLowerCase();
         const rows = document.querySelectorAll('#dataTable tbody tr');
 
         rows.forEach(row => {
             const name = row.querySelector('td:nth-child(2)').textContent.toLowerCase(); // 2nd column contains the name
-            if (name.includes(searchTerm)) {
+            const role = row.querySelector('td:nth-child(3)').textContent.toLowerCase(); // 3rd column contains the role
+
+            const matchesSearch = name.includes(searchTerm);
+            const matchesRole = role.includes(roleFilter) || roleFilter === '';
+
+            if (matchesSearch && matchesRole) {
                 row.style.display = '';
             } else {
                 row.style.display = 'none';
             }
         });
-    });
+    }
 </script>
 
 @endsection
