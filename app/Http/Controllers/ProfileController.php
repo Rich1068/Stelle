@@ -265,7 +265,14 @@ class ProfileController extends Controller
         $validatedData = $request->validate([
             'role_id' => 'required|in:1,2,3',  // Ensures the selected value is one of the allowed roles
         ]);
-    
+
+        $user = User::findOrFail($id);
+
+        // Check if the user is not the super admin themselves to prevent self-deletion (optional)
+        if (Auth::id() === $user->id) {
+            return back()->with('error', 'You cannot change your own role.');
+        }
+
         // Find the user
         $user = User::findOrFail($id);
     
