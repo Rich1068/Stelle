@@ -2402,10 +2402,6 @@ h2 {
   .top-container {
     max-width: 90% !important;
   }
-
-  h2 {
-    font-size: 1.5rem !important; /* Slightly smaller font on mobile */
-  }
 }
 
 
@@ -2418,7 +2414,7 @@ h2 {
   .top-container h1,
   .top-container h2,
   .top-container h3 {
-    font-size: 0.95em !important; /* Reduce text size slightly */
+    font-size: 1.80em !important; /* Reduce text size slightly */
   }
 
   .top-container input,
@@ -2639,362 +2635,401 @@ h2 {
   padding: 20px; /* Optional: Add padding around the container */
   margin: 0 auto; /* Center the container horizontally */
 }
+@media (max-width: 768px) {
+  /* Ensure the parent container is also a flex container */
+  .side-by-side-container {
+      display: flex; /* Use flexbox to manage layout */
+      justify-content: center; /* Center the child containers horizontally */
+      align-items: center; /* Center the child containers vertically */
+      flex-direction: column; /* Stack child elements vertically */
+      width: 100%; /* Ensure it takes full width */
+  }
+
+  .password-update-container,
+  .delete-account-container {
+      padding: 15px; /* Reduced padding for smaller screens */
+      display: flex; /* Use flexbox for centering */
+      flex-direction: column; /* Stack items vertically */
+      align-items: center; /* Center align the items horizontally */
+      justify-content: center; /* Center align the items vertically */
+      max-width: 90%; /* Set a max-width to make the container smaller */
+      margin: 20px auto; /* Center the container itself with top and bottom margin */
+      gap: 10px; /* Reduce space between items */
+      width: 100%; /* Ensure the container is full width */
+  }
+
+  /* Ensure items inside the containers are full width */
+  .password-update-item,
+  .delete-account-item {
+      width: 100%; /* Make each item take the full width of the container */
+      margin-bottom: 10px; /* Space between items */
+      display: flex; /* Enable flex on items for centering */
+      justify-content: center; /* Center align item content */
+      align-items: center; /* Center align item content vertically */
+  }
+}
 
 /* Mobile-friendly styles */
 @media (max-width: 768px) {
   .side-by-side-container {
+    display: flex; /* Ensure it's a flex container */
     flex-direction: column; /* Stack child elements vertically on smaller screens */
     padding: 10px; /* Reduce padding for mobile */
   }
   
-  /* Optional: Adjust gap for smaller screens */
-  .side-by-side-container > * {
-    margin-bottom: 10px; /* Space between stacked elements */
+  /* Ensure all sections take the full width */
+  .profile-edit-section,
+  .delete-profile-section,
+  .password-update-section {
+    width: 100%; /* Ensure full width on mobile */
+    padding: 20px; /* Maintain padding for consistency */
+    border-radius: 15px; /* Match styles */
+    background-color: #ffffff; /* Ensure consistent background */
+    margin-bottom: 20px; /* Add space between sections */
   }
 }
 
-     
-          .profile-edit-section {
-            padding: 20px;
-            border-radius: 15px;
-            background-color: #f9f9f9;
-            flex: 1; /* Allow section to grow and fill available space */
-          }
-          
-
-/* Updated container to ensure alignment */
-.profile-edit-container-wrapper {
-  display: flex;
-  flex-direction: column; /* Stack items vertically */
-  align-items: stretch; /* Make child elements fill the available space */
-  width: 100%; /* Ensure the container takes the full width */
-  gap: 20px; /* Add some spacing between elements */
+/* Default styles for the profile edit section */
+.profile-edit-section {
+  padding: 20px;
+  border-radius: 15px;
+  background-color: #f9f9f9; /* Keep the background color */
+  flex: 1; /* Allow section to grow and fill available space */
 }
 
-          /* Ensure the description is styled properly */
-          .profile-edit-description {
-            font-size: 0.875rem;
-            color: #6b7280; /* Gray color for text */
-            margin-bottom: 10px;
-          }
+/* Other existing styles for desktop */
+.profile-edit-container {
+  display: flex; /* Display container items horizontally */
+  flex-wrap: wrap; /* Allow items to wrap if needed */
+  gap: 20px; /* Space between items */
+  padding: 20px;
+}
 
-          /* Other existing styles */
-          .profile-edit-header {
-            margin-bottom: 20px;
-          }
-
-          .profile-edit-container {
-            display: flex; /* Display container items horizontally */
-            flex-wrap: wrap; /* Allow items to wrap if needed */
-            gap: 20px; /* Space between items */
-            padding: 20px;
-          }
-
-          .profile-edit-item {
-            flex: 1 1 calc(50% - 20px); /* Adjust width for side-by-side display */
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-            padding-bottom: 10px;
-          }
-
-          .profile-edit-row {
-            display: flex;
-            flex-wrap: wrap; /* Allow items to wrap if they exceed the width */
-            gap: 20px; /* Space between items */
-          }
-
-          .profile-edit-item-full {
-            flex: 1 1 100%; /* Full width for items in this row */
-          }
-
-          .profile-edit-label {
-            font-weight: bold;
-            color: #054d94; /* Dark Blue Color */
-            display: flex;
-            align-items: center;
-            gap: 8px;
-          }
-          .profile-edit-input,
-          .profile-edit-textarea,
-          .profile-edit-select {
-              background-color: #f0f0f0;
-              border: 1px solid #ddd;
-              border-radius: 10px;
-              padding: 8px 12px;
-              color: #555;
-              font-weight: bold;
-              box-shadow: none; /* Remove shadow */
-              width: 100%; /* Ensure inputs take full width */
-              box-sizing: border-box; /* Make padding and borders count in the width */
-              max-width: 100%; /* Prevent inputs from exceeding container width */
-              margin-bottom: 15px; /* Add space between input fields */
-          }
-          
-          /* Mobile responsiveness */
-          @media (max-width: 768px) {
-              .profile-edit-input,
-              .profile-edit-textarea,
-              .profile-edit-select {
-                  padding: 6px 10px; /* Adjust padding for smaller screens */
-                  border-radius: 8px; /* Smaller border radius on mobile */
-              }
-          }
-          
-          @media (max-width: 480px) {
-              .profile-edit-input,
-              .profile-edit-textarea,
-              .profile-edit-select {
-                  padding: 4px 8px;
-                  border-radius: 6px;
-              }
-          }
-          
-
-          .profile-edit-input::placeholder,
-          .profile-edit-textarea::placeholder {
-            color: #4a4a4a;
-            font-weight: bold;
-          }
-
-          .profile-edit-error {
-            color: red;
-            font-size: 0.875rem;
-          }
-
-          .profile-edit-image-preview {
-            margin-top: 10px;
-            border-radius: 10px;
-            max-width: 75px;
-          }
-
-          .profile-edit-actions {
-            display: flex;
-            align-items: center;
-            justify-content: center; /* Center align the actions */
-            gap: 10px;
-            margin-top: 20px; /* Adjust this value as needed for more separation */
-          }
+/* Existing styles for profile edit items, labels, inputs, etc. */
+.profile-edit-item {
+  flex: 1 1 calc(50% - 20px); /* Adjust width for side-by-side display */
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding-bottom: 10px;
+}
 
 
-          .profile-edit-save-button {
-            background-color: #003366 !important; /* Darker blue */
-            color: #fff;
-            border-radius: 25px; /* Rounded corners */
-            padding: 10px 20px;
-            transition: background-color 0.3s;
-            border: none; /* Remove default border */
-            display: flex;
-            align-items: center;
-          }
+.profile-edit-row {
+  display: flex;
+  flex-wrap: wrap; /* Allow items to wrap if they exceed the width */
+  gap: 20px; /* Space between items */
+}
 
-          .profile-edit-save-button:hover {
-            background-color: #022344 !important;
-          }
+.profile-edit-item-full {
+  flex: 1 1 120%; /* Full width for items in this row */
+}
 
-          .profile-edit-save-message {
-            color: #28a745;
-          }
-        .password-input-container {
-          position: relative;
-        }
-        /* Container and Section Styles */
-        .delete-profile-section {
-          padding: 20px;
-          border-radius: 15px;
-          background-color: #ffffff;
-          max-width: 600px;
-          flex: 1;
-          margin-top: 20px; /* Add margin on top for more space */
-        }
+.profile-edit-label {
+  font-weight: bold;
+  color: #054d94; /* Dark Blue Color */
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
 
-        /* Header Styles */
-        .delete-profile-header {
-            margin-bottom: 20px;
-        }
+.profile-edit-input,
+.profile-edit-textarea,
+.profile-edit-select {
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 8px 12px;
+  color: #555;
+  font-weight: bold;
+  box-shadow: none; /* Remove shadow */
+  width: 100%; /* Ensure inputs take full width */
+  box-sizing: border-box; /* Make padding and borders count in the width */
+  
+  margin-bottom: 15px; /* Add space between input fields */
+}
 
-        /* Title Styles */
-        .delete-profile-title {
-            font-size: 1.25rem;
-            font-weight: bold;
-            color: #054d94; /* Dark Blue */
-        }
+/* Mobile responsiveness */
+.profile-edit-input::placeholder,
+.profile-edit-textarea::placeholder {
+  color: #4a4a4a;
+  font-weight: bold;
+  max-width: 100% !important;
+}
 
-        /* Description Styles */
-        .delete-profile-description {
-            font-size: 0.875rem;
-            color: #6b7280; /* Gray color for text */
-            margin-bottom: 10px;
-        }
+.profile-edit-error {
+  color: red;
+  font-size: 0.875rem;
+}
 
-        /* Input Container Styles */
-        .delete-profile-password-container {
-            position: relative;
-            margin-top: 20px;
-        }
+.profile-edit-image-preview {
+  margin-top: 10px;
+  border-radius: 10px;
+  max-width: 75px;
+}
 
-        /* Input Styles */
-        .delete-profile-input {
-            background-color: #f0f0f0;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            padding: 8px 12px;
-            color: #555;
-            font-weight: bold;
-            box-shadow: none;
-            width: 100%;
-        }
+.profile-edit-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Center align the actions */
+  gap: 10px;
+  margin-top: 20px; /* Adjust this value as needed for more separation */
+  max-width: 100% !important;
+}
 
-        .delete-profile-input::placeholder {
-            color: #4a4a4a;
-            font-weight: bold;
-        }
+.profile-edit-save-button {
+  background-color: #003366 !important; /* Darker blue */
+  color: #fff;
+  border-radius: 25px; /* Rounded corners */
+  padding: 10px 20px;
+  transition: background-color 0.3s;
+  border: none; /* Remove default border */
+  display: flex;
+  align-items: center;
+}
 
-        /* Error Message Styles */
-        .delete-profile-error {
-            color: red;
-            font-size: 0.875rem;
-            margin-top: 5px;
-        }
+.profile-edit-save-button:hover {
+  background-color: #022344 !important;
+}
 
-        /* Action Button Styles */
-        .delete-profile-action-button {
-            background-color: #ac0101;
-            color: #fff;
-            border-radius: 25px;
-            padding: 10px 20px;
-            border: none;
-            transition: background-color 0.3s;
-            display: flex;
-            align-items: center;
-            margin: auto;
-        }
+.profile-edit-save-message {
+  color: #28a745;
+}
 
-        .delete-profile-action-button:hover {
-            background-color: #962f00;
-        }
+.password-input-container {
+  position: relative;
+}
 
-        .delete-profile-secondary-button {
-            background-color: #962f00;
-            color: #555;
-            border-radius: 25px;
-            padding: 10px 20px;
-            border: none;
-            display: flex;
-            align-items: center;
-        }
+/* Container and Section Styles */
+.delete-profile-section {
+  padding: 20px;
+  border-radius: 15px;
+  background-color: #ffffff;
+  width: 100%; /* Ensure full width on mobile */
+  margin-top: 20px; /* Add margin on top for more space */
+}
 
-        .delete-profile-actions {
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            gap: 10px;
-            margin-top: 20px;
-        }
+/* Header Styles */
+.delete-profile-header {
+  margin-bottom: 20px;
+}
 
-        .password-toggle {
-          position: absolute;
-          top: 50%;
-          right: 10px;
-          transform: translateY(-50%);
-          cursor: pointer;
-          color: #555;
-        }
+/* Title Styles */
+.delete-profile-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #054d94; /* Dark Blue */
+}
 
-        .password-toggle:hover {
-          color: #022344 !important;
-        }
+/* Description Styles */
+.delete-profile-description {
+  font-size: 0.875rem;
+  color: #6b7280; /* Gray color for text */
+  margin-bottom: 10px;
+}
 
+/* Input Container Styles */
+.delete-profile-password-container {
+  position: relative;
+  margin-top: 20px;
+}
 
-        .password-update-section {
-          padding: 20px;
-          border-radius: 15px;
-          background-color: #ffffff;
-          max-width: 600px;
+/* Input Styles */
+.delete-profile-input {
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 8px 12px;
+  color: #555;
+  font-weight: bold;
+  box-shadow: none;
+  width: 100%;
+}
 
-        }
+.delete-profile-input::placeholder {
+  color: #4a4a4a;
+  font-weight: bold;
+}
 
-        .password-update-header {
-          margin-bottom: 20px;
-        }
+/* Error Message Styles */
+.delete-profile-error {
+  color: red;
+  font-size: 0.875rem;
+  margin-top: 5px;
+}
 
-        .password-update-title {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-        }
+/* Action Button Styles */
+.delete-profile-action-button {
+  background-color: #ac0101;
+  color: #fff;
+  border-radius: 25px;
+  padding: 10px 20px;
+  border: none;
+  transition: background-color 0.3s;
+  display: flex;
+  align-items: center;
+  margin: auto;
+}
 
-        .password-update-description {
-          color: #555;
-        }
+.delete-profile-action-button:hover {
+  background-color: #962f00;
+}
 
-        .password-update-form {
-          padding: 20px;
-        }
+.delete-profile-secondary-button {
+  background-color: #962f00;
+  color: #555;
+  border-radius: 25px;
+  padding: 10px 20px;
+  border: none;
+  display: flex;
+  align-items: center;
+}
 
-        .password-update-item {
-          display: flex;
-          flex-direction: column;
-          gap: 5px;
-          padding-bottom: 10px;
-        }
+.delete-profile-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
 
-        .password-update-label {
-          font-weight: bold;
-          color: #054d94; /* Dark Blue Color */
-          display: flex;
-          align-items: center;
-          gap: 8px;
-        }
+.password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #555;
+}
 
-        .password-update-input {
-          background-color: #f0f0f0;
-          border: 1px solid #ddd;
-          border-radius: 10px;
-          padding: 8px 12px;
-          color: #555;
-          font-weight: bold;
-          box-shadow: none; /* Remove shadow */
-        }
+.password-toggle:hover {
+  color: #022344 !important;
+}
 
-        .password-update-input::placeholder {
-          color: #4a4a4a;
-          font-weight: bold;
-        }
+.password-update-section {
+  padding: 20px;
+  border-radius: 15px;
+  background-color: #ffffff;
+  width: 100%; /* Ensure full width on mobile */
+}
 
-        .password-update-error {
-          color: red;
-          font-size: 0.875rem;
-        }
+/* Header Styles */
+.password-update-header {
+  margin-bottom: 20px;
+}
 
-        .password-update-actions {
-          display: flex;
-          align-items: center;
-          justify-content: center; /* Center align the actions */
-          gap: 10px;
-          margin-top: 20px; /* Add margin above the button */
-        }
+/* Title Styles */
+.password-update-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
 
-        .password-update-save-button {
-          background-color: #003d80 !important; /* Darker blue */
-          color: #fff;
-          border-radius: 25px; /* Rounded corners */
-          padding: 10px 20px;
-          transition: background-color 0.3s;
-          border: none; /* Remove default border */
-          display: flex;
-          align-items: center;
-        }
+/* Description Styles */
+.password-update-description {
+  color: #555;
+}
 
-        .password-update-save-button:hover {
-          background-color: #022344 !important;
-        }
+/* Form Styles */
+.password-update-form {
+  padding: 20px;
+}
 
-        .password-update-save-message {
-          color: #28a745;
-        }
+/* Item Styles */
+.password-update-item {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding-bottom: 10px;
+}
 
+/* Label Styles */
+.password-update-label {
+  font-weight: bold;
+  color: #054d94; /* Dark Blue Color */
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
 
+/* Input Styles */
+.password-update-input {
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 8px 12px;
+  color: #555;
+  font-weight: bold;
+  box-shadow: none; /* Remove shadow */
+}
+
+.password-update-input::placeholder {
+  color: #4a4a4a;
+  font-weight: bold;
+}
+
+/* Error Message Styles */
+.password-update-error {
+  color: red;
+  font-size: 0.875rem;
+}
+
+/* Action Styles */
+.password-update-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Center align the actions */
+  gap: 10px;
+  margin-top: 20px; /* Add margin above the button */
+}
+
+/* Save Button Styles */
+.password-update-save-button {
+  background-color: #003d80 !important; /* Darker blue */
+  color: #fff;
+  border-radius: 25px; /* Rounded corners */
+  padding: 10px 20px;
+  transition: background-color 0.3s;
+  border: none; /* Remove default border */
+  display: flex;
+  align-items: center;
+}
+
+.password-update-save-button:hover {
+  background-color: #022344 !important;
+}
+
+.password-update-save-message {
+  color: #28a745;
+}
+
+.custom-file-upload {
+  display: flex;
+  flex-direction: column; /* Stack elements vertically */
+  max-width: 80%;
+  text-align: center;
+}
+
+.custom-file-button {
+  display: inline-block;
+  padding: 8px 16px;
+  background-color: #003d80; /* Dark blue */
+  color: #fff;
+  border-radius: 15px; /* Rounded corners */
+  cursor: pointer;
+  font-size: 14px;
+  margin-bottom: 5px; /* Space between button and file name text */
+}
+
+.custom-file-button:hover {
+  background-color: #002b5c; /* Slightly darker shade for hover */
+}
+
+.file-name {
+  font-size: 14px;
+  color: #555;
+  text-align: center;
+}
 
 
 body {

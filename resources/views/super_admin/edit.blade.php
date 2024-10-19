@@ -69,6 +69,103 @@
     </div>
 
     <style>
+
+@media (max-width: 768px) {
+    /* Ensure the parent container is also a flex container */
+    .side-by-side-container {
+        display: flex; /* Use flexbox to manage layout */
+        justify-content: center; /* Center the child containers horizontally */
+        align-items: center; /* Center the child containers vertically */
+        flex-direction: column; /* Stack child elements vertically */
+        width: 100%; /* Ensure it takes full width */
+    }
+
+    @media (max-width: 768px) {
+    .password-update-container {
+        padding: 0px; /* Reduced padding for smaller screens */
+        display: flex; /* Use flexbox for centering */
+        flex-direction: column; /* Stack items vertically */
+        align-items: center; /* Center align the items horizontally */
+        justify-content: center; /* Center align the items vertically */
+        max-width: 90%; /* Set a max-width to make the container smaller */
+        margin: 20px auto; /* Center the container itself with top and bottom margin */
+        gap: 10px; /* Reduce space between items */
+        width: 100%; /* Ensure the container is full width */
+    }
+    .form-control {
+        max-width: 100% !important;
+    }
+    
+    /* Ensure the dropdown is fully visible in the password update section */
+    .password-update-dropdown {
+        width: 100%; /* Make dropdown take full width */
+        max-width: 100%; /* Prevent overflow */
+        margin-bottom: 10px; /* Add some space below the dropdown */
+        z-index: 10; /* Ensure dropdown is on top of other elements */
+    }
+
+    /* Additional styles for dropdown items if necessary */
+    .password-update-dropdown-item {
+        width: 100%; /* Full width for dropdown items */
+        padding: 10px; /* Padding for dropdown items */
+        text-align: center; /* Center text in dropdown items */
+    }
+}
+
+.custom-file-upload {
+    display: flex;
+    flex-direction: column; /* Stack elements vertically */
+    max-width: 80%;
+    text-align: center;
+}
+
+.custom-file-button {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #003d80; /* Dark blue */
+    color: #fff;
+    border-radius: 15px; /* Rounded corners */
+    cursor: pointer;
+    font-size: 14px;
+    margin-bottom: 5px; /* Space between button and file name text */
+}
+
+.custom-file-button:hover {
+    background-color: #002b5c; /* Slightly darker shade for hover */
+}
+
+.file-name {
+    font-size: 14px;
+    color: #555;
+    text-align: center;
+}
+
+
+    .delete-account-container {
+        padding: 15px; /* Reduced padding for smaller screens */
+        display: flex; /* Use flexbox for centering */
+        flex-direction: column; /* Stack items vertically */
+        align-items: center; /* Center align the items horizontally */
+        justify-content: center; /* Center align the items vertically */
+        max-width: 90%; /* Set a max-width to make the container smaller */
+        margin: 20px auto; /* Center the container itself with top and bottom margin */
+        gap: 10px; /* Reduce space between items */
+        width: 100%; /* Ensure the container is full width */
+    }
+    
+
+    /* Ensure items inside the containers are full width */
+    .password-update-item,
+    .delete-account-item {
+        width: 100%; /* Make each item take the full width of the container */
+        margin-bottom: 10px; /* Space between items */
+        display: flex; /* Enable flex on items for centering */
+        justify-content: center; /* Center align item content */
+        align-items: center; /* Center align item content vertically */
+    }
+}
+
+
         /* Global Styling */
         h3 {
             color: #003366; /* Dark blue */
@@ -81,12 +178,8 @@
             margin: 0 auto; /* Center the container */
         }
 
-        .side-by-side-container {
-            display: flex;
-            justify-content: space-between; /* Space between sections */
-            gap: 20px; /* Space between columns */
-            flex-wrap: wrap; /* Allow items to wrap on smaller screens */
-        }
+  
+        
 
 
         /* Vertical Alignment Container */
