@@ -186,7 +186,13 @@
         <span class="close" onclick="this.parentElement.style.display='none';">&times;</span>
     </div>
     @endif
-
+    @if ($errors->has('login'))
+    <div class="custom-alert-danger" style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 1200px; z-index: 1000;">
+        <i class="fas fa-exclamation-circle alert-icon"></i>
+        {{ $errors->first('login') }}
+        <span class="close" onclick="this.parentElement.style.display='none';">&times;</span>
+    </div>
+    @endif
     <!-- Main Content -->
     <div class="main-container">
         <!-- Image Section -->

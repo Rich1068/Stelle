@@ -32,7 +32,6 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request): RedirectResponse
     {
         try {
-            Log::info('Attempting to authenticate user', ['email' => $request->input('email')]);
 
             $user = \App\Models\User::withTrashed()->where('email', $request->input('email'))->first();
 
@@ -62,7 +61,7 @@ class AuthenticatedSessionController extends Controller
             return redirect()->intended(route('auth.login'));
         } catch (\Exception $e) {
             Log::error('Login failed: ' . $e->getMessage());
-            return back()->withErrors(['login' => 'Authentication failed.']);
+            return back()->withErrors(['login' => 'Credentials does not match any accounts in our database']);
         }
     }
 
