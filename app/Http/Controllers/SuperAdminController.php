@@ -164,7 +164,7 @@ class SuperAdminController extends Controller
 
     public function userlist()
     {
-        $users = User::paginate(20);
+        $users = User::paginate(5);
         return view('super_admin.userlist', compact('users'));
     }
 
