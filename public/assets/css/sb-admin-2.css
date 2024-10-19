@@ -636,7 +636,15 @@ th, td {
     object-fit: cover !important; /* Ensures the image covers the entire area inside the circle */
     display: block !important; /* Optional: Make it a block element */
 }
-
+@media (max-width: 1200px) {
+  .circular-image {
+    width: 80px !important;  /* Define the width of the image */
+    height: 80px !important; /* Ensure the height matches the width for a perfect circle */
+    border-radius: 50% !important; /* Makes the image circular */
+    object-fit: cover !important; /* Ensures the image covers the entire area inside the circle */
+    display: block !important; /* Optional: Make it a block element */
+}
+}
 .pagination {
   margin-top: 20px !important;
   padding-bottom: 40px !important;
