@@ -605,11 +605,19 @@ th, td {
 }
 
 #clear-date-btn {
-    margin-left: 10px; /* Add space between date input and clear button */
-    border-radius: 5px;
-    background-color: #003366;
-    color: white;
+  border-radius: 5px;
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
+  padding: 4px 8px; /* Adjust padding to make the button smaller */
+  font-size: 12px;  /* Reduce font size */
+  height: auto; /* Ensure the height adjusts automatically */
+  width: auto; /* Ensure the width adjusts automatically */
 }
+
+#clear-date-btn:active {
+  background-color: #bebebe; /* Darker blue when clicked */
+}
+
 
 
 /* Page title styles */
@@ -622,8 +630,11 @@ th, td {
   align-items: center;
 }
 .circular-image {
-  border-radius: 50%;
-  object-fit: cover; /* Ensures the image covers the circle */
+    width: 100px !important;  /* Define the width of the image */
+    height: 100px !important; /* Ensure the height matches the width for a perfect circle */
+    border-radius: 50% !important; /* Makes the image circular */
+    object-fit: cover !important; /* Ensures the image covers the entire area inside the circle */
+    display: block !important; /* Optional: Make it a block element */
 }
 
 .pagination {
@@ -1813,48 +1824,37 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 
 /* Header Styling */
 
-/* Event Form - Two columns layout, centered on the page */
 .event-form {
-  grid-template-columns: repeat(3, 1fr); /* Two equal columns */
-  gap: 30px; /* Gap between columns and rows */
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* More flexible min-width */
+  gap: 30px;
   border-radius: 15px;
-  padding: 30px; /* Padding inside the form */
-  margin: auto; /* Center the form horizontally */
-  max-width: 55%; /* Maximum width */
+  padding: 30px;
+  margin: auto;
+  max-width: 90%;
   box-sizing: border-box;
 }
-.event-input {
-  height: 40px; /* or adjust as needed */
-}
 
-
-/* Event Fields - 20px margin bottom */
 .event-field {
   display: flex;
   flex-direction: column;
   padding: 20px;
-  margin-bottom: 5; /* Added 20px bottom margin */
+  margin-bottom: 20px;
   border-radius: 15px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   background-color: #ffffff;
+  min-width: 100%; /* Make sure it shrinks within the grid */
 }
 
-/* Labels for form fields */
-.event-field label {
-  color: #003d80;
-  font-size: 20px;
-  margin-bottom: 10px;
-  font-weight: bold;
-}
-
-/* Inputs and textareas */
+/* Adjust input fields to shrink and avoid overlap */
 .event-field input,
 .event-field textarea {
   border: 1px solid #ddd;
   border-radius: 12px;
   padding: 12px;
   background-color: #f0f0f0;
-  box-sizing: border-box; /* Ensure padding is included in total width */
+  width: 100%; /* Full width inside container */
+  box-sizing: border-box;
 }
 
 /* Date & Time Fields Layout */
@@ -1871,15 +1871,15 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  margin-bottom: 20px; /* 20px margin at bottom for consistency */
+  margin-bottom: 20px;
 }
 
-/* Image Preview */
 .event-image-preview {
   display: none;
   max-width: 100%;
   margin-top: 15px;
 }
+
 
 /* Submit Button */
 .event-submit {
@@ -1893,6 +1893,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 .event-submit:hover {
   background-color: #022344 !important;
 }
+
 
 /* Icon Alignment */
 .flex.items-center i {
@@ -2379,7 +2380,7 @@ h2 {
   
 }
 .top-container {
-  width: 100% !important; /* Full width */
+  max-width: 90% !important; /* Full width */
   max-width: 90% !important; /* Limit max width */
   background-color: white !important; /* White background */
   margin: 20px auto !important; /* Center the container */
@@ -2399,8 +2400,7 @@ h2 {
 
 @media (max-width: 768px) {
   .top-container {
-    max-width: 100% !important; /* Full width on mobile */
-    padding: 30px !important; /* More padding on mobile */
+    max-width: 90% !important;
   }
 
   h2 {
@@ -5330,13 +5330,13 @@ fieldset:disabled a.btn {
 
 .btn-primary:hover {
   color: #fff;
-  background-color: #2e59d9;
+  background-color: #02154b;
   border-color: #2653d4;
 }
 
 .btn-primary:focus, .btn-primary.focus {
   color: #fff;
-  background-color: #2e59d9;
+  background-color: #02154b;
   border-color: #2653d4;
   box-shadow: 0 0 0 0.2rem rgba(105, 136, 228, 0.5);
 }
