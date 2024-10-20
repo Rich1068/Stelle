@@ -1494,6 +1494,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   font-weight: bold;
   color: #003366 !important;
   margin-bottom: 10px;
+  overflow-wrap: break-word; 
 }
 
 .event-view-banner {
