@@ -602,3 +602,51 @@ body {
     cursor: pointer;
     margin-top: 20px; /* Adjust as needed */
 }
+
+@media (min-width: 1800px) {
+    /* General adjustments for larger screens */
+    .main-container {
+        width: 70% !important; /* Reduce the width to prevent too much stretching */
+    }
+
+    .login-container {
+        width: 60% !important; /* Reduce width for larger screens */
+        padding: 30px !important; /* Add padding for spacious layout */
+    }
+
+    .login-title {
+        font-size: 2rem !important; /* Larger font size for titles */
+        margin-bottom: 30px !important; /* Increase margin below title */
+    }
+
+    /* Adjust input fields for larger screens */
+    .login-container input[type="email"],
+    .login-container input[type="password"] {
+        font-size: 1.2rem !important; /* Slightly larger input font size */
+        width: 70% !important; /* Narrow the input field width */
+    }
+
+    .remember-me, 
+    .actions-container, 
+    .or-divider, 
+    .google-button {
+        max-width: 500px !important; /* Prevent stretching beyond 500px */
+    }
+
+    /* Adjust the stelle logo */
+    .stelle-logo {
+        max-width: 200px !important; /* Increase the logo size */
+        margin-bottom: 30px !important; /* Increase space below the logo */
+    }
+
+    /* Adjust the illustration image */
+    .image-section {
+        margin-bottom: 30px !important; /* Increase space below the image section */
+    }
+
+    .signup-text {
+        font-size: 1rem !important; /* Slightly larger text for bigger screens */
+        margin-top: 30px !important; /* Increase space above the signup text */
+    }
+}
+
