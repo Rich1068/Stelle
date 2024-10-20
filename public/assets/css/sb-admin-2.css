@@ -2623,10 +2623,20 @@ h2 {
 }
 
 .participant-name {
-  font-size: 1.2em; /* Font size for participant's name */
+  font-size: 1.2em; /* Font size for larger screens */
   color: #002f6c; /* Dark blue color */
   font-weight: bold;
+  word-wrap: break-word; /* Allows long names to break onto a new line */
+  display: inline-block;
+  white-space: normal; /* Allows text to wrap onto multiple lines */
 }
+
+@media (max-width: 600px) {
+  .participant-name {
+    font-size: 1em; /* Smaller font size for mobile devices */
+  }
+}
+
 
 .participant-status, .participant-country {
   font-size: 0.9em; /* Font size for status and country */
