@@ -706,8 +706,53 @@ th, td {
 }
 
 /* styles.css */
+@media (min-width: 1800px) {
+  .certificates-container {
+      grid-template-columns: repeat(6, 1fr) !important; /* Increase to 6 columns */
+      gap: 40px !important; /* Increase space between certificates */
+      width: 85% !important; /* Reduce the width for large screens */
+      margin-top: 80px !important; /* More space on top */
+      margin-bottom: 100px !important; /* More space at the bottom */
+      padding-bottom: 20px !important; /* Increase bottom padding */
+  }
 
-/* Page title container */
+  .certificate-list {
+      width: 320px !important; /* Adjust width */
+      padding: 25px !important; /* Increase padding */
+      margin-bottom: 30px !important; /* More space between certificates */
+  }
+
+  .certificate-header {
+      font-size: 1.5rem !important; /* Larger font size for header */
+      padding: 20px !important; /* More padding for header */
+      margin-bottom: 30px !important; /* More space below the header */
+  }
+
+  .certificate-title {
+      font-size: 1.4rem !important; /* Larger font size for title */
+      margin: 20px 0 !important; /* Adjust margin */
+  }
+
+  .certificate-image {
+      margin-bottom: 25px !important; /* Increase margin below image */
+  }
+
+  .certificate-actions {
+      margin-top: 25px !important; /* Increase space above buttons */
+      padding: 0 15px !important; /* More space on sides */
+  }
+
+  .certificate-actions .btn {
+      padding: 10px !important; /* Increase button padding */
+      font-size: 1rem !important; /* Increase button font size */
+  }
+
+  .certificate-actions .btn:hover {
+      transform: scale(1.12) !important; /* Slightly larger hover effect */
+  }
+}
+
+
 /* styles.css */
 
 /* Certificates page container */
@@ -743,97 +788,89 @@ th, td {
   margin-right: 10px; /* Space between the icon and text */
   color: #003366; /* Darker blue color for the icon */
 }
-
-
 .certificates-container {
   margin-top: 60px;
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 4 columns layout */
-  gap: 34px; /* Space between certificates */
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive grid layout */
+  gap: 20px; /* Space between certificates */
   justify-content: center;
-  margin-bottom: 80px; /* Space at the bottom */
+  margin-bottom: 60px; /* Space at the bottom */
   width: 90%;
   margin: auto;
   padding-bottom: 10px;
 }
 
+
 .certificate-list {
-  background-color: rgba(255, 255, 255, 0.5); 
+  background-color: rgba(255, 255, 255, 0.4); 
   border-radius: 15px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  width: 350px; /* Wider container */
+  padding: 15px;
+  max-width: 320px; /* Slightly narrower container for smaller screens */
   text-align: center;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   position: relative; /* For positioning buttons inside */
-  margin-bottom: 20px; /* Space between certificate containers */
+  margin: 0 auto; /* Center the certificates */
   transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
 }
 
 .certificate-list:hover {
-  transform: scale(1.05); /* Slightly increase the size */
+  transform: scale(1.03); /* Slightly increase the size on hover */
   box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2); /* Enhanced shadow */
 }
 
 .certificate-header {
   background-color: #ffffff; /* White background */
   color: #34495e; /* Dark blue text */
-  padding: 15px; /* Increased padding for better spacing */
-  font-size: 1.2rem; /* Header font size */
+  padding: 10px; /* Reduced padding for more compact look */
+  font-size: 1rem; /* Smaller header font size */
   font-weight: bold;
   border-radius: 15px;
-  margin-bottom: 20px; /* Space below header */
-  box-sizing: border-box; /* Ensure padding is included in width calculation */
+  margin-bottom: 15px; /* Reduce space below header */
   width: 100%; /* Ensure header spans full width of the container */
 }
 
 .certificate-title {
-  font-size: 1.2rem; /* Adjusted font size */
+  font-size: 1rem; /* Adjusted font size for certificate title */
   font-weight: bold;
   color: #2c3e50;
-  margin: 15px 0; /* Adjusted margin */
+  margin: 10px 0; /* Adjusted margin */
 }
 
 .certificate-image {
   border-radius: 15px;
   width: 100%;
   height: auto;
-  margin-bottom: 20px; /* Adjusted margin */
-  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1); /* Enhanced shadow */
+  margin-bottom: 15px; /* Adjusted margin */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Reduced shadow for a cleaner look */
 }
 
 .certificate-actions {
   display: flex;
   justify-content: space-between; /* Align buttons horizontally */
   padding: 0 10px; /* Space from edges */
-  margin-top: 20px; /* Space above buttons */
+  margin-top: 15px; /* Reduced space above buttons */
 }
 
 .certificate-actions .btn {
   width: 48%; /* Button width for horizontal alignment */
   border-radius: 20px;
   font-weight: bold;
-  padding: 8px; /* Reduced padding for smaller buttons */
-  box-sizing: border-box; /* Include padding in width calculation */
-  color: white; /* Text color */
-  font-size: 0.9rem; /* Smaller font size */
+  padding: 6px; /* Slightly reduced padding for compact buttons */
+  font-size: 0.85rem; /* Smaller font size for buttons */
   transition: transform 0.3s ease; /* Smooth transition for hover effect */
 }
 
-.certificate-actions .btn-primary {
-  background-color: #34495e; /* Dark blue color */
-  border-color: #34495e;
-}
-
+.certificate-actions .btn-primary, 
 .certificate-actions .btn-success {
   background-color: #34495e; /* Dark blue color */
   border-color: #34495e;
 }
 
 .certificate-actions .btn:hover {
-  transform: scale(1.1); /* Slightly increase button size on hover */
+  transform: scale(1.05); /* Slightly increase button size on hover */
 }
 
 /* Responsive Design */

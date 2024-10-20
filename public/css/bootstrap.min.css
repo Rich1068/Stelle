@@ -603,50 +603,65 @@ body {
     margin-top: 20px; /* Adjust as needed */
 }
 
-@media (min-width: 1800px) {
+@media (max-width: 1800px) {
     /* General adjustments for larger screens */
     .main-container {
-        width: 70% !important; /* Reduce the width to prevent too much stretching */
+        width: 75% !important; /* Keep width as 75% */
+        height: auto !important; /* Ensure height adjusts to content */
     }
 
     .login-container {
-        width: 60% !important; /* Reduce width for larger screens */
-        padding: 30px !important; /* Add padding for spacious layout */
+        width: 50% !important; /* Slightly narrower login container */
+        padding: 5px !important; /* Further reduce padding */
+        max-height: none !important; /* Ensure no height restriction */
     }
 
     .login-title {
-        font-size: 2rem !important; /* Larger font size for titles */
-        margin-bottom: 30px !important; /* Increase margin below title */
+        font-size: 1.2rem !important; /* Make the title font size smaller */
+        margin-bottom: 18px !important; /* Reduce margin below the title */
     }
 
-    /* Adjust input fields for larger screens */
+    /* Adjust input fields */
     .login-container input[type="email"],
     .login-container input[type="password"] {
-        font-size: 1.2rem !important; /* Slightly larger input font size */
-        width: 70% !important; /* Narrow the input field width */
+        font-size: 0.9rem !important; /* Slightly smaller input text */
+        width: 75% !important; /* Slightly narrower input fields */
+        padding: 6px !important; /* Reduce padding within input fields */
     }
 
     .remember-me, 
     .actions-container, 
     .or-divider, 
     .google-button {
-        max-width: 500px !important; /* Prevent stretching beyond 500px */
+        max-width: 400px !important; /* Narrow max width for buttons */
     }
 
     /* Adjust the stelle logo */
     .stelle-logo {
-        max-width: 200px !important; /* Increase the logo size */
-        margin-bottom: 30px !important; /* Increase space below the logo */
+        margin-top: 15px !important; /* Add space above the logo */
+        max-width: 120px !important; /* Reduce the logo size a bit */
     }
 
     /* Adjust the illustration image */
     .image-section {
-        margin-bottom: 30px !important; /* Increase space below the image section */
+        margin-bottom: 8px !important; /* Reduce space below image */
     }
 
     .signup-text {
-        font-size: 1rem !important; /* Slightly larger text for bigger screens */
-        margin-top: 30px !important; /* Increase space above the signup text */
+        font-size: 0.7rem !important; /* Make signup text smaller */
+        margin-top: 8px !important; /* Reduce space above signup text */
+    }
+
+    /* Log in button */
+    .actions-container .btn-primary {
+        padding: 8px 16px !important; /* Reduce button size */
+        font-size: 0.9rem !important; /* Smaller button text */
+    }
+
+    /* Adjust Google button */
+    .google-button {
+        margin-top: 15px !important; /* Adjust space above Google button */
+        margin-bottom: 15px !important; /* Adjust space below Google button */
+        font-size: 0.9rem !important; /* Slightly smaller font for Google button */
     }
 }
-

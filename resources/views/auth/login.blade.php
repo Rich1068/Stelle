@@ -55,7 +55,7 @@
     }
 
         /* Hide image section and all non-login elements on mobile devices */
-        @media (max-width: 768px) {
+        @media (max-width: 900px) {
 
             .stelle-logo {
                 margin-top: 20px;
@@ -89,6 +89,7 @@
                 font-size: 1rem;
                 width: 95%;
                 margin-bottom: 1rem;
+                max-width: 600px; /* Set a max width to ensure forms are longer */
             }
 
             /* Adjust child elements' width */
@@ -99,7 +100,7 @@
             .or-divider, 
             .google-button {
                 width: 100%; /* Allow them to take full width */
-                max-width: 400px; /* Set a max width to ensure forms are longer */
+                max-width: 600px; /* Set a max width to ensure forms are longer */
                 text-align: center; /* Center text */
             }
 
