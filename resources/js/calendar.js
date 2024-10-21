@@ -43,6 +43,14 @@
                     const ownerName = info.event.extendedProps.first_name + " " +
                                     (info.event.extendedProps.middle_name || '') + " " +
                                     info.event.extendedProps.last_name;
+                    const maxLength = 125; // Set the maximum number of characters for the description
+
+                                    // Check if the description exists and if it's longer than the maxLength
+                    const description = info.event.extendedProps.description 
+                                        ? (info.event.extendedProps.description.length > maxLength 
+                                        ? info.event.extendedProps.description.substring(0, maxLength) + '...' 
+                                        : info.event.extendedProps.description) 
+                                        : 'No description available';
 
                     const modalContent = `
                         <div class="modal-header">
@@ -53,7 +61,7 @@
                         </div>
                         <div class="modal-body">
                             <p><strong>Event:</strong> ${info.event.title}</p>
-                            <p><strong>Description:</strong> ${info.event.extendedProps.description || 'No description available'}</p>
+                            <p><strong>Description:</strong> ${description}</p>
                             <p><strong>Date:</strong> ${date}</p>
                             <p><strong>Time:</strong> ${start_time} - ${end_time}</p> <!-- Simplified Time -->
                             <p><strong>Owner:</strong> ${ownerName}</p>
