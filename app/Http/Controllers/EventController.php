@@ -10,6 +10,8 @@ use App\Models\Certificate;
 use App\Models\Question;
 use App\Models\Answer;
 use App\Models\CertUser;
+use App\Models\Region;
+use App\Models\Province;
 use App\Models\EvaluationForm;
 use App\Models\EventEvaluationForm;
 use App\Models\EventCertificate;
@@ -119,13 +121,16 @@ class EventController extends Controller
             ->count();
         $event = Event::findOrFail($id);
 
+
         $certificate = Certificate::where('event_id', $id)->first();
-        
+
+        //this is for the current user joining the event
         $eventParticipant = EventParticipant::where('event_id', $id)
             ->where('user_id', Auth::user()->id)
             ->whereHas('user')
             ->first();
 
+        //overall participants
         $participants = EventParticipant::where('event_id', $id)
             ->where('status_id', 1)
             ->whereHas('user')
@@ -196,6 +201,21 @@ class EventController extends Controller
         $genderCounts = $userGenders->values(); // Extract the gender counts
         
 
+        // Group participants by the region_id of their associated user
+        $regionData = $participants->groupBy(function ($participant) {
+            return $participant->user->region_id; // Access region_id through the related user
+        })->map(function ($region) {
+            return $region->count();
+        });
+
+        // Group participants by the province_id of their associated user
+        $provinceData = $participants->groupBy(function ($participant) {
+            return $participant->user->province_id; // Access province_id through the related user
+        })->map(function ($province) {
+            return $province->count();
+        });
+        $regions = Region::whereIn('id', $regionData->keys())->pluck('regDesc', 'id');
+        $provinces = Province::whereIn('id', $provinceData->keys())->pluck('provDesc', 'id');
         return view('event.event', [
             'event' => $event,
             'userevent' => $userevent,
@@ -211,6 +231,10 @@ class EventController extends Controller
             'genderLabels' => $genderLabels,
             'genderCounts' => $genderCounts,
             'pendingParticipantsCount' => $pendingParticipantsCount,
+            'regionData' => $regionData,
+            'provinceData'=> $provinceData,
+            'regions' => $regions,
+            'provinces' => $provinces
         ]);
     }
 

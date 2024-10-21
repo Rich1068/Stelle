@@ -158,6 +158,41 @@
             </div>
         </div>
     </div>
+    <!-- Region Distribution -->
+    <div class="col-12 col-xl-5 col-lg-6 mb-4"> 
+            <div class="card shadow h-80"> 
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Participant Region Distribution</h6>
+                </div>
+                <div class="card-body d-flex justify-content-center align-items-center" style="height: 300px;">
+                    @if($participants->count() > 0)
+                        <div class="chart-pie pt-4 pb-2">
+                            <canvas id="regionChart" style="height: 100%; width: 100%;"></canvas>
+                        </div>
+                    @else
+                        <p class="text-center font-weight-bold" style="color: #001e54; font-size: 1.5rem;">No Data Available</p>
+                    @endif
+                </div>
+            </div>
+        </div>
+
+        <!-- Province Distribution -->
+        <div class="col-12 col-xl-5 col-lg-6 mb-4"> 
+            <div class="card shadow h-80"> 
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Participant Province Distribution</h6>
+                </div>
+                <div class="card-body d-flex justify-content-center align-items-center" style="height: 300px;">
+                    @if($participants->count() > 0)
+                        <div class="chart-pie pt-4 pb-2">
+                            <canvas id="provinceChart" style="height: 100%; width: 100%;"></canvas>
+                        </div>
+                    @else
+                        <p class="text-center font-weight-bold" style="color: #001e54; font-size: 1.5rem;">No Data Available</p>
+                    @endif
+                </div>
+            </div>
+        </div>
 </div>
 
 
@@ -411,6 +446,100 @@
             cutoutPercentage: 80, // Adjust the doughnut chart cutout size
         },
     });
+    const regionLabels = @json($regions->values());
+    const regionCounts = @json($regionData->values());
+
+    // Province Data for Pie Chart
+    const provinceLabels = @json($provinces->values());
+    const provinceCounts = @json($provinceData->values());
+
+    console.log('Region Labels:', regionLabels);
+    console.log('Region Counts:', regionCounts);
+    console.log('Province Labels:', provinceLabels);
+    console.log('Province Counts:', provinceCounts);
+
+    function getRandomColor() {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+    }
+
+    function generateColors(numColors) {
+        let colors = [];
+        for (let i = 0; i < numColors; i++) {
+            colors.push(getRandomColor());
+        }
+        return colors;
+    }
+    const regionColors = generateColors(regionCounts.length);
+    const provinceColors = generateColors(provinceCounts.length);
+    // Render Region Pie Chart
+    var ctxRegion = document.getElementById("regionChart").getContext('2d');
+    var regionChart = new Chart(ctxRegion, {
+        type: 'doughnut',
+        data: {
+            labels: regionLabels,  // Region names (labels)
+            datasets: [{
+                data: regionCounts,  // Region participant counts
+                backgroundColor: regionColors,
+                hoverBackgroundColor: regionColors,
+                hoverBorderColor: regionColors,
+            }],
+        },
+        options: {
+            maintainAspectRatio: false,
+            tooltips: {
+                backgroundColor: "rgb(255,255,255)",
+                bodyFontColor: "#858796",
+                borderColor: '#dddfeb',
+                borderWidth: 1,
+                xPadding: 15,
+                yPadding: 10,
+                displayColors: false,
+                caretPadding: 10,
+            },
+            legend: {
+                display: false
+            },
+            cutoutPercentage: 80,  // Adjust doughnut chart cutout size
+        },
+    });
+
+
+    // Render Province Pie Chart
+    var ctxProvince = document.getElementById("provinceChart").getContext('2d');
+    var provinceChart = new Chart(ctxProvince, {
+        type: 'doughnut',
+        data: {
+            labels: provinceLabels,  // Province names (labels)
+            datasets: [{
+                data: provinceCounts,  // Province participant counts
+                backgroundColor: provinceColors,
+                hoverBackgroundColor: provinceColors,
+                hoverBorderColor: provinceColors,
+            }],
+        },
+        options: {
+            maintainAspectRatio: false,
+            tooltips: {
+                backgroundColor: "rgb(255,255,255)",
+                bodyFontColor: "#858796",
+                borderColor: '#dddfeb',
+                borderWidth: 1,
+                xPadding: 15,
+                yPadding: 10,
+                displayColors: false,
+                caretPadding: 10,
+            },
+            legend: {
+                display: false
+            },
+            cutoutPercentage: 80,  // Adjust doughnut chart cutout size
+        },
+    });
 
     $('#existingFormModal').on('hidden.bs.modal', function () {
         $('#evaluationFormModal').modal('show');
@@ -422,5 +551,8 @@
         $('#existingFormModal').modal('hide');
         $('#evaluationFormModal').modal('show');
     });
+
+    // Region Data for Pie Chart
+    
 </script>
 @endsection

@@ -37,6 +37,7 @@ return new class extends Migration
             $table->foreignId('country_id')->nullable()->constrained('countries')->onDelete('cascade');
             $table->foreignId('region_id')->nullable()->constrained('regions')->onDelete('cascade');
             $table->foreignId('province_id')->nullable()->constrained('provinces')->onDelete('cascade');
+            $table->string('college')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

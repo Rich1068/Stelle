@@ -15,6 +15,8 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File;
 use App\Models\Country;
+use App\Models\Region;
+use App\Models\Province;
 use App\Models\User;
 use App\Models\Event;
 use App\Models\UserEvent;
@@ -53,7 +55,8 @@ class ProfileController extends Controller
     {
         
         $countries = Country::all();
-        return view('profile.edit', compact('countries'), [
+        $regions = Region::all();
+        return view('profile.edit', compact('countries', 'regions'), [
             'user' => $request->user(),
         ]);
     }
@@ -113,15 +116,23 @@ class ProfileController extends Controller
 
         return back()->with('status', 'profile successfully updated');
     }
+    public function getProvinces($regionId)
+    {
+        $region = Region::where('id', $regionId)->first();
+        $provinces = Province::where('regCode', $region->regCode)->get(); // Adjust the field names to your DB structure
+
+        return response()->json($provinces);
+    }
 
 
     public function superadmin_edit(Request $request, $id): View
     {
         $user = User::findOrFail($id); 
         $countries = Country::all();
+        $regions = Region::all();
     
         // Pass the user and countries data to the view
-        return view('super_admin.edit', compact('user', 'countries'));
+        return view('super_admin.edit', compact('user', 'countries', 'regions'));
     }
 
     public function superadmin_update(superadminProfileUpdateRequest $request, $id): RedirectResponse

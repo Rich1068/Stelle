@@ -21,7 +21,7 @@
                     <img src="{{ asset($certificate->cert_path)}}" class="certificate-image">
                     <div class="certificate-actions">
                         <!-- View Button to open modal -->
-                    <button type="button" class="btn-primary" data-image-url="{{ asset($certificate->cert_path) }}" data-bs-toggle="modal" data-bs-target="#viewCertificateModal">
+                    <button type="button" class="btn-primary view-certificate-btn" data-image-url="{{ asset($certificate->cert_path) }}" data-bs-toggle="modal" data-bs-target="#viewCertificateModal">
                         Preview
                     </button>
                     <!-- Download Button -->
@@ -54,6 +54,7 @@
 @endif
 </div>
     <!-- JavaScript to handle modal and image update -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     // Handle preview button click event

@@ -57,7 +57,7 @@
 
                 <!-- Profile Picture -->
             
-                            <div class="profile-edit-item">
+            <div class="profile-edit-item">
                 <x-input-label for="profile_picture" class="profile-edit-label">
                     <i class="fas fa-camera"></i> {{ __('Profile Picture:') }}
                 </x-input-label>
@@ -124,7 +124,39 @@
                     <x-input-error :messages="$errors->get('country_id')" class="profile-edit-error" />
                 </div>
             </div>
-
+            <!-- Region -->
+            <div class="profile-edit-item profile-edit-item-half" id="region-container" style="display: none;">
+                <x-input-label for="region" class="profile-edit-label">
+                    <i class="fas fa-map"></i> {{ __('Region:') }}
+                </x-input-label>
+                <select id="region" name="region_id" class="profile-edit-select">
+                    <option value="">{{ __('Select Region') }}</option>
+                    @foreach($regions as $region)
+                        <option value="{{ $region->id }}" {{ old('region_id', $user->region_id) == $region->id ? 'selected' : '' }}>
+                            {{ $region->regDesc }}
+                        </option>
+                    @endforeach
+                </select>
+                <x-input-error :messages="$errors->get('region_id')" class="profile-edit-error" />
+            </div>
+            <!-- Province -->
+            <div class="profile-edit-item profile-edit-item-half" id="province-container" style="display: none;">
+                <x-input-label for="province" class="profile-edit-label">
+                    <i class="fas fa-map-pin"></i> {{ __('Province:') }}
+                </x-input-label>
+                <select id="province" name="province_id" class="profile-edit-select">
+                    <option value="">{{ __('Select Province') }}</option>
+                </select>
+                <x-input-error :messages="$errors->get('province_id')" class="profile-edit-error" />
+            </div>
+            <!-- college -->
+            <div class="profile-edit-item profile-edit-item-full">
+                <x-input-label for="college" class="profile-edit-label">
+                    <i class="fas fa-university"></i> {{ __('College/University:') }}
+                </x-input-label>
+                <textarea id="college" name="college" placeholder="example: Angeles University Foundation" class="profile-edit-textarea" autofocus autocomplete="college">{{ old('college', $user->college) }}</textarea>
+                <x-input-error class="profile-edit-error" :messages="$errors->get('college')" />
+            </div>
             <!-- Description -->
             <div class="profile-edit-item profile-edit-item-full">
                 <x-input-label for="description" class="profile-edit-label">
@@ -216,4 +248,71 @@ function previewImage(event) {
     }
     reader.readAsDataURL(event.target.files[0]);
 }
+
+function loadProvinces(regionId, selectedProvince = null) {
+    const provinceSelect = document.getElementById('province');
+
+    if (regionId) {
+        fetch(`/get-provinces/${regionId}`)
+            .then(response => response.json())
+            .then(data => {
+                provinceSelect.innerHTML = '<option value="">{{ __('Select Province') }}</option>'; // Reset provinces
+                data.forEach(province => {
+                    const option = document.createElement('option');
+                    option.value = province.id;
+                    option.textContent = province.provDesc;
+                    if (selectedProvince && selectedProvince == province.id) {
+                        option.selected = true; // Set the selected province
+                    }
+                    provinceSelect.appendChild(option);
+                });
+            });
+    } else {
+        provinceSelect.innerHTML = '<option value="">{{ __('Select Province') }}</option>'; // Reset province if no region is selected
+    }
+}
+
+
+function handleCountryChange(countryId, selectedRegion = null, selectedProvince = null) {
+    const regionContainer = document.getElementById('region-container');
+    const provinceContainer = document.getElementById('province-container');
+
+    // Show region and province if country is the Philippines (replace '177' with the actual ID for Philippines)
+    if (countryId == '177') {
+        regionContainer.style.display = 'block';
+        provinceContainer.style.display = 'block';
+
+        // If region is already selected (on page load), load provinces
+        if (selectedRegion) {
+            document.getElementById('region').value = selectedRegion;
+            loadProvinces(selectedRegion, selectedProvince);
+        }
+    } else {
+        regionContainer.style.display = 'none';
+        provinceContainer.style.display = 'none';
+        document.getElementById('region').value = ''; // Reset region
+        document.getElementById('province').innerHTML = '<option value="">{{ __('Select Province') }}</option>'; // Reset province
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    const countrySelect = document.getElementById('country');
+    const selectedCountry = countrySelect.value; // Pre-selected country
+    const selectedRegion = "{{ old('region_id', $user->region_id) }}"; // Pre-selected region from server
+    const selectedProvince = "{{ old('province_id', $user->province_id) }}"; // Pre-selected province from server
+
+    // Handle initial load (pre-selected country, region, and province)
+    handleCountryChange(selectedCountry, selectedRegion, selectedProvince);
+
+    // Event listener for country change
+    countrySelect.addEventListener('change', function () {
+        handleCountryChange(this.value);
+    });
+
+    // Event listener for region change
+    document.getElementById('region').addEventListener('change', function () {
+        const regionId = this.value;
+        loadProvinces(regionId);
+    });
+});
 </script>
