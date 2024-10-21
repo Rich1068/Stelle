@@ -16,11 +16,7 @@ return new class extends Migration
             $table->string('role_name');
         });
 
-        DB::table('roles')->insert([
-            ['role_name' => 'Super Admin'],
-            ['role_name' => 'Admin'],
-            ['role_name' => 'User'],
-        ]);
+
 
         Schema::create('users', function (Blueprint $table) {
             $table->id();
@@ -39,97 +35,17 @@ return new class extends Migration
             $table->string('description')->nullable();
             $table->string('contact_number')->nullable();
             $table->foreignId('country_id')->nullable()->constrained('countries')->onDelete('cascade');
+            $table->foreignId('region_id')->nullable()->constrained('regions')->onDelete('cascade');
+            $table->foreignId('province_id')->nullable()->constrained('provinces')->onDelete('cascade');
             $table->softDeletes();
             $table->timestamps();
         });
-        DB::table('users')->insert([
-            'first_name' => 'Super1',
-            'last_name' => 'Admin',
-            'email' => 'superadmin1@gmail.com',
-            'password' => Hash::make('12345678'),
-            'email_verified_at' => now(),
-            'birthdate' => '2003-10-13',
-            'gender' => 'male',
-            'role_id' => DB::table('roles')->where('role_name', 'Super Admin')->first()->id,
-        ]);
-        DB::table('users')->insert([
-            'first_name' => 'Super2',
-            'last_name' => 'Admin',
-            'email' => 'superadmin2@gmail.com',
-            'password' => Hash::make('12345678'),
-            'email_verified_at' => now(),
-            'birthdate' => '1988-02-22',
-            'gender' => 'female',
-            'role_id' => DB::table('roles')->where('role_name', 'Super Admin')->first()->id,
-        ]);
-        DB::table('users')->insert([
-            'first_name' => 'Admin1',
-            'last_name' => 'Admin',
-            'email' => 'admin1@gmail.com',
-            'password' => Hash::make('12345678'),
-            'email_verified_at' => now(),
-            'birthdate' => '1998-03-12',
-            'gender' => 'male',
-            'role_id' => DB::table('roles')->where('role_name', 'Admin')->first()->id,
-        ]);
-        DB::table('users')->insert([
-            'first_name' => 'Admin2',
-            'last_name' => 'Admin',
-            'email' => 'admin2@gmail.com',
-            'password' => Hash::make('12345678'),
-            'email_verified_at' => now(),
-            'birthdate' => '1978-05-03',
-            'gender' => 'female',
-            'role_id' => DB::table('roles')->where('role_name', 'Admin')->first()->id,
-        ]);
-        DB::table('users')->insert([
-            'first_name' => 'Admin3',
-            'last_name' => 'Admin',
-            'email' => 'admin3@gmail.com',
-            'password' => Hash::make('12345678'),
-            'email_verified_at' => now(),
-            'birthdate' => '1990-07-21',
-            'role_id' => DB::table('roles')->where('role_name', 'Admin')->first()->id,
-        ]);
-        DB::table('users')->insert([
-            'first_name' => 'John',
-            'last_name' => 'Smith',
-            'email' => 'user@gmail.com',
-            'password' => Hash::make('12345678'),
-            'email_verified_at' => now(),
-            'birthdate' => '2001-12-12',
-            'gender' => 'male',
-            'role_id' => DB::table('roles')->where('role_name', 'User')->first()->id,
-        ]);
-        DB::table('users')->insert([
-            'first_name' => 'Jane',
-            'last_name' => 'Doe',
-            'email' => 'user2@gmail.com',
-            'password' => Hash::make('12345678'),
-            'email_verified_at' => now(),
-            'birthdate' => '2000-08-09',
-            'gender' => 'female',
-            'role_id' => DB::table('roles')->where('role_name', 'User')->first()->id,
-        ]);
-        DB::table('users')->insert([
-            'first_name' => 'Jane',
-            'last_name' => 'Doe',
-            'email' => 'user3@gmail.com',
-            'password' => Hash::make('12345678'),
-            'email_verified_at' => now(),
-            'birthdate' => '2000-08-09',
-            'role_id' => DB::table('roles')->where('role_name', 'User')->first()->id,
-        ]);
 
         Schema::create('participant_statuses', function (Blueprint $table) {
             $table->id();
             $table->string('status');
         });
-        DB::table('participant_statuses')->insert([
-            ['status' => 'Accepted'],
-            ['status' => 'Declined'],
-            ['status' => 'Pending'],
-        ]);
+
         Schema::create('register_admins', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->onstrained('users')->onDelete('cascade');
@@ -166,5 +82,6 @@ return new class extends Migration
         Schema::dropIfExists('roles');
         Schema::dropIfExists('register_admins');
         Schema::dropIfExists('participant_statuses');
+        
     }
 };

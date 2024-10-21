@@ -15,10 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('status');
         });
-        DB::table('statuses')->insert([
-            ['status' => 'Active'],
-            ['status' => 'Inactive'],
-        ]);
+
         Schema::create('evaluation_forms', function (Blueprint $table) {
             $table->id();
             $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
@@ -37,10 +34,7 @@ return new class extends Migration
             $table->id();
             $table->string('type');
         });
-        DB::table('question_types')->insert([
-            ['type' => 'Essay'],
-            ['type' => 'Radio'],
-        ]);
+
         Schema::create('questions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('form_id')->constrained('evaluation_forms')->onDelete('cascade');

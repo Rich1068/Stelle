@@ -16,12 +16,7 @@ return new class extends Migration
 
     public function up(): void
     {
-        $jsonFilePath1 = storage_path('json_files/template1.json');
-        $jsonContent1 = file_get_contents($jsonFilePath1);
-        $jsonFilePath2 = storage_path('json_files/template2.json');
-        $jsonContent2 = file_get_contents($jsonFilePath2);
-        $jsonFilePath3 = storage_path('json_files/template3.json');
-        $jsonContent3 = file_get_contents($jsonFilePath3);
+
 
         Schema::create('certificates', function (Blueprint $table) {
             $table->id();
@@ -41,27 +36,7 @@ return new class extends Migration
             $table->foreignId('status_id')->constrained('statuses')->onDelete('cascade');
             $table->timestamps();
         });
-        DB::table('cert_templates')->insert([
-            'template_name' => 'sample_1',
-            'design' => $jsonContent1,
-            'path' => 'storage/images/certificates/cert_templates/template1.png',
-            'status_id' => '1',
-            'created_at'=> now(),
-        ]);
-        DB::table('cert_templates')->insert([
-            'template_name' => 'sample_2',
-            'design' => $jsonContent2,
-            'path' => 'storage/images/certificates/cert_templates/template2.png',
-            'status_id' => '1',
-            'created_at'=> now(),
-        ]);
-        DB::table('cert_templates')->insert([
-            'template_name' => 'sample_3',
-            'design' => $jsonContent3,
-            'path' => 'storage/images/certificates/cert_templates/template3.png',
-            'status_id' => '1',
-            'created_at'=> now(),
-        ]);
+        
         Schema::create('event_templates', function (Blueprint $table) {
             $table->id();
             $table->foreignId('event_id')->constrained('events')->onDelete('cascade');
