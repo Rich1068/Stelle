@@ -104,7 +104,14 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
     {
         return $this->hasMany(UserEvent::class);
     }
-
+    public function region()
+    {
+        return $this->belongsTo(Region::class, 'region_id'); // 'region_id' is the foreign key in the 'users' table
+    }
+    public function province()
+    {
+        return $this->belongsTo(Province::class, 'province_id'); // 'region_id' is the foreign key in the 'users' table
+    }
     public function certificates()
     {
         return $this->hasManyThrough(

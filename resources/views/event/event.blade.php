@@ -193,6 +193,22 @@
                 </div>
             </div>
         </div>
+        <div class="col-12 col-xl-5 col-lg-6 mb-4"> 
+            <div class="card shadow h-80"> 
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Participant College Distribution</h6>
+                </div>
+                <div class="card-body d-flex justify-content-center align-items-center" style="height: 300px;">
+                    @if($participants->count() > 0)
+                        <div class="chart-pie pt-4 pb-2">
+                            <canvas id="collegeChart" style="height: 100%; width: 100%;"></canvas>
+                        </div>
+                    @else
+                        <p class="text-center font-weight-bold" style="color: #001e54; font-size: 1.5rem;">No Data Available</p>
+                    @endif
+                </div>
+            </div>
+        </div>
 </div>
 
 
@@ -446,36 +462,35 @@
             cutoutPercentage: 80, // Adjust the doughnut chart cutout size
         },
     });
-    const regionLabels = @json($regions->values());
-    const regionCounts = @json($regionData->values());
+    const regionLabels = @json($regionLabels);
+    const regionCounts = @json($regionCounts);
 
-    // Province Data for Pie Chart
-    const provinceLabels = @json($provinces->values());
-    const provinceCounts = @json($provinceData->values());
+    const provinceLabels = @json($provinceLabels);
+    const provinceCounts = @json($provinceCounts);
 
-    console.log('Region Labels:', regionLabels);
-    console.log('Region Counts:', regionCounts);
-    console.log('Province Labels:', provinceLabels);
-    console.log('Province Counts:', provinceCounts);
+    
+    const collegeLabels = @json($collegeLabels);
+    const collegeCounts = @json($collegeCounts);
 
-    function getRandomColor() {
-    const letters = '0123456789ABCDEF';
-    let color = '#';
-    for (let i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
+
+    function getRandomDistinctColor() {
+    const hue = Math.floor(Math.random() * 360); 
+    const saturation = 70 + Math.random() * 10;  
+    const lightness = 50 + Math.random() * 10;   
+
+    return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
     }
 
     function generateColors(numColors) {
-        let colors = [];
-        for (let i = 0; i < numColors; i++) {
-            colors.push(getRandomColor());
+        let colors = new Set(); // Use a set to avoid duplicates
+        while (colors.size < numColors) {
+            colors.add(getRandomDistinctColor());
         }
-        return colors;
+        return Array.from(colors); // Convert set to array
     }
     const regionColors = generateColors(regionCounts.length);
     const provinceColors = generateColors(provinceCounts.length);
+    const collegeColors =generateColors(collegeCounts.length);
     // Render Region Pie Chart
     var ctxRegion = document.getElementById("regionChart").getContext('2d');
     var regionChart = new Chart(ctxRegion, {
@@ -538,6 +553,39 @@
                 display: false
             },
             cutoutPercentage: 80,  // Adjust doughnut chart cutout size
+        },
+    });
+
+
+    // College Distribution Chart
+    const ctxCollege = document.getElementById('collegeChart').getContext('2d');
+    const collegeChart = new Chart(ctxCollege, {
+        type: 'doughnut',
+        data: {
+            labels: collegeLabels,
+            datasets: [{
+                data: collegeCounts,
+                backgroundColor: collegeColors,
+                hoverBackgroundColor: collegeColors,
+                hoverBorderColor: collegeColors,
+            }],
+        },
+        options: {
+            maintainAspectRatio: false,
+            tooltips: {
+                backgroundColor: "rgb(255,255,255)",
+                bodyFontColor: "#858796",
+                borderColor: '#dddfeb',
+                borderWidth: 1,
+                xPadding: 15,
+                yPadding: 10,
+                displayColors: false,
+                caretPadding: 10,
+            },
+            legend: {
+                display: false
+            },
+            cutoutPercentage: 80, // Adjust the doughnut chart cutout size
         },
     });
 

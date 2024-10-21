@@ -162,7 +162,7 @@ class EventController extends Controller
         }
         //user age chart in the event
         $usersBirthdate = User::whereHas('eventParticipant', function ($query) use ($id) {
-            $query->where('event_id', $id);
+            $query->where('event_id', $id)->where('status_id', 1);
             })->select('birthdate')->get();
 
         $userAges = $usersBirthdate->map(function ($user) {
@@ -186,7 +186,7 @@ class EventController extends Controller
 
         //user gender chart in the event
         $userGenders = User::whereHas('eventParticipant', function ($query) use ($id) {
-            $query->where('event_id', $id);
+            $query->where('event_id', $id)->where('status_id', 1);
         })
         ->select('gender')
         ->get()
@@ -201,21 +201,48 @@ class EventController extends Controller
         $genderCounts = $userGenders->values(); // Extract the gender counts
         
 
-        // Group participants by the region_id of their associated user
+        //region and province chart
+        // Group participants by the region_id of their associated user, and handle null values
         $regionData = $participants->groupBy(function ($participant) {
-            return $participant->user->region_id; // Access region_id through the related user
+            return $participant->user->region_id ? $participant->user->region->regDesc : 'N/A'; // Use regDesc, or 'N/A' if region_id is null
         })->map(function ($region) {
             return $region->count();
         });
 
-        // Group participants by the province_id of their associated user
+        // Group participants by the province_id of their associated user, and handle null values
         $provinceData = $participants->groupBy(function ($participant) {
-            return $participant->user->province_id; // Access province_id through the related user
+            return $participant->user->province_id ? $participant->user->province->provDesc : 'N/A'; // Use provDesc, or 'N/A' if province_id is null
         })->map(function ($province) {
             return $province->count();
         });
-        $regions = Region::whereIn('id', $regionData->keys())->pluck('regDesc', 'id');
-        $provinces = Province::whereIn('id', $provinceData->keys())->pluck('provDesc', 'id');
+
+        // Prepare the labels and counts for the charts
+        $regionLabels = $regionData->keys();  // The region names (including 'N/A')
+        $regionCounts = $regionData->values(); // The count of participants per region
+
+        $provinceLabels = $provinceData->keys();  // The province names (including 'N/A')
+        $provinceCounts = $provinceData->values(); // The count of participants per province
+
+        //college chart
+        $colleges = $participants->map(function ($participant) {
+            $college = $participant->user->college;
+        
+            // Handle null or empty values for college
+            if ($college === null || trim($college) === '') {
+                return 'N/A';  // Use 'N/A' for participants with no college info
+            }
+        
+            // Normalize the college name (e.g., convert to lowercase and capitalize each word)
+            $college = strtolower(trim($college));
+            return ucwords($college); // Capitalize first letter of each word
+        })->groupBy(function ($college) {
+            return $college;
+        })->map(function ($group) {
+            return $group->count(); // Count the occurrences of each college
+        });
+        $collegeLabels = $colleges->keys(); 
+        $collegeCounts = $colleges->values();
+
         return view('event.event', [
             'event' => $event,
             'userevent' => $userevent,
@@ -231,10 +258,12 @@ class EventController extends Controller
             'genderLabels' => $genderLabels,
             'genderCounts' => $genderCounts,
             'pendingParticipantsCount' => $pendingParticipantsCount,
-            'regionData' => $regionData,
-            'provinceData'=> $provinceData,
-            'regions' => $regions,
-            'provinces' => $provinces
+            'regionCounts' => $regionCounts,
+            'regionLabels' => $regionLabels,
+            'provinceLabels'=> $provinceLabels,
+            'provinceCounts' => $provinceCounts,
+            'collegeLabels'=> $collegeLabels,
+            'collegeCounts'=> $collegeCounts,
         ]);
     }
 

@@ -59,6 +59,21 @@
                     <img src="{{ asset('storage/images/flags/' . strtolower($countryTable->code) . '.png') }}" alt="Flag of {{ $countryTable->countryname }}" class="flag-icon"> 
                 @endif
             </p>
+            
+            @if($user->country_id == 177)
+            <div class="info-divider"></div>
+            <p><i class="fas fa-city"></i> <strong class="label-blue">Region:</strong> 
+                @if($user->region_id == null) N/A @else {{ $user->region->regDesc }} @endif
+            </p>
+            <div class="info-divider"></div>
+            <p><i class="fas fa-map-marker-alt"></i> <strong class="label-blue">Province:</strong> 
+                @if($user->province_id == null) N/A @else {{ $user->province->provDesc }} @endif
+            </p>
+            @endif
+            <div class="info-divider"></div>
+            <p><i class="fas fa-university"></i> <strong class="label-blue">College:</strong> 
+                @if($user->college == null) N/A @else {{ $user->college }} @endif
+            </p>
             <div class="info-divider"></div>
             <p><i class="fas fa-venus-mars"></i> <strong class="label-blue">Gender:</strong> 
                 @if($user->gender == null) N/A @else {{ $user->gender }} @endif
