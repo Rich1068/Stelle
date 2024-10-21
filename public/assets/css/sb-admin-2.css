@@ -1741,12 +1741,26 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   justify-content: space-between;
   padding: 15px; /* Smaller padding */
 }
+.event-list-title {
+font-size: 24px; /* Adjusted font size for mobile */
+text-align: center; /* Center title */
+margin: 10px 0; /* Margin above and below title */
+white-space: normal; /* Allow text to wrap */
+overflow-wrap: break-word; /* Ensure long words break to the next line */
+margin: 10px 15px; /* Add horizontal margin to avoid text touching edges */
+} 
+
 
 .event-list-title {
-  margin: 0;
-  font-size: 25px; /* Smaller font size */  
-  font-weight: bold;
-  color: #003366;
+  font-size: 25px; 
+  text-align: left;
+  margin: 10px 0; 
+  overflow-wrap: break-word; 
+  word-break: break-word; 
+  word-wrap: break-word; 
+  hyphens: auto; 
+  font-weight: bold; 
+  color: #003366; 
 }
 
 .event-list-description {
@@ -2498,7 +2512,6 @@ h2 {
 }
 .top-container {
   max-width: 90% !important; /* Full width */
-  max-width: 90% !important; /* Limit max width */
   background-color: white !important; /* White background */
   margin: 20px auto !important; /* Center the container */
   padding: 20px !important; /* Padding */
@@ -2782,59 +2795,30 @@ h2 {
 
   /* Ensure items inside the containers are full width */
   .password-update-item,
-  .delete-account-item {
+  .delete-account-item,
+  .profile-edit-item {
       width: 100%; /* Make each item take the full width of the container */
       margin-bottom: 10px; /* Space between items */
-      display: flex; /* Enable flex on items for centering */
       justify-content: center; /* Center align item content */
       align-items: center; /* Center align item content vertically */
   }
 }
 
 /* Mobile-friendly styles */
-@media (max-width: 768px) {
-  .side-by-side-container {
-    display: flex; /* Ensure it's a flex container */
-    flex-direction: column; /* Stack child elements vertically on smaller screens */
-    padding: 10px; /* Reduce padding for mobile */
-  }
+
   
-  /* Ensure all sections take the full width */
-  .profile-edit-section,
-  .delete-profile-section,
-  .password-update-section {
-    width: 90% !important; /* Ensure full width on mobile */
-    padding: 20px; /* Maintain padding for consistency */
-    border-radius: 15px; /* Match styles */
-    background-color: #ffffff !important; /* Ensure consistent background */
-    margin-bottom: 20px; /* Add space between sections */
-  }
-}
-
-/* Default styles for the profile edit section */
 .profile-edit-section {
-  padding: 20px;
+  padding: 15px;
   border-radius: 15px;
-  background-color: #f9f9f9; /* Keep the background color */
+  background-color: #ffffff; /* Keep the background color */
   flex: 1; /* Allow section to grow and fill available space */
+  
 }
+  
 
-/* Other existing styles for desktop */
-.profile-edit-container {
-  display: flex; /* Display container items horizontally */
-  flex-wrap: wrap; /* Allow items to wrap if needed */
-  gap: 20px; /* Space between items */
-  padding: 20px;
-}
 
-/* Existing styles for profile edit items, labels, inputs, etc. */
-.profile-edit-item {
-  flex: 1 1 calc(50% - 20px); /* Adjust width for side-by-side display */
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  padding-bottom: 10px;
-}
+
+
 
 
 .profile-edit-row {
@@ -2874,7 +2858,7 @@ h2 {
 /* Mobile responsiveness */
 .profile-edit-input::placeholder,
 .profile-edit-textarea::placeholder {
-  color: #4a4a4a;
+  color: #cdcdcd;
   font-weight: bold;
   max-width: 100% !important;
 }
