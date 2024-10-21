@@ -39,20 +39,16 @@
 
     /* Show signup text only on mobile */
     @media (max-width: 768px) {
-        .signup-textm {
-            display: block; /* Show on mobile */
-            margin-top: 15px; /* Add some margin above */
-            text-align: center; /* Center text */
-            font-size: 0.875rem;
-    color: #001f60;
-    font-weight: bold;
-    margin-top: 10px;
-    text-align: center;
-    text-align: center; /* Center text on desktop */
-    margin-top: 20px; /* Space above the signup text */
-
-        }
+    .signup-textm {
+        display: block; /* Show on mobile */
+        text-align: center; /* Center text */
+        font-size: 0.875rem;
+        color: #001f60;
+        font-weight: bold;
+        margin-top: 5px; /* Reduced space above the signup text */
     }
+}
+
 
         /* Hide image section and all non-login elements on mobile devices */
         @media (max-width: 900px) {
@@ -134,6 +130,15 @@
             .signup-text.hidden {
                 display: none; /* Hide signup text on desktop */
             }
+            .signup-textm {
+    display: block; /* Show on mobile */
+    text-align: center; /* Center text */
+    font-size: 0.75rem; /* Smaller font size */
+    color: #001f60;
+    font-weight: bold;
+    margin-top: 2px; /* Further reduced space above the signup text */
+}
+
         }
 
         /* Default styles (Desktop) */
@@ -200,6 +205,7 @@
         <div class="image-section">
             <img src="/images/illustration1.png" alt="Illustration" class="illustration">
             <p class="signup-text">Don't have an account? <a href="/register" class="signup-link">Sign Up Here</a></p>
+            <p class="signup-text">Chek Out The <a href="https://psite.org/r3/" class="signup-link">Official PSITE-CL Website</a></p>
         </div>
 
         <!-- Login Form Section -->
@@ -263,6 +269,7 @@
 
             <!-- Signup Text Positioning -->
             <p class="signup-textm">Don't have an account? <a href="/register" class="signup-link">Sign Up Here</a></p>
+            <p class="signup-textm">Check Out The <a href="https://psite.org/r3/" class="signup-link">Official PSITE-CL Website</a></p>
         </div>
     </div>
 
