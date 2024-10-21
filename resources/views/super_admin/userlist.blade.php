@@ -28,9 +28,10 @@
 
 <div class="input-group mb-3 custom-select-container">
     <div id="roleDropdown" class="custom-select" tabindex="0">
-        <span id="selectedRole" class="selected">Filter by Role</span>
+        <span id="selectedRole" class="selected">All</span> 
         <div class="arrow" id="dropdownArrow"></div>
         <div class="options">
+            <div class="option" data-value="All">All</div> 
             <div class="option" data-value="Super Admin">Super Admin</div>
             <div class="option" data-value="Admin">Admin</div>
             <div class="option" data-value="User">User</div>
@@ -322,7 +323,9 @@
     const options = document.querySelector('.options');
 
     // Add event listener for click to animate arrow and toggle options
-    roleDropdown.addEventListener('click', () => {
+    roleDropdown.addEventListener('click', (event) => {
+        // Prevent the dropdown from immediately closing when clicking an option
+        event.stopPropagation();
         options.classList.toggle('active'); // Toggle visibility of options
         arrow.classList.toggle('open'); // Toggle class to rotate arrow
     });
@@ -332,10 +335,19 @@
         option.addEventListener('click', function () {
             const selectedRole = this.getAttribute('data-value');
             document.getElementById('selectedRole').innerText = selectedRole; // Update displayed value
+
             options.classList.remove('active'); // Hide options after selection
             arrow.classList.remove('open'); // Reset arrow
             filterTable(); // Filter table based on selected role
         });
+    });
+
+    // Close the dropdown if clicking outside of it
+    document.addEventListener('click', function (event) {
+        if (!roleDropdown.contains(event.target)) {
+            options.classList.remove('active'); // Hide options when clicking outside
+            arrow.classList.remove('open'); // Reset arrow when clicking outside
+        }
     });
 
     function filterTable() {
@@ -348,7 +360,7 @@
             const role = row.querySelector('td:nth-child(3)').textContent.toLowerCase(); // 3rd column contains the role
 
             const matchesSearch = name.includes(searchTerm);
-            const matchesRole = role.includes(roleFilter) || roleFilter === 'filter by role' || roleFilter === '';
+            const matchesRole = (roleFilter === 'all') || role.includes(roleFilter); // Show all if 'All' is selected
 
             if (matchesSearch && matchesRole) {
                 row.style.display = '';
