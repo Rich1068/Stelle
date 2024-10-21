@@ -47,7 +47,8 @@
                     <div><i class="fas fa-clock"></i><span data-label="Duration: ">{{ $event->start_time }} to {{ $event->end_time }}</span></div>
                     <div><i class="fas fa-users"></i><span data-label="Capacity: ">{{ $currentParticipants }}/{{ $event->capacity }}</span></div>
                     <div><i class="fas fa-desktop"></i><span data-label="Mode: ">{{ $event->mode }}</span></div>
-                    <div><i class="fas fa-user"></i><span data-label="By: ">{{ $userevent->user->first_name }} {{ $userevent->user->last_name }}</span></div>
+                    <div><i class="fas fa-user"></i><span data-label="By: "><a href="{{ route('profile.view', $userevent->user->id) }}" class="no-link-style">
+                        {{ $userevent->user->first_name }} {{ $userevent->user->last_name }}</a></span></div>
                 </div>
 
                 @if($userevent->user_id == Auth::user()->id)
@@ -319,6 +320,11 @@
     </div>
 </div>
 <style>
+    .no-link-style {
+        text-decoration: none;  /* Remove underline */
+        color: inherit;         /* Use the same color as surrounding text */
+    }
+    
     .pending-badge {
         position: absolute;
         top: 0px;
