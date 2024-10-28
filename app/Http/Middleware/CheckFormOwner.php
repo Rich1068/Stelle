@@ -29,6 +29,6 @@ class CheckFormOwner
         }
 
         // If not, redirect to a forbidden page or any other route
-        return redirect()->route('/unauthorized')->withErrors('You are not authorized to access this page.');
+        abort(403, 'Unauthorized action.');
     }
 }

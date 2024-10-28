@@ -26,6 +26,6 @@ class CheckUserJoinedEvent
         }
 
         // Redirect or abort if the user has not joined the event or the status is not 1
-        return redirect()->route('/unauthorized')->with('error', 'You have not joined this event.');
+        abort(403, 'Unauthorized action.');
     }
 }

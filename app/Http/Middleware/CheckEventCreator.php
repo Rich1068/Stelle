@@ -22,7 +22,7 @@ class CheckEventCreator
         $userEvent = UserEvent::where('event_id', $eventId)->first();
 
         if (!$userEvent || $userEvent->user_id !== Auth::id()) {
-            return redirect('/unauthorized');
+            abort(403, 'Unauthorized action.');
         }
 
         return $next($request);

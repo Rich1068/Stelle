@@ -25,7 +25,7 @@ class CheckRole
         $user = Auth::user();
 
         if (!in_array($user->role_id, $roles)) {
-            return redirect('/unauthorized');
+            abort(403, 'Unauthorized action.');
         }
 
         return $next($request);
