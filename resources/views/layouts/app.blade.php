@@ -128,8 +128,8 @@
                                 {{ __('Profile') }}
                             </x-dropdown-link>
                             <x-dropdown-link :href="route('help.page')" class="dropdown-item">
-                                <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                {{ __('Help & Support') }}
+                                <i class="fas fa-question-circle fa-sm fa-fw mr-2 text-gray-400"></i>
+                                {{ __('FAQs') }}
                             </x-dropdown-link>
                             @if(auth()->user()->role_id == 3)
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#adminRegistrationModal">

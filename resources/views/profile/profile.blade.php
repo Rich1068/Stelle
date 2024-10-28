@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('body')
+@if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
 <div class="profile-container">
     <!-- Profile Header Section -->
     <div class="profile-header">

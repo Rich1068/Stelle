@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('body') 
+@if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
 <div class="top-container mb-4 d-flex align-items-left">
     <h2 class="font-weight-bold mb-0">
         <i class="fas fa-certificate"></i> My Certificate

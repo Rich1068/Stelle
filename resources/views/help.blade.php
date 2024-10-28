@@ -1,7 +1,11 @@
 @extends('layouts.app')
 
 @section('body')
-
+@if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
 <div class="container">
   <div class="top-container">
     <h2 class="font-weight-bold mb-0">
