@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const eventTitle = sanitizeHTML(info.event.title); // Sanitize title
                 const date = moment(info.event.start).format('MMMM DD, YYYY');
                 const start_time = moment(info.event.start).format('h:mm A');
-                const end_time = moment(info.event.end).format('h:mm A');
+                const end_time = moment(info.event.extendedProps.end_time, 'HH:mm:ss').format('h:mm A');
                 const ownerName = sanitizeHTML(info.event.extendedProps.first_name + " " +
                                 (info.event.extendedProps.middle_name || '') + " " +
                                 info.event.extendedProps.last_name);

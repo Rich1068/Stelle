@@ -51,7 +51,7 @@
             <table class="table table-striped custom-table text-center" id="dataFilter" style="width: 90%; table-layout: fixed; margin: auto;">
                 <thead class="custom-thead">
                     <tr>
-                        <th onclick="sortTable(0)">ID <i class="fas fa-sort"></i></th>
+                        <th onclick="sortTable(0)">Form No. <i class="fas fa-sort"></i></th>
                         <th onclick="sortTable(1)">Form Name <i class="fas fa-sort"></i></th>
                         <th onclick="sortTable(2)">Status <i class="fas fa-sort"></i></th>
                         <th onclick="sortTable(3)">Created By <i class="fas fa-sort"></i></th>
@@ -60,9 +60,10 @@
                     </tr>
                 </thead>
                 <tbody id="tableBody">
+                @php $counter = 1; @endphp 
                     @foreach($evaluationForms as $index => $form)
                     <tr class="table-row" style="background-color: {{ $index % 2 === 0 ? '#f9f9f9' : 'white' }};">
-                        <td style="font-size: 14px; word-wrap: break-word;">{{ $form->id }}</td>
+                        <td style="font-size: 14px; word-wrap: break-word;">{{ $counter++ }}</td>
                         <td style="font-size: 14px; word-wrap: break-word;">{{ $form->form_name }}</td>
                         <td style="font-size: 14px; word-wrap: break-word;">{{ $form->status->status }}</td>
                         <td style="font-size: 14px; word-wrap: break-word;">{{ $form->creator->first_name }}</td>

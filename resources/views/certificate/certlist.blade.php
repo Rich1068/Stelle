@@ -35,62 +35,62 @@
 
     <!-- Certificates Table -->
     <div class="table-responsive">
-        <table class="table table-striped custom-table text-center" id="certificatesTable" style="width: 90%; table-layout: fixed; margin: auto;">
-            <thead class="custom-thead">
-                <tr>
-                    <th>Template ID</th>
-                    <th>Template Name</th>
-                    <th>Date Created</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($certificates as $certificate)
-                <tr>
-                    <td>{{ $certificate->id }}</td>
-                    <td>{{ $certificate->template_name }}</td>
-                    <td>{{ $certificate->created_at->format('Y-m-d') }}</td>
-                    <td>
-                        <!-- View/Edit/Delete buttons -->
-                        <div class="button-group" style="display: flex; justify-content: center; align-items: center; gap: 10px;">
-                            <!-- View button (Dark Cyan) -->
-                            <button type="button" class="btn rounded-circle" 
-                                    data-toggle="modal" 
-                                    data-target="#viewCertificateModal" 
-                                    onclick="loadCertificate('{{ $certificate->path }}', '{{ $certificate->template_name }}')"
-                                    style="width: 40px; height: 40px; background-color: #008b8b; color: white; display: flex; align-items: center; justify-content: center;" 
-                                    title="View Certificate">
-                                <i class="fas fa-eye"></i>
-                            </button>
-
-                            <!-- Edit button (Dark Blue) -->
-                            <a href="{{ route('certificates.create', $certificate->id) }}" 
-                               class="btn rounded-circle" 
-                               style="width: 40px; height: 40px; background-color: #001e54; color: white; display: flex; align-items: center; justify-content: center;" 
-                               title="Edit Certificate">
-                                <i class="fas fa-edit"></i>
-                            </a>
-
-                            <!-- Delete button (Dark Red) -->
-                            <form action="{{ route('certificates.deactivate', $certificate->id) }}" method="POST" style="display:inline; margin: 0;">
-                                @csrf
-                                @method('PATCH')
-                                <button type="submit" class="btn rounded-circle" 
-                                        style="width: 40px; height: 40px; background-color: #c9302c; color: white; display: flex; align-items: center; justify-content: center;" 
-                                        onclick="return confirm('Are you sure you want to delete this certificate?')" title="Delete Certificate">
-                                    <i class="fas fa-times"></i>
+            <table class="table table-striped custom-table text-center" id="certificateTable" style="width: 90%; table-layout: fixed; margin: auto;">
+                <thead class="custom-thead">
+                    <tr>
+                        <th onclick="sortTable(0, 'certificateTable')">Template No. <i class="fas fa-sort"></i></th>
+                        <th onclick="sortTable(1, 'certificateTable')">Template Name <i class="fas fa-sort"></i></th>
+                        <th onclick="sortTable(2, 'certificateTable')">Date Created <i class="fas fa-sort"></i></th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="certificateTableBody">
+                    @php $counter = 1; @endphp
+                    @foreach($certificates as $certificate)
+                    <tr>
+                        <td>{{ $counter++ }}</td>
+                        <td>{{ $certificate->template_name }}</td>
+                        <td>{{ $certificate->created_at->format('Y-m-d') }}</td>
+                        <td>
+                            <div class="button-group" style="display: flex; justify-content: center; align-items: center;">
+                                <!-- View button (Dark Cyan) -->
+                                <button type="button" class="btn rounded-circle" 
+                                        data-toggle="modal" 
+                                        data-target="#viewCertificateModal" 
+                                        onclick="loadCertificate('{{ $certificate->path }}', '{{ $certificate->template_name }}')"
+                                        style="width: 40px; height: 40px; background-color: #008b8b; color: white; display: flex; align-items: center; justify-content: center;" 
+                                        title="View Certificate">
+                                    <i class="fas fa-eye"></i>
                                 </button>
-                            </form>
-                        </div>
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
-    <button onclick="location.href='{{ route('certificates.create') }}'" class="btn btn-primary" style="margin-left: 30px;">
-        <i class="fas fa-plus"></i> <span style="margin-left: 5px;"></span>Create New Template
-    </button>
+
+                                <!-- Edit button (Dark Blue) -->
+                                <a href="{{ route('certificates.create', $certificate->id) }}" 
+                                   class="btn rounded-circle" 
+                                   style="width: 40px; height: 40px; background-color: #001e54; color: white; display: flex; align-items: center; justify-content: center;" 
+                                   title="Edit Certificate">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+
+                                <!-- Delete button (Dark Red) -->
+                                <form action="{{ route('certificates.deactivate', $certificate->id) }}" method="POST" style="display:inline; margin: 0;">
+                                    @csrf
+                                    @method('PATCH')
+                                    <button type="submit" class="btn rounded-circle" 
+                                            style="width: 40px; height: 40px; background-color: #c9302c; color: white; display: flex; align-items: center; justify-content: center;" 
+                                            onclick="return confirm('Are you sure you want to delete this certificate?')" title="Delete Certificate">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+        <button onclick="location.href='{{ route('certificates.create') }}'" class="btn btn-primary" style="margin-left: 30px;">
+            <i class="fas fa-plus"></i> <span style="margin-left: 5px;"></span>Create New Template
+        </button>
     @endif
 </div>
 
@@ -115,35 +115,67 @@
 
 
 <script>
-// Filter table by certificate name
-function filterTable() {
-    let input = document.getElementById("searchInput");
-    let filter = input.value.toUpperCase();
-    let table = document.getElementById("certificatesTable");
-    let tr = table.getElementsByTagName("tr");
+    function sortTable(columnIndex, tableId) {
+        const table = document.getElementById(tableId);
+        let rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+        switching = true;
+        dir = "asc";  // Set the sorting direction to ascending
 
-    for (let i = 1; i < tr.length; i++) {
-        let td = tr[i].getElementsByTagName("td")[1];
-        if (td) {
-            let txtValue = td.textContent || td.innerText;
-            if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                tr[i].style.display = "";
+        while (switching) {
+            switching = false;
+            rows = table.rows;
+
+            for (i = 1; i < (rows.length - 1); i++) {
+                shouldSwitch = false;
+                x = rows[i].getElementsByTagName("TD")[columnIndex];
+                y = rows[i + 1].getElementsByTagName("TD")[columnIndex];
+
+                if (dir === "asc") {
+                    if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                        shouldSwitch = true;
+                        break;
+                    }
+                } else if (dir === "desc") {
+                    if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
+            }
+
+            if (shouldSwitch) {
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+                switchcount++;
             } else {
-                tr[i].style.display = "none";
+                if (switchcount === 0 && dir === "asc") {
+                    dir = "desc";
+                    switching = true;
+                }
             }
         }
     }
-}
 
-// Load the certificate into the modal when "View" button is clicked
-function loadCertificate(certPath, certName) {
-    let certificateImage = document.getElementById("certificateImage");
-    let modalTitle = document.getElementById("viewCertificateModalLabel");
+    function filterTable() {
+        const input = document.getElementById('searchInput');
+        const filter = input.value.toLowerCase();
+        const tableBody = document.getElementById('certificateTableBody');
+        const rows = tableBody.getElementsByTagName('tr');
 
-    // Set the image source and modal title
-    certificateImage.src = "/" + certPath;
-    modalTitle.textContent = certName;
-}
+        for (let row of rows) {
+            const cells = row.getElementsByTagName('td');
+            let rowContainsFilter = false;
+
+            for (let cell of cells) {
+                if (cell.innerText.toLowerCase().includes(filter)) {
+                    rowContainsFilter = true;
+                    break;
+                }
+            }
+
+            row.style.display = rowContainsFilter ? '' : 'none';
+        }
+    }
 </script>
 
 <!-- Styles -->
