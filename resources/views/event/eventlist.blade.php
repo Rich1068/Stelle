@@ -93,7 +93,7 @@
         const selectedDate = document.getElementById('date-input').value;
         const showAllEvents = document.getElementById('show-all-events').checked;
 
-        // Send AJAX request with the date and show_all toggle values
+        // Send AJAX request to filter events by date and toggle between ongoing/all events
         $.ajax({
             url: '{{ route('event.list') }}',
             type: 'GET',
@@ -102,10 +102,13 @@
                 show_all: showAllEvents ? 'true' : 'false'
             },
             success: function(data) {
-                // Update event list, pagination, and no-events message
+                // Update the event list and pagination with the new filtered data
                 $('#event-list-container').html(data.eventsHtml);
                 $('#pagination-links').html(data.paginationHtml);
-                $('.no-events-container').toggle(!data.hasEvents); // Show if no events
+
+                // Determine if the event list is empty and show/hide the "No events available" message
+                const hasEvents = $(data.eventsHtml).find('.event-list-item').length > 0;
+                $('.no-events-container').toggle(!hasEvents);
             },
             error: function(xhr) {
                 console.error(xhr.responseText);
