@@ -72,11 +72,11 @@
     $(document).ready(function() {
         const table = $('#userDataTable').DataTable({
             "paging": true,
-            "lengthChange": false,
+            "lengthChange": true,
             "searching": true,
             "ordering": true,
             "info": true,
-            "autoWidth": false,
+            "autoWidth": true,
             "pageLength": 10
         });
 

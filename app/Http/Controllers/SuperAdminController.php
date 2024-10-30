@@ -164,7 +164,7 @@ class SuperAdminController extends Controller
 
     public function userlist()
     {
-        $users = User::paginate(15);
+        $users = User::all();
         return view('super_admin.userlist', compact('users'));
     }
 
@@ -240,7 +240,7 @@ class SuperAdminController extends Controller
     }
     public function allEventList()
     {
-        $events = Event::paginate(20);
+        $events = Event::all();
         return view('super_admin.allEventList', compact('events'));
     }
 

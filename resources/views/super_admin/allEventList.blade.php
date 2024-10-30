@@ -18,15 +18,6 @@
     </div>
 </div>
 
-<div class="input-group mb-3 form-control-container">
-    <input type="text" id="eventSearch" class="form-control" placeholder="Search for events...">
-    <div class="input-group-append">
-        <button class="btn btn-primary" type="button">
-            <i class="fas fa-search"></i>
-        </button>
-    </div>
-</div>
-
 <div class="card mb-4" style="margin-top: 50px; border: none;">
     <div class="card-header py-3">
         <h6 class="m-0 font-weight-bold text-primary">Events List</h6>
@@ -67,13 +58,10 @@
             </table>
         </div>
     </div>
-    <div class="d-flex justify-content-center">
-        {{ $events->links() }}
-    </div>
 </div>
 
 <style>
-/* Reuse and adjust existing styles for Event List */
+/* Styles for the Event List */
 .custom-btn-light, .custom-btn-primary {
     background-color: #001e54 !important;
     color: white !important;
@@ -96,33 +84,11 @@
     color: #ffff !important;
 }
 
-/* More responsive table and button adjustments */
 .form-control-container {
     display: flex;
     justify-content: center;
     align-items: stretch;
     margin-top: 40px;
-}
-
-.form-control {
-    padding: 12px !important;
-    border-radius: 20px 0 0 20px !important;
-    border: 1px solid #ccc !important;
-    transition: border-color 0.3s !important;
-    border-right: none !important;
-    font-size: 14px !important;
-    color: #1a2a5c !important;
-    max-width: 50% !important;
-    height: auto;
-}
-
-.input-group .btn {
-    padding: 12px !important;
-    border-radius: 0 15px 15px 0 !important;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: auto;
 }
 
 @media (max-width: 576px) {
@@ -133,17 +99,23 @@
 }
 </style>
 
+<!-- Add DataTables JavaScript -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <script>
-    document.getElementById('eventSearch').addEventListener('input', function () {
-        const searchTerm = this.value.toLowerCase();
-        const rows = document.querySelectorAll('#dataTable tbody tr');
-
-        rows.forEach(row => {
-            const title = row.querySelector('td:nth-child(1)').textContent.toLowerCase();
-            if (title.includes(searchTerm)) {
-                row.style.display = '';
-            } else {
-                row.style.display = 'none';
+    $(document).ready(function() {
+        // Initialize DataTables on the event table
+        $('#dataTable').DataTable({
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": true,
+            "pageLength": 10,
+            "language": {
+                "searchPlaceholder": "Search for events..." // Placeholder text for search box
             }
         });
     });

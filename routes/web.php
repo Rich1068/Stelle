@@ -67,9 +67,7 @@ Route::middleware(['auth','super_admin'])->group(function () {
     Route::get('/super-admin/users-data', [SuperAdminController::class, 'getUsersDataByYear']);
     Route::get('/super-admin/all-events', [SuperAdminController::class, 'allEventList'])->name('superadmin.eventlist');
     Route::get('/super-admin/dashboard/participants-per-event', [SuperAdminController::class, 'getPaginatedParticipantsPerEvent'])->name('superadmin.participants.per.event');
-    Route::get('/profile/{id}/events-data', [ProfileController::class, 'getEventsData'])->name('profile.eventsData');
-    Route::get('/profile/{id}/events-created-data', [ProfileController::class, 'getEventsCreatedData'])->name('profile.getAdminCreatedEventsData');
-    Route::get('/profile/{id}/events-joined-data', [ProfileController::class, 'getEventsJoinedData'])->name('profile.getAdminJoinedEventsData');
+
 });
 
 //admin
@@ -92,7 +90,9 @@ route::get('/unauthorized', function () {
 
 //check role if super admin or admin
 Route::middleware(['auth', 'checkRole:1,2'])->group(function () {
-
+    Route::get('/profile/{id}/events-data', [ProfileController::class, 'getEventsData'])->name('profile.eventsData');
+    Route::get('/profile/{id}/events-created-data', [ProfileController::class, 'getEventsCreatedData'])->name('profile.getAdminCreatedEventsData');
+    Route::get('/profile/{id}/events-joined-data', [ProfileController::class, 'getEventsJoinedData'])->name('profile.getAdminJoinedEventsData');
     //event creation and the users created event list
     route::get('/event/create', [EventController::class, 'create'])->name('event.create');
     Route::get('/event/myEventlist', [EventController::class, 'myEventlist'])->name('event.myeventlist');
