@@ -49,6 +49,7 @@
     <i class="fas fa-calendar-times"></i>
     <p>No events available.</p>
 </div>
+
 <!-- Pagination -->
 <div class="d-flex justify-content-center" id="pagination-links">
     {{ $events->appends(request()->query())->links('vendor.pagination.custom1') }}
@@ -58,7 +59,6 @@
 
 @section('scripts')
 <script>
-    // Event listener for search input
     document.getElementById('eventSearch').addEventListener('input', function () {
         const searchTerm = this.value.toLowerCase();
         const events = document.querySelectorAll('.event-list-item');
@@ -69,70 +69,31 @@
             const description = event.querySelector('.event-list-description').textContent.toLowerCase();
             const location = event.querySelector('.meta-item.location .meta-text').textContent.toLowerCase();
 
-            // Check if search term matches title, description, or location
             const matches = title.includes(searchTerm) || description.includes(searchTerm) || location.includes(searchTerm);
             event.style.display = matches ? '' : 'none';
 
             if (matches) hasResults = true;
         });
 
-        // Show or hide the "No events available" message
-        const noEventsContainer = document.querySelector('.no-events-container');
-        if (noEventsContainer) {
-            noEventsContainer.style.display = hasResults ? 'none' : 'block';
-        }
+        toggleNoEventsMessage(hasResults);
     });
 
-    // Automatically submit form when the date is changed using AJAX
-    document.getElementById('date-input').addEventListener('change', function() {
-        const selectedDate = this.value;
-
-        // Send AJAX request to filter events by date
-        $.ajax({
-            url: '{{ route('event.list') }}', // Ensure this is the correct route
-            type: 'GET',
-            data: { date: selectedDate },
-            success: function(data) {
-                // Update the event list and pagination with the new filtered data
-                $('#event-list-container').html(data.eventsHtml);
-                $('#pagination-links').html(data.paginationHtml);
-            },
-            error: function(xhr) {
-                console.error(xhr.responseText);
-            }
-        });
-    });
-
-    // Clear date filter and fetch all events
+    document.getElementById('date-input').addEventListener('change', fetchFilteredEvents);
     document.getElementById('clear-date-btn').addEventListener('click', function() {
-        // Clear the date input
         document.getElementById('date-input').value = '';
 
-        // Send AJAX request with no date filter to reset the list
-        $.ajax({
-            url: '{{ route('event.list') }}',
-            type: 'GET',
-            success: function(data) {
-                $('#event-list-container').html(data.eventsHtml);
-                $('#pagination-links').html(data.paginationHtml);
-            },
-            error: function(xhr) {
-                console.error(xhr.responseText);
-            }
-        });
+        fetchFilteredEvents();
     });
-
-    // Automatically submit form when the date is changed or hide old events is toggled using AJAX
-    document.getElementById('date-input').addEventListener('change', fetchFilteredEvents);
     document.getElementById('show-all-events').addEventListener('change', function() {
-    fetchFilteredEvents(); // Call function to update event list based on toggle state
+        document.getElementById('eventSearch').value = '';
+        fetchFilteredEvents();
     });
 
     function fetchFilteredEvents() {
         const selectedDate = document.getElementById('date-input').value;
         const showAllEvents = document.getElementById('show-all-events').checked;
 
-        // Send AJAX request to filter events by date and toggle between ongoing/all events
+        // Send AJAX request with the date and show_all toggle values
         $.ajax({
             url: '{{ route('event.list') }}',
             type: 'GET',
@@ -141,8 +102,10 @@
                 show_all: showAllEvents ? 'true' : 'false'
             },
             success: function(data) {
+                // Update event list, pagination, and no-events message
                 $('#event-list-container').html(data.eventsHtml);
                 $('#pagination-links').html(data.paginationHtml);
+                $('.no-events-container').toggle(!data.hasEvents); // Show if no events
             },
             error: function(xhr) {
                 console.error(xhr.responseText);
@@ -150,15 +113,13 @@
         });
     }
 
-    // Clear date filter and fetch all events
-    document.getElementById('clear-date-btn').addEventListener('click', function() {
-        // Clear the date input
-        document.getElementById('date-input').value = '';
-        document.getElementById('show-all-events').checked = false; // Reset the checkbox
-
-        fetchFilteredEvents(); // Fetch all events without filters
-    });
+    function toggleNoEventsMessage(hasResults) {
+        const noEventsContainer = document.querySelector('.no-events-container');
+        noEventsContainer.style.display = hasResults ? 'none' : 'block';
+    }
 </script>
+
+
 
 <style>
 .show-all-container {
