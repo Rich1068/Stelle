@@ -25,74 +25,75 @@
     <p>No Certificate Template Found.</p>
 </div>
     @else
-    <!-- Search Bar -->
-    <div class="search-container" style="margin: 40px auto; max-width: 60%;">
-        <input type="text" id="searchInput" placeholder="Search for forms..." class="search-input" onkeyup="filterTable()">
-        <button class="search-button"><i class="fas fa-search"></i></button>
-    </div>
-
     
-
     <!-- Certificates Table -->
-    <div class="table-responsive">
-            <table class="table table-striped custom-table text-center" id="certificateTable" style="width: 90%; table-layout: fixed; margin: auto;">
-                <thead class="custom-thead">
-                    <tr>
-                        <th onclick="sortTable(0, 'certificateTable')">Template No. <i class="fas fa-sort"></i></th>
-                        <th onclick="sortTable(1, 'certificateTable')">Template Name <i class="fas fa-sort"></i></th>
-                        <th onclick="sortTable(2, 'certificateTable')">Date Created <i class="fas fa-sort"></i></th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="certificateTableBody">
-                    @php $counter = 1; @endphp
-                    @foreach($certificates as $certificate)
-                    <tr>
-                        <td>{{ $counter++ }}</td>
-                        <td>{{ $certificate->template_name }}</td>
-                        <td>{{ $certificate->created_at->format('Y-m-d') }}</td>
-                        <td>
-                            <div class="button-group" style="display: flex; justify-content: center; align-items: center;">
-                                <!-- View button (Dark Cyan) -->
-                                <button type="button" class="btn rounded-circle" 
-                                        data-toggle="modal" 
-                                        data-target="#viewCertificateModal" 
-                                        onclick="loadCertificate('{{ $certificate->path }}', '{{ $certificate->template_name }}')"
-                                        style="width: 40px; height: 40px; background-color: #008b8b; color: white; display: flex; align-items: center; justify-content: center;" 
-                                        title="View Certificate">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-
-                                <!-- Edit button (Dark Blue) -->
-                                <a href="{{ route('certificates.create', $certificate->id) }}" 
-                                   class="btn rounded-circle" 
-                                   style="width: 40px; height: 40px; background-color: #001e54; color: white; display: flex; align-items: center; justify-content: center;" 
-                                   title="Edit Certificate">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-
-                                <!-- Delete button (Dark Red) -->
-                                <form action="{{ route('certificates.deactivate', $certificate->id) }}" method="POST" style="display:inline; margin: 0;">
-                                    @csrf
-                                    @method('PATCH')
-                                    <button type="submit" class="btn rounded-circle" 
-                                            style="width: 40px; height: 40px; background-color: #c9302c; color: white; display: flex; align-items: center; justify-content: center;" 
-                                            onclick="return confirm('Are you sure you want to delete this certificate?')" title="Delete Certificate">
-                                        <i class="fas fa-times"></i>
-                                    </button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
+    <div class="card mb-4" style="margin-top: 50px; border: none;">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Certificate Template List</h6>
         </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered text-center" id="certificateTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Template No.</th>
+                            <th>Template Name</th>
+                            <th>Date Created</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @php $counter = 1; @endphp
+                        @foreach($certificates as $certificate)
+                        <tr>
+                            <td>{{ $counter++ }}</td>
+                            <td>{{ $certificate->template_name }}</td>
+                            <td>{{ $certificate->created_at->format('Y-m-d') }}</td>
+                            <td>
+                                <div class="button-group" style="display: flex; justify-content: center; align-items: center;">
+                                    <!-- View button (Dark Cyan) -->
+                                    <button type="button" class="btn rounded-circle" 
+                                            data-toggle="modal" 
+                                            data-target="#viewCertificateModal" 
+                                            onclick="loadCertificate('{{ $certificate->path }}', '{{ $certificate->template_name }}')"
+                                            style="width: 40px; height: 40px; background-color: #008b8b; color: white; display: flex; align-items: center; justify-content: center;" 
+                                            title="View Certificate">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+
+                                    <!-- Edit button (Dark Blue) -->
+                                    <a href="{{ route('certificates.create', $certificate->id) }}" 
+                                    class="btn rounded-circle" 
+                                    style="width: 40px; height: 40px; background-color: #001e54; color: white; display: flex; align-items: center; justify-content: center;" 
+                                    title="Edit Certificate">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+
+                                    <!-- Delete button (Dark Red) -->
+                                    <form action="{{ route('certificates.deactivate', $certificate->id) }}" method="POST" style="display:inline; margin: 0;">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button type="submit" class="btn rounded-circle" 
+                                                style="width: 40px; height: 40px; background-color: #c9302c; color: white; display: flex; align-items: center; justify-content: center;" 
+                                                onclick="return confirm('Are you sure you want to delete this certificate?')" title="Delete Certificate">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
         <button onclick="location.href='{{ route('certificates.create') }}'" class="btn btn-primary" style="margin-left: 30px;">
             <i class="fas fa-plus"></i> <span style="margin-left: 5px;"></span>Create New Template
         </button>
     @endif
 </div>
+
 
 <!-- View Certificate Modal -->
 <div class="modal fade" id="viewCertificateModal" tabindex="-1" role="dialog" aria-labelledby="viewCertificateModalLabel" aria-hidden="true">
@@ -113,70 +114,22 @@
 </div>
 
 
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 
 <script>
-    function sortTable(columnIndex, tableId) {
-        const table = document.getElementById(tableId);
-        let rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-        switching = true;
-        dir = "asc";  // Set the sorting direction to ascending
-
-        while (switching) {
-            switching = false;
-            rows = table.rows;
-
-            for (i = 1; i < (rows.length - 1); i++) {
-                shouldSwitch = false;
-                x = rows[i].getElementsByTagName("TD")[columnIndex];
-                y = rows[i + 1].getElementsByTagName("TD")[columnIndex];
-
-                if (dir === "asc") {
-                    if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-                        shouldSwitch = true;
-                        break;
-                    }
-                } else if (dir === "desc") {
-                    if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-                        shouldSwitch = true;
-                        break;
-                    }
-                }
-            }
-
-            if (shouldSwitch) {
-                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-                switching = true;
-                switchcount++;
-            } else {
-                if (switchcount === 0 && dir === "asc") {
-                    dir = "desc";
-                    switching = true;
-                }
-            }
-        }
-    }
-
-    function filterTable() {
-        const input = document.getElementById('searchInput');
-        const filter = input.value.toLowerCase();
-        const tableBody = document.getElementById('certificateTableBody');
-        const rows = tableBody.getElementsByTagName('tr');
-
-        for (let row of rows) {
-            const cells = row.getElementsByTagName('td');
-            let rowContainsFilter = false;
-
-            for (let cell of cells) {
-                if (cell.innerText.toLowerCase().includes(filter)) {
-                    rowContainsFilter = true;
-                    break;
-                }
-            }
-
-            row.style.display = rowContainsFilter ? '' : 'none';
-        }
-    }
-
+        $(document).ready(function() {
+        $('#certificateTable').DataTable({
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "pageLength": 10
+        });
+    });
     function loadCertificate(certPath, certName) {
         let certificateImage = document.getElementById("certificateImage");
         let modalTitle = document.getElementById("viewCertificateModalLabel");
