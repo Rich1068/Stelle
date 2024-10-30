@@ -68,17 +68,23 @@
 
     <!-- Nav Item - Management of System (Dropdown for User and Event Management) -->
     <li class="nav-item d-none d-md-block"> <!-- Hidden on mobile -->
-        <a class="nav-link {{ request()->routeIs('super_admin.userlist') || request()->routeIs('superadmin.eventlist') ? '' : 'collapsed' }}" href="#" data-toggle="collapse" data-target="#collapseManagement" aria-expanded="{{ request()->routeIs('super_admin.userlist') || request()->routeIs('superadmin.eventlist') ? 'true' : 'false' }}" aria-controls="collapseManagement">
-            <span>User and Event Management</span> <!-- Removed the .small class -->
-            <i class="fas fa-chevron-down float-right arrow-icon"></i>
-        </a>
-        <div id="collapseManagement" class="collapse {{ request()->routeIs('super_admin.userlist') || request()->routeIs('superadmin.eventlist') ? 'show' : '' }}" aria-labelledby="headingManagement" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <a href="{{ route('super_admin.userlist') }}" class="collapse-item {{ request()->routeIs('super_admin.userlist') ? 'active-item' : '' }}">Manage All Users</a>
-                <a href="{{ route('superadmin.eventlist') }}" class="collapse-item {{ request()->routeIs('superadmin.eventlist') ? 'active-item' : '' }}">Manage All Events</a>
-            </div>
+    <a class="nav-link {{ request()->routeIs('super_admin.userlist') || request()->routeIs('superadmin.eventlist') ? '' : 'collapsed' }}" href="#" data-toggle="collapse" data-target="#collapseManagement" aria-expanded="{{ request()->routeIs('super_admin.userlist') || request()->routeIs('superadmin.eventlist') ? 'true' : 'false' }}" aria-controls="collapseManagement">
+        <span>User and Event Management</span>
+        <i class="fas fa-chevron-down float-right arrow-icon"></i>
+    </a>
+    <div id="collapseManagement" class="collapse {{ request()->routeIs('super_admin.userlist') || request()->routeIs('superadmin.eventlist') ? 'show' : '' }}" aria-labelledby="headingManagement" data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded">
+            <a href="{{ route('super_admin.userlist') }}" class="collapse-item {{ request()->routeIs('super_admin.userlist') ? 'active-item' : '' }}">Manage All Users</a>
+            
+            <!-- Unique thick divider -->
+            <div class="thick-divider"></div>
+            
+            <a href="{{ route('superadmin.eventlist') }}" class="collapse-item {{ request()->routeIs('superadmin.eventlist') ? 'active-item' : '' }}">Manage All Events</a>
         </div>
-    </li>
+    </div>
+</li>
+
+
 
     <!-- Display Manage All Users and Manage All Events links directly on mobile -->
     <li class="nav-item d-md-none"> <!-- Visible only on mobile -->
@@ -160,6 +166,13 @@
 <!-- End of Sidebar -->
 
 <style>
+.thick-divider {
+    height: 2px; /* Reduced thickness */
+    background-color: #001e54; /* Dark blue color */
+    margin: 5px 0; /* Adds some spacing above and below the divider */
+    border-radius: 2px; /* Optional: Add rounded corners */
+}
+
     @media (max-width: 768px) {
         /* Additional styles for mobile */
         .collapse-item {
