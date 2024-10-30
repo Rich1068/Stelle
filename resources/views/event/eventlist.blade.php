@@ -13,8 +13,6 @@
     </h2>
 </div>
 
-@if ($events->isEmpty())
-@else
 <!-- Filter Form -->
 <div class="event-filter-container p-3 mb-3">
     <div class="d-flex flex-column flex-md-row justify-content-center align-items-center">
@@ -40,11 +38,16 @@
         Show All Events
     </label>
 </div>
-@endif
+
 
 <!-- Event List -->
 <div id="event-list-container">
     @include('event.partials.eventlist', ['events' => $events]) <!-- Separate partial for events -->
+</div>
+
+<div class="no-events-container" style="display: {{ $events->isEmpty() ? 'block' : 'none' }};">
+    <i class="fas fa-calendar-times"></i>
+    <p>No events available.</p>
 </div>
 
 <!-- Pagination -->
@@ -56,67 +59,34 @@
 
 @section('scripts')
 <script>
-    // Event listener for search input
     document.getElementById('eventSearch').addEventListener('input', function () {
         const searchTerm = this.value.toLowerCase();
         const events = document.querySelectorAll('.event-list-item');
+        let hasResults = false;
 
         events.forEach(event => {
             const title = event.querySelector('.event-list-title').textContent.toLowerCase();
             const description = event.querySelector('.event-list-description').textContent.toLowerCase();
             const location = event.querySelector('.meta-item.location .meta-text').textContent.toLowerCase();
 
-            // Check if search term matches title, description, or location
             const matches = title.includes(searchTerm) || description.includes(searchTerm) || location.includes(searchTerm);
-
-            // Toggle visibility
             event.style.display = matches ? '' : 'none';
+
+            if (matches) hasResults = true;
         });
+
+        toggleNoEventsMessage(hasResults);
     });
 
-    // Automatically submit form when the date is changed using AJAX
-    document.getElementById('date-input').addEventListener('change', function() {
-        const selectedDate = this.value;
-
-        // Send AJAX request to filter events by date
-        $.ajax({
-            url: '{{ route('event.list') }}', // Ensure this is the correct route
-            type: 'GET',
-            data: { date: selectedDate },
-            success: function(data) {
-                // Update the event list and pagination with the new filtered data
-                $('#event-list-container').html(data.eventsHtml);
-                $('#pagination-links').html(data.paginationHtml);
-            },
-            error: function(xhr) {
-                console.error(xhr.responseText);
-            }
-        });
-    });
-
-    // Clear date filter and fetch all events
+    document.getElementById('date-input').addEventListener('change', fetchFilteredEvents);
     document.getElementById('clear-date-btn').addEventListener('click', function() {
-        // Clear the date input
         document.getElementById('date-input').value = '';
 
-        // Send AJAX request with no date filter to reset the list
-        $.ajax({
-            url: '{{ route('event.list') }}',
-            type: 'GET',
-            success: function(data) {
-                $('#event-list-container').html(data.eventsHtml);
-                $('#pagination-links').html(data.paginationHtml);
-            },
-            error: function(xhr) {
-                console.error(xhr.responseText);
-            }
-        });
+        fetchFilteredEvents();
     });
-
-    // Automatically submit form when the date is changed or hide old events is toggled using AJAX
-    document.getElementById('date-input').addEventListener('change', fetchFilteredEvents);
     document.getElementById('show-all-events').addEventListener('change', function() {
-    fetchFilteredEvents(); // Call function to update event list based on toggle state
+        document.getElementById('eventSearch').value = '';
+        fetchFilteredEvents();
     });
 
     function fetchFilteredEvents() {
@@ -132,8 +102,13 @@
                 show_all: showAllEvents ? 'true' : 'false'
             },
             success: function(data) {
+                // Update the event list and pagination with the new filtered data
                 $('#event-list-container').html(data.eventsHtml);
                 $('#pagination-links').html(data.paginationHtml);
+
+                // Determine if the event list is empty and show/hide the "No events available" message
+                const hasEvents = $(data.eventsHtml).find('.event-list-item').length > 0;
+                $('.no-events-container').toggle(!hasEvents);
             },
             error: function(xhr) {
                 console.error(xhr.responseText);
@@ -141,15 +116,13 @@
         });
     }
 
-    // Clear date filter and fetch all events
-    document.getElementById('clear-date-btn').addEventListener('click', function() {
-        // Clear the date input
-        document.getElementById('date-input').value = '';
-        document.getElementById('hide-old-events').checked = false; // Reset the checkbox
-
-        fetchFilteredEvents(); // Fetch all events without filters
-    });
+    function toggleNoEventsMessage(hasResults) {
+        const noEventsContainer = document.querySelector('.no-events-container');
+        noEventsContainer.style.display = hasResults ? 'none' : 'block';
+    }
 </script>
+
+
 
 <style>
 .show-all-container {

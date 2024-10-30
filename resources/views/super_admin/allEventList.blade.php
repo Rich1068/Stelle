@@ -29,7 +29,7 @@
                     <tr>
                         <th>Title</th>
                         <th>Date</th>
-                        <th>Description</th>
+                        <th>Duration</th>
                         <th>Organizer</th>
                     </tr>
                 </thead>
@@ -37,7 +37,7 @@
                     <tr>
                         <th>Title</th>
                         <th>Date</th>
-                        <th>Description</th>
+                        <th>Duration</th>
                         <th>Organizer</th>
                     </tr>
                 </tfoot>
@@ -50,7 +50,7 @@
                             </a>
                         </td>
                         <td>{{ \Carbon\Carbon::parse($event->date)->format('Y-m-d') }}</td>
-                        <td>{{ Str::limit($event->description, 50, '...') }}</td>
+                        <td>{{ \Carbon\Carbon::parse($event->start_time)->format('h:i A') }} - {{ \Carbon\Carbon::parse($event->end_time)->format('h:i A') }}</td>
                         <td>{{ $event->userEvent->user->first_name }} {{ $event->userEvent->user->last_name }}</td>
                     </tr>
                     @endforeach

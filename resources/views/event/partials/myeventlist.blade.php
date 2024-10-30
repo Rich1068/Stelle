@@ -1,6 +1,6 @@
 @if ($events->isEmpty())
 <div class="no-events-container">
-    <i class="fas fa-calendar-times"></i> <!-- Font Awesome icon for "No events" -->
+    <i class="fas fa-calendar-times"></i> 
     <p>No events available.</p>
 </div>
 

@@ -1,10 +1,10 @@
-@if ($events->isEmpty())
+<!-- @if ($events->isEmpty())
 <div class="no-events-container">
-    <i class="fas fa-calendar-times"></i> <!-- Font Awesome icon for "No events" -->
+    <i class="fas fa-calendar-times"></i> 
     <p>No events available.</p>
 </div>
 
-@else
+@else -->
     <div class="event-list">
         @foreach ($events as $event)
             <div class="event-list-item mb-4">
@@ -42,4 +42,4 @@
             </div>
         @endforeach
     </div>
-@endif
+<!-- @endif -->
