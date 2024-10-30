@@ -534,18 +534,17 @@
             }]
         },
         options: {
-        scales: {
-            yAxes: [{ 
-                ticks: {
-                    beginAtZero: true,
-                    stepSize: 1,
-                     
+                scales: {
+                    y: {  // Set as an object, not an array
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1,
+                            precision: 0,
+                        }
+                    }
                 }
-            }]
-        }
-    }
-        
-});
+            }
+    });
 
     let currentYearUsers = {{ $currentYear }}; // Use the current year
 
@@ -600,14 +599,13 @@
             },
             options: {
                 scales: {
-                    yAxes: [{ 
+                    y: {  // Set as an object, not an array
+                        beginAtZero: true,
                         ticks: {
-                            beginAtZero: true,
-                            stepSize: 1 ,
-                            min: 0,
-                            precision: 0, 
+                            stepSize: 1,
+                            precision: 0,
                         }
-                    }]
+                    }
                 }
             }
         });
@@ -634,12 +632,13 @@
             },
             options: {
                 scales: {
-                    yAxes: [{
+                    y: {  // Set as an object, not an array
+                        beginAtZero: true,
                         ticks: {
-                            beginAtZero: true,
-                            stepSize: 1
+                            stepSize: 1,
+                            precision: 0,
                         }
-                    }]
+                    }
                 }
             }
         });

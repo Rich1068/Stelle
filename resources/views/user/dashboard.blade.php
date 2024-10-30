@@ -333,14 +333,13 @@
             },
             options: {
                 scales: {
-                    yAxes: [{ 
+                    y: {  // Set as an object, not an array
+                        beginAtZero: true,
                         ticks: {
-                            beginAtZero: true,
-                            stepSize: 1 ,
-                            min: 0,
-                            precision: 0, 
+                            stepSize: 1,
+                            precision: 0,
                         }
-                    }]
+                    }
                 }
             }
         });
