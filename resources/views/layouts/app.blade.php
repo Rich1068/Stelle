@@ -37,7 +37,20 @@
         }
     </style>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.0.6/dist/cdn.min.js"></script>
+    <!-- <script>
+        document.addEventListener('contextmenu', function(event) {
+            event.preventDefault();
+        });
 
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "F12") {
+                event.preventDefault();
+            }
+            if (event.ctrlKey && (event.shiftKey && ['I', 'J'].includes(event.key)) || event.key === 'U') {
+                event.preventDefault();
+            }
+        });
+    </script> -->
 </head>
  
 <div id="page-top">

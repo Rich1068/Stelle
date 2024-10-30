@@ -1,10 +1,10 @@
-@if ($events->isEmpty())
+<!-- @if ($events->isEmpty())
 <div class="no-events-container">
     <i class="fas fa-calendar-times"></i> 
     <p>No events available.</p>
 </div>
 
-@else
+@else -->
     <div class="event-list">
         @foreach ($events as $event)
             <div class="event-list-item mb-4">
@@ -21,7 +21,7 @@
                     <div class="event-list-meta d-flex justify-content-between">
                         <div class="meta-item time d-flex align-items-center">
                             <i class="fas fa-clock"></i>
-                            <span class="meta-text ms-1">{{ \Carbon\Carbon::parse($event->start_time)->format('H:i') }} - {{ \Carbon\Carbon::parse($event->end_time)->format('H:i') }}</span>
+                            <span class="meta-text ms-1">{{ \Carbon\Carbon::parse($event->start_time)->format('h:i A') }} - {{ \Carbon\Carbon::parse($event->end_time)->format('h:i A') }}</span>
                         </div>
                         <div class="meta-item location d-flex align-items-center">
                             <i class="fas fa-map-marker-alt"></i>
@@ -40,4 +40,4 @@
             </div>
         @endforeach
     </div>
-@endif
+<!-- @endif -->
