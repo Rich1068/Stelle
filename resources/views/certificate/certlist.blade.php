@@ -176,6 +176,14 @@
             row.style.display = rowContainsFilter ? '' : 'none';
         }
     }
+
+    function loadCertificate(certPath, certName) {
+        let certificateImage = document.getElementById("certificateImage");
+        let modalTitle = document.getElementById("viewCertificateModalLabel");
+        // Set the image source and modal title
+        certificateImage.src = "/" + certPath;
+        modalTitle.textContent = certName;
+    }
 </script>
 
 <!-- Styles -->
