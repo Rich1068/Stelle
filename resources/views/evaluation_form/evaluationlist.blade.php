@@ -15,16 +15,17 @@
     <div class="d-flex align-items-center">
         <h2 class="font-weight-bold mb-0" style="color: #002060;">
             <i class="fas fa-clipboard-list"></i> Manage Evaluation Forms
-        </h2>
+        
         @if($evaluationForms->isEmpty())
-        <form action="{{ route('evaluation-forms.create') }}" method="get" style="display: inline;">
+        <form action="{{ route('evaluation-forms.create') }}" method="get">
             <div style="margin-top: 10px;">
-                <button type="submit" class="btn btn-primary" style="margin-left: 30px; border-radius: 15px;">
-                    <i class="fas fa-plus"></i> Add Evaluation Form
+                <button type="submit" class="btn-primary" style="margin-left: 30px; border-radius: 15px;">
+                    <i class="fas fa-plus"></i>  Add Evaluation Form
                 </button>
             </div>
         </form>
         @endif
+        </h2>
     </div>
 </div>
 
