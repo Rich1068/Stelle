@@ -13,8 +13,6 @@
     </h2>
 </div>
 
-@if ($events->isEmpty())
-@else
 <!-- Filter Form -->
 <div class="event-filter-container p-3 mb-3">
     <div class="d-flex flex-column flex-md-row justify-content-center align-items-center">
@@ -40,13 +38,17 @@
         Show All Events
     </label>
 </div>
-@endif
+
 
 <!-- Event List -->
 <div id="event-list-container">
     @include('event.partials.eventlist', ['events' => $events]) <!-- Separate partial for events -->
 </div>
 
+<div class="no-events-container" style="display: {{ $events->isEmpty() ? 'block' : 'none' }};">
+    <i class="fas fa-calendar-times"></i>
+    <p>No events available.</p>
+</div>
 <!-- Pagination -->
 <div class="d-flex justify-content-center" id="pagination-links">
     {{ $events->appends(request()->query())->links('vendor.pagination.custom1') }}
@@ -60,6 +62,7 @@
     document.getElementById('eventSearch').addEventListener('input', function () {
         const searchTerm = this.value.toLowerCase();
         const events = document.querySelectorAll('.event-list-item');
+        let hasResults = false;
 
         events.forEach(event => {
             const title = event.querySelector('.event-list-title').textContent.toLowerCase();
@@ -68,10 +71,16 @@
 
             // Check if search term matches title, description, or location
             const matches = title.includes(searchTerm) || description.includes(searchTerm) || location.includes(searchTerm);
-
-            // Toggle visibility
             event.style.display = matches ? '' : 'none';
+
+            if (matches) hasResults = true;
         });
+
+        // Show or hide the "No events available" message
+        const noEventsContainer = document.querySelector('.no-events-container');
+        if (noEventsContainer) {
+            noEventsContainer.style.display = hasResults ? 'none' : 'block';
+        }
     });
 
     // Automatically submit form when the date is changed using AJAX
@@ -145,7 +154,7 @@
     document.getElementById('clear-date-btn').addEventListener('click', function() {
         // Clear the date input
         document.getElementById('date-input').value = '';
-        document.getElementById('hide-old-events').checked = false; // Reset the checkbox
+        document.getElementById('show-all-events').checked = false; // Reset the checkbox
 
         fetchFilteredEvents(); // Fetch all events without filters
     });
