@@ -9,7 +9,7 @@
     <div class="alert alert-danger">{{ session('error') }}</div>
 @endif
 
-<div class="top-container mb-4 d-flex align-items-left justify-content-between" style="background-color: #fff; border-radius: 15px; padding: 20px; box-shadow: none; margin-bottom: 100px;">
+<div class="top-container mb-4 d-flex align-items-left justify-content-between" style="background-color: #fff; border-radius: 15px; padding: 20px; box-shadow: none;">
     <div class="d-flex align-items-center">
         <h2 class="font-weight-bold mb-0" style="color: #002060;">
             <i class="fas fa-users"></i> User List
@@ -51,7 +51,7 @@
                         </td>
                         <td>
                             <a href="{{ route('profile.view', $user->id) }}" class="participant-name" style="color: #001e54; text-decoration: none;">
-                                {{ $user->first_name }} {{ $user->last_name }}
+                                {{ Str::limit($user->first_name . ' ' . $user->last_name, 16) }}
                             </a>
                         </td>
                         <td>{{$user->email}}</td>
@@ -63,7 +63,7 @@
         </div>
     </div>
 </div>
-<!-- Include jQuery and DataTables CSS/JS in your layout -->
+
 <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
@@ -80,226 +80,256 @@
             "pageLength": 10
         });
 
-        // Custom Role Filter
         $('#roleFilter').on('change', function() {
             const selectedRole = $(this).val();
             if (selectedRole) {
-                table.column(3).search(`^${selectedRole}$`, true, false).draw(); // Exact match for role
+                table.column(3).search(`^${selectedRole}$`, true, false).draw();
             } else {
-                table.column(3).search('').draw(); // Show all roles if "All Roles" is selected
+                table.column(3).search('').draw();
             }
         });
     });
 </script>
 
 <style>
-#selectedRole {
-    font-weight: bold !important; /* Make the text bold */
-    text-align: center !important; /* Center the text */
-    display: block !important; /* Ensure it behaves like a block element */
-    width: 100% !important; /* Take full width of the parent */
-    margin: auto !important;
-}
-.custom-btn-light,
-.custom-btn-primary {
-    background-color: #001e54 !important; /* Dark blue background */
-    color: white !important; /* White text color */
-    border-radius: 15px !important; /* Rounded corners */
-    padding: 12px 20px !important; /* Adequate padding */
-    font-size: 16px !important; /* Font size */
-    font-weight: bold !important; /* Bold text */
-    text-align: center !important; /* Center the text */
-    display: flex !important; /* Flexbox for alignment */
-    align-items: center !important; /* Center items vertically */
-    justify-content: center !important; /* Center items horizontally */
-    border: none !important; /* Remove border */
-    transition: background-color 0.3s, transform 0.3s !important; /* Smooth transition for hover effect */
-    max-width: 200px !important; /* Limit maximum width for larger screens */
+
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .dataTables_filter,
+.dataTables_wrapper .dataTables_info,
+.dataTables_wrapper .dataTables_paginate {
+    color: #333; /* Darker text color for better readability */
+    font-size: 0.9rem; /* Slightly smaller font for compact look */
+    margin: 10px 0; /* Space between elements */
 }
 
-/* Ensure buttons fill their parent container */
-.custom-btn-primary {
-    width: 100% !important; /* Full width for mobile */
+#evaluationFormsTable {
+    width: 100%;
+    border-collapse: collapse;
+    color: #002060; /* Dark blue text color */
+    font-size: 0.9rem; /* Smaller font for cleaner look */
 }
 
-/* Hover effect for the button */
-.custom-btn-primary:hover {
-    background-color: #004080 !important; /* Darker shade for hover */
-    transform: translateY(-2px) !important; /* Slight lift effect on hover */
-    color: #ffff !important; 
+#evaluationFormsTable th, #evaluationFormsTable td {
+    text-align: center;
+    vertical-align: middle;
+    padding: 10px;
+    border-bottom: 1px solid #e0e0e0; /* Light grey bottom border only */
 }
 
-/* Active state effect */
-.custom-btn-primary:active {
-    transform: translateY(1px) !important; /* Slight dip effect on click */
+/* Header Styling */
+#evaluationFormsTable th {
+    background-color: #f7f8fa; /* Softer light grey for the header */
+    font-weight: 600; /* Slightly bolder for visibility */
+    color: #333; /* Darker text for header */
 }
 
-/* Media query for responsiveness */
-@media (max-width: 768px) {
-    .custom-btn-primary {
-        padding: 15px !important; /* Increased padding for easier tapping */
-        font-size: 18px !important; /* Slightly larger font size for better readability */
-    }
+/* Alternating Row Colors */
+#evaluationFormsTable tbody tr:nth-child(odd) {
+    background-color: #fafbfc; /* Very light grey for odd rows */
 }
 
+#evaluationFormsTable tbody tr:nth-child(even) {
+    background-color: #ffffff; /* White for even rows */
+}
 
+/* Hover Effect */
+#evaluationFormsTable tbody tr:hover {
+    background-color: #f0f4ff; /* Light blue tint on hover */
+}
+
+/* Cleaner Pagination Styling */
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    background: none;
+    color: #002060; /* Dark blue text */
+    border: none;
+    font-size: 0.85rem;
+    padding: 5px 10px;
+    margin: 0 2px;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+/* Pagination Hover and Active Style */
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    color: #004080; /* Slightly darker blue on hover */
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    color: #ffffff; /* White text for active page */
+    background-color: #002060; /* Dark blue background for active page */
+    border-radius: 5px;
+}
+
+/* Remove Pagination Focus Outline */
+.dataTables_wrapper .dataTables_paginate .paginate_button:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+/* Styling for Dropdown (entries selection) */
+.dataTables_wrapper .dataTables_length select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: transparent;
+    border: none;
+    font-size: inherit;
+    color: #333;
+    padding: 0;
+    margin: 0;
+}
+
+/* Styling for Search Box */
+.dataTables_wrapper .dataTables_filter input {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 0.9rem;
+    color: #333;
+    background-color: #fafafa;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.dataTables_wrapper .dataTables_filter input:focus {
+    border-color: #004080; /* Slightly darker border on focus */
+}
+
+    
+    .dataTables_wrapper .dataTables_length select {
+    appearance: none;          /* Remove default styling */
+    -webkit-appearance: none;   /* Remove default styling in Safari */
+    -moz-appearance: none;      /* Remove default styling in Firefox */
+    background-image: none;     /* Ensure no background arrow image */
+
+    margin: auto;
+}
+
+    /* Minimalist Pagination Styling */
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    background: none; /* No background */
+    color: #002060; /* Dark blue text */
+    border: none;
+    padding: 5px 10px;
+    margin: 0 2px;
+    cursor: pointer;
+    font-weight: normal;
+    transition: color 0.3s ease; /* Smooth color transition on hover */
+    outline: none; /* Remove focus outline */
+}
+
+/* Hover Effect for Pagination */
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    color: #ffffff; /* White text on hover */
+    background: none; /* Ensure no background on hover */
+}
+
+/* Active Page Style */
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    color: #ffffff; /* White text for active page */
+    font-weight: bold; /* Bold for the active page */
+    background: none; /* Ensure no background */
+    outline: none; /* Remove outline */
+    box-shadow: none; /* Remove any default shadow */
+}
+
+/* Remove hover effect on active page */
+.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+    background: none; /* No background on hover for active page */
+    color: #ffffff; /* Keep white text for consistency */
+    box-shadow: none; /* No shadow */
+}
+
+/* Remove focus outline on click */
+.dataTables_wrapper .dataTables_paginate .paginate_button:focus {
+    outline: none;
+    background: none;
+    box-shadow: none;
+}
+
+/* General Table Styling */
+#userDataTable {
+    width: 100%;
+    border-collapse: collapse;
+    color: #002060;
+    font-size: 0.9rem;
+}
+
+#userDataTable th, #userDataTable td {
+    text-align: center;
+    vertical-align: middle;
+    padding: 10px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+/* Header Styling */
+#userDataTable th {
+    background-color: #f7f8fa;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Alternating Row Colors */
+#userDataTable tbody tr:nth-child(odd) {
+    background-color: #fafbfc;
+}
+
+#userDataTable tbody tr:nth-child(even) {
+    background-color: #ffffff;
+}
+
+/* Hover Effect */
+#userDataTable tbody tr:hover {
+    background-color: #f0f4ff;
+}
+
+/* Dropdown Styling */
 .custom-select-container {
-    position: relative;
-    width: 200px; /* Adjust the width as needed */
-    margin-left: 10px; /* Add left margin */
+    width: 200px;
+    margin-left: 10px;
 }
 
 .custom-select {
-    border-radius: 15px; /* Rounded corners */
-    background-color: #001e54; /* Dark blue background */
-    color: white; /* White text */
-    border: none; /* Remove border */
-    padding: 10px; /* Adjust padding as needed */
-    cursor: pointer; /* Change cursor to pointer */
-    position: relative; /* Needed for absolute positioning of options */
-    margin: auto;
-    height:50px;    
-}
-
-/* Arrow styles */
-.arrow {
-    position: absolute;
-    top: 50%;
-    right: 10px; /* Position the arrow */
-    width: 0;
-    height: 0;
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-    border-top: 5px solid white; /* Arrow color */
-    transition: transform 0.3s ease; /* Animation duration */
-    transform: translateY(-50%) rotate(0deg); /* Initial rotation */
-}
-
-/* Arrow rotation class */
-.arrow.open {
-    transform: translateY(-50%) rotate(180deg); /* Arrow pointing down */
-}
-
-.options {
-    display: none; /* Hidden by default */
-    position: absolute;
-    top: 100%; /* Position it below the dropdown */
-    left: 0;
-    right: 0;
-    background-color: #001e54; /* Same background as the dropdown */
-    border-radius: 15px; /* Rounded corners for options */
-    z-index: 100; /* Ensure it's above other elements */
-    overflow: hidden; /* Prevent overflow */
-    animation: slideIn 0.3s ease; /* Animation for dropdown opening */
-}
-
-.options.active {
-    display: block; /* Show options when active */
-}
-
-/* Option styles */
-.option {
-    padding: 10px;
-    color: white;
-    cursor: pointer;
-    text-align: center; /* Center text */
-    border-top: 1px solid rgba(255, 255, 255, 0.2); /* 20% transparent divider line */
-}
-
-.option:first-child {
-    border-top: none; /* Remove the top border from the first option */
-}
-
-.option:hover {
-    background-color: #004080; /* Darker shade on hover */
-}
-
-.selected {
-    display: block; /* Show the selected option */
-    text-align: center; /* Center text for selected */
-}
-
-/* Animation for dropdown opening */
-@keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.custom-btn-primary,
-.custom-btn-light {
-    outline: none; /* Remove focus outline */
-    box-shadow: none; /* Remove any box shadow */
-}
-
-/* Adjust button size and stacking on mobile */
-.custom-btn-light,
-.custom-btn-primary {
+    border-radius: 15px;
     background-color: #001e54;
     color: white;
-    border-radius: 20px; /* Rounded corners */
-    padding: 10px 15px; /* Smaller padding */
-    font-size: 14px; /* Smaller font size */
-    font-weight: bold;
-    text-align: center; /* Center text */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 10px;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    height: 50px;
+    margin: auto;
 }
 
-.custom-btn-primary:hover {
-    background-color: #004080; /* Darker shade for hover */
+/* Pagination and Button Styling */
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    background: none;
+    color: #002060;
+    border: none;
+    font-size: 0.85rem;
+    padding: 5px 10px;
+    margin: 0 2px;
+    cursor: pointer;
 }
 
-.custom-btn-light {
-    background-color: transparent; 
-    color: #002060; 
-    border: none; 
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    color: #004080;
 }
 
-.custom-btn-light:hover {
-    color: #white; /* Darker shade on hover */
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    color: #ffffff;
+    background-color: #002060;
+    border-radius: 5px;
 }
 
-.form-control-container {
-    display: flex;                
-    justify-content: center;     
-    align-items: stretch;         
-    margin-top: 40px;             
+.dataTables_wrapper .dataTables_paginate .paginate_button:focus {
+    outline: none;
+    box-shadow: none;
 }
 
-.form-control {
-    padding: 12px !important;  
-    border-radius: 20px 0 0 20px !important;
-    border: 1px solid #ccc !important;
-    transition: border-color 0.3s !important;
-    border-right: none !important; 
-    font-size: 14px !important;
-    color: #1a2a5c !important;
-    max-width: 50% !important;  
-    height: auto;               
+.page-item.active .page-link {
+    background-color: #ffffff !important;
+    border-color: #001e54 !important;
+    color: #001e54 !important;
 }
-
-.input-group .btn {
-    padding: 12px !important;     
-    border-radius: 0 15px 15px 0 !important; 
-    display: flex;               
-    align-items: center;         
-    justify-content: center;      
-    height: auto;                
-}
-
-/* Stack buttons vertically on mobile */
-@media (max-width: 576px) {
-    .custom-btn-primary {
-        margin-bottom: 10px; /* Space between buttons */
-        width: 100%; /* Full width on mobile */
-    }
-}
+</style>
 @endsection
