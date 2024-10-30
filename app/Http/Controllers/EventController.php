@@ -77,26 +77,39 @@ class EventController extends Controller
 
     public function myEventlist(Request $request)
     {
-        $userId = Auth::id(); // Use Auth::id() to get the currently logged-in user's ID
-
+        $userId = Auth::id();
+    
         // Get event IDs where the user is the creator
         $eventIds = UserEvent::where('user_id', $userId)
                                 ->whereHas('user')
                                 ->pluck('event_id');
-
+    
         // Start the event query
         $query = Event::whereIn('id', $eventIds);
-
-        // Check if a date filter is present in the request
+    
+        // Show only ongoing events by default unless 'show_all' is set to true
+        if (!$request->has('show_all') || $request->show_all != 'true') {
+            $now = Carbon::now();
+            $query->where(function ($query) use ($now) {
+                $query->where('date', '>=', $now->toDateString())
+                      ->orWhere(function ($query) use ($now) {
+                          $query->where('date', '=', $now->toDateString())
+                                ->where('end_time', '>=', $now->toTimeString());
+                      });
+            });
+        }
+    
+        // Apply date filter if selected
         if ($request->has('date') && $request->date != '') {
             $selectedDate = Carbon::parse($request->date)->format('Y-m-d');
             $query->whereDate('date', '=', $selectedDate);
         }
+    
+        // Order the results
         $query->orderBy('date', 'asc')->orderBy('start_time', 'asc');
-
-        // Paginate the results (10 per page)
+    
         $events = $query->paginate(10);
-
+    
         // Check if the request is an AJAX request (for filtering without reloading)
         if ($request->ajax()) {
             return response()->json([
@@ -104,7 +117,7 @@ class EventController extends Controller
                 'paginationHtml' => $events->links('vendor.pagination.custom1')->render(),
             ]);
         }
-
+    
         return view('event.myeventlist', compact('events'));
     }
     
