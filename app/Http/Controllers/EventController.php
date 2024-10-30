@@ -109,12 +109,13 @@ class EventController extends Controller
         $query->orderBy('date', 'asc')->orderBy('start_time', 'asc');
     
         $events = $query->paginate(10);
-    
+        $hasEvents = $events->count() > 0;
         // Check if the request is an AJAX request (for filtering without reloading)
         if ($request->ajax()) {
             return response()->json([
                 'eventsHtml' => view('event.partials.myeventlist', compact('events'))->render(),
                 'paginationHtml' => $events->links('vendor.pagination.custom1')->render(),
+                'hasEvents' => $hasEvents,
             ]);
         }
     
