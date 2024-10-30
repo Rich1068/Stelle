@@ -39,43 +39,37 @@ class EventController extends Controller
     public function list(Request $request)
     {
         $query = Event::query();
-    
-        // Check if date filter is applied
-        if ($request->has('date') && $request->date != '') {
-            // Parse the date input
-            $selectedDate = Carbon::parse($request->date)->format('Y-m-d');
-            // Filter events occurring on the selected date
-            $query->whereDate('date', '=', $selectedDate);
-        }
-    
-        // Check if the user wants to hide old events
-        if ($request->has('hide_old') && $request->hide_old == 'true') {
+
+        // Show only ongoing events by default
+        if (!$request->has('show_all') || $request->show_all != 'true') {
             $now = Carbon::now();
             $query->where(function ($query) use ($now) {
-                $query->where('date', '>', $now->toDateString()) // Future events
-                      ->orWhere(function ($query) use ($now) {
-                          // Events happening today but still ongoing
-                          $query->where('date', '=', $now->toDateString())
-                                ->where('end_time', '>', $now->toTimeString());
-                      });
+                $query->where('date', '>=', $now->toDateString())
+                    ->orWhere(function ($query) use ($now) {
+                        $query->where('date', '=', $now->toDateString())
+                                ->where('end_time', '>=', $now->toTimeString());
+                    });
             });
         }
-    
+
+        // Apply date filter if selected
+        if ($request->has('date') && $request->date != '') {
+            $selectedDate = Carbon::parse($request->date)->format('Y-m-d');
+            $query->whereDate('date', '=', $selectedDate);
+        }
+
         $query->orderBy('date', 'asc')
-              ->orderBy('start_time', 'asc');
-    
-        // Paginate the results (10 per page)
+            ->orderBy('start_time', 'asc');
+
         $events = $query->paginate(10);
-    
-        // Check if this is an AJAX request (for filtering without reloading the page)
+
         if ($request->ajax()) {
             return response()->json([
                 'eventsHtml' => view('event.partials.eventlist', compact('events'))->render(),
                 'paginationHtml' => $events->links('vendor.pagination.custom1')->render(),
             ]);
         }
-    
-        // Return the regular view with events
+
         return view('event.eventlist', compact('events'));
     }
 
@@ -536,7 +530,8 @@ class EventController extends Controller
         } elseif ($filter === 'join') {
             $events = Event::with('participants')
                 ->whereHas('participants', function ($query) use ($userId) {
-                    $query->where('user_id', $userId);
+                    $query->where('user_id', $userId)
+                        ->where('status_id', 1);
                 })->get();
         } else {
             // Fetch all events

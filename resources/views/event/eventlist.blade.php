@@ -34,10 +34,10 @@
     </div>
 </div>
 
-<div class="form-switch hide-finished-container">
-    <input class="form-check-input" type="checkbox" id="hide-old-events">
-    <label class="form-check-label" for="hide-old-events">
-        Hide Finished Events
+<div class="form-switch show-all-container">
+    <input class="form-check-input" type="checkbox" id="show-all-events">
+    <label class="form-check-label" for="show-all-events">
+        Show All Events
     </label>
 </div>
 @endif
@@ -115,22 +115,23 @@
 
     // Automatically submit form when the date is changed or hide old events is toggled using AJAX
     document.getElementById('date-input').addEventListener('change', fetchFilteredEvents);
-    document.getElementById('hide-old-events').addEventListener('change', fetchFilteredEvents);
+    document.getElementById('show-all-events').addEventListener('change', function() {
+    fetchFilteredEvents(); // Call function to update event list based on toggle state
+    });
 
     function fetchFilteredEvents() {
         const selectedDate = document.getElementById('date-input').value;
-        const hideOldEvents = document.getElementById('hide-old-events').checked;
+        const showAllEvents = document.getElementById('show-all-events').checked;
 
-        // Send AJAX request to filter events by date and hide past events if selected
+        // Send AJAX request to filter events by date and toggle between ongoing/all events
         $.ajax({
-            url: '{{ route('event.list') }}', // Ensure this is the correct route
+            url: '{{ route('event.list') }}',
             type: 'GET',
             data: {
                 date: selectedDate,
-                hide_old: hideOldEvents ? 'true' : 'false'
+                show_all: showAllEvents ? 'true' : 'false'
             },
             success: function(data) {
-                // Update the event list and pagination with the new filtered data
                 $('#event-list-container').html(data.eventsHtml);
                 $('#pagination-links').html(data.paginationHtml);
             },
@@ -151,7 +152,7 @@
 </script>
 
 <style>
-.hide-finished-container {
+.show-all-container {
     background-color: #003366; 
     border-radius: 15px;
     padding: 10px 10px;
