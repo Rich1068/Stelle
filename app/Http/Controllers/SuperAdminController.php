@@ -164,7 +164,7 @@ class SuperAdminController extends Controller
 
     public function userlist()
     {
-        $users = User::paginate(20);
+        $users = User::paginate(15);
         return view('super_admin.userlist', compact('users'));
     }
 
@@ -238,6 +238,11 @@ class SuperAdminController extends Controller
         // Redirect back to the user list
         return redirect()->route('profile.view', ['id' => $user->id])->with('success', 'User has been created successfully.');
     }
-    
+    public function allEventList()
+    {
+        $events = Event::paginate(20);
+        return view('super_admin.allEventList', compact('events'));
+    }
+
 
 }

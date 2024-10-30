@@ -8,8 +8,8 @@
 @if(session('error'))
     <div class="alert alert-danger">{{ session('error') }}</div>
 @endif
+
 <div class="top-container mb-4 d-flex align-items-left justify-content-between" style="background-color: #fff; border-radius: 15px; padding: 20px; box-shadow: none; margin-bottom: 100px;">
-    <!-- Left: User List Title -->
     <div class="d-flex align-items-center">
         <h2 class="font-weight-bold mb-0" style="color: #002060;">
             <i class="fas fa-users"></i> User List
@@ -17,26 +17,14 @@
     </div>
 </div>
 
-<div class="input-group mb-3 form-control-container">
-    <input type="text" id="userSearch" class="form-control" placeholder="Search for users...">
-    <div class="input-group-append">
-        <button class="btn btn-primary" type="button">
-            <i class="fas fa-search"></i>
-        </button>
-    </div>
-</div>
-
+<!-- Role Filter Dropdown -->
 <div class="input-group mb-3 custom-select-container">
-    <div id="roleDropdown" class="custom-select" tabindex="0">
-        <span id="selectedRole" class="selected">All</span> 
-        <div class="arrow" id="dropdownArrow"></div>
-        <div class="options">
-            <div class="option" data-value="All">All</div> 
-            <div class="option" data-value="Super Admin">Super Admin</div>
-            <div class="option" data-value="Admin">Admin</div>
-            <div class="option" data-value="User">User</div>
-        </div>
-    </div>
+    <select id="roleFilter" class="custom-select" style="width: 200px; margin-bottom: 20px;">
+        <option value="">All Roles</option>
+        <option value="Super Admin">Super Admin</option>
+        <option value="Admin">Admin</option>
+        <option value="User">User</option>
+    </select>
 </div>
 
 <div class="card mb-4" style="margin-top: 50px; border: none;">
@@ -45,36 +33,28 @@
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table id="dataTable" class="table table-bordered" width="100%" cellspacing="0">
+            <table id="userDataTable" class="table table-bordered text-center" width="100%" cellspacing="0">
                 <thead>
                     <tr>
                         <th>Profile Picture</th>
                         <th>Name</th>
+                        <th>Email</th>
                         <th>Role</th>
                     </tr>
                 </thead>
-                <tfoot>
-                    <tr>
-                        <th>Profile Picture</th>
-                        <th>Name</th>
-                        <th>Role</th>
-                    </tr>
-                </tfoot>
                 <tbody>
                     @foreach($users as $user)
                     <tr>
                         <td>
-                            @if($user->profile_picture == null)
-                                <img src="{{ asset('storage/images/profile_pictures/default.jpg') }}" alt="Default profile picture" style="width: 50px; height: 50px; border-radius: 50%; border: 2px solid #001e54; object-fit: cover; display: block; margin: auto;">
-                            @else
-                                <img src="{{ asset($user->profile_picture) }}" alt="Profile picture of {{ $user->first_name }}" style="width: 50px; height: 50px; border-radius: 50%; border: 2px solid #001e54; object-fit: cover; display: block; margin: auto;">
-                            @endif
+                            <img src="{{ $user->profile_picture ? asset($user->profile_picture) : asset('storage/images/profile_pictures/default.jpg') }}" 
+                                 alt="Profile picture of {{ $user->first_name }}" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
                         </td>
                         <td>
                             <a href="{{ route('profile.view', $user->id) }}" class="participant-name" style="color: #001e54; text-decoration: none;">
                                 {{ $user->first_name }} {{ $user->last_name }}
                             </a>
                         </td>
+                        <td>{{$user->email}}</td>
                         <td>{{ $user->role->role_name }}</td>
                     </tr>
                     @endforeach
@@ -82,22 +62,35 @@
             </table>
         </div>
     </div>
-    <div class="d-flex justify-content-center">
-        {{ $users->links() }}
-    </div>
 </div>
+<!-- Include jQuery and DataTables CSS/JS in your layout -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 
-<div style="display: flex; flex-direction: column; align-items: flex-start; margin-bottom: 50px; margin-left: 20px;">
-    <a href="{{ route('superadmin.usercreate') }}" class="btn custom-btn-primary" style="width: 100% !important; margin-bottom: 10px !important;">
-        <i class="fas fa-plus"></i> Add User
-    </a>
-    <form action="{{ route('super_admin.requestingAdmins') }}" method="get" style="width: 100%;">
-        <button type="submit" class="btn custom-btn-primary" style="width: 100% !important;">
-            <i class="fas fa-user-shield"></i> View Requesting Admin
-        </button>
-    </form>
-</div>
+<script>
+    $(document).ready(function() {
+        const table = $('#userDataTable').DataTable({
+            "paging": true,
+            "lengthChange": false,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "pageLength": 10
+        });
 
+        // Custom Role Filter
+        $('#roleFilter').on('change', function() {
+            const selectedRole = $(this).val();
+            if (selectedRole) {
+                table.column(3).search(`^${selectedRole}$`, true, false).draw(); // Exact match for role
+            } else {
+                table.column(3).search('').draw(); // Show all roles if "All Roles" is selected
+            }
+        });
+    });
+</script>
 
 <style>
 #selectedRole {
@@ -309,66 +302,4 @@
         width: 100%; /* Full width on mobile */
     }
 }
-
-</style>
-
-<script>
-    document.getElementById('userSearch').addEventListener('input', function () {
-        filterTable();
-    });
-
-    // Select the dropdown and arrow elements
-    const roleDropdown = document.getElementById('roleDropdown');
-    const arrow = document.getElementById('dropdownArrow');
-    const options = document.querySelector('.options');
-
-    // Add event listener for click to animate arrow and toggle options
-    roleDropdown.addEventListener('click', (event) => {
-        // Prevent the dropdown from immediately closing when clicking an option
-        event.stopPropagation();
-        options.classList.toggle('active'); // Toggle visibility of options
-        arrow.classList.toggle('open'); // Toggle class to rotate arrow
-    });
-
-    // Handle option click
-    document.querySelectorAll('.option').forEach(option => {
-        option.addEventListener('click', function () {
-            const selectedRole = this.getAttribute('data-value');
-            document.getElementById('selectedRole').innerText = selectedRole; // Update displayed value
-
-            options.classList.remove('active'); // Hide options after selection
-            arrow.classList.remove('open'); // Reset arrow
-            filterTable(); // Filter table based on selected role
-        });
-    });
-
-    // Close the dropdown if clicking outside of it
-    document.addEventListener('click', function (event) {
-        if (!roleDropdown.contains(event.target)) {
-            options.classList.remove('active'); // Hide options when clicking outside
-            arrow.classList.remove('open'); // Reset arrow when clicking outside
-        }
-    });
-
-    function filterTable() {
-        const searchTerm = document.getElementById('userSearch').value.toLowerCase();
-        const roleFilter = document.getElementById('selectedRole').innerText.toLowerCase();
-        const rows = document.querySelectorAll('#dataTable tbody tr');
-
-        rows.forEach(row => {
-            const name = row.querySelector('td:nth-child(2)').textContent.toLowerCase(); // 2nd column contains the name
-            const role = row.querySelector('td:nth-child(3)').textContent.toLowerCase(); // 3rd column contains the role
-
-            const matchesSearch = name.includes(searchTerm);
-            const matchesRole = (roleFilter === 'all') || role.includes(roleFilter); // Show all if 'All' is selected
-
-            if (matchesSearch && matchesRole) {
-                row.style.display = '';
-            } else {
-                row.style.display = 'none';
-            }
-        });
-    }
-</script>
-
 @endsection

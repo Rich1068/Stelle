@@ -74,6 +74,17 @@
         </a>
     </li>
 
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+
+    <!-- Nav Item - Manage User -->
+    <li class="nav-item">
+        <a href="{{ route('superadmin.eventlist') }}" class="nav-link {{ request()->routeIs('super_admin.eventlist') ? 'active' : '' }}">
+            <span>Manage All Events</span>
+            <i class="fas fa-solid fa-calendar"></i>
+        </a>
+    </li>
+
     <hr class="sidebar-divider">
 
     <!-- Nav Item - Manage Evaluation Form -->
