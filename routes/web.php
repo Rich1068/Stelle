@@ -95,7 +95,7 @@ Route::middleware(['auth', 'checkRole:1,2'])->group(function () {
     Route::get('/profile/{id}/events-data', [ProfileController::class, 'getEventsData'])->name('profile.eventsData');
     Route::get('/profile/{id}/events-created-data', [ProfileController::class, 'getEventsCreatedData'])->name('profile.getAdminCreatedEventsData');
     Route::get('/profile/{id}/events-joined-data', [ProfileController::class, 'getEventsJoinedData'])->name('profile.getAdminJoinedEventsData');
-    Route::patch('/event/{id}/deactivate', [EventController::class, 'adminDeactivate'])->name('admin.event.deactivate')->middleware('CheckEventCreator');
+    Route::patch('/event/{id}/deactivate', [EventController::class, 'adminDeactivate'])->name('admin.event.deactivate')->middleware('checkEventCreator');
     //event creation and the myeventlist
     route::get('/event/create', [EventController::class, 'create'])->name('event.create');
     Route::get('/event/myEventlist', [EventController::class, 'myEventlist'])->name('event.myeventlist');

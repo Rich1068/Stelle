@@ -44,8 +44,17 @@
                     </div>
                     <div class="event-list-actions">
                         <a href="{{ route('event.view', $event->id) }}" class="event-list-view-btn">View</a>
+                        @if ($event->trashed())
+                        @else
                         <a href="{{ route('event.edit', $event->id) }}" class="event-list-edit-btn">Edit</a>
-                        <a href="{{ route('admin.event.deactivate', $event->id) }}" class="event-list-edit-btn">Remove</a>
+                        <form action="{{ route('admin.event.deactivate', $event->id) }}" method="POST" style="display: inline;">
+                            @csrf
+                            @method('PATCH')
+                            <button type="submit" onclick="return confirm('Are you sure you want to delete this event?')" title="Delete Event" class="event-list-edit-btn" style="color: red; background: none; border: none; cursor: pointer;">
+                                Remove
+                            </button>
+                        </form>
+                        @endif
                     </div>
                 </div>
             </div>
