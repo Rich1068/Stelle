@@ -254,7 +254,9 @@ class ProfileController extends Controller
         $createdEvents = $user->eventsCreated()->orderBy('created_at', 'desc')->get()->pluck('event');
         Log::info($createdEvents);
         $certificates = CertUser::where('user_id', $user->id)->get();
-
+        $user->load(['certUser.certificate.event' => function ($query) {
+            $query->withTrashed(); // Include soft-deleted events
+        }]);
         
         $totalEventsCreated = UserEvent::where('user_id', $user->id)->count();
         $totalEvaluationFormsCreated = EvaluationForm::where('created_by', $user->id)->count();

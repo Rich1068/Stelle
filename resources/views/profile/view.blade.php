@@ -166,7 +166,7 @@
                                     </thead>
                                     <tbody>
                                     @foreach($createdEvents as $userEvent)
-                                        @if($userEvent) <!-- Check if both $userEvent and $userEvent->event exist -->
+                                        @if($userEvent)
                                             <tr>
                                                 <td>
                                                     <a href="{{ route('event.view', $userEvent->id) }}" class="profile-created-events-link">

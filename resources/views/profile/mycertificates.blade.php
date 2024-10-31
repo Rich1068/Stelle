@@ -8,7 +8,7 @@
 @endif
 <div class="top-container mb-4 d-flex align-items-left">
     <h2 class="font-weight-bold mb-0">
-        <i class="fas fa-certificate"></i> My Certificate
+        <i class="fas fa-certificate"></i> My Certificates
     </h2>
 </div>
 <div class="certificates-page">

@@ -14,7 +14,12 @@
         <div class="certificates-container">
             @foreach($user->certUser as $certificate)
             <div class="certificate-list">
-                <div class="certificate-header">{{ $certificate->certificate->event->title }}</div> <!-- Added header -->
+                <div class="certificate-header">
+                    {{ $certificate->certificate->event->title }}
+                    @if($certificate->certificate->event && $certificate->certificate->event->trashed())
+                        <span style="color: red;">(DELETED)</span>
+                    @endif
+                </div>
                     <img src="{{ asset($certificate->cert_path)}}" class="certificate-image">
                     <div class="certificate-actions">
                         <!-- View Button to open modal -->
