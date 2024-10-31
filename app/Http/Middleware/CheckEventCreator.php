@@ -18,6 +18,9 @@ class CheckEventCreator
      */
     public function handle(Request $request, Closure $next)
     {
+        if (Auth::check() && Auth::user()->role_id === 1) {
+            return $next($request); // Bypass the check for super admins
+        }
         $eventId = $request->route('id');
         $userEvent = UserEvent::where('event_id', $eventId)->first();
 

@@ -14,7 +14,7 @@
     <div class="tabs">
         <div class="tab-button active" data-tab="main">Event Details</div>
         <div class="tab-button" data-tab="participants">Participants</div>
-        @if ($currentUser == $userevent->user->id)
+        @if ($currentUser == $userevent->user->id || Auth::user()->role_id == 1)
             <div class="tab-button" data-tab="feedback">Evaluation Form/Analytics</div>
         @endif
     </div>
@@ -53,7 +53,7 @@
                 @if($event->trashed())
                 
                 @else
-                @if($userevent->user_id == Auth::user()->id)
+                @if($userevent->user_id == Auth::user()->id || Auth::user()->role_id == 1)
                     <div class="event-view-buttons">
                         <a href="{{ route('event.edit', $event->id) }}" class="btn btn-primary">
                             <span>Edit</span>
@@ -79,7 +79,8 @@
                 @if($userevent->user_id != Auth::user()->id)
                     @if ($participant && $participant->status_id == 1)
                         <p>You have been accepted to this event.</p>
-                    @elseif (\Carbon\Carbon::now()->isAfter(\Carbon\Carbon::parse($event->date . ' ' . $event->end_time)))
+                    @elseif (\Carbon\Carbon::now('Asia/Manila')->isSameDay(\Carbon\Carbon::parse($event->date)) &&
+                    \Carbon\Carbon::now('Asia/Manila')->format('H:i:s') > $event->end_time || \Carbon\Carbon::parse($event->date . ' ' . $event->end_time)->isPast())
                         <button type="button" class="btn btn-secondary" disabled>Closed</button>
                     @elseif ($currentParticipants < $event->capacity && $participant == null)
                         <form action="{{ route('event.join', $event->id) }}" method="POST" class="full-width-button">
@@ -113,7 +114,7 @@
         <!-- Participants Tab -->
         <div class="tab-pane" id="participants">
             @include('event.partials.participantlist', ['event' => $event, 'participants' => $participants, 'currentUser' => $currentUser, 'userevent' =>$userevent])
-            @if ($currentUser == $userevent->user->id)
+            @if ($currentUser == $userevent->user->id || Auth::user()->role_id == 1)
             @if($event->trashed())
                 
             @else

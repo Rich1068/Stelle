@@ -49,20 +49,16 @@
                             @if($event->trashed())
                                 <span style="color: red;">DELETED</span>
                             @elseif(
-                                (\Carbon\Carbon::parse($event->date)->isToday() && \Carbon\Carbon::parse($event->end_time)->isAfter(\Carbon\Carbon::now())) ||
-                                \Carbon\Carbon::parse($event->date)->isFuture()
-                            )
-                                <span style="color: green;">ACTIVE</span>
-                            @else
+                                \Carbon\Carbon::now('Asia/Manila')->isSameDay(\Carbon\Carbon::parse($event->date)) &&
+                                    \Carbon\Carbon::now('Asia/Manila')->format('H:i:s') > $event->end_time || \Carbon\Carbon::parse($event->date . ' ' . $event->end_time)->isPast()
+                                )
                                 <span style="color: gray;">CLOSED</span>
+                            @else
+                                <span style="color: green;">ACTIVE</span>
                             @endif
                         </td>
                         <td>
                             <div class="button-group" style="display: flex; justify-content: center; align-items: center;">
-                                <!-- Edit button -->
-                                <a href="{{ route('certificates.create', $event->id) }}" class="btn btn-edit rounded-circle me-2" title="Edit Certificate" style="margin-right: 5px;">
-                                    <i class="fas fa-edit"></i>
-                                </a>
 
                                 <!-- Conditionally display Delete or Recover button -->
                                 @if($event->trashed())
