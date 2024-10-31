@@ -47,9 +47,21 @@
         <p>Yes, you can request admin privileges to create your own events. Once your request is approved, you will have the ability to not only create events but also manage associated features such as certificates and evaluation forms.</p>
       </div>
     </div>
+
+    <hr class="divider">
+<div class="accordion-item">
+  <button class="accordion-button" id="accordion-button-2" aria-expanded="false">
+    <span class="accordion-title">What Does Events with a "(Deleted)" Tag Mean?</span>
+    <span class="icon" aria-hidden="true"></span>
+  </button>
+  <div class="accordion-content">
+    <p>Events labeled with a "(Deleted)" tag indicates that the event was removed by either the event creator or an administrator. Unlike closed/finished events, which can still be seen in the event list page, deleted events will not be visible to anyone unless they are either the creator or an attendee of the now Deleted event.</p>
+  </div>
+</div>
+
          
-      </div>
-    </div>
+  </div>
+</div>
 
     <div class="email-container custom-email">
       <h3 class="email-header">
@@ -95,6 +107,7 @@ body {
   max-width: 1000px;
   transition: transform 0.3s ease;
   color: #003d80; /* Text color in all containers */
+  margin-bottom: 20px;
 }
 
 .faq-container:hover, .email-container:hover {
@@ -115,6 +128,8 @@ body {
 .email-text {
   color: #003d80;
   font-weight: normal;
+  font-size: 25px;
+  text-align: center;
 }
 
 .email-divider, .divider {

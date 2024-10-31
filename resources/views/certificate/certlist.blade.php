@@ -215,17 +215,7 @@
 }
 
 /* Styling for Dropdown (entries selection) */
-.dataTables_wrapper .dataTables_length select {
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background: transparent;
-    border: none;
-    font-size: inherit;
-    color: #333;
-    padding: 0;
-    margin: 0;
-}
+
 
 /* Styling for Search Box */
 .dataTables_wrapper .dataTables_filter input {

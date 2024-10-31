@@ -195,15 +195,7 @@
     border-color: #004080; /* Slightly darker border on focus */
 }
 
-    
-    .dataTables_wrapper .dataTables_length select {
-    appearance: none;          /* Remove default styling */
-    -webkit-appearance: none;   /* Remove default styling in Safari */
-    -moz-appearance: none;      /* Remove default styling in Firefox */
-    background-image: none;     /* Ensure no background arrow image */
 
-    margin: auto;
-}
 
     /* Minimalist Pagination Styling */
 .dataTables_wrapper .dataTables_paginate .paginate_button {
