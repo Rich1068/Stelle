@@ -30,6 +30,8 @@
                         <th>Date</th>
                         <th>Duration</th>
                         <th>Organizer</th>
+                        <th>Status</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -43,6 +45,49 @@
                         <td>{{ \Carbon\Carbon::parse($event->date)->format('Y-m-d') }}</td>
                         <td>{{ \Carbon\Carbon::parse($event->start_time)->format('h:i A') }} - {{ \Carbon\Carbon::parse($event->end_time)->format('h:i A') }}</td>
                         <td>{{ $event->userEvent->user->first_name }} {{ $event->userEvent->user->last_name }}</td>
+                        <td>
+                            @if($event->trashed())
+                                <span style="color: red;">DELETED</span>
+                            @elseif(
+                                (\Carbon\Carbon::parse($event->date)->isToday() && \Carbon\Carbon::parse($event->end_time)->isAfter(\Carbon\Carbon::now())) ||
+                                \Carbon\Carbon::parse($event->date)->isFuture()
+                            )
+                                <span style="color: green;">ACTIVE</span>
+                            @else
+                                <span style="color: gray;">CLOSED</span>
+                            @endif
+                        </td>
+                        <td>
+                            <div class="button-group" style="display: flex; justify-content: center; align-items: center;">
+                                <!-- Edit button -->
+                                <a href="{{ route('certificates.create', $event->id) }}" class="btn btn-edit rounded-circle me-2" title="Edit Certificate" style="margin-right: 5px;">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+
+                                <!-- Conditionally display Delete or Recover button -->
+                                @if($event->trashed())
+                                    <!-- Recover button for soft deleted event -->
+                                    <form action="{{ route('event.recover', $event->id) }}" method="POST" style="display:inline-block;">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button type="submit" class="btn btn-recover rounded-circle" 
+                                            onclick="return confirm('Are you sure you want to recover this event?')" title="Recover Event">
+                                            <i class="fas fa-undo"></i>
+                                        </button>
+                                    </form>
+                                @else
+                                    <!-- Delete button for active event -->
+                                    <form action="{{ route('event.deactivate', $event->id) }}" method="POST" style="display:inline-block;">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button type="submit" class="btn btn-delete rounded-circle" 
+                                            onclick="return confirm('Are you sure you want to soft delete this event?')" title="Delete Event">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </form>
+                                @endif
+                            </div>
+                        </td>
                     </tr>
                     @endforeach
                 </tbody>
@@ -356,6 +401,40 @@
         white-space: normal; /* Allow line breaks on smaller screens */
         max-width: 100%; /* Use full width of container on mobile */
     }
+}
+
+/* General Button Styles */
+.button-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px; /* Space between buttons */
+}
+
+.button-group .btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+    color: white;
+}
+
+/* Button Colors */
+.btn-view {
+    background-color: #008b8b;
+}
+.btn-recover {
+    background-color: #008b8b;
+}
+.btn-edit {
+    background-color: #001e54;
+}
+
+.btn-delete {
+    background-color: #c9302c;
 }
 
 </style>

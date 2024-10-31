@@ -19,24 +19,29 @@
         <p>No Certificates Found.</p>
     </div>
     @else
-        <div class="certificates-container">
-            @foreach($user->certUser as $certificate)
-            <div class="certificate-list">
-                <div class="certificate-header">{{ $certificate->certificate->event->title }}</div> <!-- Added header -->
-                    <img src="{{ asset($certificate->cert_path)}}" class="certificate-image">
-                    <div class="certificate-actions">
-                        <!-- View Button to open modal -->
-                    <button type="button" class="btn-primary view-certificate-btn" data-image-url="{{ asset($certificate->cert_path) }}" data-bs-toggle="modal" data-bs-target="#viewCertificateModal">
-                        Preview
-                    </button>
-                    <!-- Download Button -->
-                    <a href="{{ asset($certificate->cert_path) }}" download class="btn-primary">
-                        Download
-                    </a>
-                </div>
+    <div class="certificates-container">
+    @foreach($user->certUser as $certificate)
+        <div class="certificate-list">
+            <div class="certificate-header">
+                {{ $certificate->certificate->event->title }}
+                @if($certificate->certificate->event && $certificate->certificate->event->trashed())
+                    <span style="color: red;">(DELETED)</span>
+                @endif
             </div>
-            @endforeach
+            <img src="{{ asset($certificate->cert_path) }}" class="certificate-image">
+            <div class="certificate-actions">
+                <!-- View Button to open modal -->
+                <button type="button" class="btn-primary view-certificate-btn" data-image-url="{{ asset($certificate->cert_path) }}" data-bs-toggle="modal" data-bs-target="#viewCertificateModal">
+                    Preview
+                </button>
+                <!-- Download Button -->
+                <a href="{{ asset($certificate->cert_path) }}" download class="btn-primary">
+                    Download
+                </a>
+            </div>
         </div>
+    @endforeach
+</div>
 <!-- Modal -->
 <div class="modal fade" id="viewCertificateModal" tabindex="-1" aria-labelledby="viewCertificateModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">

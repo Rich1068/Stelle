@@ -132,17 +132,19 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($attendedEvents as $event)
-
-                                            <tr>
-                                                <td>
+                                    @foreach($attendedEvents as $event)
+                                        <tr>
+                                            <td>
                                                 <a href="{{ route('event.view', $event->id) }}" class="profile-created-events-link">
-                                                    {{ Str::limit($event->title, 40, '...') }}  <!-- Limit to 30 characters -->
+                                                    {{ Str::limit($event->title, 40, '...') }}
+                                                    @if($event->trashed())
+                                                    <span style="color: red;">(DELETED)</span>
+                                                    @endif
                                                 </a>
-                                                </td>
-                                                <td>{{ $event->date }}</td>
-                                            </tr>
-                                        @endforeach
+                                            </td>
+                                            <td>{{ $event->date }}</td>
+                                        </tr>
+                                    @endforeach
                                     </tbody>
                                 </table>
                             @endif
@@ -163,46 +165,17 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($createdEvents as $event)
-
+                                    @foreach($createdEvents as $userEvent)
+                                        @if($userEvent) <!-- Check if both $userEvent and $userEvent->event exist -->
                                             <tr>
                                                 <td>
-                                                <a href="{{ route('event.view', $event->id) }}" class="profile-created-events-link">
-                                                    {{ Str::limit($event->title, 40, '...') }}  <!-- Limit to 30 characters -->
-                                                </a>
-                                                </td>
-                                                <td>{{ $event->date }}</td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            @endif
-                        </div>
-                    </div>
-
-                    <!-- Created Events Tab -->
-                    <div class="tab-pane fade" id="created-events" role="tabpanel" aria-labelledby="created-events-tab">
-                        <div class="profile-created-events-list">
-                            @if($createdEvents->isEmpty())
-                                <p>N/A</p>
-                            @else
-                                <table class="profile-attended-events-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Title</th>
-                                            <th>Date</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach($createdEvents as $event)
-                                            <tr>
-                                                <td>
-                                                    <a href="{{ route('event.view', $event->id) }}" class="profile-created-events-link">
-                                                        {{ $event->title }}
+                                                    <a href="{{ route('event.view', $userEvent->id) }}" class="profile-created-events-link">
+                                                        {{ Str::limit($userEvent->title, 40, '...') }} <!-- Limit to 40 characters -->
                                                     </a>
                                                 </td>
-                                                <td>{{ $event->date }}</td>
+                                                <td>{{ $userEvent->date }}</td>
                                             </tr>
+                                        @endif
                                         @endforeach
                                     </tbody>
                                 </table>

@@ -38,7 +38,14 @@ class ProfileController extends Controller
         $user = User::with(['country', 'role'])->where('id', $user->id)->first();
         
         // Fetch attended events and related event data
-        $attendedEvents = $user->eventParticipant()->with('event')->get()->pluck('event');
+        $attendedEvents = $user->eventParticipant()            
+        ->with(['event' => function ($query) {
+            $query->withTrashed(); // Include soft-deleted events
+        }])
+        ->where('status_id', 1) // Filter by joined events
+        ->orderBy('updated_at', 'desc') // Order by most recent join
+        ->get()
+        ->pluck('event');
         
         // Access the country via the eager-loaded 'country' relation
         $countryTable = $user->country;
@@ -236,7 +243,9 @@ class ProfileController extends Controller
     {
         $user = User::findOrFail($id);
         $attendedEvents = $user->eventParticipant()
-            ->with('event')
+            ->with(['event' => function ($query) {
+                $query->withTrashed(); // Include soft-deleted events
+            }])
             ->where('status_id', 1) // Filter by joined events
             ->orderBy('updated_at', 'desc') // Order by most recent join
             ->get()
@@ -387,7 +396,9 @@ class ProfileController extends Controller
         // Load the certificates relationship to avoid N+1 query problem
         $user->load('certificates');
 
-        $user->load('certUser');
+        $user->load(['certUser.certificate.event' => function ($query) {
+            $query->withTrashed(); // Include soft-deleted events
+        }]);
 
         // Return the view with the user and their certificates
         return view('profile.mycertificates', compact('user'));

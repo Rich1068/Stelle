@@ -25,7 +25,7 @@
         <div class="tab-pane active" id="main">
             <div class="event-view-content">
                 <div class="event-view-header">
-                    <h1 class="event-view-event-title">{{ $event->title }}</h1>
+                    <h1 class="event-view-event-title">{{ $event->title }}@if($event->trashed()) <span style="color: red;">(DELETED)</span>@endif</h1>
                     @if($event->event_banner == null)
                     @else
                     <img src="{{ asset($event->event_banner) }}" alt="Event banner" class="event-view-banner">
@@ -50,7 +50,9 @@
                     <div><i class="fas fa-user"></i><span data-label="By: "><a href="{{ route('profile.view', $userevent->user->id) }}" class="no-link-style">
                         {{ $userevent->user->first_name }} {{ $userevent->user->last_name }}</a></span></div>
                 </div>
-
+                @if($event->trashed())
+                
+                @else
                 @if($userevent->user_id == Auth::user()->id)
                     <div class="event-view-buttons">
                         <a href="{{ route('event.edit', $event->id) }}" class="btn btn-primary">
@@ -74,7 +76,6 @@
                  
                     </div>
                 @endif
-
                 @if($userevent->user_id != Auth::user()->id)
                     @if ($participant && $participant->status_id == 1)
                         <p>You have been accepted to this event.</p>
@@ -106,12 +107,16 @@
                         @endif
                     @endif
                 @endif
+                @endif
             </div>
         </div>
         <!-- Participants Tab -->
         <div class="tab-pane" id="participants">
             @include('event.partials.participantlist', ['event' => $event, 'participants' => $participants, 'currentUser' => $currentUser, 'userevent' =>$userevent])
             @if ($currentUser == $userevent->user->id)
+            @if($event->trashed())
+                
+            @else
             <a href="{{ route('events.pendingparticipants', $event->id) }}" class="position-relative">
                 <button type="submit" class="btn btn-primary-2 position-relative">
                     View Pending Participants
@@ -120,6 +125,7 @@
                     @endif
                 </button>
             </a>
+            @endif
             @endif
         </div>
     </div>
@@ -212,7 +218,9 @@
         </div>
 </div>
 
-
+    @if($event->trashed())
+                
+    @else
     <!-- Create or Update Evaluation Form Button -->
     <button type="button" class="btn btn-primary-2" data-toggle="modal" data-target="#evaluationFormModal">
         Setup Evaluation Form
@@ -234,6 +242,7 @@
                 <input type="checkbox" name="is_active" id="is_active_toggle" onchange="this.form.submit()" {{ $event->evaluationForm->status_id == 1 ? 'checked' : '' }}>
             </div>
         </form>
+    @endif
     @endif
 </div>
 

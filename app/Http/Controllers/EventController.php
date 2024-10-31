@@ -86,6 +86,9 @@ class EventController extends Controller
     
         // Start the event query
         $query = Event::whereIn('id', $eventIds);
+        if ($request->has('show_deleted') && $request->show_deleted === 'true') {
+            $query = $query->withTrashed();
+        }
     
         // Show only ongoing events by default unless 'show_all' is set to true
         if (!$request->has('show_all') || $request->show_all != 'true') {
@@ -118,6 +121,7 @@ class EventController extends Controller
                 'hasEvents' => $hasEvents,
             ]);
         }
+        
     
         return view('event.myeventlist', compact('events'));
     }
@@ -129,7 +133,7 @@ class EventController extends Controller
             ->where('status_id', 1)
             ->whereHas('user')
             ->count();
-        $event = Event::findOrFail($id);
+        $event = Event::withTrashed()->findOrFail($id);
 
 
         $certificate = Certificate::where('event_id', $id)->first();
@@ -171,7 +175,7 @@ class EventController extends Controller
             }
         }
         //user age chart in the event
-        $usersBirthdate = User::whereHas('eventParticipant', function ($query) use ($id) {
+        $usersBirthdate = User::withTrashed()->whereHas('eventParticipant', function ($query) use ($id) {
             $query->where('event_id', $id)->where('status_id', 1);
             })->select('birthdate')->get();
 
@@ -195,7 +199,7 @@ class EventController extends Controller
         ];
 
         //user gender chart in the event
-        $userGenders = User::whereHas('eventParticipant', function ($query) use ($id) {
+        $userGenders = User::withTrashed()->whereHas('eventParticipant', function ($query) use ($id) {
             $query->where('event_id', $id)->where('status_id', 1);
         })
         ->select('gender')
@@ -456,10 +460,6 @@ class EventController extends Controller
     {
         $eventuser = UserEvent::findOrFail($id);
         $event = Event::findOrFail($id);
-        // Check if the logged-in user is the creator of the event
-        if ($eventuser->user_id !== Auth::id()) {
-            return redirect()->route('unauthorized')->with('error', 'You do not have permission to view this page.');
-        }
 
         $participants = EventParticipant::where('event_id', $id)
                 ->where('status_id', 3)
@@ -475,11 +475,6 @@ class EventController extends Controller
         $request->validate([
             'status_id' => ['required', 'string'],
         ]);
-        // Check if the logged-in user is the creator of the event
-        if ($event->user_id != Auth::id()) {
-            return redirect()->route('unauthorized')->with('error', 'You do not have permission to perform this action.');
-        }
-
 
         $participant = EventParticipant::where('user_id', $participantId)
                                         ->whereHas('user');
@@ -581,4 +576,29 @@ class EventController extends Controller
         return response()->json($formattedEvents);
     }
 
+    public function adminDeactivate($id)
+    {
+        $event = Event::findOrFail($id);
+
+        $event->delete();
+
+        return redirect()->route('event.myeventlist')->with('success', 'Event soft deleted successfully!');
+    }
+
+    public function deactivate($id)
+    {
+        $event = Event::findOrFail($id);
+
+        $event->delete();
+
+        return redirect()->route('superadmin.eventlist')->with('success', 'Event soft deleted successfully!');
+    }
+
+    public function recover($id)
+    {
+        $event = Event::withTrashed()->findOrFail($id);
+        $event->restore();
+
+        return redirect()->route('superadmin.eventlist')->with('success', 'Event recovered successfully!');
+    }
 }

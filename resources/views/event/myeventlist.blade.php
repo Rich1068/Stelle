@@ -32,6 +32,12 @@
         Show All Events
     </label>
 </div>
+<div class="form-switch show-all-container mt-3">
+    <input class="form-check-input" type="checkbox" id="show-deleted-events">
+    <label class="form-check-label" for="show-deleted-events">
+        Show Deleted Events
+    </label>
+</div>
 <!-- Event List -->
 <div id="event-list-container">
     @include('event.partials.myeventlist', ['events' => $events])
@@ -84,21 +90,21 @@
     function fetchFilteredEvents() {
         const selectedDate = document.getElementById('date-input').value;
         const showAllEvents = document.getElementById('show-all-events').checked;
+        const showDeletedEvents = document.getElementById('show-deleted-events').checked;
 
-        // Send AJAX request to filter events by date and toggle between ongoing/all events
+        // Send AJAX request to filter events by date and toggle between ongoing/all events and include deleted
         $.ajax({
             url: '{{ route('event.myeventlist') }}',
             type: 'GET',
             data: {
                 date: selectedDate,
-                show_all: showAllEvents ? 'true' : 'false'
+                show_all: showAllEvents ? 'true' : 'false',
+                show_deleted: showDeletedEvents ? 'true' : 'false'
             },
             success: function(data) {
-                // Update the event list and pagination with the new filtered data
                 $('#event-list-container').html(data.eventsHtml);
                 $('#pagination-links').html(data.paginationHtml);
 
-                // Determine if the event list is empty and show/hide the "No events available" message
                 const hasEvents = $(data.eventsHtml).find('.event-list-item').length > 0;
                 $('.no-events-container').toggle(!hasEvents);
             },
@@ -107,6 +113,11 @@
             }
         });
     }
+
+    document.getElementById('show-deleted-events').addEventListener('change', function() {
+        document.getElementById('eventSearch').value = '';
+        fetchFilteredEvents();
+    });
 
     function toggleNoEventsMessage(hasResults) {
         const noEventsContainer = document.querySelector('.no-events-container');

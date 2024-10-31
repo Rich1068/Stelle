@@ -137,20 +137,31 @@ class SuperAdminController extends Controller
         $perPage = 10; // Number of events per page
         $page = $request->input('page', 1); // Current page
 
-        // Fetch events created by admin, along with the count of participants for each event
-        $events = UserEvent::with('event') // Fetch the associated event
-            ->where('user_id', $superadminId)
-            ->paginate($perPage, ['*'], 'page', $page);
+        // Fetch events created by admin, ignoring soft-deleted ones
+        $events = UserEvent::with(['event' => function ($query) {
+            $query->whereNull('deleted_at'); // Exclude soft-deleted events
+        }])
+        ->where('user_id', $superadminId)
+        ->paginate($perPage, ['*'], 'page', $page);
 
         $eventNames = [];
         $participantsCount = [];
 
         foreach ($events as $userEvent) {
             $event = $userEvent->event;
+
+            // Skip if event is null (soft-deleted)
+            if ($event === null) {
+                continue;
+            }
+
             $eventNames[] = $event->title;
 
             // Count participants using the EventParticipant relationship
-            $participantCount = EventParticipant::where('event_id', $event->id)->where('status_id', 1)->count();
+            $participantCount = EventParticipant::where('event_id', $event->id)
+                ->where('status_id', 1)
+                ->count();
+
             $participantsCount[] = $participantCount;
         }
 
@@ -240,7 +251,7 @@ class SuperAdminController extends Controller
     }
     public function allEventList()
     {
-        $events = Event::all();
+        $events = Event::withTrashed()->get();
         return view('super_admin.allEventList', compact('events'));
     }
 

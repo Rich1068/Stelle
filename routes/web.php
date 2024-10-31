@@ -67,7 +67,8 @@ Route::middleware(['auth','super_admin'])->group(function () {
     Route::get('/super-admin/users-data', [SuperAdminController::class, 'getUsersDataByYear']);
     Route::get('/super-admin/all-events', [SuperAdminController::class, 'allEventList'])->name('superadmin.eventlist');
     Route::get('/super-admin/dashboard/participants-per-event', [SuperAdminController::class, 'getPaginatedParticipantsPerEvent'])->name('superadmin.participants.per.event');
-
+    Route::patch('/super-admin/event/{id}/deactivate', [EventController::class, 'deactivate'])->name('event.deactivate');
+    Route::patch('/super-admin/event/{id}/recover', [EventController::class, 'recover'])->name('event.recover');
 });
 
 //admin
@@ -76,6 +77,7 @@ Route::middleware(['auth','admin'])->group(function () {
     route::get('/admin/dashboard', [AdminController::class, 'index'])->middleware('verified')->name('admin.dashboard');
     Route::get('/admin/dashboard/get-events-data', [AdminController::class, 'getAdminCreatedEventsData'])->name('admin.getEventsData');
     Route::get('/admin/dashboard/participants-per-event', [AdminController::class, 'getPaginatedParticipantsPerEvent'])->name('admin.participants.per.event');
+    
 });
 //user
 Route::middleware(['auth','user'])->group(function () {
@@ -93,7 +95,8 @@ Route::middleware(['auth', 'checkRole:1,2'])->group(function () {
     Route::get('/profile/{id}/events-data', [ProfileController::class, 'getEventsData'])->name('profile.eventsData');
     Route::get('/profile/{id}/events-created-data', [ProfileController::class, 'getEventsCreatedData'])->name('profile.getAdminCreatedEventsData');
     Route::get('/profile/{id}/events-joined-data', [ProfileController::class, 'getEventsJoinedData'])->name('profile.getAdminJoinedEventsData');
-    //event creation and the users created event list
+    Route::patch('/event/{id}/deactivate', [EventController::class, 'adminDeactivate'])->name('admin.event.deactivate')->middleware('CheckEventCreator');
+    //event creation and the myeventlist
     route::get('/event/create', [EventController::class, 'create'])->name('event.create');
     Route::get('/event/myEventlist', [EventController::class, 'myEventlist'])->name('event.myeventlist');
 

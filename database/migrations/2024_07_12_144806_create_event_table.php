@@ -22,6 +22,7 @@ return new class extends Migration
             $table->time('end_time');
             $table->integer('capacity');
             $table->string('event_banner')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
         Schema::create('user_events', function (Blueprint $table) {

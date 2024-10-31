@@ -109,16 +109,19 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($attendedEvents as $event)
-                                <tr>
-                                    <td>
-                                        <a href="{{ route('event.view', $event->id) }}" class="profile-attended-events-link">
-                                            {{ $event->title }}
-                                        </a>
-                                    </td>
-                                    <td>{{ $event->date }}</td>
-                                </tr>
-                            @endforeach
+                        @foreach($attendedEvents as $event)
+                            <tr>
+                                <td>
+                                    <a href="{{ route('event.view', $event->id) }}" class="profile-created-events-link">
+                                    {{ Str::limit($event->title, 40, '...') }}
+                                    @if($event->trashed())
+                                    <span style="color: red;">(DELETED)</span>
+                                    @endif
+                                    </a>
+                                </td>
+                                <td>{{ $event->date }}</td>
+                            </tr>
+                         @endforeach
                         </tbody>
                     </table>
                 @endif
