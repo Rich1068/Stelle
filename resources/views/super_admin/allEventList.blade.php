@@ -59,7 +59,13 @@
                         </td>
                         <td>
                             <div class="button-group" style="display: flex; justify-content: center; align-items: center;">
-
+                            <form action="{{ route('event.view', $event->id) }}" method="POST" style="display:inline-block;">
+                                        @csrf
+                                        @method('GET')
+                                        <button type="submit" class="btn btn-recover rounded-circle">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </form>
                                 <!-- Conditionally display Delete or Recover button -->
                                 @if($event->trashed())
                                     <!-- Recover button for soft deleted event -->
