@@ -122,12 +122,6 @@
                         @endif
                     @endif
 
-                    <style>
-                   #viewCertificateButton {
-                            margin-left: 10px;
-                        }
-
-                    </style>
 
                 @endif
                 @endif
@@ -372,6 +366,11 @@
     .position-relative {
         position: relative;
     }
+
+    #viewCertificateButton {
+        margin-left: 10px;
+    }
+
 </style>
 
 
