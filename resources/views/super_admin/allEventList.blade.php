@@ -101,6 +101,71 @@
 
 
 <style>
+/* Default Styles */
+h2 {
+    font-size: 1.5rem;
+}
+h6 {
+    font-size: 1rem;
+}
+.event-title {
+    font-size: 0.9rem;
+}
+.table th,
+.table td {
+    font-size: 0.9rem;
+}
+.alert {
+    font-size: 0.9rem;
+}
+.button-group .btn i {
+    font-size: 1rem;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    h2 {
+        font-size: 1.25rem;
+    }
+    h6 {
+        font-size: 0.9rem;
+    }
+    .event-title {
+        font-size: 0.8rem;
+    }
+    .table th,
+    .table td {
+        font-size: 0.8rem;
+    }
+    .alert {
+        font-size: 0.85rem;
+    }
+    .button-group .btn i {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    h2 {
+        font-size: 1rem;
+    }
+    h6 {
+        font-size: 0.8rem;
+    }
+    .event-title {
+        font-size: 0.7rem;
+    }
+    .table th,
+    .table td {
+        font-size: 0.75rem;
+    }
+    .alert {
+        font-size: 0.8rem;
+    }
+    .button-group .btn i {
+        font-size: 0.8rem;
+    }
+}
 
 .dataTables_wrapper .dataTables_length,
 .dataTables_wrapper .dataTables_filter,
@@ -392,11 +457,27 @@
 /* Event Title Styling */
 .event-title {
     font-size: 0.9rem;
-    white-space: nowrap; /* Default behavior on larger screens */
+    white-space: nowrap; /* Keeps text on one line */
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 150px;
 }
+
+/* Mobile-friendly adjustments */
+@media (max-width: 768px) { /* Target screens smaller than 768px */
+    .event-title {
+        font-size: 0.8rem; /* Slightly smaller text */
+        max-width: 120px; /* Reduced width for smaller screens */
+    }
+}
+
+@media (max-width: 480px) { /* Target screens smaller than 480px */
+    .event-title {
+        font-size: 0.7rem; /* Even smaller text for very small screens */
+        max-width: 100px; /* Further reduced width */
+    }
+}
+
 
 @media (max-width: 768px) {
     .event-title {
@@ -424,6 +505,11 @@
     color: white;
 }
 
+.button-group .btn .fas, 
+.button-group .btn .fa {
+    margin: auto; /* Center icon within the button */
+}
+
 /* Button Colors */
 .btn-view {
     background-color: #008b8b;
@@ -438,6 +524,20 @@
 .btn-delete {
     background-color: #c9302c;
 }
+@media (max-width: 768px) {
+    .button-group {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .button-group .btn {
+        font-size: 0.8rem;
+        padding: 8px;
+        width: 35px;
+        height: 35px;
+    }
+}
+
 
 </style>
 
