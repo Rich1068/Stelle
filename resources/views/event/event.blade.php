@@ -54,27 +54,41 @@
                 
                 @else
                 @if($userevent->user_id == Auth::user()->id || Auth::user()->role_id == 1)
-                    <div class="event-view-buttons">
-                        <a href="{{ route('event.edit', $event->id) }}" class="btn btn-primary">
+                <div class="event-view-buttons" style="display: flex; flex-direction: column; align-items: flex-start;">
+           
+                    <!-- Top Divider with Left-Aligned Text -->
+                    <div style="width: 100%; text-align: left; position: relative; margin-top: 10px;">
+                        <hr style="margin: 0; border: 1px solid #ccc; width: 100%;" />
+                        <span style="position: absolute; top: -8px; background: white; padding: 0 10px; font-weight: bold; font-size: 12px;">Super Admin Control</span>
+                    </div>
+
+                    <!-- Button Section -->
+                    <div style="display: flex; align-items: center; margin: 0;"> 
+                        <a href="{{ route('event.edit', $event->id) }}" class="btn btn-primary" style="flex: 1; min-width: 120px; text-align: center; padding: 10px;"> <!-- Use flex to allow it to grow -->
                             <span>Edit</span>
                         </a>
 
-                        <!-- Create and View Certificate Buttons Side by Side -->
-                        <div class="certificate-buttons">
+                        <div class="certificate-buttons" style="display: flex; margin-left: 10px;">
                             @if ($certificate == null)
-                                <a href="{{ route('event_certificates.create', $event->id) }}" class="btn btn-primary">Create/Send Certificate</a>
+                                <a href="{{ route('event_certificates.create', $event->id) }}" class="btn btn-primary" style="flex: 1; min-width: 120px; text-align: center; padding: 10px;">Create/Send Certificate</a>
                             @else
-                                <a href="{{ route('event_certificates.create', $event->id) }}" class="btn btn-primary">Update/Send Certificate</a>
+                                <a href="{{ route('event_certificates.create', $event->id) }}" class="btn btn-primary" style="flex: 1; min-width: 120px; text-align: center; padding: 10px;">Update/Send Certificate</a>
                             @endif
 
                             @if ($certificate)
-                                <button id="viewCertificateButton" data-image-url="{{ asset($certificate->cert_path) }}" class="btn btn-primary">View Certificate</button>
+                                <button id="viewCertificateButton" data-image-url="{{ asset($certificate->cert_path) }}" class="btn btn-primary" style="flex: 1; min-width: 120px; text-align: center; padding: 10px; margin-right: 10px;">View Certificate</button>
                             @endif
                         </div>
-
-                        <!-- View Participants Button -->
-                 
                     </div>
+
+                    <!-- Bottom Divider -->
+                    <div style="width: 100%; text-align: left; position: relative; margin: 2px 0 10px;">
+                        <hr style="margin: 0; border: 1px solid #ccc; width: 100%;" />
+                    </div>
+
+                    </div>
+
+
                 @endif
                 @if($userevent->user_id != Auth::user()->id)
                     @if ($participant && $participant->status_id == 1)
@@ -100,7 +114,7 @@
                             @else
                                 <form action="{{ route('evaluation-form.take', ['id' => $event->id, 'form' => $evaluationForm->form_id]) }}" method="GET" class="full-width-button">
                                     @csrf
-                                    <button type="submit" class="btn btn-primary">Take Evaluation</button>
+                                    <button type="submit" class="btn btn-primary" style="margin-bottom: 10px;">Take Evaluation</button>
                                 </form>
                             @endif
                         @else

@@ -27,8 +27,8 @@
 <div class="container-fluid" style="padding: 0;">
 
 @if($certificates->isEmpty())
-    <div class="no-events-container">
-        <i class="fas fa-file-alt"></i>
+<div class="no-events-container">
+<i class="fas fa-file-alt"></i>
         <p>No Certificate Template Found.</p>
     </div>
 @else
@@ -352,33 +352,6 @@
         height: 100%;
     }
 
-    .no-events-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        background-color: white;
-        color: #001e54;
-        border-radius: 15px;
-        padding: 20px;
-        margin: 20px auto;
-        max-width: 80%;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        text-align: center;
-    }
-
-    .no-events-container i {
-        font-size: 40px; 
-        color: #001e54;
-        margin-bottom: 10px;
-    }
-
-    .no-events-container p {
-        font-size: 18px; 
-        color: #555;
-        margin: 0;
-    }
- 
 
     #certificateTable {
     width: 100%;
