@@ -59,7 +59,7 @@
                     <!-- Top Divider with Left-Aligned Text -->
                     <div style="width: 100%; text-align: left; position: relative; margin-top: 10px;">
                         <hr style="margin: 0; border: 1px solid #ccc; width: 100%;" />
-                        <span style="position: absolute; top: -8px; background: white; padding: 0 10px; font-weight: bold; font-size: 12px;">Super Admin Control</span>
+                        <span style="position: absolute; top: -8px; background: white; padding: 0 10px; font-weight: bold; font-size: 12px;">Admin Control</span>
                     </div>
 
                     <!-- Button Section -->
