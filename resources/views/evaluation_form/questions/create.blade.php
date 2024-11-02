@@ -59,17 +59,20 @@ function addQuestion(type) {
 
     if (type === 'essay') {
         newQuestionDiv.innerHTML = `
-            <div class="question-header">${questionInput}</div>
+            <div class="question-header">
+                <input type="text" name="questions[${questionIndex}][text]" value="${questionInput}" class="editable-question-input" placeholder="Edit your question">
+            </div>
             <div class="question-content">
                 <div class="question-type">Essay Question</div>
             </div>
-            <input type="hidden" name="questions[${questionIndex}][text]" value="${questionInput}">
             <input type="hidden" name="questions[${questionIndex}][type]" value="essay">
             <button type="button" class="remove-question" onclick="removeQuestion(this)">Remove</button>
         `;
     } else if (type === 'radio') {
         newQuestionDiv.innerHTML = `
-            <div class="question-header">${questionInput}</div>
+            <div class="question-header">
+                <input type="text" name="questions[${questionIndex}][text]" value="${questionInput}" class="editable-question-input" placeholder="Edit your question">
+            </div>
             <div class="question-content">
                 <div class="question-type">Radio Question</div>
                 <div class="radio-options">
@@ -83,7 +86,6 @@ function addQuestion(type) {
                     </div>
                 </div>
             </div>
-            <input type="hidden" name="questions[${questionIndex}][text]" value="${questionInput}">
             <input type="hidden" name="questions[${questionIndex}][type]" value="radio">
             <button type="button" class="remove-question" onclick="removeQuestion(this)">Remove</button>
         `;

@@ -59,17 +59,20 @@ function addQuestion(type) {
 
     if (type === 'essay') {
         newQuestionDiv.innerHTML = `
-            <div class="question-header">${questionInput}</div>
+            <div class="question-header">
+                <input type="text" name="questions[${questionIndex}][text]" value="${questionInput}" class="editable-question-input">
+            </div>
             <div class="question-content">
                 <div class="question-type">Essay Question</div>
             </div>
-            <input type="hidden" name="questions[${questionIndex}][text]" value="${questionInput}">
             <input type="hidden" name="questions[${questionIndex}][type]" value="essay">
             <button type="button" class="remove-question" onclick="removeQuestion(this)">Remove</button>
         `;
     } else if (type === 'radio') {
         newQuestionDiv.innerHTML = `
-            <div class="question-header">${questionInput}</div>
+            <div class="question-header">
+                <input type="text" name="questions[${questionIndex}][text]" value="${questionInput}" class="editable-question-input">
+            </div>
             <div class="question-content">
                 <div class="question-type">Radio Question</div>
                 <div class="radio-options">
@@ -83,7 +86,6 @@ function addQuestion(type) {
                     </div>
                 </div>
             </div>
-            <input type="hidden" name="questions[${questionIndex}][text]" value="${questionInput}">
             <input type="hidden" name="questions[${questionIndex}][type]" value="radio">
             <button type="button" class="remove-question" onclick="removeQuestion(this)">Remove</button>
         `;
@@ -93,23 +95,8 @@ function addQuestion(type) {
     document.getElementById('question-input').value = ""; // Clear the input field
     errorMessage.style.display = 'none'; // Hide the error message if displayed
 }
-
-function removeQuestion(button) {
-    const questionDiv = button.parentElement;
-    questionDiv.remove();
-}
-
-function validateForm() {
-    const questionsDiv = document.getElementById('questions');
-    if (questionsDiv.children.length === 0) {
-        const errorMessage = document.getElementById('error-message');
-        errorMessage.innerText = "Please add at least one question.";
-        errorMessage.style.display = 'block'; // Show the error message
-        return false; // Prevent form submission
-    }
-    return true; // Allow form submission
-}
 </script>
+
 
 <!-- Link to the external CSS file -->
 <link rel="stylesheet" href="{{ asset('css/form-questions.css') }}">
