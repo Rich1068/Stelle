@@ -121,6 +121,14 @@
                             <button type="button" class="btn btn-secondary" disabled>Evaluation Not Yet Available</button>
                         @endif
                     @endif
+
+                    <style>
+                   #viewCertificateButton {
+                            margin-left: 10px;
+                        }
+
+                    </style>
+
                 @endif
                 @endif
             </div>
