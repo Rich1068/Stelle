@@ -124,7 +124,7 @@
                     @endif
                     @endif  
 
-                        @if ($participant && $participant->status_id == 1)
+    @if ($participant && $participant->status_id == 1)
     @if($event->evaluationForm && $event->evaluationForm->status_id == 1)
         @if($hasAnswered)
             <!-- Button with text "Evaluation Form Already Answered" -->

@@ -162,18 +162,9 @@ class EventController extends Controller
         ->count();
         $evaluationForm = $event->evaluationForm;
         if ($evaluationForm) {
-            $questions = Question::where('form_id', $evaluationForm->form_id)->pluck('id');
-                
-                
-            foreach ($questions as $question) {
-                $answer = Answer::where('question_id', $question)
-                    ->where('user_id', Auth::user()->id)
-                    ->exists();
-                if ($answer) {
-                    $hasAnswered = true;
-                    break;
-                }
-            }
+            $hasAnswered = Answer::where('event_form_id', $evaluationForm->id)
+            ->where('user_id', Auth::user()->id)
+            ->exists();
         }
         //user age chart in the event
         $usersBirthdate = User::whereHas('eventParticipant', function ($query) use ($id) {
