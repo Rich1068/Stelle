@@ -286,22 +286,17 @@
         Setup Evaluation Form
     </button>
     @if($event->evaluationForm)
-    <button type="button" class="btn btn-primary-2">
-        <a href="{{ route('evaluation.results', ['id' => $event->id]) }}" style="color:white; text-decoration:none;">
-            View Evaluation Results
-        </a>
+    <button type="button" class="btn btn-primary-2 view-evaluation-button" onclick="window.location.href='{{ route('evaluation.results', ['id' => $event->id]) }}'">
+        View Evaluation Results
     </button>
     @endif
     <!-- Activate Checkbox -->
     @if($event->evaluationForm)
-        <form action="{{ route('evaluation-forms.toggle', ['id' => $event->id, 'form' => $event->evaluationForm->id]) }}" method="POST" class="full-width-button">
-            @csrf
-            @method('PUT')
-            <div class="form-group">
-                <label for="is_active_toggle">Activate:</label>
-                <input type="checkbox" name="is_active" id="is_active_toggle" onchange="this.form.submit()" {{ $event->evaluationForm->status_id == 1 ? 'checked' : '' }}>
-            </div>
-        </form>
+        <div class="form-group">
+            <label for="is_active_toggle">Activate Evaluation Form:</label>
+            <input type="checkbox" name="is_active" id="is_active_toggle" 
+                {{ $event->evaluationForm->status_id == 1 ? 'checked' : '' }}>
+        </div>
     @endif
     @endif
 </div>
@@ -448,6 +443,33 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- JavaScript to handle tab switching and modal display -->
 <script>
+    $(document).ready(function() {
+        $('#is_active_toggle').change(function() {
+            const isChecked = $(this).is(':checked');
+            const eventId = "{{ $event->id }}";
+            const formId = "{{ $event->evaluationForm->id }}";
+
+            $.ajax({
+                url: '/events/' + eventId + '/evaluation-form/' + formId + '/toggle',
+                type: 'PUT',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    is_active: isChecked ? 1 : 0
+                },
+                success: function(response) {
+                    const message = isChecked ? 
+                        'The evaluation form is now activated and is open to participants.' : 
+                        'The evaluation form is now deactivated and closed to participants.';
+                    alert(message);
+                },
+                error: function(xhr) {
+                    alert('Error: ' + xhr.responseText);
+                    // Reset checkbox to previous state if there’s an error
+                    $('#is_active_toggle').prop('checked', !isChecked);
+                }
+            });
+        });
+    });
    document.addEventListener('DOMContentLoaded', function () {
     const tabButtons = document.querySelectorAll('.tab-button');
     const tabPanes = document.querySelectorAll('.tab-pane');
@@ -470,6 +492,7 @@
             savedPane.classList.add('active');
         }
     }
+
 
     // Tab switching logic
     tabButtons.forEach(button => {
@@ -751,8 +774,6 @@
             }
         });
     });
-
-
 
 </script>
 @endsection

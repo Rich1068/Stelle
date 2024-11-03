@@ -395,11 +395,17 @@ class EvaluationFormController extends Controller
     {
         $evaluationForm = EventEvaluationForm::findOrFail($formId);
     
-        $evaluationForm->status_id = $request->has('is_active') ? 1 : 2;
+        // Set the status based on `is_active` checkbox value
+        $evaluationForm->status_id = $request->is_active ? 1 : 2;
         $evaluationForm->save();
     
-        // Redirect back to the same page
-        return redirect()->route('event.view', ['id' => $evaluationForm->event_id]);
+        // Return a JSON response instead of a redirect
+        return response()->json([
+            'success' => true,
+            'message' => $evaluationForm->status_id == 1 
+                ? 'The evaluation form is now activated and open to participants.' 
+                : 'The evaluation form is now deactivated and closed to participants.',
+        ]);
     }
 
     public function take($id, $formId)
