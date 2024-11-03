@@ -466,53 +466,57 @@ class EvaluationFormController extends Controller
         $event = Event::with('evaluationForm.evalForm.questions.answers')
             ->where('id', $id)
             ->firstOrFail();
-    
+
+        $eventFormId = $event->evaluationForm->id ?? null; // Get the event's specific form ID
+
         // Get the number of participants
         $currentParticipants = EventParticipant::where('event_id', $id)
             ->where('status_id', 1) // Only accepted participants
             ->count();
-    
+
         // Define the static radio options (1, 2, 3, 4, 5)
         $staticRadioOptions = [1, 2, 3, 4, 5];
-    
+
         $form = $event->evaluationForm;
         
         $questionsData = [];
-    
-        //total user who answered
-        $answeredUsers = User::whereHas('answers', function ($query) use ($id) {
-            $query->whereHas('eventEvalForm', function ($subQuery) use ($id) {
-                $subQuery->where('event_id', $id);
-            });
-        })
-        ->distinct()
-        ->count();
 
-    
+        // Total users who answered, filtered by event_form_id
+        $answeredUsers = User::whereHas('answers', function ($query) use ($eventFormId) {
+                $query->where('event_form_id', $eventFormId);
+            })
+            ->distinct()
+            ->count();
+
         if ($form && $form->evalForm->questions) {
             // Process questions for comments and radio questions
             foreach ($form->evalForm->questions as $question) {
                 if ($question->isComment()) {
+                    $answers = $question->answers()
+                        ->where('event_form_id', $eventFormId) // Filter by event_form_id
+                        ->pluck('answer');
+                    
                     $questionsData[] = [
                         'type' => 'comment',
                         'question' => $question->question,
-                        'answers' => $question->answers->pluck('answer'),
+                        'answers' => $answers,
                     ];
                 } elseif ($question->isRadio()) {
                     $answerCounts = $question->answers()
+                        ->where('event_form_id', $eventFormId) // Filter by event_form_id
                         ->select('answer', DB::raw('count(*) as count'))
                         ->groupBy('answer')
                         ->get()
                         ->pluck('count', 'answer');
-    
+
                     $compiledCounts = collect($staticRadioOptions)->mapWithKeys(function ($option) use ($answerCounts) {
                         return [$option => $answerCounts->get($option, 0)];
                     });
 
-                    $totalResponses = $question->answers()->count();
-                    $totalScore = $question->answers()->sum('answer'); // Assuming answers are stored as numeric values
+                    $totalResponses = $question->answers()->where('event_form_id', $eventFormId)->count();
+                    $totalScore = $question->answers()->where('event_form_id', $eventFormId)->sum('answer'); // Assuming answers are numeric
                     $averageScore = $totalResponses > 0 ? round($totalScore / $totalResponses, 2) : 0;
-    
+
                     $questionsData[] = [
                         'type' => 'radio',
                         'question' => $question->question,
@@ -523,15 +527,16 @@ class EvaluationFormController extends Controller
                 }
             }
         }
-    
+
         // Calculate participation rate
         $participationRate = $currentParticipants > 0 ? round(($answeredUsers / $currentParticipants) * 100, 2) : 0;
-    
+
         // Send data to the view
         return view('event.partials.evaluation', compact(
             'questionsData', 'staticRadioOptions', 'answeredUsers', 'currentParticipants', 
             'participationRate'
         ));
     }
+
  
 }

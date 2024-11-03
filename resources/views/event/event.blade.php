@@ -296,6 +296,7 @@
             <label for="is_active_toggle">Activate Evaluation Form:</label>
             <input type="checkbox" name="is_active" id="is_active_toggle" 
                 {{ $event->evaluationForm->status_id == 1 ? 'checked' : '' }}>
+            <input type="hidden" id="evaluationFormId" value="{{ $event->evaluationForm->id }}">
         </div>
     @endif
     @endif
@@ -447,7 +448,12 @@
         $('#is_active_toggle').change(function() {
             const isChecked = $(this).is(':checked');
             const eventId = "{{ $event->id }}";
-            const formId = "{{ $event->evaluationForm->id }}";
+            const formId = $('#evaluationFormId').val();
+
+            if (!formId) {
+                alert("No evaluation form exists to toggle.");
+                return;  // Exit if no evaluation form ID is found
+            }
 
             $.ajax({
                 url: '/events/' + eventId + '/evaluation-form/' + formId + '/toggle',
