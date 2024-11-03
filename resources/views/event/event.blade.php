@@ -373,7 +373,10 @@
                                         <select name="form_id" id="form_id" class="form-control" required>
                                             <option value="">Select an Evaluation Form</option>
                                             @foreach($existingForms as $form)
-                                                <option value="{{ $form->id }}">{{ $form->form_name }}</option>
+                                                <option value="{{ $form->id }}" 
+                                                    @if($event->evaluationForm && $form->id == $event->evaluationForm->evalForm->id) selected @endif>
+                                                    {{ $form->form_name }}
+                                                </option>
                                             @endforeach
                                         </select>
                                     </div>
