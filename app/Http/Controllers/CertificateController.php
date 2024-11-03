@@ -401,9 +401,12 @@ class CertificateController extends Controller
                 $userId = $certData['userId'];
                 $imageData = $certData['imageData'];
 
+                $user = User::find($userId);
+                $lastName = preg_replace('/[^a-zA-Z0-9 ]/', '', $user->last_name); 
+                $lastName = str_replace(' ', '-', $lastName);
                 // Create a unique path for each certificate image
-                $pathDatabase = 'storage/images/certificates/' . $userId . '-' . $event_id . '_certificate.png';
-                $imagePath = 'images/certificates/' . $userId . '-' . $event_id . '_certificate.png';
+                $pathDatabase = 'storage/images/certificates/' . $lastName . '-' . $event_id . '_certificate.png';
+                $imagePath = 'images/certificates/' . $lastName . '-' . $event_id . '_certificate.png';
 
                 // Store the image (assuming base64 encoded data)
                 $imageContent = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $imageData));
