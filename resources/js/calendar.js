@@ -23,10 +23,28 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             initialView: 'dayGridMonth',
             events: function(fetchInfo, successCallback, failureCallback) {
-                // Fetch events based on filter
                 fetch(`/get-events?filter=${filter}`)
                     .then(response => response.json())
-                    .then(events => successCallback(events))
+                    .then(events => {
+                        // Map over events to adjust those that span over midnight
+                        events = events.map(event => {
+                            const startTime = new Date(event.start);
+                            const endTime = new Date(event.end);
+        
+                            // Check if the event crosses midnight and ends early in the morning
+                            if (startTime.getHours() >= 22 && startTime.getDate() !== endTime.getDate() && endTime.getHours() <= 6) {
+                                // Adjust the event to be "timed" and not span into the next day
+                                event.display = 'block'; // Ensures it shows on the starting day only
+                                endTime.setDate(startTime.getDate()); // Set end date to the start date
+                                endTime.setHours(23, 59, 59); // Set end time to just before midnight
+                                event.end = endTime.toISOString();
+                            }
+        
+                            return event;
+                        });
+        
+                        successCallback(events);
+                    })
                     .catch(error => failureCallback(error));
             },
             eventContent: function(info) {

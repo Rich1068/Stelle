@@ -44,7 +44,12 @@
                 <div class="event-view-info">
                     <div><i class="fas fa-calendar-alt"></i><span data-label="Date: ">{{ $event->date }}</span></div>
                     <div><i class="fas fa-map-marker-alt"></i><span data-label="Address: ">{{ $event->address }}</span></div>
-                    <div><i class="fas fa-clock"></i><span data-label="Duration: ">{{ $event->start_time }} to {{ $event->end_time }}</span></div>
+                    <div>
+                        <i class="fas fa-clock"></i>
+                        <span data-label="Duration: ">
+                            {{ \Carbon\Carbon::parse($event->start_time)->format('h:i A') }} to {{ \Carbon\Carbon::parse($event->end_time)->format('h:i A') }}
+                        </span>
+                    </div>
                     <div><i class="fas fa-users"></i><span data-label="Capacity: ">{{ $currentParticipants }}/{{ $event->capacity }}</span></div>
                     <div><i class="fas fa-desktop"></i><span data-label="Mode: ">{{ $event->mode }}</span></div>
                     <div><i class="fas fa-user"></i><span data-label="By: "><a href="{{ route('profile.view', $userevent->user->id) }}" class="no-link-style">

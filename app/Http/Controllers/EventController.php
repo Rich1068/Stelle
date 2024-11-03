@@ -539,6 +539,7 @@ class EventController extends Controller
                     $query->where('user_id', $userId);
                 })->get();
         } elseif ($filter === 'join') {
+            // Fetch events the user has joined
             $events = Event::with('participants')
                 ->whereHas('participants', function ($query) use ($userId) {
                     $query->where('user_id', $userId)
@@ -555,11 +556,21 @@ class EventController extends Controller
             $userEvent = $event->userEvent;
             $user = $userEvent->user ?? null;
 
+            // Parse start and end times
+            $start = Carbon::parse($event->date . ' ' . $event->start_time);
+            $end = Carbon::parse($event->date . ' ' . $event->end_time);
+
+            // If end time is earlier than start time, adjust the end date to the next day
+            if ($end->lt($start)) {
+                $end = $end->copy()->addDay();
+            }
+
+            // Format dates for FullCalendar in a compatible format
             $formattedEvents[] = [
                 'id' => $event->id,
                 'title' => $event->title,
-                'start' => $event->date . ' ' . $event->start_time,
-                'end' => $event->date . ' ' . $event->end_time,
+                'start' => $start->toDateTimeString(),
+                'end' => $end->toDateTimeString(),
                 'extendedProps' => [
                     'description' => $event->description,
                     'location' => $event->address,
