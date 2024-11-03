@@ -67,31 +67,37 @@
                         <span style="position: absolute; top: -8px; background: white; padding: 0 10px; font-weight: bold; font-size: 12px;">Admin Control</span>
                     </div>
 
-                    <!-- Button Section -->
-                    <div style="display: flex; align-items: center; margin: 0;"> 
-                        <a href="{{ route('event.edit', $event->id) }}" class="btn btn-primary" style="flex: 1; min-width: 120px; text-align: center; padding: 10px;"> <!-- Use flex to allow it to grow -->
-                            <span>Edit</span>
-                        </a>
+                    <div class="button-section"> 
+    <a href="{{ route('event.edit', $event->id) }}" class="btn btn-primary" 
+       style="flex: 1; min-width: 120px; text-align: center; padding: 10px;">
+        <span>Edit</span>
+    </a>
 
-                        <div class="certificate-buttons" style="display: flex; margin-left: 10px;">
-                            @if ($certificate == null)
-                                <a href="{{ route('event_certificates.create', $event->id) }}" class="btn btn-primary" style="flex: 1; min-width: 120px; text-align: center; padding: 10px;">Create/Send Certificate</a>
-                            @else
-                                <a href="{{ route('event_certificates.create', $event->id) }}" class="btn btn-primary" style="flex: 1; min-width: 120px; text-align: center; padding: 10px;">Update/Send Certificate</a>
-                            @endif
+    <div class="certificate-buttons">
+        @if ($certificate == null)
+            <a href="{{ route('event_certificates.create', $event->id) }}" class="btn btn-primary" 
+               style="flex: 1; min-width: 120px; text-align: center; padding: 10px;">
+                Create/Send Certificate
+            </a>
+        @else
+            <a href="{{ route('event_certificates.create', $event->id) }}" class="btn btn-primary" 
+               style="flex: 1; min-width: 120px; text-align: center; padding: 10px;">
+                Update/Send Certificate
+            </a>
+        @endif
 
-                            @if ($certificate)
-                                                <div @if($userevent->user_id != Auth::user()->id && Auth::user()->role_id == 1) class="super-admin" @endif>
-                        @if ($certificate)
-             
-                        @endif
-                    </div>
-
-                            @endif
+        @if ($certificate && ($userevent->user_id == Auth::user()->id || Auth::user()->role_id == 1))
+            <button id="viewCertificateButton" class="btn btn-primary" 
+                    data-image-url="{{ asset($certificate->cert_path) }}" 
+                    style="flex: 1; min-width: 120px; text-align: center; padding: 10px;">
+                View Certificate
+            </button>
+        @endif
                         </div>
-                    </div>
+    </div>
+    
 
-                    <div style="width: 100%; text-align: left; position: relative; margin: 2px 0 10px;">
+  <div style="width: 100%; text-align: left; position: relative; margin: 2px 0 10px;">
     <hr style="margin: 0; border: 1px solid #ccc; width: 100%;" />
 </div>
                     </div>
@@ -141,13 +147,6 @@
 
 <!-- View Certificate Button -->
 
-@if ($certificate && ($userevent->user_id == Auth::user()->id || Auth::user()->role_id == 1))
-    <button id="viewCertificateButton" class="btn btn-primary viewCertificateButton" 
-            data-image-url="{{ asset($certificate->cert_path) }}" 
-            style="flex: 1; min-width: 120px; text-align: center; padding: 10px; margin-right: 10px; margin-top: 10px;">
-        View Certificate
-    </button>
-@endif
 
 
 
@@ -390,6 +389,34 @@
     </div>
 </div>
 <style>
+    /* Main button container styles */
+.button-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+}
+
+/* Certificate buttons container */
+.certificate-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+/* Mobile layout - stack buttons on top of each other */
+@media (max-width: 768px) {
+    .button-section {
+        flex-direction: column;
+        align-items: stretch;
+        margin: auto;
+        min-width: 100%;
+    }
+    .certificate-buttons {
+        flex-direction: column;
+        align-items: stretch;
+      
+    }
+}
     .no-link-style {
         text-decoration: none;  /* Remove underline */
         color: inherit;         /* Use the same color as surrounding text */

@@ -5465,7 +5465,7 @@ fieldset:disabled a.btn {
 }
 
 .btn-primary {
-  background-color: #001e54;
+  background-color: #003366;
   color: white;
   border-radius: 20px; /* Rounded corners */
   padding: 15px;
@@ -5478,7 +5478,7 @@ fieldset:disabled a.btn {
   height: 55px; /* Fixed height for consistency */;
 }
 .btn-primary-2 {
-  background-color: #001e54;
+  background-color: #003366;
   color: white;
   border-radius: 20px; /* Rounded corners */
   padding: 15px;
