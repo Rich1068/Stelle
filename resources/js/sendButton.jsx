@@ -7,6 +7,7 @@ const ExportModal = ({ isOpen, store, onClose, eventId, showLoadingModal }) => {
   const [loading, setLoading] = useState(false);
   const [names, setNames] = useState([]); // To store names fetched from the database
   const [selectedNames, setSelectedNames] = useState([]); // To store selected names for image generation
+  const [selectAll, setSelectAll] = useState(false);
   const [images, setImages] = useState([]);
 
   // Fetch event participants
@@ -27,13 +28,19 @@ const ExportModal = ({ isOpen, store, onClose, eventId, showLoadingModal }) => {
 
   const handleCheckboxChange = (name) => {
     setSelectedNames((prevSelected) => {
-      if (prevSelected.includes(name)) {
-        return prevSelected.filter((n) => n !== name); // If already selected, remove from the list
-      } else {
-        return [...prevSelected, name]; // Add the name to the selected list
-      }
+      const updatedSelected = prevSelected.includes(name)
+        ? prevSelected.filter((n) => n !== name)
+        : [...prevSelected, name];
+
+      setSelectAll(updatedSelected.length === names.length); // Update "Select All" state
+      return updatedSelected;
     });
   };
+  const handleSelectAllChange = () => {
+    setSelectAll(!selectAll);
+    setSelectedNames(!selectAll ? names.map(n => n.full_name) : []);
+  };
+
 
   const replaceNameInStore = (json, name) => {
     const clonedJson = JSON.parse(JSON.stringify(json)); // Clone the JSON to make it mutable
@@ -108,15 +115,16 @@ const ExportModal = ({ isOpen, store, onClose, eventId, showLoadingModal }) => {
       const response = await axios.post(`/event/${eventId}/participants/send-certificates`, {
         data: certificateData,
       });
-
-      if (response.data.message === 'Certificates saved successfully!') {
-        alert('Certificates saved successfully!');
-      }
+      setLoading(false);
+      showLoadingModal(false); // Hide the loading modal when done
+      if (response.data && response.data.message === 'Certificates sent successfully!') {
+        setTimeout(() => {
+          alert('Certificates saved successfully!');
+      }, 300);
+      } 
     } catch (error) {
       console.error('Error generating and saving certificates:', error);
     } finally {
-      setLoading(false);
-      showLoadingModal(false); // Hide the loading modal when done
       await store.loadJSON(json);
       await store.waitLoading();
     }
@@ -137,6 +145,12 @@ const ExportModal = ({ isOpen, store, onClose, eventId, showLoadingModal }) => {
     >
       <div className={Classes.DIALOG_BODY}>
         <h5>Select Names:</h5>
+        <Checkbox
+          label="Select All"
+          checked={selectAll}
+          onChange={handleSelectAllChange}
+          style={{ marginBottom: '10px' }}
+        />
         <div style={{ marginBottom: '20px' }}>
           {names.map((name, index) => (
             <Checkbox
@@ -149,13 +163,19 @@ const ExportModal = ({ isOpen, store, onClose, eventId, showLoadingModal }) => {
         </div>
 
         <h5>Generated Previews:</h5>
-        <div style={{ display: 'flex', overflow: 'auto' }}>
+        <div style={{ display: 'flex', overflowX: 'auto', marginBottom: '20px' }}>
           {images.map((url, index) => (
             <img
               src={url}
               key={index}
               alt={`Preview for ${selectedNames[index]}`}
-              style={{ display: 'inline-block', margin: '10px' }}
+              style={{
+                display: 'inline-block',
+                margin: '10px',
+                width: window.innerWidth > 768 ? '600px' : '80%', // Adjust width for mobile
+                height: 'auto',
+                boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)',
+              }}
             />
           ))}
         </div>
@@ -182,7 +202,7 @@ const LoadingModal = ({ isOpen }) => {
       icon="cloud-upload"
       title="Processing"
       isOpen={isOpen}
-      style={{ width: '400px' }}
+      style={{ width: '400px', zIndex: 1500}}
     >
       <div className={Classes.DIALOG_BODY}>
         <p>Your certificates are being generated and sent. Please wait...</p>
