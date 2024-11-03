@@ -16,6 +16,7 @@ use App\Models\EvaluationForm;
 use App\Models\EventEvaluationForm;
 use App\Models\EventCertificate;
 use App\Events\UserAcceptedToEvent;
+use App\Events\UserRemovedFromEvent;
 use Illuminate\View\View;
 use App\Events\UserDeniedFromEvent;
 use Carbon\Carbon;
@@ -125,7 +126,7 @@ class EventController extends Controller
     
         return view('event.myeventlist', compact('events'));
     }
-    
+ //////////////////////////////////////////////////////////   
     public function view($id): View
     {
         $userevent = UserEvent::with('user')->where('event_id', $id)->whereHas('user')->firstOrFail();
@@ -175,7 +176,7 @@ class EventController extends Controller
             }
         }
         //user age chart in the event
-        $usersBirthdate = User::withTrashed()->whereHas('eventParticipant', function ($query) use ($id) {
+        $usersBirthdate = User::whereHas('eventParticipant', function ($query) use ($id) {
             $query->where('event_id', $id)->where('status_id', 1);
             })->select('birthdate')->get();
 
@@ -199,7 +200,7 @@ class EventController extends Controller
         ];
 
         //user gender chart in the event
-        $userGenders = User::withTrashed()->whereHas('eventParticipant', function ($query) use ($id) {
+        $userGenders = User::whereHas('eventParticipant', function ($query) use ($id) {
             $query->where('event_id', $id)->where('status_id', 1);
         })
         ->select('gender')
@@ -281,6 +282,24 @@ class EventController extends Controller
         ]);
     }
 
+    public function searchParticipants(Request $request, $id)
+    {
+        $search = $request->input('search');
+        $event = Event::findOrFail($id);
+
+        $participants = EventParticipant::where('event_id', $id)
+            ->whereHas('user', function ($query) use ($search) {
+                if ($search) {
+                    $query->whereRaw("LOWER(CONCAT(first_name, ' ', last_name)) LIKE ?", ['%' . strtolower($search) . '%']);
+                }
+            })
+            ->paginate(10);
+
+        return response()->json([
+            'html' => view('event.partials.participantlist', compact('participants', 'event'))->render(),
+        ]);
+    }
+/////////////////////////////////
 
     public function store(Request $request): RedirectResponse
     {
@@ -455,7 +474,7 @@ class EventController extends Controller
         return redirect()->route('event.view', $event->id)->with('error', 'You have already requested to join this event.');
     }
     
-
+/////////////////////////////////////////
     public function showPendingParticipants($id)
     {
         $eventuser = UserEvent::findOrFail($id);
@@ -468,7 +487,27 @@ class EventController extends Controller
 
         return view('event.pendingparticipants', compact('eventuser', 'participants', 'event'));
     }
-
+    public function searchPendingParticipants(Request $request, $id)
+    {
+        $search = $request->input('search');
+    
+        // Retrieve the event
+        $event = Event::findOrFail($id);
+    
+        $participants = EventParticipant::where('event_id', $id)
+            ->where('status_id', 3)
+            ->whereHas('user', function ($query) use ($search) {
+                if ($search) {
+                    $query->whereRaw("LOWER(CONCAT(first_name, ' ', last_name)) LIKE ?", ['%' . strtolower($search) . '%']);
+                }
+            })
+            ->paginate(10);
+    
+        return response()->json([
+            'html' => view('event.partials.pendingparticipants', compact('participants', 'event'))->render(),
+        ]);
+    }
+///////////////////////////////////////////////////////////////
     public function updateParticipantStatus(Request $request, $eventId, $participantId)
     {
         $event = UserEvent::findOrFail($eventId);
@@ -498,25 +537,55 @@ class EventController extends Controller
     }
 
 
+    public function removeParticipant($id, $user)
+    {
+        $participant = EventParticipant::where('event_id', $id)
+                        ->where('user_id', $user)
+                        ->first();
+    
+        if ($participant) {
+            // Set status_id to 2 to mark as removed
+            $participant->status_id = 2;
+            $participant->save();
+
+            $user = $participant->user; // Assuming the relationship exists
+            $eventDetails = Event::findOrFail($id);
+            event(new UserRemovedFromEvent($user, $eventDetails));
+    
+            return response()->json(['success' => true]);
+        }
+    
+        return response()->json(['success' => false, 'message' => 'Participant not found.'], 404);
+    }
+
+///////////////FOR CERTIFICATE////////////////////////
     public function getParticipants($event_id)
     {
-        // Fetch the participants for the given event_id and concatenate user names
+        // Fetch the participants for the given event_id and filter out soft-deleted users
         $participants = EventParticipant::where('event_id', $event_id)
-            ->with(['user']) // Eager load the related user
+            ->where('status_id', 1)
+            ->whereHas('user', function ($query) {
+                // Ignore users that are soft-deleted
+                $query->whereNull('deleted_at');
+            })
+            ->with(['user' => function ($query) {
+                // Ensure only non-soft-deleted users are fetched
+                $query->whereNull('deleted_at');
+            }])
             ->get()
             ->map(function ($participant) {
                 // Concatenate user's first, middle, and last name
                 $fullName = $participant->user->first_name . ' ' .
                             ($participant->user->middle_name ?? '') . ' ' .
                             $participant->user->last_name;
-    
-                // Return the full name
+
+                // Return the full name and user ID
                 return [
                     'full_name' => trim($fullName),
-                    'user_id' => $participant->user->id // Include the user_id here
+                    'user_id' => $participant->user->id
                 ];
             });
-    
+
         // Return the participant full names as a JSON response
         return response()->json($participants);
     }

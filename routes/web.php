@@ -150,6 +150,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/event/{id}/join', [EventController::class, 'join'])->name('event.join');
     Route::post('/event/{id}/participants/send-certificates', [CertificateController::class, 'sendCertificates'])->name('sendCertificates');
     Route::get('/event/{id}/get-participants', [EventController::class, 'getParticipants']);
+    Route::get('/event/{id}/search-participants-list', [EventController::class, 'searchParticipants'])->name('event.search.participants.list');
 
 });
 
@@ -170,7 +171,8 @@ Route::middleware(['auth', 'checkEventCreator'])->group(function () {
     Route::get('/event/{id}/pending-participants', [EventController::class, 'showPendingParticipants'])->name('events.pendingparticipants');
     Route::post('/event/{id}/participants/{participant}/update', [EventController::class, 'updateParticipantStatus'])->name('participants.updateStatus');
     Route::get('/event/{id}/evaluation-results/', [EvaluationFormController::class, 'showEvaluationResults'])->name('evaluation.results');
-
+    Route::get('/event/{id}/search-pending-participants', [EventController::class, 'searchPendingParticipants'])->name('event.search.pendingparticipants');
+    Route::patch('/event/{id}/participants/{user}/remove', [EventController::class, 'removeParticipant'])->name('event.removeParticipant');
     
 
     //eval forms

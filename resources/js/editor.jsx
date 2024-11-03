@@ -80,12 +80,10 @@ export const TemplatesPanel = observer(({ store }) => {
                 id: template.id               
             }))}
             getPreview={(template) => {
-              console.log(`Template Preview Path: /${template.preview_image}`);
               return `/${template.preview_image}`;
             }} // Display the preview image
             onSelect={async (template) => {
                 const design = JSON.parse(template.design);
-                console.log('Loading template design:', design);  // Log the design JSON
                 store.loadJSON(design);  // Load the template's design into Polotno
             }}
             rowsNumber={2}   // Define the number of rows for displaying templates
@@ -123,8 +121,6 @@ const saveDesign = async (setCertificateId, certificateId) => {
       const dataURLPromise = store.toDataURL();
       const dataURL = await dataURLPromise;
   
-      console.log('Saving design...', canvasData); // Debug log
-      console.log('Image Data URL:', dataURL); // Debug log
   
       if (typeof dataURL !== 'string') {
         console.error('dataURL is not a string:', dataURL);
@@ -140,7 +136,6 @@ const saveDesign = async (setCertificateId, certificateId) => {
       });
   
       alert('Design saved successfully!');
-      console.log(response.data.message);
   
       // For new certificate, set certificateId after creation
       if (!certificateId && response.data.certificateId) {
@@ -154,7 +149,6 @@ const saveDesign = async (setCertificateId, certificateId) => {
 const loadDesign = async (certificateId) => {
     try {
       const response = await axios.get(`/certificates/${certificateId}/load`);
-      console.log('Load response:', response.data);  // Log the response to check the data
       if (response.data) {
         store.loadJSON(response.data);  // Ensure that the response is a valid JSON Polotno can use
       }

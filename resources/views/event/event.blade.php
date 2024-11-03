@@ -134,7 +134,24 @@
         </div>
         <!-- Participants Tab -->
         <div class="tab-pane" id="participants">
+            <div class="top-container">
+                <div class="answer-forms-event-title">
+                    Participants List For
+                </div>
+                <div class="answer-forms-event-subtitle">
+                    {{ $event->title }}
+                </div>
+                <div><i class="fas fa-users"></i><span data-label="Capacity:">{{ $currentParticipants }}/{{ $event->capacity }}</span></div>
+            </div>
+            <div class="search-bar-container d-flex justify-content-center" style="margin: 20px 0;">
+                <div class="search-wrapper position-relative w-50">
+                    <input type="text" id="search-participants-list" class="form-control search-input" placeholder="Search participants..." style="border-radius: 10px; height: 50px; padding: 10px 45px 10px 20px;">
+                    <i class="fas fa-search search-icon position-absolute" style="top: 50%; right: 20px; transform: translateY(-50%); color: #999;"></i>
+                </div>
+            </div>
+            <div id="participant-list-container">
             @include('event.partials.participantlist', ['event' => $event, 'participants' => $participants, 'currentUser' => $currentUser, 'userevent' =>$userevent])
+            </div>
             @if ($currentUser == $userevent->user->id || Auth::user()->role_id == 1)
             @if($event->trashed())
                 
@@ -380,8 +397,10 @@
 
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- JavaScript to handle tab switching and modal display -->
 <script>
+
    document.addEventListener('DOMContentLoaded', function () {
     const tabButtons = document.querySelectorAll('.tab-button');
     const tabPanes = document.querySelectorAll('.tab-pane');
@@ -631,18 +650,62 @@
         },
     });
 
-    $('#existingFormModal').on('hidden.bs.modal', function () {
-        $('#evaluationFormModal').modal('show');
+    $(document).ready(function () {
+        $('#existingFormModal').on('hidden.bs.modal', function () {
+            $('#evaluationFormModal').modal('show');
+        });
+
+        // Handle the X button click specifically
+        $('#existingFormModal .close').on('click', function () {
+            $('#existingFormModal').modal('hide');
+            $('#evaluationFormModal').modal('show');
+        });
+
+        $('#search-participants-list').on('input', function() {
+            let searchQuery = $(this).val();
+            let eventId = "{{ $event->id }}";
+
+            $.ajax({
+                url: '/event/' + eventId + '/search-participants-list',
+                type: 'GET',
+                data: { search: searchQuery },
+                success: function(response) {
+                    // Update the participant list with the filtered results
+                    $('#participant-list-container').html(response.html);
+                },
+                error: function(xhr) {
+                    console.error('Error:', xhr.responseText);
+                }
+            });
+        });
+        $('.remove-btn').off('click').on('click', function() {
+            const userId = $(this).data('user-id');
+            const eventId = "{{ $event->id }}";
+
+            if (confirm('Are you sure you want to remove this participant?')) {
+                $.ajax({
+                    url: '/event/' + eventId + '/participants/' + userId + '/remove',
+                    type: 'PATCH',
+                    data: {
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            $('.participant-list-item[data-user-id="' + userId + '"]').remove();
+                            alert('Participant removed successfully');
+                        } else {
+                            alert('Error: ' + response.message);
+                        }
+                    },
+                    error: function(xhr) {
+                        alert('Error: ' + xhr.responseText);
+                    }
+                });
+            }
+        });
     });
 
-    // Handle the X button click specifically
-    $('#existingFormModal .close').on('click', function () {
-        // Manually trigger the hiding of the modal and reopening of the first modal
-        $('#existingFormModal').modal('hide');
-        $('#evaluationFormModal').modal('show');
-    });
 
-    // Region Data for Pie Chart
-    
+
 </script>
 @endsection

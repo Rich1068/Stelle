@@ -86,7 +86,7 @@ export const TemplatesPanel = observer(({ store }) => {
           getPreview={(template) => `/${template.preview_image}`} // Display the preview image
           onSelect={async (template) => {
               const design = JSON.parse(template.design);
-              console.log('Loading template design:', design);  // Log the design JSON
+              //console.log('Loading template design:', design);  // Log the design JSON
               store.loadJSON(design);  // Load the template's design into Polotno
           }}
           rowsNumber={2}   // Define the number of rows for displaying templates
@@ -130,8 +130,8 @@ const saveDesign = async (eventId, setCertificateId) => {
     // Await the Promise to get the actual dataURL
     const dataURL = await dataURLPromise;
 
-    console.log('Saving design...', canvasData); // Debug log
-    console.log('Image Data URL:', dataURL); // Debug log
+    //console.log('Saving design...', canvasData); // Debug log
+    //console.log('Image Data URL:', dataURL); // Debug log
 
     // Check if dataURL is a string
     if (typeof dataURL !== 'string') {
@@ -144,7 +144,7 @@ const saveDesign = async (eventId, setCertificateId) => {
       image: dataURL,
     });
     alert('Design saved successfully!');
-    console.log(response.data.message);
+    //console.log(response.data.message);
 
     if (response.data.certificateId) {
       setCertificateId(response.data.certificateId);
@@ -158,7 +158,7 @@ const saveDesign = async (eventId, setCertificateId) => {
 const loadDesign = async (eventId, certId) => {
   try {
     const response = await axios.get(`/event/${eventId}/certificates/load/${certId}`);
-    console.log('Load response:', response.data);
+    //console.log('Load response:', response.data);
     store.loadJSON(response.data);
   } catch (error) {
     console.error('Error loading design:', error);
@@ -177,7 +177,7 @@ export const App = () => {
       try {
         const response = await axios.get(`/event/${eventId}/certificates/get-id`);
         const certId = response.data.certificateId;
-        console.log('Fetched Certificate ID:', certId);
+        //console.log('Fetched Certificate ID:', certId);
         if (certId) {
           setCertificateId(certId);
         }
