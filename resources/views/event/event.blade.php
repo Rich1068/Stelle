@@ -76,22 +76,27 @@
                             @endif
 
                             @if ($certificate)
-                                <button id="viewCertificateButton" data-image-url="{{ asset($certificate->cert_path) }}" class="btn btn-primary" style="flex: 1; min-width: 120px; text-align: center; padding: 10px; margin-right: 10px;">View Certificate</button>
+                                                <div @if($userevent->user_id != Auth::user()->id && Auth::user()->role_id == 1) class="super-admin" @endif>
+                        @if ($certificate)
+             
+                        @endif
+                    </div>
+
                             @endif
                         </div>
                     </div>
 
-                    <!-- Bottom Divider -->
                     <div style="width: 100%; text-align: left; position: relative; margin: 2px 0 10px;">
-                        <hr style="margin: 0; border: 1px solid #ccc; width: 100%;" />
+    <hr style="margin: 0; border: 1px solid #ccc; width: 100%;" />
+</div>
                     </div>
 
-                    </div>
-
-
-                @endif
+                    @endif
                 @if($userevent->user_id != Auth::user()->id)
+                
+
                     @if ($participant && $participant->status_id == 1)
+                    
                         <p>You have been accepted to this event.</p>
                     @elseif (\Carbon\Carbon::now('Asia/Manila')->isSameDay(\Carbon\Carbon::parse($event->date)) &&
                     \Carbon\Carbon::now('Asia/Manila')->format('H:i:s') > $event->end_time || \Carbon\Carbon::parse($event->date . ' ' . $event->end_time)->isPast())
@@ -106,24 +111,41 @@
                     @else
                         <button type="button" class="btn btn-secondary" disabled>Closed</button>
                     @endif
+                    @endif  
 
-                    @if ($participant && $participant->status_id == 1)
-                        @if($event->evaluationForm && $event->evaluationForm->status_id == 1)
-                            @if($hasAnswered)
-                                <button type="button" class="btn btn-secondary" disabled>Evaluation Form Already Answered</button>
-                            @else
-                                <form action="{{ route('evaluation-form.take', ['id' => $event->id, 'form' => $evaluationForm->form_id]) }}" method="GET" class="full-width-button">
-                                    @csrf
-                                    <button type="submit" class="btn btn-primary" style="margin-bottom: 10px;">Take Evaluation</button>
-                                </form>
-                            @endif
-                        @else
-                            <button type="button" class="btn btn-secondary" disabled>Evaluation Not Yet Available</button>
-                        @endif
-                    @endif
+                        @if ($participant && $participant->status_id == 1)
+    @if($event->evaluationForm && $event->evaluationForm->status_id == 1)
+        @if($hasAnswered)
+            <!-- Button with text "Evaluation Form Already Answered" -->
+            <button type="button" class="btn btn-secondary" id="evaluationAnsweredBtn" disabled>
+                Evaluation Form Already Answered
+            </button>
+        @else
+            <form action="{{ route('evaluation-form.take', ['id' => $event->id, 'form' => $evaluationForm->form_id]) }}" method="GET" class="full-width-button">
+                @csrf
+                <button type="submit" class="btn btn-primary" style="margin-bottom: 10px;">Take Evaluation</button>
+            </form>
+        @endif
+    @else
+        <!-- Button with text "Evaluation Not Yet Available" -->
+        <button type="button" class="btn btn-secondary" id="evaluationNotAvailableBtn" disabled>
+            Evaluation Not Yet Available
+        </button>
+    @endif
+@endif
+
+<!-- View Certificate Button -->
+
+@if ($certificate && ($userevent->user_id == Auth::user()->id || Auth::user()->role_id == 1))
+    <button id="viewCertificateButton" class="btn btn-primary viewCertificateButton" 
+            data-image-url="{{ asset($certificate->cert_path) }}" 
+            style="flex: 1; min-width: 120px; text-align: center; padding: 10px; margin-right: 10px; margin-top: 10px;">
+        View Certificate
+    </button>
+@endif
 
 
-                @endif
+
                 @endif
             </div>
         </div>
@@ -367,16 +389,26 @@
         position: relative;
     }
 
-    #viewCertificateButton {
-        margin-left: 10px;
-    }
-
 </style>
 
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <!-- JavaScript to handle tab switching and modal display -->
 <script>
+
+document.addEventListener("DOMContentLoaded", function() {
+        const evaluationAnsweredBtn = document.getElementById("evaluationAnsweredBtn");
+        const evaluationNotAvailableBtn = document.getElementById("evaluationNotAvailableBtn");
+        const viewCertificateButton = document.getElementById("viewCertificateButton");
+
+        // Check if either button is visible
+        if ((evaluationAnsweredBtn && evaluationAnsweredBtn.offsetParent !== null) || 
+            (evaluationNotAvailableBtn && evaluationNotAvailableBtn.offsetParent !== null)) {
+            
+            // Add class to View Certificate button
+            viewCertificateButton.classList.add("highlight-certificate");
+        }
+    }); 
    document.addEventListener('DOMContentLoaded', function () {
     const tabButtons = document.querySelectorAll('.tab-button');
     const tabPanes = document.querySelectorAll('.tab-pane');

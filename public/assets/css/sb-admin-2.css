@@ -369,6 +369,31 @@ th, td {
     }
 
 }
+/* Override default background for multi-day events */
+.custom-event {
+  background-color: #003366 !important; /* Your custom background */
+  color: white;
+  padding: 2px 6px;
+  border-radius: 5px;
+  text-align: center;
+  display: inline-block;
+  font-size: 10px;
+  margin: 2px;
+  width: 100px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* Remove default light blue background for multi-day events */
+.fc-daygrid-event-harness .fc-daygrid-event.fc-event {
+  background-color: transparent !important;
+  border: none !important;
+}
+
+/* Make sure to override any specific multi-day event styling */
+.custom-event[data-multiday="true"] {
+  background-color: #003366 !important; /* Apply the same color */
+}
 
 .page-title-container-createuser {
   background-color: white;
@@ -5502,7 +5527,7 @@ fieldset:disabled a.btn {
 
 .btn-secondary {
   margin-top: 19px;
-  background-color: #3c4658;
+  background-color: rgb(92, 91, 91);
   color: white;
   border-radius: 20px; /* Rounded corners */
   padding: 15px;
