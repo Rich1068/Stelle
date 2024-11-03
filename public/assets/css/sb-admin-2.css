@@ -879,24 +879,8 @@ th, td {
   margin-top: 15px; /* Reduced space above buttons */
 }
 
-.certificate-actions .btn {
-  width: 48%; /* Button width for horizontal alignment */
-  border-radius: 20px;
-  font-weight: bold;
-  padding: 6px; /* Slightly reduced padding for compact buttons */
-  font-size: 0.85rem; /* Smaller font size for buttons */
-  transition: transform 0.3s ease; /* Smooth transition for hover effect */
-}
 
-.certificate-actions .btn-primary, 
-.certificate-actions .btn-success {
-  background-color: #34495e; /* Dark blue color */
-  border-color: #34495e;
-}
 
-.certificate-actions .btn:hover {
-  transform: scale(1.05); /* Slightly increase button size on hover */
-}
 
 /* Responsive Design */
 @media (max-width: 1200px) {

@@ -115,7 +115,7 @@
                     @elseif ($currentParticipants < $event->capacity && $participant == null)
                         <form action="{{ route('event.join', $event->id) }}" method="POST" class="full-width-button">
                             @csrf
-                            <button type="submit" class="btn btn-success">Join Event</button>
+                            <button type="submit" class="btn btn-primary">Join Event</button>
                         </form>
                     @elseif ($participant && $participant->status_id == 3)
                         <button type="button" class="btn btn-secondary" disabled>Pending</button>
