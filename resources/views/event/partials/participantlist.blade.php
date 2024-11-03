@@ -21,12 +21,14 @@
                         @endif
                     </div>
                 </div>
+                @if($userevent->user_id == Auth::user()->id || Auth::user()->role_id == 1)
                 @if($participant->user) <!-- Ensure that user exists before rendering the button -->
                     <div class="participant-actions">
                         <button type="button" class="btn btn-danger remove-btn" data-user-id="{{ $participant->user->id }}">
                             Remove
                         </button>
                     </div>
+                @endif
                 @endif
             </div>
         @endforeach
