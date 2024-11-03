@@ -277,7 +277,7 @@ class EventController extends Controller
     {
         $search = $request->input('search');
         $event = Event::findOrFail($id);
-
+        $userevent = UserEvent::with('user')->where('event_id', $id)->whereHas('user')->firstOrFail();
         $participants = EventParticipant::where('event_id', $id)
             ->whereHas('user', function ($query) use ($search) {
                 if ($search) {
@@ -287,7 +287,7 @@ class EventController extends Controller
             ->paginate(10);
 
         return response()->json([
-            'html' => view('event.partials.participantlist', compact('participants', 'event'))->render(),
+            'html' => view('event.partials.participantlist', compact('participants', 'event', 'userevent'))->render(),
         ]);
     }
 /////////////////////////////////
