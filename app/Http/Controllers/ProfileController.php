@@ -236,7 +236,18 @@ class ProfileController extends Controller
         event(new UserDeleted($user));
         Log::info('account deleted');
 
-        return redirect()->route('super_admin.userlist')->with('status', 'User account has been soft deleted.');
+        return redirect()->route('super_admin.userlist')->with('success', 'User account has been soft deleted.');
+    }
+    public function superadmin_recover($id): RedirectResponse
+    {
+        // Find the user by ID
+        $user = User::withTrashed()->findOrFail($id);
+
+        $user->restore();
+
+        Log::info('account restored');
+
+        return redirect()->route('super_admin.userlist')->with('success', 'User account has been recovered.');
     }
     //view someones profile
     public function view($id)

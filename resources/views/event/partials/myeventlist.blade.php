@@ -39,7 +39,7 @@
                         </div>
                         <div class="meta-item capacity d-flex align-items-center">
                             <i class="fas fa-users"></i>
-                            <span class="meta-text ms-1">{{ $event->capacity }}</span>
+                            <span class="meta-text ms-1">{{ $event->current_participants }}/{{ $event->capacity }}</span>
                         </div>
                     </div>
                     <div class="event-list-actions">

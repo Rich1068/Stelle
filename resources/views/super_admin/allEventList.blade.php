@@ -30,6 +30,7 @@
                         <th>Date</th>
                         <th>Duration</th>
                         <th>Organizer</th>
+                        <th>Participants</th>
                         <th>Status</th>
                         <th>Action</th>
                     </tr>
@@ -45,6 +46,7 @@
                         <td>{{ \Carbon\Carbon::parse($event->date)->format('Y-m-d') }}</td>
                         <td>{{ \Carbon\Carbon::parse($event->start_time)->format('h:i A') }} - {{ \Carbon\Carbon::parse($event->end_time)->format('h:i A') }}</td>
                         <td>{{ $event->userEvent->user->first_name }} {{ $event->userEvent->user->last_name }}</td>
+                        <td>{{ $event->current_participants }}/{{ $event->capacity }}</td>
                         <td>
                             @if($event->trashed())
                                 <span style="color: red;">DELETED</span>

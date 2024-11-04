@@ -39,7 +39,11 @@ class EventController extends Controller
 
     public function list(Request $request)
     {
-        $query = Event::query();
+        $query = Event::query()->withCount([
+            'participants as current_participants' => function ($query) {
+                $query->where('status_id', 1); // Only count accepted participants
+            }
+        ]);
 
         // Show only ongoing events by default
         if (!$request->has('show_all') || $request->show_all != 'true') {
@@ -86,7 +90,12 @@ class EventController extends Controller
                                 ->pluck('event_id');
     
         // Start the event query
-        $query = Event::whereIn('id', $eventIds);
+        $query = Event::whereIn('id', $eventIds)
+            ->withCount([
+                'participants as current_participants' => function ($query) {
+                    $query->where('status_id', 1); // Only count accepted participants
+                }
+            ]);
         if ($request->has('show_deleted') && $request->show_deleted === 'true') {
             $query = $query->withTrashed();
         }

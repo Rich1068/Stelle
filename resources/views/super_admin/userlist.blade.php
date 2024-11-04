@@ -40,6 +40,7 @@
                         <th>Name</th>
                         <th>Email</th>
                         <th>Role</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -56,6 +57,36 @@
                         </td>
                         <td>{{$user->email}}</td>
                         <td>{{ $user->role->role_name }}</td>
+                        <td>
+                            <div class="button-group" style="display: flex; justify-content: center; align-items: center;">
+                            <form action="{{ route('profile.view', $user->id) }}" method="POST" style="display:inline-block;">
+                                        @csrf
+                                        @method('GET')
+                                        <button type="submit" class="btn btn-recover rounded-circle">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </form>
+                                @if($user->trashed())
+                                    <form action="{{ route('superadmin.recoverUser', $user->id) }}" method="POST" style="display:inline-block;">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button type="submit" class="btn btn-recover rounded-circle" 
+                                            onclick="return confirm('Are you sure you want to recover this user?')" title="Recover User">
+                                            <i class="fas fa-undo"></i>
+                                        </button>
+                                    </form>
+                                @else
+                                    <form action="{{ route('superadmin.destroyUser', $user->id) }}" method="POST" style="display:inline-block;">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button type="submit" class="btn btn-delete rounded-circle" 
+                                            onclick="return confirm('Are you sure you want to soft delete this user?')" title="Delete User">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </form>
+                                @endif
+                            </div>
+                        </td>
                     </tr>
                     @endforeach
                 </tbody>
@@ -322,6 +353,57 @@
     background-color: #ffffff !important;
     border-color: #001e54 !important;
     color: #001e54 !important;
+}
+/* General Button Styles */
+.button-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px; /* Space between buttons */
+}
+
+.button-group .btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+    color: white;
+}
+
+.button-group .btn .fas, 
+.button-group .btn .fa {
+    margin: auto; /* Center icon within the button */
+}
+
+/* Button Colors */
+.btn-view {
+    background-color: #008b8b;
+}
+.btn-recover {
+    background-color: #008b8b;
+}
+.btn-edit {
+    background-color: #001e54;
+}
+
+.btn-delete {
+    background-color: #c9302c;
+}
+@media (max-width: 768px) {
+    .button-group {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .button-group .btn {
+        font-size: 0.8rem;
+        padding: 8px;
+        width: 35px;
+        height: 35px;
+    }
 }
 </style>
 @endsection

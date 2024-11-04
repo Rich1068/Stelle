@@ -20,7 +20,6 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
      * @var array<int, string>
      */
 
-    protected $dates = ['deleted_at'];
 
     protected $fillable = [
         'first_name',

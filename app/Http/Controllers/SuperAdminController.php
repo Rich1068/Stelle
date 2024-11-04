@@ -175,7 +175,7 @@ class SuperAdminController extends Controller
 
     public function userlist()
     {
-        $users = User::all();
+        $users = User::withTrashed()->get();
         return view('super_admin.userlist', compact('users'));
     }
 
@@ -251,7 +251,13 @@ class SuperAdminController extends Controller
     }
     public function allEventList()
     {
-        $events = Event::withTrashed()->get();
+        $events = Event::withTrashed()
+        ->withCount(['participants as current_participants' => function ($query) {
+            $query->where('status_id', 1); // Only count accepted participants
+        }])
+        ->get();
+        
+
         return view('super_admin.allEventList', compact('events'));
     }
 

@@ -61,7 +61,8 @@ Route::middleware(['auth','super_admin'])->group(function () {
     Route::post('/super-admin/users', [SuperAdminController::class, 'storeuser'])->name('superadmin.storeuser');
     Route::get('/super-admin/users/edit/{id}', [ProfileController::class, 'superadmin_edit'])->name('superadmin.editProfile');
     Route::patch('/super-admin/users/update/{id}', [ProfileController::class, 'superadmin_update'])->name('superadmin.updateProfile');
-    Route::delete('/super-admin/users/delete/{id}', [ProfileController::class, 'superadmin_destroy'])->name('superadmin.destroyUser');
+    Route::patch('/super-admin/users/delete/{id}', [ProfileController::class, 'superadmin_destroy'])->name('superadmin.destroyUser');
+    Route::patch('/super-admin/users/recpver/{id}', [ProfileController::class, 'superadmin_recover'])->name('superadmin.recoverUser');
     Route::patch('/super-admin/users/role-update/{id}', [ProfileController::class, 'updateRole'])->name('role.update');
     Route::get('/super-admin/events-data', [SuperAdminController::class, 'getEventsData']);
     Route::get('/super-admin/users-data', [SuperAdminController::class, 'getUsersDataByYear']);
