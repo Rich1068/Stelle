@@ -23,7 +23,7 @@
         <span class="icon" aria-hidden="true"></span>
       </button>
       <div class="accordion-content">
-        <p>Stelle is an event management system designed to streamline the planning and execution of tech conferences. The name Stelle, meaning 'star' in French, reflects our commitment to delivering standout events with efficiency and precise tools.</p>
+        <p>Stelle is an event management system designed to streamline the planning and execution of conferences and events. The name Stelle, meaning 'star' in French, reflects our commitment to delivering events with efficiency and precise tools.</p>
       </div>
     </div>
         <hr class="divider">
