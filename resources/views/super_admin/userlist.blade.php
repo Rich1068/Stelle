@@ -35,7 +35,7 @@
         <div class="table-responsive">
             <table id="userDataTable" class="table table-bordered text-center" width="100%" cellspacing="0">
                 <thead>
-                    <>
+                    <tr>
                         <th>Profile Picture</th>
                         <th>Name</th>
                         <th>Email</th>
