@@ -34,7 +34,12 @@
             </div>
             
             <div class="profile-info">
-                <h2 class="name-bold">{{ $user->first_name }} {{ $user->middle_name }} {{ $user->last_name }}</h2>
+            <h2 class="name-bold">
+                {{ $user->first_name }} {{ $user->middle_name }} {{ $user->last_name }}
+                @if($user->trashed())
+                    <span style="color: red;">(DELETED)</span>
+                @endif
+            </h2>
                 <p style="font-size: 1.3em; color: #003d80; display: inline;">
                     <strong class="bio-label" style="font-size: 1.2em; color: #003d80; margin-right: 5px;">Bio:</strong> 
                     <span style="font-size: 1.2em; color: grey;">
