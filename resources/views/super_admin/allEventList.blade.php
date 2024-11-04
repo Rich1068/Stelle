@@ -45,7 +45,17 @@
                         </td>
                         <td>{{ \Carbon\Carbon::parse($event->date)->format('Y-m-d') }}</td>
                         <td>{{ \Carbon\Carbon::parse($event->start_time)->format('h:i A') }} - {{ \Carbon\Carbon::parse($event->end_time)->format('h:i A') }}</td>
-                        <td>{{ $event->userEvent->user->first_name }} {{ $event->userEvent->user->last_name }}</td>
+                        <td>
+                            @if($event->userEvent && $event->userEvent->user)
+                                @if($event->userEvent->user->trashed())
+                                    <span style="color: red;">
+                                        {{ $event->userEvent->user->first_name }} {{ $event->userEvent->user->last_name }}
+                                    </span>
+                                @else
+                                    {{ $event->userEvent->user->first_name }} {{ $event->userEvent->user->last_name }}
+                                @endif
+                            @endif
+                        </td>
                         <td>{{ $event->current_participants }}/{{ $event->capacity }}</td>
                         <td>
                             @if($event->trashed())

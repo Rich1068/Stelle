@@ -252,7 +252,7 @@ class ProfileController extends Controller
     //view someones profile
     public function view($id)
     {
-        $user = User::findOrFail($id);
+        $user = User::withTrashed()->findOrFail($id);
         $attendedEvents = $user->eventParticipant()
             ->with(['event' => function ($query) {
                 $query->withTrashed(); // Include soft-deleted events

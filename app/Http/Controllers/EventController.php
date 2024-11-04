@@ -138,7 +138,9 @@ class EventController extends Controller
  //////////////////////////////////////////////////////////   
     public function view($id): View
     {
-        $userevent = UserEvent::with('user')->where('event_id', $id)->whereHas('user')->firstOrFail();
+        $userevent = UserEvent::with(['user' => function ($query) {
+            $query->withTrashed(); // Include soft-deleted users
+        }])->where('event_id', $id)->first();
         $currentParticipants = EventParticipant::where('event_id', $id)
             ->where('status_id', 1)
             ->whereHas('user')
