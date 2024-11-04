@@ -270,6 +270,7 @@
     box-shadow: none;
 }
 
+
 /* General Table Styling */
 #userDataTable {
     width: 100%;

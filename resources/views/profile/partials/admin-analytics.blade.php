@@ -197,9 +197,13 @@
             },
             options: {
                 scales: {
-                    yAxes: [{
-                        ticks: { beginAtZero: true, stepSize: 1 }
-                    }]
+                    y: {  
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1,
+                            precision: 0,
+                        }
+                    }
                 }
             }
         });
@@ -224,9 +228,13 @@
             },
             options: {
                 scales: {
-                    yAxes: [{
-                        ticks: { beginAtZero: true, stepSize: 1 }
-                    }]
+                    y: {  
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1,
+                            precision: 0,
+                        }
+                    }
                 }
             }
         });
