@@ -391,9 +391,8 @@ class EventController extends Controller
         try {
             // Validate the request data
             $validatedData = $request->validated();
-    
             // Check if the remove event banner checkbox is checked
-            if ($request->has('remove_event_banner') && $request->remove_event_banner) {
+            if ($request->has('remove_event_banner') && $request->input('remove_event_banner') == true) {
                 $oldfile = $event->event_banner;
                 if (!empty($event->event_banner) && File::exists($oldfile)) {
                     File::delete($oldfile);

@@ -87,7 +87,6 @@
                         </div>
                     </div>
                 </div>
-
 <!-- Description -->
 <div class="col-md-12 mb-4">
     <div class="event-field">
@@ -152,24 +151,22 @@
             <i class="fas fa-image mr-2"></i>
             <span class="font-bold">{{ __('Event Banner') }}</span>
         </label>
-        
-
         <input id="event_banner" name="event_banner" type="file" accept="image/*" class="mt-1 block w-full event-input" onchange="previewImage(event)" style="display: none;" />
-
-   
         <button type="button" class="custom-file-button" onclick="document.getElementById('event_banner').click()">
             <i class="fas fa-upload"></i> <span class="bold-text">Update Event Banner</span>
         </button>
         <div class="mt-2">
             <label for="remove_event_banner">
-                <input type="checkbox" name="remove_event_banner" id="remove_event_banner"> {{ __('Remove Event Banner') }}
+                {{ __('Remove Event Banner') }}
+                <input type="checkbox" name="remove_event_banner" id="remove_event_banner" value="1">
             </label>
         </div>
-        
         <x-input-error class="mt-2" :messages="$errors->get('event_banner')" />
 
         <!-- Image preview section for the selected file -->
-        <img id="image_preview" class="event-image-preview" style="display: none; max-width: 50%; margin-top: 10px;" />
+        <img id="image_preview" class="event-image-preview" 
+            src="{{ $event->event_banner ? asset($event->event_banner) : '' }}" 
+            style="display: {{ $event->event_banner ? 'block' : 'none' }}; margin-top: 10px;" />
     </div>
 </div>
 
@@ -205,18 +202,37 @@
     .bold-text {
         font-weight: bold;
     }
-.custom-bg-white {
-    border-radius: 15px; /* Add border radius */
-    max-width: 120%;
-    padding: 12px;
-    align-items: center; /* This is not necessary unless you're using flexbox */
-    margin: auto; /* Center the element */
-    background-color: white; /* Set background color */
-    background-color: rgba(255, 255, 255, 0.4) !important; /* Semi-transparent white */
-    margin-bottom: 20px !important;
-}
+    .custom-bg-white {
+        border-radius: 15px; /* Add border radius */
+        max-width: 120%;
+        padding: 12px;
+        align-items: center; /* This is not necessary unless you're using flexbox */
+        margin: auto; /* Center the element */
+        background-color: white; /* Set background color */
+        background-color: rgba(255, 255, 255, 0.4) !important; /* Semi-transparent white */
+        margin-bottom: 20px !important;
+    }
+    .event-image-preview {
+        width: 100%;
+        max-width: 400px; /* Maximum width on larger screens */
+        height: auto;     /* Maintains aspect ratio */
+        margin-top: 10px;
+    }
 
-    </style>
+    /* Adjust the preview size for smaller screens */
+    @media (max-width: 768px) {
+        .event-image-preview {
+            max-width: 80%; /* Make the image scale down on tablets and mobile */
+        }
+    }
+
+    @media (max-width: 480px) {
+        .event-image-preview {
+            max-width: 100%; /* Full width on smaller mobile screens */
+        }
+    }
+
+</style>
 
 <script>
       function autoResize(textarea) {
@@ -238,5 +254,11 @@ function disableAfterClick(button) {
     button.innerText = 'Updating...';
     button.form.submit();
 }
+document.addEventListener('DOMContentLoaded', function() {
+        var descriptionTextarea = document.getElementById('description');
+        if (descriptionTextarea) {
+            autoResize(descriptionTextarea);
+        }
+    });
 </script>
 @endsection
