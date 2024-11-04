@@ -35,11 +35,12 @@
         <div class="table-responsive">
             <table id="userDataTable" class="table table-bordered text-center" width="100%" cellspacing="0">
                 <thead>
-                    <tr>
+                    <>
                         <th>Profile Picture</th>
                         <th>Name</th>
                         <th>Email</th>
                         <th>Role</th>
+                        <th>Status</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -57,6 +58,15 @@
                         </td>
                         <td>{{$user->email}}</td>
                         <td>{{ $user->role->role_name }}</td>
+                        <td>
+                            @if($user->trashed())
+                                <span style="color: red;">DELETED</span>
+                            @elseif($user->email_verified_at == null)
+                                <span style="color: gray;">NOT VERIFIED</span>
+                            @else
+                                <span style="color: green;">ACTIVE</span>
+                            @endif
+                        </td>
                         <td>
                             <div class="button-group" style="display: flex; justify-content: center; align-items: center;">
                             <form action="{{ route('profile.view', $user->id) }}" method="POST" style="display:inline-block;">
