@@ -240,6 +240,16 @@
     transition: color 0.3s ease; /* Smooth color transition on hover */
     outline: none; /* Remove focus outline */
 }
+.dataTables_wrapper .dataTables_length select {
+    padding: 5px;
+    height: auto;
+    font-size: 0.9rem;
+    border: 1px solid #ccc;  /* Add border to make it visible */
+    background-color: #fff;
+    color: #333;
+    border-radius: 4px;  /* Adjusts the rounded corners */
+    outline: none;  /* Removes focus outline */
+}
 
 /* Hover Effect for Pagination */
 .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
