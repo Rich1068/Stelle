@@ -36,7 +36,7 @@
             <table id="userDataTable" class="table table-bordered text-center" width="100%" cellspacing="0">
                 <thead>
                     <tr>
-                        <th>Profile Picture</th>
+                        <th class="d-none d-md-table-cell">Profile Picture</th> <!-- Hidden on smaller screens -->
                         <th>Name</th>
                         <th>Email</th>
                         <th>Role</th>
@@ -47,35 +47,35 @@
                 <tbody>
                     @foreach($users as $user)
                     <tr>
-                        <td>
+                        <td class="d-none d-md-table-cell">
                             <img src="{{ $user->profile_picture ? asset($user->profile_picture) : asset('storage/images/profile_pictures/default.jpg') }}" 
                                  alt="Profile picture of {{ $user->first_name }}" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
                         </td>
                         <td>
-                            <a href="{{ route('profile.view', $user->id) }}" class="participant-name" style="color: #001e54; text-decoration: none;">
-                                {{ Str::limit($user->first_name . ' ' . $user->last_name, 16) }}
+                            <a href="{{ route('profile.view', $user->id) }}" class="participant-namee" style="color: #001e54; text-decoration: none;">
+                                {{$user->first_name . ' ' . $user->last_name }}
                             </a>
                         </td>
                         <td>{{$user->email}}</td>
                         <td>{{ $user->role->role_name }}</td>
                         <td>
                             @if($user->trashed())
-                                <span style="color: red;">DELETED</span>
+                                <span style="color: red;" class="status">DELETED</span>
                             @elseif($user->email_verified_at == null)
-                                <span style="color: gray;">NOT VERIFIED</span>
+                                <span style="color: gray;" class="status">NOT VERIFIED</span>
                             @else
-                                <span style="color: green;">ACTIVE</span>
+                                <span style="color: green;" class="status">ACTIVE</span>
                             @endif
                         </td>
                         <td>
-                            <div class="button-group" style="display: flex; justify-content: center; align-items: center;">
-                            <form action="{{ route('profile.view', $user->id) }}" method="POST" style="display:inline-block;">
-                                        @csrf
-                                        @method('GET')
-                                        <button type="submit" class="btn btn-recover rounded-circle">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                    </form>
+                            <div class="button-group">
+                                <form action="{{ route('profile.view', $user->id) }}" method="POST" style="display:inline-block;">
+                                    @csrf
+                                    @method('GET')
+                                    <button type="submit" class="btn btn-recover rounded-circle">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </form>
                                 @if($user->trashed())
                                     <form action="{{ route('superadmin.recoverUser', $user->id) }}" method="POST" style="display:inline-block;">
                                         @csrf
@@ -133,111 +133,44 @@
 </script>
 
 <style>
-
-.dataTables_wrapper .dataTables_length,
-.dataTables_wrapper .dataTables_filter,
-.dataTables_wrapper .dataTables_info,
-.dataTables_wrapper .dataTables_paginate {
-    color: #333; /* Darker text color for better readability */
-    font-size: 0.9rem; /* Slightly smaller font for compact look */
-    margin: 10px 0; /* Space between elements */
-}
-
-#evaluationFormsTable {
-    width: 100%;
-    border-collapse: collapse;
-    color: #002060; /* Dark blue text color */
-    font-size: 0.9rem; /* Smaller font for cleaner look */
-}
-
-#evaluationFormsTable th, #evaluationFormsTable td {
-    text-align: center;
-    vertical-align: middle;
-    padding: 10px;
-    border-bottom: 1px solid #e0e0e0; /* Light grey bottom border only */
-}
-
-/* Header Styling */
-#evaluationFormsTable th {
-    background-color: #f7f8fa; /* Softer light grey for the header */
-    font-weight: 600; /* Slightly bolder for visibility */
-    color: #333; /* Darker text for header */
-}
-
-/* Alternating Row Colors */
-#evaluationFormsTable tbody tr:nth-child(odd) {
-    background-color: #fafbfc; /* Very light grey for odd rows */
-}
-
-#evaluationFormsTable tbody tr:nth-child(even) {
-    background-color: #ffffff; /* White for even rows */
-}
-
-/* Hover Effect */
-#evaluationFormsTable tbody tr:hover {
-    background-color: #f0f4ff; /* Light blue tint on hover */
-}
-
-/* Cleaner Pagination Styling */
-.dataTables_wrapper .dataTables_paginate .paginate_button {
-    background: none;
-    color: #002060; /* Dark blue text */
-    border: none;
-    font-size: 0.85rem;
-    padding: 5px 10px;
-    margin: 0 2px;
-    cursor: pointer;
-    transition: color 0.2s ease;
-}
-
-/* Pagination Hover and Active Style */
-.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-    color: #004080; /* Slightly darker blue on hover */
-}
-
-.dataTables_wrapper .dataTables_paginate .paginate_button.current {
-    color: #ffffff; /* White text for active page */
-    background-color: #002060; /* Dark blue background for active page */
-    border-radius: 5px;
-}
-
-/* Remove Pagination Focus Outline */
-.dataTables_wrapper .dataTables_paginate .paginate_button:focus {
-    outline: none;
-    box-shadow: none;
-}
-
-/* Styling for Dropdown (entries selection) */
-.dataTables_wrapper .dataTables_length select {
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background: transparent;
-    border: none;
-    font-size: inherit;
-    color: #333;
-    padding: 0;
-    margin: 0;
-}
-
-/* Styling for Search Box */
-.dataTables_wrapper .dataTables_filter input {
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 5px 10px;
+/* Default table styles */
+.table th, .table td {
     font-size: 0.9rem;
-    color: #333;
-    background-color: #fafafa;
-    outline: none;
-    transition: border-color 0.2s ease;
+}
+.participant-namee {
+  font-size: 1.2em; /* Font size for larger screens */
+  color: #002f6c; /* Dark blue color */
+  font-weight: bold;
+  word-wrap: break-word; /* Allows long names to break onto a new line */
+  white-space: normal; /* Allows text to wrap onto multiple lines */
 }
 
-.dataTables_wrapper .dataTables_filter input:focus {
-    border-color: #004080; /* Slightly darker border on focus */
-}
 
+/* Mobile-friendly adjustments */
+@media (max-width: 768px) {
+    .table th, .table td {
+        font-size: 0.85rem; /* Smaller font for readability on mobile */
+    }
+    .button-group .btn {
+        width: 30px;
+        height: 30px;
+        font-size: 0.75rem;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .custom-select-container {
+        width: 100%;
+    }
+    .participant-namee {
+    font-size: 1em; /* Smaller font size for mobile devices */
+    }
+
+
+}
 .dataTables_wrapper .dataTables_length select {
-    padding: 5px;
+    min-width: 50px; /* Adjust width as needed */
+    padding: 5px; /* Add padding for better readability */
     height: auto;
     font-size: 0.9rem;
     border: 1px solid #ccc;  /* Add border to make it visible */
@@ -247,87 +180,19 @@
     outline: none;  /* Removes focus outline */
 }
 
-    /* Minimalist Pagination Styling */
-.dataTables_wrapper .dataTables_paginate .paginate_button {
-    background: none; /* No background */
-    color: #002060; /* Dark blue text */
-    border: none;
-    padding: 5px 10px;
-    margin: 0 2px;
-    cursor: pointer;
-    font-weight: normal;
-    transition: color 0.3s ease; /* Smooth color transition on hover */
-    outline: none; /* Remove focus outline */
+/* Hides the profile picture column on small screens */
+.d-none.d-md-table-cell {
+    display: none;
 }
 
-
-/* Hover Effect for Pagination */
-.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-    color: #ffffff; /* White text on hover */
-    background: none; /* Ensure no background on hover */
+/* Styles for larger screens */
+@media (min-width: 768px) {
+    .d-none.d-md-table-cell {
+        display: table-cell;
+    }
 }
 
-/* Active Page Style */
-.dataTables_wrapper .dataTables_paginate .paginate_button.current {
-    color: #ffffff; /* White text for active page */
-    font-weight: bold; /* Bold for the active page */
-    background: none; /* Ensure no background */
-    outline: none; /* Remove outline */
-    box-shadow: none; /* Remove any default shadow */
-}
-
-/* Remove hover effect on active page */
-.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
-    background: none; /* No background on hover for active page */
-    color: #ffffff; /* Keep white text for consistency */
-    box-shadow: none; /* No shadow */
-}
-
-/* Remove focus outline on click */
-.dataTables_wrapper .dataTables_paginate .paginate_button:focus {
-    outline: none;
-    background: none;
-    box-shadow: none;
-}
-
-
-/* General Table Styling */
-#userDataTable {
-    width: 100%;
-    border-collapse: collapse;
-    color: #002060;
-    font-size: 0.9rem;
-}
-
-#userDataTable th, #userDataTable td {
-    text-align: center;
-    vertical-align: middle;
-    padding: 10px;
-    border-bottom: 1px solid #e0e0e0;
-}
-
-/* Header Styling */
-#userDataTable th {
-    background-color: #f7f8fa;
-    font-weight: bold;
-    color: #333;
-}
-
-/* Alternating Row Colors */
-#userDataTable tbody tr:nth-child(odd) {
-    background-color: #fafbfc;
-}
-
-#userDataTable tbody tr:nth-child(even) {
-    background-color: #ffffff;
-}
-
-/* Hover Effect */
-#userDataTable tbody tr:hover {
-    background-color: #f0f4ff;
-}
-
-/* Dropdown Styling */
+/* Dropdown adjustments */
 .custom-select-container {
     width: 200px;
     margin-left: 10px;
@@ -344,7 +209,8 @@
     margin: auto;
 }
 
-/* Pagination and Button Styling */
+/* Pagination and Search Box styling */
+
 .dataTables_wrapper .dataTables_paginate .paginate_button {
     background: none;
     color: #002060;
@@ -353,9 +219,11 @@
     padding: 5px 10px;
     margin: 0 2px;
     cursor: pointer;
+    transition: color 0.2s ease;
 }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background: none;
     color: #004080;
 }
 
@@ -365,22 +233,67 @@
     border-radius: 5px;
 }
 
-.dataTables_wrapper .dataTables_paginate .paginate_button:focus {
-    outline: none;
-    box-shadow: none;
+.dataTables_wrapper .dataTables_filter input {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 0.9rem;
+    color: #333;
+    background-color: #fafafa;
 }
 
-.page-item.active .page-link {
-    background-color: #ffffff !important;
-    border-color: #001e54 !important;
-    color: #001e54 !important;
+/* Styling for Table */
+#userDataTable {
+    width: 100%;
+    border-collapse: collapse;
+    color: #002060;
+    font-size: 0.9rem;
 }
+
+#userDataTable th, #userDataTable td {
+    text-align: center;
+    vertical-align: middle;
+    padding: 5px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+/* Header Styling */
+#userDataTable th {
+    background-color: #f7f8fa;
+    font-weight: bold;
+    color: #333;
+}
+#userDataTable td:nth-child(2),
+#userDataTable th:nth-child(2) {
+    min-width: 100px; /* Adjust width as needed */
+    white-space: normal; /* Allow text to wrap */
+    word-wrap: break-word;
+}
+
+/* Alternating Row Colors */
+#userDataTable tbody tr:nth-child(odd) {
+    background-color: #fafbfc;
+}
+
+#userDataTable tbody tr:nth-child(even) {
+    background-color: #ffffff;
+}
+
+/* Hover Effect */
+#userDataTable tbody tr:hover {
+    background-color: #f0f4ff;
+}
+
 /* General Button Styles */
 .button-group {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 5px; /* Space between buttons */
+}
+.button-group .btn .fas, 
+.button-group .btn .fa {
+    margin: auto; /* Center icon within the button */
 }
 
 .button-group .btn {
@@ -394,11 +307,6 @@
     color: white;
 }
 
-.button-group .btn .fas, 
-.button-group .btn .fa {
-    margin: auto; /* Center icon within the button */
-}
-
 /* Button Colors */
 .btn-view {
     background-color: #008b8b;
@@ -409,22 +317,8 @@
 .btn-edit {
     background-color: #001e54;
 }
-
 .btn-delete {
     background-color: #c9302c;
-}
-@media (max-width: 768px) {
-    .button-group {
-        flex-direction: column;
-        align-items: center;
-    }
-    
-    .button-group .btn {
-        font-size: 0.8rem;
-        padding: 8px;
-        width: 35px;
-        height: 35px;
-    }
 }
 </style>
 @endsection
