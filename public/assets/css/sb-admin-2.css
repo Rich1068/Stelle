@@ -2322,22 +2322,7 @@ h2 {
     display: flex;
     align-items: center;
     justify-content: center;
-}
-@media (max-width: 468px) {
-  .profile-picture {
-    width: 40px !important;  /* Set equal width and height */
-    height: 30px !important; /* Equal height */
-    border-radius: 50% !important; /* Makes it a circle */
-    overflow: hidden; /* Hide overflow to avoid distortion */
-    display: block !important;
-    margin-left: 10px;
-  }
-
-  .profile-picture img {
-    width: 100%; /* Ensure the image fills the container */
-    height: 100%; /* Scale image to the height */
-    object-fit: cover; /* Ensures the image maintains its aspect ratio */
-  }
+  
 }
 
 .profile-picture img {
@@ -2348,7 +2333,12 @@ h2 {
     border-radius: 50%;
     object-fit: cover;
 }
-
+@media (max-width: 768px) {
+  .profile-picture, .profile-picture img {
+      width: 80px; 
+      height: 80px;
+  }
+}
 .flag-icon {
     max-width: 50px;
     max-height: 50px;
