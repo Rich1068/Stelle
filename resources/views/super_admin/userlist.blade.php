@@ -221,6 +221,12 @@
     cursor: pointer;
     transition: color 0.2s ease;
 }
+.page-item.active .page-link {
+    background-color: #ffffff !important;
+    border-color: #001e54 !important;
+    color: #001e54 !important;
+}
+
 
 .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
     background: none;

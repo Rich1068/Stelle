@@ -12,7 +12,7 @@
 <div class="top-container mb-4 d-flex align-items-left justify-content-between" style="background-color: #fff; border-radius: 15px; padding: 20px; box-shadow: none; margin-bottom: 100px;">
     <div class="d-flex align-items-center">
         <h2 class="font-weight-bold mb-0" style="color: #002060;">
-            <i class="fas fa-solid fa-calendar-week"></i>All Event List
+            <i class="fas fa-solid fa-calendar-week"></i> All Event List
         </h2>
     </div>
 </div>
@@ -23,14 +23,14 @@
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table id="dataTable" class="table table-bordered" width="100%" cellspacing="0">
+            <table id="dataTable" class="table table-bordered text-center" width="100%" cellspacing="0">
                 <thead>
                     <tr>
                         <th>Title</th>
                         <th>Date</th>
-                        <th>Duration</th>
+                        <th class="d-none d-md-table-cell">Duration</th> <!-- Hidden on smaller screens -->
                         <th>Organizer</th>
-                        <th>Participants</th>
+                        <th class="d-none d-md-table-cell">Participants</th> <!-- Hidden on smaller screens -->
                         <th>Status</th>
                         <th>Action</th>
                     </tr>
@@ -44,7 +44,7 @@
                             </a>
                         </td>
                         <td>{{ \Carbon\Carbon::parse($event->date)->format('Y-m-d') }}</td>
-                        <td>{{ \Carbon\Carbon::parse($event->start_time)->format('h:i A') }} - {{ \Carbon\Carbon::parse($event->end_time)->format('h:i A') }}</td>
+                        <td class="d-none d-md-table-cell">{{ \Carbon\Carbon::parse($event->start_time)->format('h:i A') }} - {{ \Carbon\Carbon::parse($event->end_time)->format('h:i A') }}</td>
                         <td>
                             @if($event->userEvent && $event->userEvent->user)
                                 @if($event->userEvent->user->trashed())
@@ -56,7 +56,7 @@
                                 @endif
                             @endif
                         </td>
-                        <td>{{ $event->current_participants }}/{{ $event->capacity }}</td>
+                        <td class="d-none d-md-table-cell">{{ $event->current_participants }}/{{ $event->capacity }}</td>
                         <td>
                             @if($event->trashed())
                                 <span style="color: red;">DELETED</span>
@@ -71,13 +71,13 @@
                         </td>
                         <td>
                             <div class="button-group" style="display: flex; justify-content: center; align-items: center;">
-                            <form action="{{ route('event.view', $event->id) }}" method="POST" style="display:inline-block;">
-                                        @csrf
-                                        @method('GET')
-                                        <button type="submit" class="btn btn-recover rounded-circle">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                    </form>
+                                <form action="{{ route('event.view', $event->id) }}" method="POST" style="display:inline-block;">
+                                    @csrf
+                                    @method('GET')
+                                    <button type="submit" class="btn btn-recover rounded-circle">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </form>
                                 <!-- Conditionally display Delete or Recover button -->
                                 @if($event->trashed())
                                     <!-- Recover button for soft deleted event -->
@@ -317,7 +317,7 @@ h6 {
 #dataTable th, #dataTable td {
     text-align: center;
     vertical-align: middle;
-    padding: 10px;
+    padding: 5px;
     border-bottom: 1px solid #e0e0e0;
 }
 
@@ -479,7 +479,22 @@ h6 {
     }
 }
 
-
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+    .event-title {
+        font-size: 0.8rem;
+    }
+    .table th,
+    .table td {
+        font-size: 0.8rem;
+    }
+    .alert {
+        font-size: 0.85rem;
+    }
+    .button-group .btn i {
+        font-size: 0.9rem;
+    }
+}
 </style>
 
 <!-- DataTables JavaScript -->
