@@ -243,8 +243,7 @@ class SuperAdminController extends Controller
             'role_id' => $request->role_id,  // Allow the super admin to choose the role if necessary
         ]);
 
-        // Optionally, you could trigger the registered event to send email verification, but this is not needed if you don't want to.
-        // event(new Registered($user));
+
 
         // Redirect back to the user list
         return redirect()->route('profile.view', ['id' => $user->id])->with('success', 'User has been created successfully.');
@@ -252,12 +251,14 @@ class SuperAdminController extends Controller
     public function allEventList()
     {
         $events = Event::withTrashed()
-        ->withCount(['participants as current_participants' => function ($query) {
-            $query->where('status_id', 1); // Only count accepted participants
-        }])
-        ->get();
-        
-
+            ->withCount(['participants as current_participants' => function ($query) {
+                $query->where('status_id', 1); // Only count accepted participants
+            }])
+            ->with(['userEvent.user' => function ($query) {
+                $query->withTrashed(); // Include soft-deleted users
+            }])
+            ->get();
+    
         return view('super_admin.allEventList', compact('events'));
     }
 

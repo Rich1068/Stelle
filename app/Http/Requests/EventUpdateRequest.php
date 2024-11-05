@@ -22,9 +22,10 @@ class EventUpdateRequest extends FormRequest
             'mode' => ['required', 'string', 'in:onsite,virtual'],
             'address' => ['required', 'string', 'max:255'],
             'start_time' => ['required', 'date_format:H:i'],
-            'end_time' => ['required', 'date_format:H:i'],
+            'end_time' => ['required', 'date_format:H:i', 'different:start_time'], // Add this line
             'capacity' => ['required', 'integer', 'min:1'],
-            'event_banner' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048']
+            'event_banner' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
+            'remove_event_banner' => ['nullable', 'boolean']
         ];
     }
 }

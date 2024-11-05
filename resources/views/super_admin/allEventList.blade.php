@@ -12,7 +12,7 @@
 <div class="top-container mb-4 d-flex align-items-left justify-content-between" style="background-color: #fff; border-radius: 15px; padding: 20px; box-shadow: none; margin-bottom: 100px;">
     <div class="d-flex align-items-center">
         <h2 class="font-weight-bold mb-0" style="color: #002060;">
-            <i class="fas fa-calendar-alt"></i> Event List
+            <i class="fas fa-solid fa-calendar-week"></i>All Event List
         </h2>
     </div>
 </div>
@@ -45,7 +45,17 @@
                         </td>
                         <td>{{ \Carbon\Carbon::parse($event->date)->format('Y-m-d') }}</td>
                         <td>{{ \Carbon\Carbon::parse($event->start_time)->format('h:i A') }} - {{ \Carbon\Carbon::parse($event->end_time)->format('h:i A') }}</td>
-                        <td>{{ $event->userEvent->user->first_name }} {{ $event->userEvent->user->last_name }}</td>
+                        <td>
+                            @if($event->userEvent && $event->userEvent->user)
+                                @if($event->userEvent->user->trashed())
+                                    <span style="color: red;">
+                                        {{ $event->userEvent->user->first_name }} {{ $event->userEvent->user->last_name }}
+                                    </span>
+                                @else
+                                    {{ $event->userEvent->user->first_name }} {{ $event->userEvent->user->last_name }}
+                                @endif
+                            @endif
+                        </td>
                         <td>{{ $event->current_participants }}/{{ $event->capacity }}</td>
                         <td>
                             @if($event->trashed())
@@ -178,44 +188,33 @@ h6 {
     margin: 10px 0; /* Space between elements */
 }
 
-#evaluationFormsTable {
-    width: 100%;
-    border-collapse: collapse;
-    color: #002060; /* Dark blue text color */
-    font-size: 0.9rem; /* Smaller font for cleaner look */
+/* Remove hover background on pagination buttons */
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background-color: transparent !important; 
+    color: #004080; 
+    box-shadow: none; 
+    border: none; 
 }
 
-#evaluationFormsTable th, #evaluationFormsTable td {
-    text-align: center;
-    vertical-align: middle;
-    padding: 10px;
-    border-bottom: 1px solid #e0e0e0; /* Light grey bottom border only */
+/* Pagination Hover and Active Style */
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    color: #004080; /* Slightly darker blue on hover */
 }
 
-/* Header Styling */
-#evaluationFormsTable th {
-    background-color: #f7f8fa; /* Softer light grey for the header */
-    font-weight: 600; /* Slightly bolder for visibility */
-    color: #333; /* Darker text for header */
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    color: #ffffff; /* White text for active page */
+    background-color: #002060; /* Dark blue background for active page */
+    border-radius: 5px;
 }
 
-/* Alternating Row Colors */
-#evaluationFormsTable tbody tr:nth-child(odd) {
-    background-color: #fafbfc; /* Very light grey for odd rows */
+/* Remove Pagination Focus Outline */
+.dataTables_wrapper .dataTables_paginate .paginate_button:focus {
+    outline: none;
+    box-shadow: none;
 }
-
-#evaluationFormsTable tbody tr:nth-child(even) {
-    background-color: #ffffff; /* White for even rows */
-}
-
-/* Hover Effect */
-#evaluationFormsTable tbody tr:hover {
-    background-color: #f0f4ff; /* Light blue tint on hover */
-}
-
 /* Cleaner Pagination Styling */
 .dataTables_wrapper .dataTables_paginate .paginate_button {
-    background: none;
+    background: none !important;
     color: #002060; /* Dark blue text */
     border: none;
     font-size: 0.85rem;
@@ -237,6 +236,31 @@ h6 {
 }
 
 /* Remove Pagination Focus Outline */
+.dataTables_wrapper .dataTables_paginate .paginate_button:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    background: none;
+    color: #002060;
+    border: none;
+    font-size: 0.85rem;
+    padding: 5px 10px;
+    margin: 0 2px;
+    cursor: pointer;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    color: #004080;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    color: #ffffff;
+    background-color: #002060;
+    border-radius: 5px;
+}
+
 .dataTables_wrapper .dataTables_paginate .paginate_button:focus {
     outline: none;
     box-shadow: none;
@@ -279,64 +303,6 @@ h6 {
     background-image: none;     /* Ensure no background arrow image */
 
     margin: auto;
-}
-
-    /* Minimalist Pagination Styling */
-.dataTables_wrapper .dataTables_paginate .paginate_button {
-    background: none; /* No background */
-    color: #002060; /* Dark blue text */
-    border: none;
-    padding: 5px 10px;
-    margin: 0 2px;
-    cursor: pointer;
-    font-weight: normal;
-    transition: color 0.3s ease; /* Smooth color transition on hover */
-    outline: none; /* Remove focus outline */
-}
-
-/* Hover Effect for Pagination */
-.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-    color: #ffffff; /* White text on hover */
-    background: none; /* Ensure no background on hover */
-}
-
-/* Active Page Style */
-.dataTables_wrapper .dataTables_paginate .paginate_button.current {
-    color: #ffffff; /* White text for active page */
-    font-weight: bold; /* Bold for the active page */
-    background: none; /* Ensure no background */
-    outline: none; /* Remove outline */
-    box-shadow: none; /* Remove any default shadow */
-}
-
-/* Remove hover effect on active page */
-.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
-    background: none; /* No background on hover for active page */
-    color: #ffffff; /* Keep white text for consistency */
-    box-shadow: none; /* No shadow */
-}
-
-/* Remove focus outline on click */
-.dataTables_wrapper .dataTables_paginate .paginate_button:focus {
-    outline: none;
-    background: none;
-    box-shadow: none;
-}
-
-    /* Active Page Style */
-.dataTables_wrapper .dataTables_paginate .paginate_button.current {
-    color: #ffffff !important; /* White text for active page */
-    font-weight: bold !important; /* Bold for the active page */
-    background: none !important; /* Ensure no background */
-    outline: none !important; /* Remove outline */
-    box-shadow: none !important; /* Remove any default shadow */
-}
-
-/* Remove hover effect on active page */
-.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
-    background: none !important; /* No background on hover for active page */
-    color: #ffffff !important; /* Keep white text for consistency */
-    box-shadow: none !important; /* No shadow */
 }
 
 /* General Table Styling */
@@ -394,33 +360,6 @@ h6 {
     background-color: #004080;
     transform: translateY(-2px);
     color: #ffffff;
-}
-
-/* Minimalist Pagination */
-.dataTables_wrapper .dataTables_paginate .paginate_button {
-    background: none;
-    color: #002060;
-    border: none;
-    font-size: 0.85rem;
-    padding: 5px 10px;
-    margin: 0 2px;
-    cursor: pointer;
-}
-
-.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-    color: #004080;
-}
-
-.dataTables_wrapper .dataTables_paginate .paginate_button.current {
-    color: #ffffff;
-    background-color: #002060;
-    border-radius: 5px;
-    box-shadow: none;
-}
-
-.dataTables_wrapper .dataTables_paginate .paginate_button:focus {
-    outline: none;
-    box-shadow: none;
 }
 
 /* Styling for Dropdown (entries selection) */

@@ -138,7 +138,9 @@ class EventController extends Controller
  //////////////////////////////////////////////////////////   
     public function view($id): View
     {
-        $userevent = UserEvent::with('user')->where('event_id', $id)->whereHas('user')->firstOrFail();
+        $userevent = UserEvent::with(['user' => function ($query) {
+            $query->withTrashed(); // Include soft-deleted users
+        }])->where('event_id', $id)->first();
         $currentParticipants = EventParticipant::where('event_id', $id)
             ->where('status_id', 1)
             ->whereHas('user')
@@ -311,7 +313,7 @@ class EventController extends Controller
             'mode' => ['required', 'string', 'in:onsite,virtual'],
             'address' => ['required', 'string', 'max:255'],
             'start_time' => ['required', 'date_format:H:i'],
-            'end_time' => ['required', 'date_format:H:i'],
+            'end_time' => ['required', 'date_format:H:i', 'different:start_time'],
             'capacity' => ['required', 'integer', 'min:1'],
             'event_banner' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048']
         ]);
@@ -391,9 +393,8 @@ class EventController extends Controller
         try {
             // Validate the request data
             $validatedData = $request->validated();
-    
             // Check if the remove event banner checkbox is checked
-            if ($request->has('remove_event_banner') && $request->remove_event_banner) {
+            if ($request->has('remove_event_banner') && $request->input('remove_event_banner') == true) {
                 $oldfile = $event->event_banner;
                 if (!empty($event->event_banner) && File::exists($oldfile)) {
                     File::delete($oldfile);

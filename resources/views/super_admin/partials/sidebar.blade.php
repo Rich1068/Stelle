@@ -94,7 +94,7 @@
         </a>
         <a href="{{ route('superadmin.eventlist') }}" class="nav-link {{ request()->routeIs('superadmin.eventlist') ? 'active' : '' }}">
             <span>Manage All Events</span>
-            <i class="fas fa-calendar-alt"></i>
+            <i class="fas fa-solid fa-calendar-week"></i>
         </a>
     </li>
 
