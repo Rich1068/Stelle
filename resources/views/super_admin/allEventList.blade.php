@@ -12,7 +12,7 @@
 <div class="top-container mb-4 d-flex align-items-left justify-content-between" style="background-color: #fff; border-radius: 15px; padding: 20px; box-shadow: none; margin-bottom: 100px;">
     <div class="d-flex align-items-center">
         <h2 class="font-weight-bold mb-0" style="color: #002060;">
-            <i class="fas fa-calendar-alt"></i> Event List
+            <i class="fas fa-solid fa-calendar-week"></i>All Event List
         </h2>
     </div>
 </div>
