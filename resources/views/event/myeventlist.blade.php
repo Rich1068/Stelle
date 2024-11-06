@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('body')
+
+
 <div class="top-container">
     <h2 class="font-weight-bold mb-0">
         <i class="fas fa-list me-2"></i> <!-- List icon -->
@@ -43,10 +45,12 @@
     @include('event.partials.myeventlist', ['events' => $events])
 </div>
 
-<div class="no-events-container" style="display: {{ $events->isEmpty() ? 'block' : 'none' }};">
-    <i class="fas fa-calendar-times"></i>
-    <p>No events available.</p>
-</div>
+@if ($events->count() == 0)
+    <div class="no-events-container">
+        <i class="fas fa-calendar-times"></i>
+        <p>No events available.</p>
+    </div>
+@endif
 
 <!-- Pagination -->
 <div id="pagination-links">

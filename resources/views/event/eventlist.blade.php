@@ -2,6 +2,7 @@
 
 @section('body')
 
+
 <!-- Include the global CSS in your main layout -->
 <link href="{{ asset('assets/css/sb-admin-2.css') }}" rel="stylesheet">
 <link href="{{ asset('assets/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet">
@@ -45,15 +46,19 @@
     @include('event.partials.eventlist', ['events' => $events]) <!-- Separate partial for events -->
 </div>
 
-<div class="no-events-container" style="display: {{ $events->isEmpty() ? 'block' : 'none' }};">
-    <i class="fas fa-calendar-times"></i>
-    <p>No events available.</p>
-</div>
+<!-- No Events Message -->
+@if ($events->count() == 0)
+    <div class="no-events-container">
+        <i class="fas fa-calendar-times"></i>
+        <p>No events available.</p>
+    </div>
+@endif
 
 <!-- Pagination -->
 <div class="d-flex justify-content-center" id="pagination-links">
     {{ $events->appends(request()->query())->links('vendor.pagination.custom1') }}
 </div>
+
 
 @endsection
 

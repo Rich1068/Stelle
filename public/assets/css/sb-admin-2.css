@@ -523,6 +523,41 @@ th, td {
   padding-left: 10px;
   border-radius: 10px 0 0 10px; /* Rounded corners for input */
 }
+.search-wrapper { 
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 60%; /* Default width for larger screens */
+  margin-right: 10px;
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 0;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  height: 48px;
+}
+
+.search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  height: 100%;
+  font-size: 1rem;
+  color: #1a2a5c;
+  padding-left: 10px;
+  border-radius: 10px 0 0 10px;
+}
+
+/* Adjust width to 90% on mobile */
+@media (max-width: 768px) {
+  .search-input {
+    width: 90%; /* Full width on smaller screens */
+    margin-right: 0; /* Remove margin for better centering on mobile */
+  }
+  .search-wrapper {
+    width: 90%; /* Full width on smaller screens */
+    margin-right: 0; /* Remove margin for better centering on mobile */
+  }
+}
 
 .search-btn {
   background: none;
@@ -1102,9 +1137,14 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   .form-question-container {
     padding: 20px; /* Reduce padding for mobile */
     margin: 15px auto; /* Adjust margin for mobile */
-    max-width: 95%; /* Increase width for smaller screens */
+    width: 100%; /* Ensure it uses full width */
+    max-width: 90%; /* Set a maximum width to limit how wide it can go */
+    min-height: 100vh; /* Ensure the container takes full height */
+    box-sizing: border-box; /* Includes padding and border in width/height calculation */
+    margin: 20px auto;
   }
 }
+
 
 /* Divider between input field and buttons */
 .divider {
@@ -1305,7 +1345,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 @media (max-width: 768px) {
   .form-question-container {
       padding: 15px;
-      max-width: 100%;
+      max-width: 90%;
   }
 
   .button-container {
@@ -1314,8 +1354,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 
   .add-question-btn,
   .save-questions-btn {
-      width: 100%;
-      margin: 5px 0;
+      width: 70%;
   }
 }
 
@@ -1348,6 +1387,8 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   margin-bottom: 20px;
   overflow: hidden;
 }
+
+
 
 /* Tabs */
 .tabs {
@@ -1436,7 +1477,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   gap: 25px;
   margin-bottom: 10px;
 }
-
+w
 .event-view-buttons .btn {
   margin-top: 19px;
   background-color: #001e54;
@@ -1451,7 +1492,17 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   justify-content: center;
   height: 55px;
 }
+@media (max-width: 768px) {
+  .event-view-buttons {
+    grid-template-columns: 1fr; /* Stack buttons vertically on mobile */
+    gap: 15px; /* Vertical gap between buttons */
+  }
 
+  .event-view-buttons .btn {
+    margin-top: 10px; /* Adjust vertical space between buttons */
+    height: 55px; /* Keep button height the same */
+  }
+}
 .event-view-buttons .btn:hover {
   background-color:  #022344 !important;
   color: white !important;
@@ -1871,27 +1922,45 @@ margin: 10px 15px; /* Add horizontal margin to avoid text touching edges */
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: white;
+  background-color: #ffffff; /* White background */
   color: #001e54; /* Matches general styling, adjust as needed */
   border-radius: 10px;
-  padding: 20px;
-  max-width: 300px; /* Adjust as needed */
-  margin: 50px auto; /* Centers the container */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  padding: 40px 20px; /* Adds more space around the content */
+  margin: 50px auto; /* Adds margin at top and bottom */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Slightly enhanced shadow for depth */
   text-align: center;
+  width: 80%; /* Restricts the container's width to avoid it being too large */
+  max-width: 600px; /* Maximum width for better responsiveness */
 }
+
+
 
 .no-events-container i {
-  font-size: 40px;
+  font-size: 50px; /* Larger icon */
   color: #e74a3b; /* Red color for the icon to signify absence */
-  margin-bottom: 10px;
+  margin-bottom: 20px; /* Adds space between the icon and the text */
+  text-align: center;
+  margin: auto;
+
 }
+  @media (max-width: 768px) {
+    .no-events-container i {
+      font-size: 70px; /* Larger icon */
+      color: #e74a3b; /* Red color for the icon to signify absence */
+      margin-bottom: 20px; /* Adds space between the icon and the text */
+      text-align: center;
+      margin: auto;
+    
+    }
+  }
 
 .no-events-container p {
-  font-size: 18px;
+  font-size: 20px; /* Slightly larger text for better visibility */
   font-weight: bold;
   margin: 0;
+  color: #333; /* Darker text for better readability */
 }
+
 
 
 
@@ -2217,71 +2286,72 @@ h2 {
   background-color: #031c35 !important; /* Keep hover background same as active */
   color: #ffffff !important; /* Keep text color the same */
 }
-
-
-
 @media (max-width: 768px) {
 
   .sidebar-head {
-
     padding-left: 15px !important;
   }
+
   /* Fully collapse the sidebar by reducing its width to 50px */
   .admin-sidebar {
-      width: 50px; /* Narrow width when collapsed */
-      padding: 0; /* Remove all padding */
-      overflow: hidden; /* Hide any overflowing content */
-      transition: width 0.3s ease; /* Smooth transition for expanding/collapsing */
-      display: flex;
-      flex-direction: column;
-      align-items: center; /* Center contents horizontally */
+    width: 50px; /* Narrow width when collapsed */
+    height: 100vh; /* Full viewport height */
+    padding: 0; /* Remove all padding */
+    overflow: hidden; /* Hide any overflowing content */
+    transition: width 0.3s ease, height 0.3s ease; /* Smooth transition for expanding/collapsing */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center contents horizontally */
+    position: fixed; /* Fix the sidebar to the left */
+    top: 0; /* Align to the top of the viewport */
+    left: 0; /* Align to the left of the viewport */
+    z-index: 1000; /* Make sure it stays on top */
   }
 
   /* When the sidebar is toggled open (using an "active" class) */
   .admin-sidebar.active {
-      width: 250px; /* Full width when expanded */
-      padding: 0; /* Keep padding removed on mobile */
-      overflow: visible;
-      transition: width 0.3s ease;
+    padding: 0; /* Keep padding removed on mobile */
+    overflow: visible;
+    transition: width 0.3s ease, height 0.3s ease;
   }
 
   /* Nav links in collapsed state */
   .admin-sidebar .nav-link {
-      justify-content: center; /* Center icons */
-      padding: 10px 0 !important; /* Remove extra padding */
-      display: flex;
-      flex-direction: column; /* Stack icons and text vertically */
-      align-items: center; /* Center items horizontally */
-      text-align: center; /* Ensure any visible text is centered */
+    justify-content: center; /* Center icons */
+    padding: 10px 0 !important; /* Remove extra padding */
+    display: flex;
+    flex-direction: column; /* Stack icons and text vertically */
+    align-items: center; /* Center items horizontally */
+    text-align: center; /* Ensure any visible text is centered */
   }
 
   /* Hide the text inside the nav-link when collapsed */
   .admin-sidebar .nav-link span {
-      display: none !important; /* Only show icons */
+    display: none !important; /* Only show icons */
   }
 
   /* Center the icons inside the nav-link */
   .admin-sidebar .nav-link i {
-      margin: 0 auto; /* Center icons */
-      font-size: 1.5rem !important; /* Ensure icons are large enough */
+    margin: 0 auto; /* Center icons */
+    font-size: 1.5rem !important; /* Ensure icons are large enough */
   }
 
   /* Adjust sidebar header (if any) */
   .sidebar-head {
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
 
   /* Hide the sidebar brand text when collapsed */
   .sidebar-head .sidebar-brand-text {
-      display: none !important;
+    display: none !important;
   }
 
   /* Center the sidebar icon */
   .sidebar-head .sidebar-icon {
-      margin: 0;
-      text-align: center;
+    margin: 0;
+    text-align: center;
   }
 }
 
@@ -2315,8 +2385,8 @@ h2 {
 }
 
 .profile-picture {
-    width: 120px;
-    height: 120px;
+    width: 120px !;
+    height: 120px !important;
     border-radius: 50%;
     overflow: hidden;
     display: flex;
@@ -2335,10 +2405,13 @@ h2 {
 }
 @media (max-width: 768px) {
   .profile-picture, .profile-picture img {
-      width: 80px; 
-      height: 80px;
+      width: 40px !important;   /* Smaller width */
+      height: 40px !important;  /* Smaller height */
+      border-radius: 50%;       /* Makes the image circular */
+      object-fit: cover;        /* Ensures the image scales properly within the circle */
   }
 }
+
 .flag-icon {
     max-width: 50px;
     max-height: 50px;
@@ -2528,45 +2601,12 @@ h2 {
 }
 
 @media (max-width: 768px) {
-  .top-container {
-    max-width: 90% !important;
+  .top-container p, .top-container h1, .top-container h2, .top-container h3 {
+      font-size: 1.80em !important;
   }
 }
 
 
-@media (max-width: 768px) {
-  .top-container {
-    font-size: 0.95rem !important; /* Slightly decrease the font size */
-  }
-
-  .top-container p,
-  .top-container h1,
-  .top-container h2,
-  .top-container h3 {
-    font-size: 1.80em !important; /* Reduce text size slightly */
-  }
-
-  .top-container input,
-  .top-container button,
-  .top-container textarea {
-    font-size: 0.9rem !important; /* Slightly reduce the size of form elements */
-    padding: 10px !important; /* Adjust padding without making it too small */
-  }
-
-  .top-container .btn {
-    padding: 10px 18px !important; /* Adjust padding for buttons */
-    font-size: 0.9rem !important; /* Slightly smaller text for buttons */
-  }
-
-  .top-container img {
-    max-width: 95% !important; /* Slightly reduce image size */
-    height: auto !important; /* Maintain image aspect ratio */
-  }
-
-  .top-container .form-group {
-    margin-bottom: 15px !important; /* Keep reasonable spacing between form groups */
-  }
-}
 
 
 .top-container-2 {
@@ -2582,19 +2622,7 @@ h2 {
   align-items: flex-start !important; /* Align items to the start */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important; /* Optional: add shadow for a subtle lift effect */
 }
-.top-container {
-  width: 100% !important; /* Ensure it takes full width */
-  max-width: 1200px !important; /* Set a maximum width to avoid it stretching too wide */
-  background-color: white !important; /* White background */
-  margin: 20px auto !important; /* Center the container with margin */
-  padding: 20px !important; /* Padding inside the container */
-  border-radius: 25px !important; /* Rounded corners */
-  text-align: left !important; /* Align text to the left */
-  display: flex !important; /* Flexbox for alignment */
-  flex-direction: column !important; /* Stack items vertically */
-  align-items: flex-start !important; /* Align items to the start */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important; /* Optional: add shadow for a subtle lift effect */
-}
+
 
 
 .back-btn {
@@ -2683,7 +2711,7 @@ h2 {
 
 @media (max-width: 600px) {
   .participant-name {
-    font-size: 1em; /* Smaller font size for mobile devices */
+    font-size: 0.7em; /* Smaller font size for mobile devices */
   }
 }
 
@@ -3142,7 +3170,7 @@ body {
   font-family: "Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-size: 1rem;
   font-weight: 400;
-  line-height: 1.5;
+  line-height: 1.7;
   color: #070f4d;
   text-align: left;
   background-color: #fff;
@@ -5713,11 +5741,13 @@ fieldset:disabled a.btn {
 
 @media (max-width: 768px) {
   .btn-danger {
-    padding: 10px; /* Reduce padding */
-    font-size: 14px; /* Smaller font size */
-    height: 45px; /* Reduced height for mobile */
-    margin-bottom: 8px; /* Adjust margins for mobile */
-    margin-top: 8px;
+    padding: 15px;
+    font-size: 12px;        /* Smaller text for mobile */
+    height: 40px;           /* Reduced height */
+    border-radius: 15px;    /* Smaller rounded corners */
+    margin-bottom: 5px;
+    margin-top: 5px;
+
   }
 }
 @media (max-width: 768px) { /* Mobile styles */
@@ -5748,10 +5778,9 @@ fieldset:disabled a.btn {
   }
 
   .button-container button {
-      width: 100%; /* Make buttons full width on mobile */
-      max-width: 100%; /* Ensure buttons do not exceed container width */
-      margin: 0; /* Remove all margins */
-      padding: 10px; /* Adjust padding for buttons if needed */
+      width: 90%; /* Make buttons full width on mobile */
+      max-width: 90%; /* Ensure buttons do not exceed container width */
+      margin: auto; /* Remove all margins */
   }
 }
 
@@ -13013,15 +13042,28 @@ a:focus {
   display: flex;
 }
 
+/* Base Styles */
 #wrapper #content-wrapper {
   background: linear-gradient(to bottom right, #F99C9C, #ACDFF6);
   width: 100%;
   overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 #wrapper #content-wrapper #content {
   flex: 1 0 auto;
+
 }
+
+/* Media Query for smaller screens (max-width 768px) */
+@media (max-width: 768px) {
+  #wrapper #content-wrapper {
+    min-height: 100vh; /* Ensure the wrapper takes the full viewport height on mobile */
+  }
+
+}
+
 
 .container,
 .container-fluid,

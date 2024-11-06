@@ -9,10 +9,12 @@
         body {
             padding: 0;
             margin: 0;
+            min-height: 100vh;
         }
         #container {
             width: 100%;
             height: 100%;
+            min-height: 100vh;
         }
         .input-container {
             padding: 10px;
@@ -20,11 +22,11 @@
             margin-bottom: 10px;
         }
         .input-container input {
-            width: 50%; /* Adjust width as needed */
+            width: 100%; 
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
-            font-size: 16px;
+            
         }
     </style>
 
