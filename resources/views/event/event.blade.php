@@ -199,6 +199,7 @@
         </div>
     </div>
 <!-- Event Analytics Tab -->
+@if ($currentUser == $userevent->user->id || Auth::user()->role_id == 1)
 <div class="tab-pane" id="feedback">
 <div class="d-flex flex-wrap justify-content-center mt-4"> <!-- Added mt-4 for top margin -->
     <div class="col-12 col-xl-5 col-lg-6 mb-4"> 
@@ -312,7 +313,7 @@
 </div>
 
 </div>
-
+@endif
 <!-- Modal for certificate viewing -->
 @if($certificate)
 <div class="modal fade" id="certificateModal" tabindex="-1" aria-labelledby="certificateModalLabel" aria-hidden="true">
@@ -542,7 +543,10 @@
         });
     });
 
-    var userAgeData = @json($userAgeData); // Data passed from the controller
+    var userAgeData = {
+        labels: @json($userAgeData['labels'] ?? ['No Data']),
+        values: @json($userAgeData['values'] ?? [1]) // Show "No Data" if values are empty
+    }; // Data passed from the controller
 
     var ctx = document.getElementById("userAgeChart").getContext('2d');
     var myPieChart = new Chart(ctx, {
@@ -575,8 +579,8 @@
         },
     });
 
-    var genderLabels = @json($genderLabels);
-    var genderCounts = @json($genderCounts);
+    var genderLabels = @json($genderLabels ?? ['No Data']);
+    var genderCounts = @json($genderCounts ?? [1]);
 
     var ctx = document.getElementById("userGenderChart").getContext('2d');
     var myPieChart = new Chart(ctx, {
@@ -608,15 +612,14 @@
             cutoutPercentage: 80, // Adjust the doughnut chart cutout size
         },
     });
-    const regionLabels = @json($regionLabels);
-    const regionCounts = @json($regionCounts);
+    var regionLabels = @json($regionLabels ?? ['No Data']);
+    var regionCounts = @json($regionCounts ?? [1]);
 
-    const provinceLabels = @json($provinceLabels);
-    const provinceCounts = @json($provinceCounts);
+    var provinceLabels = @json($provinceLabels ?? ['No Data']);
+    var provinceCounts = @json($provinceCounts ?? [1]);
 
-    
-    const collegeLabels = @json($collegeLabels);
-    const collegeCounts = @json($collegeCounts);
+    var collegeLabels = @json($collegeLabels ?? ['No Data']);
+    var collegeCounts = @json($collegeCounts ?? [1]);
 
 
     function getRandomDistinctColor() {
