@@ -6,6 +6,14 @@
     <link rel="icon" href="{{ asset('images/stelle_icon.png') }}" type="image/x-icon">
     <title>Stelle</title>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <script>
+        window.addEventListener("pageshow", function(event) {
+            if (event.persisted || performance.getEntriesByType("navigation")[0].type === "back_forward") {
+                // Reload the page
+                window.location.reload();
+            }
+        });
+    </script>
 
     <link rel="stylesheet" href="/css/custom.css"> <!-- Ensure custom styles are linked -->
     <style>

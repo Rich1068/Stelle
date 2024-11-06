@@ -7,6 +7,14 @@
     <link rel="icon" href="{{ asset('images/stelle_icon.png') }}" type="image/x-icon">
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/custom.css"> <!-- Ensure custom styles are linked -->
+    <script>
+        window.addEventListener("pageshow", function(event) {
+            if (event.persisted || performance.getEntriesByType("navigation")[0].type === "back_forward") {
+                // Reload the page
+                window.location.reload();
+            }
+        });
+    </script>
 </head>
 <body>
 
@@ -52,7 +60,7 @@
                 <x-input-label for="last_name" class="register-label">
                     {{ __('Last Name') }}
                 </x-input-label>
-                <x-text-input id="last_name" class="register-input" type="text" name="last_name" :value="old('last_name')" required autofocus autocomplete="last-name" placeholder="Input Last Name Here" />
+                <x-text-input id="last_name" class="register-input" type="text" name="last_name" :value="old('last_name')" required autofocus autocomplete="family-name" placeholder="Input Last Name Here" />
                 <x-input-error :messages="$errors->get('last_name')" class="mt-2" />
             </div>
 
@@ -61,7 +69,7 @@
                 <x-input-label for="email" class="register-label">
                     {{ __('Email') }}
                 </x-input-label>
-                <x-text-input id="email" class="register-input" type="email" name="email" :value="old('email')" required autocomplete="username" placeholder="Input Email Here" />
+                <x-text-input id="email" class="register-input" type="email" name="email" :value="old('email')" required autocomplete="email" placeholder="Input Email Here" />
                 <x-input-error :messages="$errors->get('email')" class="mt-2" />
             </div>
 
@@ -395,20 +403,27 @@ document.querySelector('.image-carousel').addEventListener('mouseout', () => {
 });
 
 // Manual controls
-document.querySelector('.left-arrow').addEventListener('click', () => {
-    scrollAmount -= imageWidth; // Scroll left
-    carouselImages.scrollTo({
-        left: scrollAmount,
-        behavior: 'smooth'
-    });
-});
-
-document.querySelector('.right-arrow').addEventListener('click', () => {
-    scrollAmount += imageWidth; // Scroll right
-    carouselImages.scrollTo({
-        left: scrollAmount,
-        behavior: 'smooth'
-    });
+document.addEventListener('DOMContentLoaded', () => {
+    const leftArrow = document.querySelector('.left-arrow');
+    if (leftArrow) {
+        leftArrow.addEventListener('click', () => {
+            scrollAmount -= imageWidth; // Scroll left
+            carouselImages.scrollTo({
+                left: scrollAmount,
+                behavior: 'smooth'
+            });
+        });
+    }
+    const rightArrow = document.querySelector('.right-arrow');
+    if (rightArrow) {
+        rightArrow.addEventListener('click', () => {
+            scrollAmount += imageWidth; // Scroll right
+            carouselImages.scrollTo({
+                left: scrollAmount,
+                behavior: 'smooth'
+            });
+        });
+    }
 });
 </script>
 

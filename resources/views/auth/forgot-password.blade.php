@@ -6,6 +6,14 @@
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <title>Stelle - Forgot Password</title>
     <link rel="icon" href="{{ asset('images/stelle_icon.png') }}" type="image/x-icon">
+    <script>
+        window.addEventListener("pageshow", function(event) {
+            if (event.persisted || performance.getEntriesByType("navigation")[0].type === "back_forward") {
+                // Reload the page
+                window.location.reload();
+            }
+        });
+    </script>
     <style>
         body {
             background-color: #f8f9fa;
