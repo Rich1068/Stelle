@@ -548,70 +548,88 @@
         values: @json($userAgeData['values'] ?? [1]) // Show "No Data" if values are empty
     }; // Data passed from the controller
 
-    var ctx = document.getElementById("userAgeChart").getContext('2d');
-    var myPieChart = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            labels: userAgeData.labels,  // Age ranges from the controller
+    var ageChartElement = document.getElementById("userAgeChart");
+    if (ageChartElement) {
+        var ctx = ageChartElement.getContext('2d');
+        var chartData = {
+            labels: userAgeData ? userAgeData.labels : ['No Data'],  // Placeholder label if no data
             datasets: [{
-                data: userAgeData.values,  // Age counts from the controller
-                backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b', '#6f42c1', '#d3d3d3'], 
-                hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf', '#f4b619', '#e63946','#5a32a3', '#b0b0b0'],
-                hoverBorderColor: "rgba(234, 236, 244, 1)",
-            }],
-        },
-        options: {
-            maintainAspectRatio: false,
-            tooltips: {
-                backgroundColor: "rgb(255,255,255)",
-                bodyFontColor: "#858796",
-                borderColor: '#dddfeb',
-                borderWidth: 1,
-                xPadding: 15,
-                yPadding: 10,
-                displayColors: false,
-                caretPadding: 10,
-            },
-            legend: {
-                display: false
-            },
-            cutoutPercentage: 80, // Adjusts the doughnut chart cutout size
-        },
-    });
+                data: userAgeData ? userAgeData.values : [1],  // Placeholder data if no data
+                backgroundColor: userAgeData ? 
+                    ['#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b', '#6f42c1', '#d3d3d3'] : 
+                    ['#d3d3d3'],  // Placeholder color
+                hoverBackgroundColor: userAgeData ? 
+                    ['#2e59d9', '#17a673', '#2c9faf', '#f4b619', '#e63946','#5a32a3', '#b0b0b0'] : 
+                    ['#b0b0b0'],  // Placeholder hover color
+                hoverBorderColor: "rgba(234, 236, 244, 1)"
+            }]
+        };
+
+        var myPieChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: chartData,
+            options: {
+                maintainAspectRatio: false,
+                tooltips: {
+                    backgroundColor: "rgb(255,255,255)",
+                    bodyFontColor: "#858796",
+                    borderColor: '#dddfeb',
+                    borderWidth: 1,
+                    xPadding: 15,
+                    yPadding: 10,
+                    displayColors: false,
+                    caretPadding: 10,
+                },
+                legend: {
+                    display: false
+                },
+                cutoutPercentage: 80, // Adjusts the doughnut chart cutout size
+            }
+        });
+    }
 
     var genderLabels = @json($genderLabels ?? ['No Data']);
     var genderCounts = @json($genderCounts ?? [1]);
 
-    var ctx = document.getElementById("userGenderChart").getContext('2d');
-    var myPieChart = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            labels: genderLabels,  // Gender labels (Male, Female, N/A)
+    var genderChartElement = document.getElementById("userGenderChart");
+    if (genderChartElement) {
+        var ctx = genderChartElement.getContext('2d');
+        var chartData = {
+            labels: genderLabels ? genderLabels : ['No Data'],  // Placeholder label if no data
             datasets: [{
-                data: genderCounts,  // Gender counts
-                backgroundColor: ['#4e73df', '#1cc88a', '#d3d3d3'],  // Colors for Male, Female, N/A
-                hoverBackgroundColor: ['#2e59d9', '#17a673', '#b0b0b0'], // Hover colors for Male, Female, N/A
-                hoverBorderColor: "rgba(234, 236, 244, 1)",
-            }],
-        },
-        options: {
-            maintainAspectRatio: false,
-            tooltips: {
-                backgroundColor: "rgb(255,255,255)",
-                bodyFontColor: "#858796",
-                borderColor: '#dddfeb',
-                borderWidth: 1,
-                xPadding: 15,
-                yPadding: 10,
-                displayColors: false,
-                caretPadding: 10,
-            },
-            legend: {
-                display: false
-            },
-            cutoutPercentage: 80, // Adjust the doughnut chart cutout size
-        },
-    });
+                data: genderCounts ? genderCounts : [1],  // Placeholder data if no data
+                backgroundColor: genderLabels ? 
+                    ['#4e73df', '#1cc88a', '#d3d3d3'] : 
+                    ['#d3d3d3'],  // Placeholder color
+                hoverBackgroundColor: genderLabels ? 
+                    ['#2e59d9', '#17a673', '#b0b0b0'] : 
+                    ['#b0b0b0'],  // Placeholder hover color
+                hoverBorderColor: "rgba(234, 236, 244, 1)"
+            }]
+        };
+
+        var myPieChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: chartData,
+            options: {
+                maintainAspectRatio: false,
+                tooltips: {
+                    backgroundColor: "rgb(255,255,255)",
+                    bodyFontColor: "#858796",
+                    borderColor: '#dddfeb',
+                    borderWidth: 1,
+                    xPadding: 15,
+                    yPadding: 10,
+                    displayColors: false,
+                    caretPadding: 10,
+                },
+                legend: {
+                    display: false
+                },
+                cutoutPercentage: 80, // Adjust the doughnut chart cutout size
+            }
+        });
+    }
     var regionLabels = @json($regionLabels ?? ['No Data']);
     var regionCounts = @json($regionCounts ?? [1]);
 
@@ -640,103 +658,111 @@
     const regionColors = generateColors(regionCounts.length);
     const provinceColors = generateColors(provinceCounts.length);
     const collegeColors =generateColors(collegeCounts.length);
-    // Render Region Pie Chart
-    var ctxRegion = document.getElementById("regionChart").getContext('2d');
-    var regionChart = new Chart(ctxRegion, {
-        type: 'doughnut',
-        data: {
-            labels: regionLabels,  // Region names (labels)
-            datasets: [{
-                data: regionCounts,  // Region participant counts
-                backgroundColor: regionColors,
-                hoverBackgroundColor: regionColors,
-                hoverBorderColor: regionColors,
-            }],
-        },
-        options: {
-            maintainAspectRatio: false,
-            tooltips: {
-                backgroundColor: "rgb(255,255,255)",
-                bodyFontColor: "#858796",
-                borderColor: '#dddfeb',
-                borderWidth: 1,
-                xPadding: 15,
-                yPadding: 10,
-                displayColors: false,
-                caretPadding: 10,
-            },
-            legend: {
-                display: false
-            },
-            cutoutPercentage: 80,  // Adjust doughnut chart cutout size
-        },
-    });
 
+    var regionChartElement = document.getElementById("regionChart");
+    if (regionChartElement) {
+        var ctxRegion = regionChartElement.getContext('2d');
+        var regionChart = new Chart(ctxRegion, {
+            type: 'doughnut',
+            data: {
+                labels: regionLabels ? regionLabels : ['No Data'],  // Placeholder label if no data
+                datasets: [{
+                    data: regionCounts ? regionCounts : [1],  // Placeholder data if no data
+                    backgroundColor: regionColors ? regionColors : ['#d3d3d3'], // Placeholder color
+                    hoverBackgroundColor: regionColors ? regionColors : ['#b0b0b0'],
+                    hoverBorderColor: regionColors ? regionColors : ['#b0b0b0'],
+                }],
+            },
+            options: {
+                maintainAspectRatio: false,
+                tooltips: {
+                    backgroundColor: "rgb(255,255,255)",
+                    bodyFontColor: "#858796",
+                    borderColor: '#dddfeb',
+                    borderWidth: 1,
+                    xPadding: 15,
+                    yPadding: 10,
+                    displayColors: false,
+                    caretPadding: 10,
+                },
+                legend: {
+                    display: false
+                },
+                cutoutPercentage: 80,  // Adjust doughnut chart cutout size
+            },
+        });
+    }
 
     // Render Province Pie Chart
-    var ctxProvince = document.getElementById("provinceChart").getContext('2d');
-    var provinceChart = new Chart(ctxProvince, {
-        type: 'doughnut',
-        data: {
-            labels: provinceLabels,  // Province names (labels)
-            datasets: [{
-                data: provinceCounts,  // Province participant counts
-                backgroundColor: provinceColors,
-                hoverBackgroundColor: provinceColors,
-                hoverBorderColor: provinceColors,
-            }],
-        },
-        options: {
-            maintainAspectRatio: false,
-            tooltips: {
-                backgroundColor: "rgb(255,255,255)",
-                bodyFontColor: "#858796",
-                borderColor: '#dddfeb',
-                borderWidth: 1,
-                xPadding: 15,
-                yPadding: 10,
-                displayColors: false,
-                caretPadding: 10,
+    var provinceChartElement = document.getElementById("provinceChart");
+    if (provinceChartElement) {
+        var ctxProvince = provinceChartElement.getContext('2d');
+        var provinceChart = new Chart(ctxProvince, {
+            type: 'doughnut',
+            data: {
+                labels: provinceLabels ? provinceLabels : ['No Data'],
+                datasets: [{
+                    data: provinceCounts ? provinceCounts : [1],
+                    backgroundColor: provinceColors ? provinceColors : ['#d3d3d3'],
+                    hoverBackgroundColor: provinceColors ? provinceColors : ['#b0b0b0'],
+                    hoverBorderColor: provinceColors ? provinceColors : ['#b0b0b0'],
+                }],
             },
-            legend: {
-                display: false
+            options: {
+                maintainAspectRatio: false,
+                tooltips: {
+                    backgroundColor: "rgb(255,255,255)",
+                    bodyFontColor: "#858796",
+                    borderColor: '#dddfeb',
+                    borderWidth: 1,
+                    xPadding: 15,
+                    yPadding: 10,
+                    displayColors: false,
+                    caretPadding: 10,
+                },
+                legend: {
+                    display: false
+                },
+                cutoutPercentage: 80,
             },
-            cutoutPercentage: 80,  // Adjust doughnut chart cutout size
-        },
-    });
-
+        });
+    }
 
     // College Distribution Chart
-    const ctxCollege = document.getElementById('collegeChart').getContext('2d');
-    const collegeChart = new Chart(ctxCollege, {
-        type: 'doughnut',
-        data: {
-            labels: collegeLabels,
-            datasets: [{
-                data: collegeCounts,
-                backgroundColor: collegeColors,
-                hoverBackgroundColor: collegeColors,
-                hoverBorderColor: collegeColors,
-            }],
-        },
-        options: {
-            maintainAspectRatio: false,
-            tooltips: {
-                backgroundColor: "rgb(255,255,255)",
-                bodyFontColor: "#858796",
-                borderColor: '#dddfeb',
-                borderWidth: 1,
-                xPadding: 15,
-                yPadding: 10,
-                displayColors: false,
-                caretPadding: 10,
+    var collegeChartElement = document.getElementById("collegeChart");
+    if (collegeChartElement) {
+        const ctxCollege = collegeChartElement.getContext('2d');
+        const collegeChart = new Chart(ctxCollege, {
+            type: 'doughnut',
+            data: {
+                labels: collegeLabels ? collegeLabels : ['No Data'],
+                datasets: [{
+                    data: collegeCounts ? collegeCounts : [1],
+                    backgroundColor: collegeColors ? collegeColors : ['#d3d3d3'],
+                    hoverBackgroundColor: collegeColors ? collegeColors : ['#b0b0b0'],
+                    hoverBorderColor: collegeColors ? collegeColors : ['#b0b0b0'],
+                }],
             },
-            legend: {
-                display: false
+            options: {
+                maintainAspectRatio: false,
+                tooltips: {
+                    backgroundColor: "rgb(255,255,255)",
+                    bodyFontColor: "#858796",
+                    borderColor: '#dddfeb',
+                    borderWidth: 1,
+                    xPadding: 15,
+                    yPadding: 10,
+                    displayColors: false,
+                    caretPadding: 10,
+                },
+                legend: {
+                    display: false
+                },
+                cutoutPercentage: 80,
             },
-            cutoutPercentage: 80, // Adjust the doughnut chart cutout size
-        },
-    });
+        });
+    }
+
 
     $(document).ready(function () {
         $('#existingFormModal').on('hidden.bs.modal', function () {
