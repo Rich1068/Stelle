@@ -2213,15 +2213,15 @@ h2 {
 }
 
 .admin-sidebar .nav-link.active {
-  background-color: #03203d !important;
-  color: #ffffff !important;
+  background-color: #00008B !important; /* Active color: Blue */
+  color: #ffffff !important; /* Text color for active item */
   border-radius: 5px;
   display: inline-block;
   transition: background-color 0.3s ease;
 }
 
 .admin-sidebar .nav-link.active i {
-  color: #ffffff !important;
+  color: #ffffff !important; /* Icon color for active item */
 }
 
 .admin-sidebar .sidebar-brand {
@@ -2240,17 +2240,18 @@ h2 {
   font-size: 1.3rem !important;
 }
 
+/* Ensures that the dropdown remains visible if it has the 'active' class */
 .admin-sidebar .collapse-item {
   color: #00008B !important;
   font-weight: bold !important;
-  padding-right: 0px !important;
-  padding-top: 15px !important;
-  padding-bottom: 15px !important;
+  display: none; /* Default: hidden */
   transition: background-color 0.3s ease, color 0.3s ease;
-  display: flex !important;
-  justify-content: space-between !important;
-  align-items: center !important;
 }
+
+.admin-sidebar .collapse-item.active {
+  display: block !important; /* Visible when active */
+}
+
 
 .admin-sidebar .collapse-item i {
   color: #003366 !important;
@@ -2331,7 +2332,6 @@ h2 {
     font-size: 1.5rem;
   }
 }
-
 
 
   :root {
@@ -13592,7 +13592,7 @@ a:focus {
   /* Adjust nav link appearance */
   .sidebar .nav-item .nav-link {
     display: flex; /* Use flexbox to position text and icons */
-    justify-content: center; /* Center text and icon */
+    justify-content: space-between; /* Space out text and icon */
     align-items: center; /* Align text and icon vertically */
     text-align: left; /* Align text to the left */
     padding: 1rem; /* Adjust padding for better spacing */
@@ -13602,16 +13602,18 @@ a:focus {
     color: #333; /* Set a default text color */
   }
 
-  /* Move icon to the end */
-  .sidebar .nav-item .nav-link i {
-    font-size: 1.6rem; /* Increase icon size */
-    margin-left: 10px; /* Add space between text and icon */
+  /* Ensure text is displayed on the far left */
+  .sidebar .nav-item .nav-link span {
+    font-size: 1.1rem; /* Increase text size */
+    text-align: left; /* Ensure text stays on the left */
+    margin-right: 0; /* Remove any right margin */
+    flex-grow: 1; /* Ensure the text takes up available space */
   }
 
-  /* Ensure text is displayed alongside the icon */
-  .sidebar .nav-item .nav-link span {
-    display: inline-block !important;
-    font-size: 1.1rem; /* Increase text size */
+  /* Move icon to the far right */
+  .sidebar .nav-item .nav-link i {
+    font-size: 1.6rem; /* Increase icon size */
+    margin-left: auto; /* Push icon to the far right */
   }
 
   /* Hover effect for nav item */
@@ -13625,17 +13627,14 @@ a:focus {
     margin-bottom: 1rem;
   }
 }
+
 .sidebar .nav-item .nav-link span {
   font-size: 0.9rem;
   display: block;
   margin-left: 10px;
 }
-@media (max-width: 768px) {
-.sidebar .nav-item .nav-link span {
-  font-size: 0.7rem;
-  display: block;
-}
-}
+
+
 .sidebar .nav-item.active .nav-link {
   font-weight: 700;
 }
