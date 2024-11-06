@@ -11,10 +11,16 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
         <script>
-        window.addEventListener("pageshow", function(event) {
-            if (event.persisted || performance.getEntriesByType("navigation")[0].type === "back_forward") {
-                // Reload the page
-                window.location.reload();
+        document.addEventListener('contextmenu', function(event) {
+            event.preventDefault();
+        });
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "F12") {
+                event.preventDefault();
+            }
+            if (event.ctrlKey && (event.shiftKey && ['I', 'J'].includes(event.key)) || event.key === 'U') {
+                event.preventDefault();
             }
         });
         </script>

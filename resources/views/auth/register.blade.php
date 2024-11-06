@@ -8,10 +8,16 @@
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/custom.css"> <!-- Ensure custom styles are linked -->
     <script>
-        window.addEventListener("pageshow", function(event) {
-            if (event.persisted || performance.getEntriesByType("navigation")[0].type === "back_forward") {
-                // Reload the page
-                window.location.reload();
+        document.addEventListener('contextmenu', function(event) {
+            event.preventDefault();
+        });
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "F12") {
+                event.preventDefault();
+            }
+            if (event.ctrlKey && (event.shiftKey && ['I', 'J'].includes(event.key)) || event.key === 'U') {
+                event.preventDefault();
             }
         });
     </script>
