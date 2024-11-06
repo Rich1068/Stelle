@@ -2139,41 +2139,40 @@ h2 {
 }
 
 .sidebar-head {
-  background-color: #ffffff !important; /* Background color for the sidebar brand */
-  margin: 20px 0 !important; /* Add space above and below the element */
-  border-radius: 5px !important; /* Rounded corners */
-  text-align: center !important; /* Center text alignment */
+  background-color: #fff;
+  margin: 20px 0;
+  border-radius: 5px;
+  text-align: center;
   display: flex;
-  align-items: center; /* Center items vertically */
-  justify-content: center; /* Center items horizontally */
-  padding-left: 45px !important;
+  align-items: center;
+  justify-content: center;
 }
 
 .sidebar-head .sidebar-brand-text {
-  font-size: 1.5rem !important; /* Adjust font size as needed */
-  font-weight: 780 !important; /* Make text extra bold */
-  color: #00003d !important; /* Dark blue text color */
-  letter-spacing: -0.1px !important; /* Adjust spacing between letters */
-  display: block !important; /* Ensure the text is visible */
-  white-space: nowrap !important; /* Prevent text from wrapping to the next line */
-  text-transform: none !important; /* Ensure text is not transformed to uppercase */
-  margin-left: 0; /* Remove margin to tighten the space */
+  font-size: 1.2rem !important;
+  font-weight: 780 !important;
+  color: #00003d !important;
+  letter-spacing: -0.1px !important;
+  display: block !important;
+  white-space: nowrap !important;
+  text-transform: none !important;
+  margin-left: 10px;
 }
 
 .sidebar-head .sidebar-icon {
-  color: #00008B !important; /* Ensure the icon color matches the dark blue used in the sidebar */
-  font-size: 1.5rem; /* Ensure the icon size matches the text size */
-  margin-right: 5px; /* Add slight margin to the right of the icon */
+  color: #00008B !important;
+  font-size: 1.3rem;
 }
 
 .admin-sidebar {
-  background-color: #f8f9fa !important; /* Light background for contrast */
-  position: sticky; /* Makes the sidebar sticky */
-  top: 0; /* Stick the sidebar to the top of the page */
-  max-height: 100vh !important; /* Ensure the sidebar occupies full viewport height */
-  z-index: 1000; /* Ensure the sidebar is on top */
-  overflow-y: auto !important; /* Allow vertical scrolling */
-  padding: 20px; /* Padding for the sidebar */
+  background-color: #f8f9fa !important;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  padding: 20px;
+  overflow-y: auto; /* Enables vertical scrolling */
+  overflow-x: hidden; /* Disables horizontal scrolling */
+  max-height: 100vh; /* Ensures sidebar takes up full viewport height */
 }
 
 /* Hide scrollbar for WebKit browsers */
@@ -2182,56 +2181,52 @@ h2 {
   background: transparent; /* Make background transparent */
 }
 
-/* For Firefox */
+/* Hide scrollbar for Firefox */
 .admin-sidebar {
-  scrollbar-width: none; /* Hide scrollbar for Firefox */
+  scrollbar-width: none;
 }
 
-
-
-
 .admin-sidebar .nav-link {
-  color: #00008B !important; /* Dark blue text */
+  color: #00008B !important;
   font-weight: bold !important;
-  font-size: 1.3rem !important; /* Larger text */
-  padding-right: 45px !important; /* Space between text and icon */
-  padding-top: 15px !important; /* Space above items */
-  padding-bottom: 15px !important; /* Space below items */
-  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for hover effect */
-  display: flex !important; /* Flexbox for alignment */
-  justify-content: space-between !important; /* Text on left, icon on right */
+  font-size: 1.4rem !important;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  display: flex !important;
+  justify-content: space-between !important;
   align-items: center !important;
 }
 
 .admin-sidebar .nav-link i {
-  color: #003366 !important; /* Darker blue icon */
-  transition: color 0.3s ease; /* Smooth transition for icon color change */
-  font-size: 1.5rem !important; /* Larger icon */
+  color: #003366 !important;
+  transition: color 0.3s ease;
+  font-size: 1.2rem !important;
+  margin-right: auto;
 }
 
 .admin-sidebar .nav-link:hover {
-  background-color: #2c3e50 !important; /* Darker blue background on hover */
-  color: #ffffff !important; /* White text on hover */
+  background-color: #2c3e50 !important;
+  color: #ffffff !important;
 }
 
 .admin-sidebar .nav-link:hover i {
-  color: #ffffff !important; /* White icons on hover */
+  color: #ffffff !important;
 }
 
 .admin-sidebar .nav-link.active {
-  background-color: #00008B !important; /* Dark blue background for active link */
-  color: #ffffff !important; /* White text for active link */
-
+  background-color: #03203d !important;
+  color: #ffffff !important;
+  border-radius: 5px;
+  display: inline-block;
+  transition: background-color 0.3s ease;
 }
 
 .admin-sidebar .nav-link.active i {
-  color: #ffffff !important; /* White icons for active link */
-
+  color: #ffffff !important;
 }
 
 .admin-sidebar .sidebar-brand {
-  color: #00008B !important; /* Dark blue text for the brand */
-  font-size: 1.5rem !important; /* Larger text */
+  color: #00008B !important;
+  font-size: 1.5rem !important;
   font-weight: bold !important;
 }
 
@@ -2240,118 +2235,100 @@ h2 {
 }
 
 .admin-sidebar .collapse-header {
-  color: #00008B !important; /* Dark blue text for collapse headers */
+  color: #00008B !important;
   font-weight: bold !important;
-  font-size: 1.3rem !important; /* Larger text */
-  padding-right: 0px !important; /* Space between text and icon */
+  font-size: 1.3rem !important;
 }
 
 .admin-sidebar .collapse-item {
-  color: #00008B !important; /* Dark blue text for collapse items */
+  color: #00008B !important;
   font-weight: bold !important;
-  padding-right: 0px !important; /* Space between text and icon */
-  padding-top: 15px !important; /* Space above items */
-  padding-bottom: 15px !important; /* Space below items */
+  padding-right: 0px !important;
+  padding-top: 15px !important;
+  padding-bottom: 15px !important;
   transition: background-color 0.3s ease, color 0.3s ease;
-  display: flex !important; /* Flexbox for alignment */
-  justify-content: space-between !important; /* Text on left, icon on right */
+  display: flex !important;
+  justify-content: space-between !important;
   align-items: center !important;
 }
 
 .admin-sidebar .collapse-item i {
-  color: #003366 !important; /* Darker blue icon for collapse items */
-  transition: color 0.3s ease; /* Smooth transition for icon color change */
-  font-size: 1.5rem !important; /* Larger icon */
+  color: #003366 !important;
+  transition: color 0.3s ease;
+  font-size: 1.5rem !important;
 }
 
 .admin-sidebar .collapse-item:hover {
-  background-color: #2c3e50 !important; /* Darker blue background on hover */
-  color: #ffffff !important; /* White text on hover */
+  background-color: #2c3e50 !important;
+  color: #ffffff !important;
 }
 
 .admin-sidebar .collapse-item:hover i {
-  color: #ffffff !important; /* White icons on hover */
-}
-.admin-sidebar .nav-link.active {
-  background-color: #03203d !important; /* Darker blue background for active link */
-  color: #ffffff !important; /* White text for active link */
-  border-radius: 5px; /* Rounded corners */
-  display: inline-block; /* Make the link only as wide as its content */
-  /* Optional: add a transition for a smoother effect */
-  transition: background-color 0.3s ease; 
+  color: #ffffff !important;
 }
 
-/* Ensure that the hover state retains the same appearance */
 .admin-sidebar .nav-link.active:hover {
-  background-color: #031c35 !important; /* Keep hover background same as active */
-  color: #ffffff !important; /* Keep text color the same */
+  background-color: #031c35 !important;
+  color: #ffffff !important;
 }
-@media (max-width: 768px) {
 
+@media (max-width: 768px) {
   .sidebar-head {
     padding-left: 15px !important;
   }
 
-  /* Fully collapse the sidebar by reducing its width to 50px */
+  /* Increase sidebar width to display text and icons properly */
   .admin-sidebar {
-    width: 50px; /* Narrow width when collapsed */
+    width: 300px; /* Increase width for better spacing */
     height: 100vh; /* Full viewport height */
     padding: 0; /* Remove all padding */
     overflow: hidden; /* Hide any overflowing content */
     transition: width 0.3s ease, height 0.3s ease; /* Smooth transition for expanding/collapsing */
     display: flex;
     flex-direction: column;
-    align-items: center; /* Center contents horizontally */
+    align-items: flex-start; /* Align items to the left */
     position: fixed; /* Fix the sidebar to the left */
     top: 0; /* Align to the top of the viewport */
     left: 0; /* Align to the left of the viewport */
     z-index: 1000; /* Make sure it stays on top */
   }
 
-  /* When the sidebar is toggled open (using an "active" class) */
-  .admin-sidebar.active {
-    padding: 0; /* Keep padding removed on mobile */
-    overflow: visible;
-    transition: width 0.3s ease, height 0.3s ease;
-  }
-
-  /* Nav links in collapsed state */
+  /* Adjust nav links to display both text and icons */
   .admin-sidebar .nav-link {
-    justify-content: center; /* Center icons */
-    padding: 10px 0 !important; /* Remove extra padding */
+    justify-content: flex-start; /* Align items to the left */
+    padding: 10px 15px !important; /* Add padding to create space between text and icons */
     display: flex;
-    flex-direction: column; /* Stack icons and text vertically */
-    align-items: center; /* Center items horizontally */
-    text-align: center; /* Ensure any visible text is centered */
+    flex-direction: row; /* Display items in a row */
+    align-items: center; /* Align text and icon vertically */
   }
 
-  /* Hide the text inside the nav-link when collapsed */
+  /* Ensure text is visible on mobile */
   .admin-sidebar .nav-link span {
-    display: none !important; /* Only show icons */
+    display: inline-block !important; /* Show the text */
+    margin-left: 10px; /* Add space between icon and text */
   }
 
-  /* Center the icons inside the nav-link */
+  /* Adjust icon size and alignment */
   .admin-sidebar .nav-link i {
-    margin: 0 auto; /* Center icons */
-    font-size: 1.5rem !important; /* Ensure icons are large enough */
+    font-size: 1.3rem !important; /* Adjust the icon size */
   }
 
-  /* Adjust sidebar header (if any) */
+  /* Adjust sidebar header */
   .sidebar-head {
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
   }
 
-  /* Hide the sidebar brand text when collapsed */
+  /* Ensure brand text is visible when expanded */
   .sidebar-head .sidebar-brand-text {
-    display: none !important;
+    display: inline-block !important;
   }
 
-  /* Center the sidebar icon */
+  /* Adjust margin for the sidebar icon */
   .sidebar-head .sidebar-icon {
-    margin: 0;
-    text-align: center;
+    margin-right: 10px; /* Adjust margin for better spacing */
+    font-size: 1.5rem;
   }
 }
 
@@ -3266,7 +3243,8 @@ sup {
 }
 
 a {
-  color: #4e73df;
+  color: #091d55;
+  font-weight: bold;
   text-decoration: none;
   background-color: transparent;
 }
@@ -13578,31 +13556,86 @@ a:focus {
   color: #000;
 }
 
+/* Sidebar */
 .sidebar {
-  width: 6.5rem;
+  width: 13rem; /* Adjust the width of the sidebar */
   min-height: 100vh;
   border-right: 1px solid darkgray;
+  display: flex;
+  flex-direction: column; /* Align items vertically */
+  justify-content: flex-start; /* Align items from the top */
+  align-items: center; /* Center items horizontally */
+  padding: 0; /* Ensure no extra padding */
+  transition: all 0.3s ease; /* Smooth transition */
 }
 
-.sidebar .nav-item {
-  position: relative;
-}
+/* Mobile view adjustments */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 13rem; /* Keep sidebar width */
+    min-height: 100vh;
+    border-right: 1px solid darkgray;
+    display: flex;
+    flex-direction: column; /* Align items vertically */
+    justify-content: flex-start; /* Align items from the top */
+    align-items: center; /* Center items horizontally */
+    padding: 0;
+  }
 
-.sidebar .nav-item:last-child {
-  margin-bottom: 1rem;
-}
+  /* Add a divider between each nav item */
+  .sidebar .nav-item {
+    width: 100%; /* Ensure nav items span the full width of the sidebar */
+    border-bottom: 1px solid #ddd; /* Light gray divider */
+    text-align: center; /* Center text */
+  }
 
-.sidebar .nav-item .nav-link {
-  text-align: center;
-  padding: 0.75rem 1rem;
-  width: 6.5rem;
-}
+  /* Adjust nav link appearance */
+  .sidebar .nav-item .nav-link {
+    display: flex; /* Use flexbox to position text and icons */
+    justify-content: center; /* Center text and icon */
+    align-items: center; /* Align text and icon vertically */
+    text-align: left; /* Align text to the left */
+    padding: 1rem; /* Adjust padding for better spacing */
+    width: 100%; /* Ensure full width for better display */
+    font-size: 1.2rem; /* Increase font size */
+    font-weight: bold; /* Make the text bold */
+    color: #333; /* Set a default text color */
+  }
 
+  /* Move icon to the end */
+  .sidebar .nav-item .nav-link i {
+    font-size: 1.6rem; /* Increase icon size */
+    margin-left: 10px; /* Add space between text and icon */
+  }
+
+  /* Ensure text is displayed alongside the icon */
+  .sidebar .nav-item .nav-link span {
+    display: inline-block !important;
+    font-size: 1.1rem; /* Increase text size */
+  }
+
+  /* Hover effect for nav item */
+  .sidebar .nav-item .nav-link:hover {
+    background-color: #f1f1f1; /* Highlight when hovered */
+    border-radius: 4px; /* Rounded corners */
+  }
+
+  /* Optional: Adjust the bottom of the sidebar items */
+  .sidebar .nav-item:last-child {
+    margin-bottom: 1rem;
+  }
+}
 .sidebar .nav-item .nav-link span {
-  font-size: 0.65rem;
+  font-size: 0.9rem;
+  display: block;
+  margin-left: 10px;
+}
+@media (max-width: 768px) {
+.sidebar .nav-item .nav-link span {
+  font-size: 0.7rem;
   display: block;
 }
-
+}
 .sidebar .nav-item.active .nav-link {
   font-weight: 700;
 }
@@ -13808,7 +13841,7 @@ a:focus {
     margin-right: 0.25rem;
   }
   .sidebar .nav-item .nav-link span {
-    font-size: 0.85rem;
+    font-size: 1.2rem !;
     display: inline;
   }
   .sidebar .nav-item .nav-link[data-toggle="collapse"]::after {
