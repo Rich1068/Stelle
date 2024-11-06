@@ -17,7 +17,14 @@ class PasswordController extends Controller
     {
         $validated = $request->validateWithBag('updatePassword', [
             'current_password' => ['required', 'current_password'],
-            'password' => ['required', Password::defaults(), 'confirmed'],
+            'password' => ['required', Password::defaults() // starts with default rules
+            ->min(8)          
+            ->mixedCase()     
+            ->letters()       
+            ->numbers()       
+            ->symbols()       
+            ->uncompromised(), 
+            'confirmed'],
         ]);
 
         $request->user()->update([
