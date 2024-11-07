@@ -28,7 +28,7 @@
 </div>
 
     <!-- Main Container -->
-    <div class="row justify-content-center  custom-bg-white mt-4 mb-4 pt-4"> <!-- Added custom class for border radius -->
+<div class="row justify-content-center  custom-bg-white mt-4 mb-4 pt-4"> <!-- Added custom class for border radius -->
         <!-- Calendar Column -->
         <div class="col-xl-6 col-md-12 mb-4"> <!-- Adjusted width for the calendar -->
             <div class="card shadow mb-4" style="height: 500px;">
@@ -131,37 +131,36 @@
             </div>
         </div>
 
-        <div class="row mb-5 col-md-12">
-    <div class="col-md-12">
-        <div class="card border-left-info shadow h-100" style="height: 500px; width: 90%;">
-            <div class="card-body p-4 d-flex flex-column align-items-center"> <!-- Center content -->
-                <div class="text-xs font-weight-bold text-dark-blue text-uppercase mb-1 text-center">
-                    Events Personally Created Per Month
-                </div>
-                <!-- Year navigation buttons below the text and centered -->
-                <div class="year-navigation d-flex align-items-center mb-3 justify-content-center"> <!-- Center navigation -->
-                    <!-- Back Button -->
-                    <button id="prev-year" class="btn circular-btn mx-2">
-                        <i class="fas fa-chevron-left"></i> <!-- Simplified arrow -->
-                    </button>
-                    <span id="current-year" class="mx-2">{{ $currentYear }}</span> <!-- Display the current year -->
-                    <!-- Next Button -->
-                    <button id="next-year" class="btn circular-btn mx-2">
-                        <i class="fas fa-chevron-right"></i> <!-- Simplified arrow -->
-                    </button>
-                </div>
-                <div class="chart-container flex-grow-1">
-                    <canvas id="adminCreatedEventsChart" style="height: 100%; width: 100%;"></canvas>
+    <div class="row mb-5 col-md-12">
+        <div class="col-md-12">
+            <div class="card border-left-info shadow h-100" style="height: 500px; width: 90%;">
+                <div class="card-body p-4 d-flex flex-column align-items-center"> <!-- Center content -->
+                    <div class="text-xs font-weight-bold text-dark-blue text-uppercase mb-1 text-center">
+                        Events Personally Created Per Month
+                    </div>
+                    <!-- Year navigation buttons below the text and centered -->
+                    <div class="year-navigation d-flex align-items-center mb-3 justify-content-center"> <!-- Center navigation -->
+                        <!-- Back Button -->
+                        <button id="prev-year" class="btn circular-btn mx-2">
+                            <i class="fas fa-chevron-left"></i> <!-- Simplified arrow -->
+                        </button>
+                        <span id="current-year" class="mx-2">{{ $currentYear }}</span> <!-- Display the current year -->
+                        <!-- Next Button -->
+                        <button id="next-year" class="btn circular-btn mx-2">
+                            <i class="fas fa-chevron-right"></i> <!-- Simplified arrow -->
+                        </button>
+                    </div>
+                    <div class="chart-container flex-grow-1">
+                        <canvas id="adminCreatedEventsChart" style="height: 100%; width: 100%;"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
         
     <!-- New Monthly Participants Chart -->
   <!-- New Monthly Participants Chart -->
   <div class="row mb-5 col-md-12 mt-2"> 
-    <div class="col-md-12">
     <div class="col-md-12">
     <div class="card border-left-info shadow h-100" style="height: 500px; width: 90%;">
         <div class="card-body p-4 d-flex flex-column align-items-center">
@@ -189,7 +188,9 @@
             </div>
         </div>
     </div>
-
+    </div>
+  </div>
+</div>
     <style>
            /* Mobile-specific styles (for screens 768px or less) */
 @media (max-width: 768px) {
