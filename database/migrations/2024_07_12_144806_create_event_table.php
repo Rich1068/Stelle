@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('description');
-            $table->date('date');
+            $table->date('start_date');
+            $table->date('end_date');
             $table->enum('mode', ['onsite', 'virtual']);
             $table->string('address');
             $table->time('start_time');
