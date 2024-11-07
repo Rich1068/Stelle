@@ -72,13 +72,13 @@
  
 
   <!-- Content Wrapper -->
-        <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content-wrapper" class="d-flex flex-column" style="padding-top: 5rem; !important">
 
 <!-- Main Content -->
         <div id="content">
 
             <!-- Topbar -->
-            <nav class="navbar navbar-expand navbar-light mb-3 bg-white topbar static-top shadow">
+            <nav class="navbar navbar-expand navbar-light mb-3 bg-white topbar fixed-top shadow">
                 
                 <!-- Centered Image Container -->
                 <div class="image-container">
@@ -171,7 +171,7 @@
 
             </nav>
             <!-- content-->
-            
+
             @yield('body')
         </div>
 
@@ -269,6 +269,7 @@
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
+
     <!-- jQuery (only include it once) -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- FullCalendar and moment.js -->

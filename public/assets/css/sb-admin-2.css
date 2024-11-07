@@ -61,6 +61,10 @@
   align-items: center;
   justify-content: center;
 }
+.fc-toolbar.fc-header-toolbar {
+  padding: 0; /* Remove padding */
+  margin-bottom: 0; /* Remove margin below the toolbar */
+}
 
 .fc-customToday-button .fas.fa-calendar {
   color: white; /* Icon color */
@@ -10554,7 +10558,7 @@ button.bg-dark:focus {
   top: 0;
   right: 0;
   left: 0;
-  z-index: 1030;
+  z-index: 900;
 }
 
 .fixed-bottom {
@@ -10565,10 +10569,12 @@ button.bg-dark:focus {
   z-index: 1030;
 }
 
+
 @supports ((position: -webkit-sticky) or (position: sticky)) {
   .sticky-top {
     position: -webkit-sticky;
     position: sticky;
+    width: 100%;
     top: 0;
     z-index: 1020;
   }
