@@ -10,7 +10,7 @@
     </p>
 </div>
 
-<div class="registration-container">
+<div class="white-container">
     <section class="register-account">
         <form method="POST" action="{{ route('superadmin.storeuser') }}" class="register-form" enctype="multipart/form-data">
             @csrf
@@ -76,4 +76,18 @@
         </form>
     </section>
 </div>
+<style>
+.white-container {
+    max-width: 50%; 
+    margin: 0 auto; 
+    margin-bottom: 40px;
+}
+
+@media (max-width: 768px) {
+    .white-container {
+        max-width: 80%; 
+    }
+}
+
+</style>
 @endsection
