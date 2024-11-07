@@ -23,15 +23,7 @@
 
     <link rel="stylesheet" href="/css/custom.css"> <!-- Ensure custom styles are linked -->
     <style>
-        .login-container input[type="email"], 
-        .login-container input[type="password"] {
-            background-color: #f0f0f0;
-            border: 1px solid #D9D9D9;
-            border-radius: 10px;
-            font-size: 1rem;
-            width: 85%;
-            margin-bottom: 1rem;
-        }
+
 
         /* Image section adjustments */
         .image-section {
@@ -52,147 +44,204 @@
     }
 
     /* Show signup text only on mobile */
-    @media (max-width: 768px) {
+
+/* Hide image section and all non-login elements on mobile devices */
+@media (max-width: 768px) {
+    /* Mobile-specific styles */
+    .stelle-logo {
+        margin-top: 20px !important;
+        margin-bottom: 30px !important;
+        max-width: 160px !important; /* Adjust logo size */
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+
+    .image-section {
+        display: none !important; /* Hide image section on mobile */
+    }
+
+    .main-container {
+        max-width: 80% !important; /* Make the width more flexible */
+        margin: 0 auto !important; /* Center the container */
+        min-height: 80vh !important; /* Ensure the container takes up full height */
+        padding: 15px !important;
+        display: flex !important; /* Use flexbox for better centering */
+        flex-direction: column !important; /* Stack elements vertically */
+        justify-content: center !important; /* Ensure content is centered vertically */
+    }
+
+    .login-container {
+        max-width: 100% !important; /* Full width for mobile */
+        margin: 0 auto !important; /* Center the container */
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        min-height: 90vh !important;
+        justify-content: center !important;
+        text-align: center;
+    }
+
+    .login-title {
+        font-size: 1.25rem !important;
+        margin-bottom: 20px !important;
+        text-align: center !important;
+    }
+
+    .actions-container {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        width: 100% !important;
+    }
+
+    .or-divider {
+        margin: 10px 0 !important;
+        text-align: center !important;
+    }
+
+    .google-button {
+    margin-top: 10px;
+    padding: 8px 12px; /* Adjust padding to make it smaller */
+    font-size: 0.875rem; /* Slightly smaller font size */
+    max-width: 300px; /* Set a maximum width */
+    width: auto; /* Remove full width */
+    text-align: center;
+}
+
+
+    .signup-text {
+        display: block !important;
+        margin-top: 15px !important;
+        text-align: center !important;
+    }
+
     .signup-textm {
-        display: block; /* Show on mobile */
-        text-align: center; /* Center text */
-        font-size: 0.875rem;
-        color: #001f60;
-        font-weight: bold;
-        margin-top: 5px; /* Reduced space above the signup text */
+        display: block !important;
+        text-align: center !important;
+        font-size: 0.875rem !important;
+        color: #001f60 !important;
+        font-weight: bold !important;
+        margin-top: 10px !important;
     }
+
+    /* Input Fields Styling */
+    .block.mt-1.w-full {
+        width: 400px !important; /* Make input fields take full width */
+        padding: 10px !important; /* Add some padding to the inputs */
+        font-size: 1rem !important; /* Adjust font size */
+        margin-bottom: 15px !important; /* Add some space between inputs */
+        align-items: center !important;
+
+    }
+
+    .btn {
+        width: 399px !important;
+        padding: 12px !important;
+        margin-top: 20px !important;
+        font-size: 1rem !important;
+        margin-bottom: 10px;
+    }
+}      
+                
+
+/* Hide image section and all non-login elements on mobile devices */
+@media (max-width: 600px) {
+    /* Mobile-specific styles */
+    .stelle-logo {
+        margin-top: 20px !important;
+        margin-bottom: 30px !important;
+        max-width: 160px !important; /* Adjust logo size */
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+
+    .image-section {
+        display: none !important; /* Hide image section on mobile */
+    }
+
+    .main-container {
+        max-width: 80% !important; /* Make the width more flexible */
+        margin: 0 auto !important; /* Center the container */
+        min-height: 80vh !important; /* Ensure the container takes up full height */
+        padding: 15px !important;
+        display: flex !important; /* Use flexbox for better centering */
+        flex-direction: column !important; /* Stack elements vertically */
+        justify-content: center !important; /* Ensure content is centered vertically */
+    }
+
+    .login-container {
+        max-width: 100% !important; /* Full width for mobile */
+        margin: 0 auto !important; /* Center the container */
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        min-height: 90vh !important;
+        justify-content: center !important;
+        text-align: center;
+    }
+
+    .login-title {
+        font-size: 1.25rem !important;
+        margin-bottom: 20px !important;
+        text-align: center !important;
+    }
+
+    .actions-container {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        width: 100% !important;
+    }
+
+    .or-divider {
+        margin: 10px 0 !important;
+        text-align: center !important;
+    }
+
+    .google-button {
+    margin-top: 10px;
+    padding: 8px 12px; /* Adjust padding to make it smaller */
+    font-size: 0.875rem; /* Slightly smaller font size */
+    max-width: 300px; /* Set a maximum width */
+    width: auto; /* Remove full width */
+    text-align: center;
 }
 
 
-        /* Hide image section and all non-login elements on mobile devices */
-        @media (max-width: 900px) {
+    .signup-text {
+        display: block !important;
+        margin-top: 15px !important;
+        text-align: center !important;
+    }
 
-            .stelle-logo {
-                margin-top: 20px;
-            margin-bottom: 20px;
-            max-width: 160px; /* Adjust the size of the logo */
-            margin: auto;
-        }
-            .image-section {
-                display: none; /* Hides the image section on mobile */
-            }
+    .signup-textm {
+        display: block !important;
+        text-align: center !important;
+        font-size: 0.875rem !important;
+        color: #001f60 !important;
+        font-weight: bold !important;
+        margin-top: 10px !important;
+    }
 
-            .main-container {
-                width: 95% !important; /* Set width to 95% */
-                margin: 0 auto; /* Center the main container */
-            }
+    /* Input Fields Styling */
+    .block.mt-1.w-full {
+        width: 100% !important; /* Make input fields take full width */
+        padding: 10px !important; /* Add some padding to the inputs */
+        font-size: 1rem !important; /* Adjust font size */
+        margin-bottom: 15px !important; /* Add some space between inputs */
+        align-items: center !important;
 
-            .login-container {
-                padding: 15px; /* Adjust padding for mobile */
-                width: 80%; /* Ensure full width for the login container */
-                margin: 0 auto; /* Center the container */
-                display: flex; /* Use flexbox for centering */
-                flex-direction: column; /* Stack contents vertically */
-                align-items: center; /* Center items horizontally */
-            }
+    }
 
-            .login-container input[type="email"], 
-            .login-container input[type="password"] {
-                background-color: #f0f0f0;
-                border: 1px solid #D9D9D9;
-                border-radius: 10px;
-                font-size: 1rem;
-                width: 95%;
-                margin-bottom: 1rem;
-                max-width: 600px; /* Set a max width to ensure forms are longer */
-            }
-
-            /* Adjust child elements' width */
-            .login-title, 
-            .mb-4, 
-            .remember-me, 
-            .actions-container, 
-            .or-divider, 
-            .google-button {
-                width: 100%; /* Allow them to take full width */
-                max-width: 600px; /* Set a max width to ensure forms are longer */
-                text-align: center; /* Center text */
-            }
-
-            .login-title {
-                font-size: 1.5rem; /* Adjust font size */
-                margin-bottom: 20px; /* Add some space below */
-            }
-
-            .actions-container {
-                display: flex;
-                flex-direction: column; /* Stack actions vertically */
-                align-items: center; /* Center items */
-            }
-
-            .or-divider {
-                margin: 10px 0; /* Add margin */
-            }
-
-            .google-button {
-                margin-top: 10px; /* Add margin above */
-            }
-
-            /* Show signup text below the Google button on mobile */
-            .signup-text {
-                display: block; /* Ensure signup text is visible on mobile */
-                margin-top: 15px; /* Add margin above */
-                text-align: center; /* Center text */
-            }
-
-            /* Make signup text hidden by default */
-            .signup-text.hidden {
-                display: none; /* Hide signup text on desktop */
-            }
-            .signup-textm {
-    display: block; /* Show on mobile */
-    text-align: center; /* Center text */
-    font-size: 0.75rem; /* Smaller font size */
-    color: #001f60;
-    font-weight: bold;
-    margin-top: 2px; /* Further reduced space above the signup text */
+    .btn {
+        width: 100% !important;
+        padding: 12px !important;
+        margin-top: 20px !important;
+        font-size: 1rem !important;
+        margin-bottom: 10px;
+    }
 }
-
-        }
-
-        /* Default styles (Desktop) */
-        .signup-text {
-            text-align: center; /* Center text on desktop */
-            margin-top: 20px; /* Space above the signup text */
-        }
-
-        .custom-alert-danger {
-        background-color: #f8d7da; /* Light red background */
-        border: 1px solid #f5c2c7; /* Red border */
-        color: #721c24; /* Darker red text */
-        border-radius: 10px; /* Rounded corners */
-        padding: 15px; /* Padding inside the alert box */
-        font-size: 16px; /* Slightly larger font size */
-        margin: 20px 0; /* Space around the alert box */
-        display: flex; /* Flexbox for aligning items */
-        align-items: center; /* Vertically center items */
-    }
-
-    /* Icon inside the alert */
-    .custom-alert-danger .alert-icon {
-        margin-right: 10px; /* Space between icon and text */
-        font-size: 24px; /* Larger icon size */
-        color: #721c24; /* Darker red for icon */
-    }
-
-    /* Close button inside the alert */
-    .custom-alert-danger .close {
-        margin-left: auto; /* Push close button to the right */
-        color: #721c24; /* Dark red for close icon */
-        font-size: 20px; /* Larger close icon */
-        cursor: pointer; /* Pointer cursor for close button */
-    }
-
-    /* On hover, change close button color */
-    .custom-alert-danger .close:hover {
-        color: #491217; /* Darker shade of red on hover */
-    }
-    </style>
+</style>
 </head>
 
 
