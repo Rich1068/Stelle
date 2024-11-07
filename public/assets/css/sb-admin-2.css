@@ -49,6 +49,58 @@
 *::after {
   box-sizing: border-box;
 }
+@media (max-width: 768px) {
+  /* Hide horizontal scrollbar but keep functionality */
+  body, html {
+      overflow-x: auto;
+  }
+
+  /* Hide scrollbar for most browsers */
+  .dataTables_wrapper {
+      overflow-x: auto;
+      scrollbar-width: none; /* Firefox */
+  }
+
+  .dataTables_wrapper::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, and Edge */
+  }
+
+  .dataTables_wrapper .dataTables_paginate {
+      text-align: center !important;
+      font-size: 0.4rem !important;
+      margin-top: 5px !important;
+      display: flex !important;
+      justify-content: center !important;
+      overflow-x: auto;
+      scrollbar-width: none; /* Firefox */
+  }
+
+  .dataTables_wrapper .dataTables_paginate::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, and Edge */
+  }
+
+  .dataTables_wrapper .dataTables_paginate .paginate_button {
+      padding: 0 !important;
+      font-size: 0.35rem !important;
+      margin: 0 0.5px !important;
+      border: none !important;
+      background: none !important;
+      color: #007bff !important;
+      display: inline-block !important;
+      transition: none !important;
+  }
+
+  .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+      background: none !important;
+      color: #ffffff !important;
+      border-radius: 0 !important;
+  }
+
+  .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+      color: #004080 !important;
+      transition: none !important;
+  }
+}
 
 
 /* CALENDAR */
