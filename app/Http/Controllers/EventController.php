@@ -624,7 +624,7 @@ class EventController extends Controller
         
         // Get the current authenticated user
         $userId = Auth::id();
-
+    
         // Filter events based on the filter option
         if ($filter === 'own') {
             // Fetch events created by the authenticated user
@@ -643,22 +643,22 @@ class EventController extends Controller
             // Fetch all events
             $events = Event::with('userEvent')->get();
         }
-
+    
         $formattedEvents = [];
-
+    
         foreach ($events as $event) {
             $userEvent = $event->userEvent;
             $user = $userEvent->user ?? null;
-
-            // Parse start and end times
+    
+            // Parse start and end datetime using start_date, end_date, start_time, and end_time
             $start = Carbon::parse($event->start_date . ' ' . $event->start_time);
-            $end = Carbon::parse($event->start_date . ' ' . $event->end_time);
-
-            // If end time is earlier than start time, adjust the end date to the next day
-            if ($end->lt($start)) {
+            $end = Carbon::parse($event->end_date . ' ' . $event->end_time);
+    
+            // Adjust if the end datetime is earlier than the start datetime within a single day event
+            if ($event->start_date === $event->end_date && $end->lt($start)) {
                 $end = $end->copy()->addDay();
             }
-
+    
             // Format dates for FullCalendar in a compatible format
             $formattedEvents[] = [
                 'id' => $event->id,
@@ -677,9 +677,10 @@ class EventController extends Controller
                 ],
             ];
         }
-
+    
         return response()->json($formattedEvents);
     }
+    
 
     public function adminDeactivate($id)
     {

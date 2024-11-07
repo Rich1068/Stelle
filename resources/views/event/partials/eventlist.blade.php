@@ -22,11 +22,13 @@
                         <span class="event-list-month">{{ \Carbon\Carbon::parse($event->start_date)->format('M Y') }}</span>
                     @else
                         <!-- Multi-day event in different months or years -->
-                        <span class="event-list-day">{{ \Carbon\Carbon::parse($event->start_date)->format('d') }}</span>
-                        <span class="event-list-month">{{ \Carbon\Carbon::parse($event->start_date)->format('M Y') }}</span>
-                        <span>-</span>
-                        <span class="event-list-day">{{ \Carbon\Carbon::parse($event->end_date)->format('d') }}</span>
-                        <span class="event-list-month">{{ \Carbon\Carbon::parse($event->end_date)->format('M Y') }}</span>
+                        <div class="event-date-container">
+                            <span class="event-list-day">{{ \Carbon\Carbon::parse($event->start_date)->format('d') }}</span>
+                            <span class="event-list-month">{{ \Carbon\Carbon::parse($event->start_date)->format('M Y') }}</span>
+                            <span>-</span>
+                            <span class="event-list-day">{{ \Carbon\Carbon::parse($event->end_date)->format('d') }}</span>
+                            <span class="event-list-month">{{ \Carbon\Carbon::parse($event->end_date)->format('M Y') }}</span>
+                        </div>
                     @endif
                 </div>
 

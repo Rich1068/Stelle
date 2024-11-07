@@ -51,6 +51,7 @@
 }
 
 
+/* CALENDAR */
 .fc-customToday-button {
   background-color: #003366; /* Dark blue */
   border-radius: 50%; /* Make it circular */
@@ -99,208 +100,6 @@
   padding: 5px; /* Padding inside the tooltip */
   font-size: 12px; /* Font size for tooltip */
 }
-
-.calendar-container {
-  overflow: hidden; /* Prevent overflow */
-  max-width: 100%; /* Ensure it fits within its parent */
-}
-
-.fc-day {
-    color: rgb(51, 66, 195); /* Change text color for better visibility */
-}
-
-/* Remove borders around the toolbar (month/year title) */
-.fc-toolbar {
-  border: none !important;
-  padding: 0 !important;
-}
-
-/* Style the month/year title area */
-.fc-toolbar-title {
-  border: none !important;
-  color: #003366 !important; /* Dark blue for month/year title */
-  font-weight: bold;         /* Make the title bold */
-  font-size: 24px;           /* Adjust size */
-  text-align: center;        /* Center the title */
-  margin-bottom: 10px;       /* Add space below the title */
-}
-
-.fc-toolbar-chunk button:not(.fc-today-button) {
-  border: none !important;
-  box-shadow: none !important;
-  background-color: #022344 !important; 
-  color: white !important;                /* White text color */
-  border-radius: 50% !important;         /* Make buttons circular */
-  width: 40px !important;                 /* Set a fixed width */
-  height: 40px !important;                /* Set a fixed height */
-  font-size: 16px !important;             /* Font size for the text */
-  transition: background-color 0.3s ease; /* Smooth transition on hover */
-  margin: 0 10px;                      
-  display: flex;                   
-  justify-content: center;               
-  align-items: center;                 
-}
-
-
-/* Hover effect for Prev and Next navigation buttons */
-.fc-toolbar-chunk button:not(.fc-today-button):hover {
-  background-color:  #022344 !important; /* Slightly lighter blue on hover */
-  color: white !important;               /* Keep text white on hover */
-}
-
-.event-dropdown {
-  margin-bottom: 5px; /* Space between dropdowns */
-}
-
-.dropdown-toggle {
-  width: 100%; /* Full width for better UX */
-  text-align: left; /* Align text to the left */
-}
-
-.custom-event {
-  background-color: rgba(255, 255, 255, 0); /* Transparent background */
-  color: rgb(47, 2, 66); /* Dark blue text */
-  border-radius: 10%; /* Rounded corners */
-  display: flex;
-  flex-direction: column; /* Allow vertical stacking of content */
-  align-items: left; /* Center vertically */
-  justify-content: center; /* Center horizontally */
-  margin: 0 auto;
-  position: relative;
-  padding: 5px;
-  text-align: left;
-  word-wrap: break-word; /* Ensure the text wraps */
-  white-space: normal; /* Allow text to wrap naturally */
-  overflow: visible; /* Ensure content isn't hidden */
-  width: 100%; /* Ensure the event takes up available space */
-}
-
-.fc-event {
-  max-height: none; /* Remove height restrictions */
-  overflow: visible; /* Show all content, allow overlap if necessary */
-  word-wrap: break-word; /* Ensure long words are wrapped */
-  white-space: normal; /* Ensure text breaks into new lines */
-}
-
-
-.tooltip {
-  background-color: #333; /* Tooltip background color */
-  color: white; /* Tooltip text color */
-  border-radius: 5px; /* Rounded corners */
-  padding: 5px; /* Padding inside the tooltip */
-  font-size: 12px; /* Font size for tooltip */
-}
-
-.calendar-container {
-  overflow: hidden; /* Prevent overflow */
-  max-width: 100%; /* Ensure it fits within its parent */
-}
-
-.fc-day {
-  color: rgb(51, 66, 195); /* Change text color for better visibility */
-}
-
-/* Remove borders around the toolbar (month/year title) */
-.fc-toolbar {
-  border: none !important;
-  padding: 0 !important;
-}
-
-/* Style the month/year title area */
-.fc-toolbar-title {
-  border: none !important;
-  color: #003366 !important; /* Dark blue for month/year title */
-  font-weight: bold; /* Make the title bold */
-  font-size: 24px; /* Adjust size */
-  text-align: center; /* Center the title */
-  margin-bottom: 10px; /* Add space below the title */
-}
-
-.fc-toolbar-chunk button:not(.fc-today-button) {
-  border: none !important;
-  box-shadow: none !important;
-  background-color: #003366 !important; 
-  color: white !important; /* White text color */
-  border-radius: 50% !important; /* Make buttons circular */
-  width: 40px !important; /* Set a fixed width */
-  height: 40px !important; /* Set a fixed height */
-  font-size: 16px !important; /* Font size for the text */
-  transition: background-color 0.3s ease; /* Smooth transition on hover */
-  margin: 0 10px; /* Spacing between buttons */
-  display: flex; /* Center the button content */
-  justify-content: center;
-  align-items: center;
-}
-
-/* Hover effect for Prev and Next navigation buttons */
-.fc-toolbar-chunk button:not(.fc-today-button):hover {
-  background-color: #022344 !important; /* Slightly lighter blue on hover */
-  color: white !important; /* Keep text white on hover */
-}
-
-/* Center the day numbers in each cell */
-.fc-daygrid-day-top {
-  display: flex;
-  justify-content: center;  
-  align-items: center;    
-  height: 100%;          
-  padding: 0 !important;
-}
-
-/* Style day numbers (dark blue color) */
-.fc-daygrid-day-number {
-  display: inline-block;
-  text-align: center;
-  width: 100%;
-  font-weight: bold; /* Optional: makes the numbers bold */
-  font-size: 16px; /* Adjust size as needed */
-  color: #003366; /* Dark blue color */
-}
-
-.fc-scroller::-webkit-scrollbar-thumb {
-  background-color: #cce0ff;
-  border-radius: 5px;
-}
-
-/* Remove all borders from the calendar */
-.fc, .fc * {
-  border: none !important; 
-  box-shadow: none !important; 
-}
-
-/* Remove borders from specific elements */
-.fc-daygrid-day-frame {
-  border: none !important;
-}
-
-.fc-daygrid-day {
-  border: none !important; /* Remove borders around day cells */
-}
-
-/* Remove borders from the event elements */
-.fc-event {
-  border: none !important;
-}
-
-/* Remove borders from day numbers (dates) */
-.fc-daygrid-day-number {
-  border: none !important;
-}
-
-/* Remove borders around the toolbar (previous/next buttons, title) */
-.fc-toolbar {
-  border: none !important;
-}
-
-.fc-daygrid-day-frame {
-  padding: 0 !important; /* Remove padding around cells */
-}
-
-/* Remove borders from the calendar view scroller if any */
-.fc-scroller {
-  border: none !important;
-}
-
 
     /* Make name text blue and underline on hover */
     .table tbody tr td a:hover {
@@ -371,30 +170,35 @@ th, td {
     }
 
 }
-/* Override default background for multi-day events */
-.custom-event {
-  background-color: #003366 !important; /* Your custom background */
-  color: white;
-  padding: 2px 6px;
-  border-radius: 5px;
-  text-align: center;
-  display: inline-block;
-  font-size: 10px;
-  margin: 2px;
-  width: 100px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+
+
 /* Remove default light blue background for multi-day events */
 .fc-daygrid-event-harness .fc-daygrid-event.fc-event {
   background-color: transparent !important;
   border: none !important;
 }
 
-/* Make sure to override any specific multi-day event styling */
-.custom-event[data-multiday="true"] {
-  background-color: #003366 !important; /* Apply the same color */
+.custom-event-label {
+  background-color:  #022344 !important; /* Adjust this color as needed */
+  color: white;
+  padding: 2px 6px; /* Reduced padding for a smaller size */
+  border-radius: 3px; /* Slightly rounded corners */
+  font-size: 0.75rem; /* Smaller font size */
+  font-weight: normal; /* Normal font weight */
+  display: inline-block;
+  width: 100%; /* Smaller width */
+  max-width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.custom-event-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .page-title-container-createuser {

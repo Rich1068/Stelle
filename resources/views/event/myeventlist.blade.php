@@ -192,6 +192,27 @@
     line-height: 1; /* Set line height to ensure consistent alignment */
     margin-top: 2px; /* Slightly adjust the vertical position of the text */
 }
+.event-date-container {
+    display: flex;
+    flex-direction: column; /* Stack vertically by default */
+    align-items: center;
+}
+
+.event-date-container span {
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .event-date-container {
+        flex-direction: row; /* Change to horizontal on mobile */
+        justify-content: center;
+        gap: 5px; /* Add some spacing between elements */
+    }
+
+    .event-date-container span {
+        display: inline; /* Align text horizontally */
+    }
+}
 
 </style>
 @endsection
