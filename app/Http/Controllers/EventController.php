@@ -350,12 +350,6 @@ class EventController extends Controller
                 'event_id' => $event->id,
             ]);
 
-            EventParticipant::create([
-                'user_id' => Auth::id(),
-                'event_id' => $event->id,
-                'status_id' => 1
-            ]);
-
             // Commit the transaction
             DB::commit();
 

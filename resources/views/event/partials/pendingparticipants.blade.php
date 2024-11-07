@@ -12,7 +12,13 @@
                     <a href="{{ route('profile.view', $participant->user->id) }}" class="participant-name">
                         {{ $participant->user->first_name }} {{ $participant->user->last_name }}
                     </a>
-                    <div class="participant-status">{{ $participant->status->status }}</div>
+                    @if($participant->user->role_id == 1) 
+                        <p class="participant-status">Super Admin</p>
+                    @elseif($participant->user->role_id == 2)
+                        <p class="participant-status">Admin</p>
+                    @elseif($participant->user->role_id == 3)
+                        <p class="participant-status">User</p>
+                    @endif
                 </div>
             </div>
         </div>
