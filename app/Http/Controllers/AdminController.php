@@ -118,8 +118,8 @@ class AdminController extends Controller
             $formattedEvents[] = [
                 'id' => $event->id,
                 'title' => $event->title,
-                'start' => $event->date . ' ' . $event->start_time, // Combine date and start time
-                'end' => $event->date . ' ' . $event->end_time, // Combine date and end time
+                'start' => $event->start_date . ' ' . $event->start_time, // Combine date and start time
+                'end' => $event->start_date . ' ' . $event->end_time, // Combine date and end time
                 'extendedProps' => [
                     'description' => $event->description,
                     'location' => $event->address,

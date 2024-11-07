@@ -10,8 +10,24 @@
             <div class="event-list-item mb-4">
                 <!-- Date Section -->
                 <div class="event-list-date text-center text-white">
-                    <span class="event-list-day">{{ \Carbon\Carbon::parse($event->date)->format('d') }}</span>
-                    <span class="event-list-month">{{ \Carbon\Carbon::parse($event->date)->format('M Y') }}</span>
+                    @if ($event->start_date === $event->end_date)
+                        <!-- Single-day event -->
+                        <span class="event-list-day">{{ \Carbon\Carbon::parse($event->start_date)->format('d') }}</span>
+                        <span class="event-list-month">{{ \Carbon\Carbon::parse($event->start_date)->format('M Y') }}</span>
+                    @elseif (\Carbon\Carbon::parse($event->start_date)->format('M Y') === \Carbon\Carbon::parse($event->end_date)->format('M Y'))
+                        <!-- Multi-day event within the same month -->
+                        <span class="event-list-day">
+                            {{ \Carbon\Carbon::parse($event->start_date)->format('d') }} - {{ \Carbon\Carbon::parse($event->end_date)->format('d') }}
+                        </span>
+                        <span class="event-list-month">{{ \Carbon\Carbon::parse($event->start_date)->format('M Y') }}</span>
+                    @else
+                        <!-- Multi-day event in different months or years -->
+                        <span class="event-list-day">{{ \Carbon\Carbon::parse($event->start_date)->format('d') }}</span>
+                        <span class="event-list-month">{{ \Carbon\Carbon::parse($event->start_date)->format('M Y') }}</span>
+                        <span>-</span>
+                        <span class="event-list-day">{{ \Carbon\Carbon::parse($event->end_date)->format('d') }}</span>
+                        <span class="event-list-month">{{ \Carbon\Carbon::parse($event->end_date)->format('M Y') }}</span>
+                    @endif
                 </div>
 
                 <!-- Event Details Section -->
@@ -30,8 +46,7 @@
                     <p class="event-list-description text-muted mb-2">{{ Str::limit($event->description, 50) }}</p>
                     <div class="event-list-meta d-flex justify-content-between">
                         <div class="meta-item time d-flex align-items-center">
-                            <i class="fas fa-clock"></i>
-                            <span class="meta-text ms-1">{{ \Carbon\Carbon::parse($event->start_time)->format('h:i A') }} - {{ \Carbon\Carbon::parse($event->end_time)->format('h:i A') }}</span>
+                            
                         </div>
                         <div class="meta-item location d-flex align-items-center">
                             <i class="fas fa-map-marker-alt"></i>

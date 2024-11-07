@@ -28,23 +28,27 @@
                     <tr>
                         <th>Title</th>
                         <th>Date</th>
-                        <th class="d-none d-md-table-cell">Duration</th> <!-- Hidden on smaller screens -->
                         <th>Organizer</th>
                         <th class="d-none d-md-table-cell">Participants</th> <!-- Hidden on smaller screens -->
                         <th>Status</th>
+                        <th>created_at</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($events as $event)
-                    <tr>
                         <td>
                             <a href="{{ route('event.view', $event->id) }}" class="event-title" style="color: #001e54; text-decoration: none;">
                                 {{ \Illuminate\Support\Str::limit($event->title, 16) }}
                             </a>
                         </td>
-                        <td>{{ \Carbon\Carbon::parse($event->date)->format('Y-m-d') }}</td>
-                        <td class="d-none d-md-table-cell">{{ \Carbon\Carbon::parse($event->start_time)->format('h:i A') }} - {{ \Carbon\Carbon::parse($event->end_time)->format('h:i A') }}</td>
+                        <td>
+                            @if ($event->start_date === $event->end_date)
+                                {{ \Carbon\Carbon::parse($event->start_date)->format('Y-m-d') }}
+                            @else
+                                {{ \Carbon\Carbon::parse($event->start_date)->format('Y-m-d') }} - {{ \Carbon\Carbon::parse($event->end_date)->format('Y-m-d') }}
+                            @endif
+                        </td>
                         <td>
                             @if($event->userEvent && $event->userEvent->user)
                                 @if($event->userEvent->user->trashed())
@@ -69,6 +73,7 @@
                                 <span style="color: green;">ACTIVE</span>
                             @endif
                         </td>
+                        <td>{{ \Carbon\Carbon::parse($event->created_at)->format('Y-m-d') }}</td>
                         <td>
                             <div class="button-group" style="display: flex; justify-content: center; align-items: center;">
                                 <form action="{{ route('event.view', $event->id) }}" method="POST" style="display:inline-block;">

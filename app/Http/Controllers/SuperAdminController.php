@@ -42,8 +42,8 @@ class SuperAdminController extends Controller
             'values' => [$userCount, $adminCount, $superAdminCount]
         ];
         // get the events per month
-        $events = Event::selectRaw('MONTH(date) as month, COUNT(*) as total')
-        ->whereYear('date', $currentYear)
+        $events = Event::selectRaw('MONTH(start_date) as month, COUNT(*) as total')
+        ->whereYear('start_date', $currentYear)
         ->groupBy('month')
         ->get();
 
@@ -86,8 +86,8 @@ class SuperAdminController extends Controller
         $year = $request->input('year', date('Y'));
 
         // Get event data for the specified year
-        $events = Event::selectRaw('MONTH(date) as month, COUNT(*) as total')
-            ->whereYear('date', $year)
+        $events = Event::selectRaw('MONTH(start_date) as month, COUNT(*) as total')
+            ->whereYear('start_date', $year)
             ->groupBy('month')
             ->get();
 

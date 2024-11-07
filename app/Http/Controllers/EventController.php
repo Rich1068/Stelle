@@ -28,6 +28,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 
 class EventController extends Controller
@@ -49,10 +50,10 @@ class EventController extends Controller
         if (!$request->has('show_all') || $request->show_all != 'true') {
             $now = Carbon::now();
             $query->where(function ($query) use ($now) {
-                $query->where('date', '>=', $now->toDateString())
+                $query->where('start_date', '>=', $now->toDateString())
                     ->orWhere(function ($query) use ($now) {
-                        $query->where('date', '=', $now->toDateString())
-                                ->where('end_time', '>=', $now->toTimeString());
+                        $query->where('start_date', '=', $now->toDateString())
+                            ->where('end_time', '>=', $now->toTimeString());
                     });
             });
         }
@@ -60,10 +61,15 @@ class EventController extends Controller
         // Apply date filter if selected
         if ($request->has('date') && $request->date != '') {
             $selectedDate = Carbon::parse($request->date)->format('Y-m-d');
-            $query->whereDate('date', '=', $selectedDate);
+            $query->where(function ($query) use ($selectedDate) {
+                $query->whereDate('start_date', '<=', $selectedDate)
+                      ->whereDate('end_date', '>=', $selectedDate);
+            });
         }
 
-        $query->orderBy('date', 'asc')
+        // Order by start_date, end_date, and start_time
+        $query->orderBy('start_date', 'asc')
+            ->orderBy('end_date', 'asc')
             ->orderBy('start_time', 'asc');
 
         $events = $query->paginate(10);
@@ -86,8 +92,8 @@ class EventController extends Controller
     
         // Get event IDs where the user is the creator
         $eventIds = UserEvent::where('user_id', $userId)
-                                ->whereHas('user')
-                                ->pluck('event_id');
+                            ->whereHas('user')
+                            ->pluck('event_id');
     
         // Start the event query
         $query = Event::whereIn('id', $eventIds)
@@ -96,6 +102,8 @@ class EventController extends Controller
                     $query->where('status_id', 1); // Only count accepted participants
                 }
             ]);
+    
+        // Include deleted events if 'show_deleted' is set to true
         if ($request->has('show_deleted') && $request->show_deleted === 'true') {
             $query = $query->withTrashed();
         }
@@ -104,9 +112,9 @@ class EventController extends Controller
         if (!$request->has('show_all') || $request->show_all != 'true') {
             $now = Carbon::now();
             $query->where(function ($query) use ($now) {
-                $query->where('date', '>=', $now->toDateString())
+                $query->where('start_date', '>=', $now->toDateString())
                       ->orWhere(function ($query) use ($now) {
-                          $query->where('date', '=', $now->toDateString())
+                          $query->where('start_date', '=', $now->toDateString())
                                 ->where('end_time', '>=', $now->toTimeString());
                       });
             });
@@ -115,14 +123,19 @@ class EventController extends Controller
         // Apply date filter if selected
         if ($request->has('date') && $request->date != '') {
             $selectedDate = Carbon::parse($request->date)->format('Y-m-d');
-            $query->whereDate('date', '=', $selectedDate);
+            $query->where(function ($query) use ($selectedDate) {
+                $query->whereDate('start_date', '<=', $selectedDate)
+                      ->whereDate('end_date', '>=', $selectedDate);
+            });
         }
-    
-        // Order the results
-        $query->orderBy('date', 'asc')->orderBy('start_time', 'asc');
+        // Order the results by start_date, end_date, and start_time
+        $query->orderBy('start_date', 'asc')
+              ->orderBy('end_date', 'asc')
+              ->orderBy('start_time', 'asc');
     
         $events = $query->paginate(10);
         $hasEvents = $events->count() > 0;
+    
         // Check if the request is an AJAX request (for filtering without reloading)
         if ($request->ajax()) {
             return response()->json([
@@ -131,7 +144,6 @@ class EventController extends Controller
                 'hasEvents' => $hasEvents,
             ]);
         }
-        
     
         return view('event.myeventlist', compact('events'));
     }
@@ -305,19 +317,31 @@ class EventController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        // Validate the request data
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'title' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string', 'max:500'],
-            'date' => ['required', 'date', 'date_format:Y-m-d'],
+            'start_date' => ['required', 'date', 'date_format:Y-m-d'],
+            'end_date' => ['required', 'date', 'date_format:Y-m-d', 'after_or_equal:start_date'],
             'mode' => ['required', 'string', 'in:onsite,virtual'],
             'address' => ['required', 'string', 'max:255'],
             'start_time' => ['required', 'date_format:H:i'],
-            'end_time' => ['required', 'date_format:H:i', 'different:start_time'],
+            'end_time' => ['required', 'date_format:H:i'],
             'capacity' => ['required', 'integer', 'min:1'],
             'event_banner' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048']
         ]);
-
+    
+        // Add custom validation logic in the after method
+        $validator->after(function ($validator) use ($request) {
+            if ($request->start_date === $request->end_date) {
+                if (strtotime($request->start_time) >= strtotime($request->end_time)) {
+                    $validator->errors()->add('end_time', 'End time must be after start time on the same day.');
+                }
+            }
+        });
+        // Check if validation fails
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
         // Start a database transaction
         DB::beginTransaction();
         try {
@@ -330,12 +354,12 @@ class EventController extends Controller
                 // Move the uploaded file to the desired directory
                 $file->storeAs('/images/event_banners', $filename);
             }
-
             // Create the event record
             $event = Event::create([
                 'title' => $request->title,
                 'description' => $request->description,
-                'date' => $request->date,
+                'start_date' => $request->start_date,
+                'end_date' => $request->end_date,
                 'address' => $request->address,
                 'start_time' => $request->start_time,
                 'end_time' => $request->end_time,
@@ -627,8 +651,8 @@ class EventController extends Controller
             $user = $userEvent->user ?? null;
 
             // Parse start and end times
-            $start = Carbon::parse($event->date . ' ' . $event->start_time);
-            $end = Carbon::parse($event->date . ' ' . $event->end_time);
+            $start = Carbon::parse($event->start_date . ' ' . $event->start_time);
+            $end = Carbon::parse($event->start_date . ' ' . $event->end_time);
 
             // If end time is earlier than start time, adjust the end date to the next day
             if ($end->lt($start)) {

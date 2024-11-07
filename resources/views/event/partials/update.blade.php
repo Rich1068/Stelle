@@ -20,7 +20,13 @@
             Edit Event
         </h2>
     </div>
-    
+    @php
+        $startDate = old('start_date', $event->start_date);
+        $endDate = old('end_date', $event->end_date);
+        // Allow past dates if the event's date is before today, otherwise set the min to today's date
+        $minstartDate = $startDate >= $today ? $today : null;
+        $minendDate = $endDate >= $today ? $today : null;
+    @endphp
     <div class="event-form">
         <!-- Form Start -->
         <form method="post" action="{{ route('event.update', $event->id) }}" enctype="multipart/form-data" id="editEventForm">
@@ -46,19 +52,30 @@
                         <!-- Date -->
                         <div class="col-md-4 mb-3">
                             <div class="event-field">
-                                <label for="date" class="flex items-center">
+                                <label for="start_date" class="flex items-center">
                                     <i class="fas fa-calendar-day mr-2"></i>
-                                    <span class="font-bold">{{ __('Date') }}</span>
+                                    <span class="font-bold">{{ __('Start Date') }}</span>
+                                </label>
+
+                                <x-text-input id="start_date" name="start_date" type="date" class="mt-1 block w-full event-input" :value="$startDate" :min="$minstartDate" required />
+                                <x-input-error class="mt-2" :messages="$errors->get('start_date')" />
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="event-field">
+                                <label for="end_date" class="flex items-center">
+                                    <i class="fas fa-calendar-day mr-2"></i>
+                                    <span class="font-bold">{{ __('End Date') }}</span>
                                 </label>
 
                                 @php
-                                    $eventDate = old('date', $event->date);
+                                    $eventDate = old('end_date', $event->end_date);
                                     // Allow past dates if the event's date is before today, otherwise set the min to today's date
                                     $minDate = $eventDate >= $today ? $today : null;
                                 @endphp
 
-                                <x-text-input id="date" name="date" type="date" class="mt-1 block w-full event-input" :value="$eventDate" :min="$minDate" required />
-                                <x-input-error class="mt-2" :messages="$errors->get('date')" />
+                                <x-text-input id="end_date" name="end_date" type="date" class="mt-1 block w-full event-input" :value="$endDate" :min="$minendDate" required />
+                                <x-input-error class="mt-2" :messages="$errors->get('end_date')" />
                             </div>
                         </div>
 

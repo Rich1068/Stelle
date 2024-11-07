@@ -119,7 +119,7 @@
                                     @endif
                                     </a>
                                 </td>
-                                <td>{{ $event->date }}</td>
+                                <td>{{ $event->start_date }}</td>
                             </tr>
                          @endforeach
                         </tbody>

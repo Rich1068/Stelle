@@ -107,7 +107,7 @@
                         <p class="event-details-title"><strong>Event Details:</strong></p>
                         
                         <ul class="event-details">
-                            <li><strong>Date:</strong> {{ \Carbon\Carbon::parse($event->date)->format('F j, Y') }}</li>
+                            <li><strong>Date:</strong> {{ \Carbon\Carbon::parse($event->start_date)->format('F j, Y') }}</li>
                             <li><strong>Time:</strong> {{ \Carbon\Carbon::parse($event->start_time)->format('h:i A') }}</li>
                             <li><strong>Address:</strong> {{ $event->address }}</li>
                         </ul>

@@ -42,28 +42,61 @@
                 </div>
 
                 <div class="event-view-info">
-                    <div><i class="fas fa-calendar-alt"></i><span data-label="Date: ">{{ $event->date }}</span></div>
-                    <div><i class="fas fa-map-marker-alt"></i><span data-label="Address: ">{{ $event->address }}</span></div>
-                    <div>
-                        <i class="fas fa-clock"></i>
-                        <span data-label="Duration: ">
-                            {{ \Carbon\Carbon::parse($event->start_time)->format('h:i A') }} to {{ \Carbon\Carbon::parse($event->end_time)->format('h:i A') }}
-                        </span>
-                    </div>
-                    <div><i class="fas fa-users"></i><span data-label="Capacity: ">{{ $currentParticipants }}/{{ $event->capacity }}</span></div>
-                    <div><i class="fas fa-desktop"></i><span data-label="Mode: ">{{ $event->mode }}</span></div>
-                    <div>
-                        <i class="fas fa-user"></i>
-                        <span data-label="By: ">
-                            <a href="{{ route('profile.view', $userevent->user->id) }}" class="no-link-style">
-                                {{ $userevent->user->first_name }} {{ $userevent->user->last_name }}
-                            </a>
-                            @if($userevent->user->trashed())
-                                <span style="color: red;">(DELETED)</span>
-                            @endif
-                        </span>
-                    </div>
+                <!-- Display Date or Date Range -->
+                <div>
+                    <i class="fas fa-calendar-alt"></i>
+                    <span data-label="Dates: ">
+                        @if ($event->start_date === $event->end_date)
+                            {{ \Carbon\Carbon::parse($event->start_date)->format('F j, Y') }}
+                        @else
+                            {{ \Carbon\Carbon::parse($event->start_date)->format('F j, Y') }} - {{ \Carbon\Carbon::parse($event->end_date)->format('F j, Y') }}
+                        @endif
+                    </span>
                 </div>
+
+                <!-- Display Address -->
+                <div>
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span data-label="Address: ">{{ $event->address }}</span>
+                </div>
+
+                <!-- Display Time or Duration -->
+                <div>
+                    <i class="fas fa-clock"></i>
+                    <span data-label="Duration: ">
+                        @if ($event->start_date === $event->end_date)
+                            {{ \Carbon\Carbon::parse($event->start_time)->format('h:i A') }} to {{ \Carbon\Carbon::parse($event->end_time)->format('h:i A') }}
+                        @else
+                            {{ \Carbon\Carbon::parse($event->start_date)->format('F j, Y') }} {{ \Carbon\Carbon::parse($event->start_time)->format('h:i A') }} - {{ \Carbon\Carbon::parse($event->end_date)->format('F j, Y') }} {{ \Carbon\Carbon::parse($event->end_time)->format('h:i A') }}
+                        @endif
+                    </span>
+                </div>
+
+                <!-- Display Capacity -->
+                <div>
+                    <i class="fas fa-users"></i>
+                    <span data-label="Capacity: ">{{ $currentParticipants }}/{{ $event->capacity }}</span>
+                </div>
+
+                <!-- Display Mode -->
+                <div>
+                    <i class="fas fa-desktop"></i>
+                    <span data-label="Mode: ">{{ $event->mode }}</span>
+                </div>
+
+                <!-- Display Organizer -->
+                <div>
+                    <i class="fas fa-user"></i>
+                    <span data-label="By: ">
+                        <a href="{{ route('profile.view', $userevent->user->id) }}" class="no-link-style">
+                            {{ $userevent->user->first_name }} {{ $userevent->user->last_name }}
+                        </a>
+                        @if($userevent->user->trashed())
+                            <span style="color: red;">(DELETED)</span>
+                        @endif
+                    </span>
+                </div>
+            </div>
                 @if($event->trashed())
                 
                 @else
@@ -118,8 +151,8 @@
                     @if ($participant && $participant->status_id == 1)
                     
                         <p>You have been accepted to this event.</p>
-                    @elseif (\Carbon\Carbon::now('Asia/Manila')->isSameDay(\Carbon\Carbon::parse($event->date)) &&
-                    \Carbon\Carbon::now('Asia/Manila')->format('H:i:s') > $event->end_time || \Carbon\Carbon::parse($event->date . ' ' . $event->end_time)->isPast())
+                    @elseif (\Carbon\Carbon::now('Asia/Manila')->isSameDay(\Carbon\Carbon::parse($event->start_date)) &&
+                    \Carbon\Carbon::now('Asia/Manila')->format('H:i:s') > $event->end_time || \Carbon\Carbon::parse($event->start_date . ' ' . $event->end_time)->isPast())
                         <button type="button" class="btn btn-secondary" disabled>Closed</button>
                     @elseif ($currentParticipants < $event->capacity && $participant == null)
                         <form action="{{ route('event.join', $event->id) }}" method="POST" class="full-width-button">

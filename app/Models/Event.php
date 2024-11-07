@@ -28,15 +28,8 @@ class Event extends Model
     }
 
     protected $fillable = [
-        'title', 
-        'description', 
-        'date', 
-        'address', 
-        'start_time', 
-        'end_time', 
-        'capacity', 
-        'event_banner',
-        'mode'
+        'title', 'description', 'start_date', 'end_date', 'address', 
+        'start_time', 'end_time', 'capacity', 'event_banner', 'mode'
     ];
     use HasFactory;
 

@@ -38,15 +38,24 @@
                         <!-- Date -->
                         <div class="col-md-4 mb-3">
                             <div class="event-field">
-                                <label for="date" class="flex items-center">
+                                <label for="start_date" class="flex items-center">
                                     <i class="fas fa-calendar-day mr-2"></i>
-                                    <span class="font-bold">{{ __('Date') }}</span>
+                                    <span class="font-bold">{{ __('Start Date') }}</span>
                                 </label>
-                                <x-text-input id="date" name="date" type="date" class="mt-1 block w-full event-input" :value="old('date')" :min="$today" required />
-                                <x-input-error class="mt-2" :messages="$errors->get('date')" />
+                                <x-text-input id="start_date" name="start_date" type="date" class="mt-1 block w-full event-input" :value="old('start_date')" :min="$today" required />
+                                <x-input-error class="mt-2" :messages="$errors->get('start_date')" />
                             </div>
                         </div>
-
+                        <div class="col-md-4 mb-3">
+                            <div class="event-field">
+                                <label for="end_date" class="flex items-center">
+                                    <i class="fas fa-calendar-day mr-2"></i>
+                                    <span class="font-bold">{{ __('End Date') }}</span>
+                                </label>
+                                <x-text-input id="end_date" name="end_date" type="date" class="mt-1 block w-full event-input" :value="old('end_date')" :min="$today" required />
+                                <x-input-error class="mt-2" :messages="$errors->get('end_date')" />
+                            </div>
+                        </div>
                         <!-- Start Time -->
                         <div class="col-md-4 mb-3">
                             <div class="event-field">
@@ -257,15 +266,6 @@ function previewImage(event) {
     textarea.style.height = 'auto';  // Reset height to auto to shrink if needed
     textarea.style.height = (textarea.scrollHeight) + 'px';  // Set the height based on the scroll height
   }
-function previewImage(event) {
-    var reader = new FileReader();
-    reader.onload = function() {
-        var output = document.getElementById('image_preview');
-        output.src = reader.result;
-        output.style.display = 'block';
-    };
-    reader.readAsDataURL(event.target.files[0]);
-}
 
 function disableButton(button) {
     button.disabled = true;
