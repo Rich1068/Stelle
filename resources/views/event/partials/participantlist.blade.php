@@ -15,6 +15,13 @@
                                 <a href="{{ route('profile.view', $participant->user->id) }}" class="participant-name">
                                     {{ $participant->user->first_name }} {{ $participant->user->last_name }}
                                 </a>
+                                @if($participant->user->role_id == 1) 
+                                <p class="participant-status">Super Admin</p>
+                                @elseif($participant->user->role_id == 2)
+                                <p class="participant-status">Admin</p>
+                                @elseif($participant->user->role_id == 3)
+                                <p class="participant-status">User</p>
+                                @endif
                             </div>
                         @else
                             <p>User information is missing.</p>
@@ -22,7 +29,7 @@
                     </div>
                 </div>
                 @if($userevent->user_id == Auth::user()->id || Auth::user()->role_id == 1)
-                @if($participant->user) <!-- Ensure that user exists before rendering the button -->
+                @if($participant->user)<!-- Ensure that user exists before rendering the button -->
                     <div class="participant-actions">
                         <button type="button" class="btn btn-danger remove-btn" data-user-id="{{ $participant->user->id }}">
                             Remove

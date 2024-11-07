@@ -2690,7 +2690,7 @@ h2 {
 
 @media (max-width: 600px) {
   .participant-name {
-    font-size: 0.7em; /* Smaller font size for mobile devices */
+    font-size: 0.9em; /* Smaller font size for mobile devices */
   }
 }
 
