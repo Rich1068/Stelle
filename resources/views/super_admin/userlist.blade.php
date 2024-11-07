@@ -104,6 +104,16 @@
         </div>
     </div>
 </div>
+<div style="display: flex; flex-direction: column; align-items: flex-start; margin-bottom: 50px; margin-left: 20px;">
+    <a href="{{ route('superadmin.usercreate') }}" class="btn custom-btn-primary" style="width: 100% !important; margin-bottom: 10px !important;">
+        <i class="fas fa-plus"></i> Add User
+    </a>
+    <form action="{{ route('super_admin.requestingAdmins') }}" method="get" style="width: 100%;">
+        <button type="submit" class="btn custom-btn-primary" style="width: 100% !important;">
+            <i class="fas fa-user-shield"></i> View Requesting Admin
+        </button>
+    </form>
+</div>
 
 <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -167,6 +177,48 @@
     }
 
 
+}
+
+.custom-btn-light,
+.custom-btn-primary {
+    background-color: #001e54 !important; /* Dark blue background */
+    color: white !important; /* White text color */
+    border-radius: 15px !important; /* Rounded corners */
+    padding: 12px 20px !important; /* Adequate padding */
+    font-size: 16px !important; /* Font size */
+    font-weight: bold !important; /* Bold text */
+    text-align: center !important; /* Center the text */
+    display: flex !important; /* Flexbox for alignment */
+    align-items: center !important; /* Center items vertically */
+    justify-content: center !important; /* Center items horizontally */
+    border: none !important; /* Remove border */
+    transition: background-color 0.3s, transform 0.3s !important; /* Smooth transition for hover effect */
+    max-width: 200px !important; /* Limit maximum width for larger screens */
+}
+
+/* Ensure buttons fill their parent container */
+.custom-btn-primary {
+    width: 100% !important; /* Full width for mobile */
+}
+
+/* Hover effect for the button */
+.custom-btn-primary:hover {
+    background-color: #004080 !important; /* Darker shade for hover */
+    transform: translateY(-2px) !important; /* Slight lift effect on hover */
+    color: #ffff !important; 
+}
+
+/* Active state effect */
+.custom-btn-primary:active {
+    transform: translateY(1px) !important; /* Slight dip effect on click */
+}
+
+/* Media query for responsiveness */
+@media (max-width: 768px) {
+    .custom-btn-primary {
+        padding: 15px !important; /* Increased padding for easier tapping */
+        font-size: 18px !important; /* Slightly larger font size for better readability */
+    }
 }
 .dataTables_wrapper .dataTables_length select {
     min-width: 50px; /* Adjust width as needed */
