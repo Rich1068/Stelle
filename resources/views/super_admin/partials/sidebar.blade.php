@@ -202,7 +202,11 @@
 }
 </style>
 
-
-
-
-
+<script>
+    // Auto-collapse sidebar on mobile when the page is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+        if (window.innerWidth <= 768) {
+            $('#accordionSidebar').collapse('hide');
+        }
+    });
+</script>

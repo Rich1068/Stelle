@@ -76,7 +76,7 @@ body {
     border-radius: 10px;
     padding: 12px 15px;
     font-size: 1rem;
-    width: 100%;
+    width: 90%;
     margin-bottom: 1rem;
 }
 
@@ -165,6 +165,7 @@ body {
     cursor: pointer;
     border: none;
     transition: box-shadow 0.2s ease-in-out;
+    margin-bottom: 10px;
 }
 
 /* Google button text and icon */
@@ -603,7 +604,7 @@ body {
     margin-top: 20px; /* Adjust as needed */
 }
 
-@media (max-width: 1800px) {
+@media (min-width: 769px) and (max-width: 1800px) {
     /* General adjustments for larger screens */
     .main-container {
         width: 75% !important; /* Keep width as 75% */
@@ -621,12 +622,12 @@ body {
         margin-bottom: 18px !important; /* Reduce margin below the title */
     }
 
-    /* Adjust input fields */
     .login-container input[type="email"],
     .login-container input[type="password"] {
         font-size: 0.9rem !important; /* Slightly smaller input text */
-        width: 75% !important; /* Slightly narrower input fields */
+        width: 90% !important; /* Slightly narrower input fields */
         padding: 6px !important; /* Reduce padding within input fields */
+        min-height: 27px;
     }
 
     .remember-me, 
@@ -636,13 +637,11 @@ body {
         max-width: 400px !important; /* Narrow max width for buttons */
     }
 
-    /* Adjust the stelle logo */
     .stelle-logo {
         margin-top: 15px !important; /* Add space above the logo */
         max-width: 120px !important; /* Reduce the logo size a bit */
     }
 
-    /* Adjust the illustration image */
     .image-section {
         margin-bottom: 8px !important; /* Reduce space below image */
     }
@@ -652,13 +651,11 @@ body {
         margin-top: 8px !important; /* Reduce space above signup text */
     }
 
-    /* Log in button */
     .actions-container .btn-primary {
         padding: 8px 16px !important; /* Reduce button size */
         font-size: 0.9rem !important; /* Smaller button text */
     }
 
-    /* Adjust Google button */
     .google-button {
         margin-top: 15px !important; /* Adjust space above Google button */
         margin-bottom: 15px !important; /* Adjust space below Google button */
