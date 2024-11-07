@@ -471,7 +471,8 @@ class EvaluationFormController extends Controller
 
         // Get the number of participants
         $currentParticipants = EventParticipant::where('event_id', $id)
-            ->where('status_id', 1) // Only accepted participants
+            ->where('status_id', 1)
+            ->whereHas('user')
             ->count();
 
         // Define the static radio options (1, 2, 3, 4, 5)
