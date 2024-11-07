@@ -13387,6 +13387,12 @@ a:focus {
     justify-content: flex-start;
     align-items: center;
     padding: 0;
+    transform: translateX(-100%); /* Move sidebar out of view */
+    transition: transform 0.3s ease;
+  }
+  .sidebar.toggled {
+    width: 60% !important;
+    transform: translateX(0);
   }
 
   .sidebar .nav-item {
@@ -13527,10 +13533,7 @@ a:focus {
   outline: none;
 }
 
-.sidebar.toggled {
-  width: 0 !important;
-  overflow: hidden;
-}
+
 
 .sidebar.toggled #sidebarToggle::after {
   content: '\f105';
