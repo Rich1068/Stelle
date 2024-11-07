@@ -67,35 +67,21 @@
     <hr class="sidebar-divider">
 
     <!-- Nav Item - Management of System (Dropdown for User and Event Management) -->
-    <li class="nav-item d-none d-md-block"> <!-- Hidden on mobile -->
-    <a class="nav-link {{ request()->routeIs('super_admin.userlist') || request()->routeIs('superadmin.eventlist') ? '' : 'collapsed' }}" href="#" data-toggle="collapse" data-target="#collapseManagement" aria-expanded="{{ request()->routeIs('super_admin.userlist') || request()->routeIs('superadmin.eventlist') ? 'true' : 'false' }}" aria-controls="collapseManagement">
-        <span>User and Event Management</span>
-        <i class="fas fa-chevron-down float-right arrow-icon"></i>
-    </a>
-    <div id="collapseManagement" class="collapse {{ request()->routeIs('super_admin.userlist') || request()->routeIs('superadmin.eventlist') ? 'show' : '' }}" aria-labelledby="headingManagement" data-parent="#accordionSidebar">
-        <div class="bg-white py-2 collapse-inner rounded">
-            <a href="{{ route('super_admin.userlist') }}" class="collapse-item {{ request()->routeIs('super_admin.userlist') ? 'active-item' : '' }}">Manage All Users</a>
-            
-            <!-- Unique thick divider -->
-            <div class="thick-divider"></div>
-            
-            <a href="{{ route('superadmin.eventlist') }}" class="collapse-item {{ request()->routeIs('superadmin.eventlist') ? 'active-item' : '' }}">Manage All Events</a>
+    <li class="nav-item">
+        <a class="nav-link {{ request()->routeIs('super_admin.userlist') || request()->routeIs('superadmin.eventlist') ? '' : 'collapsed' }}" href="#" data-toggle="collapse" data-target="#collapseManagement" aria-expanded="{{ request()->routeIs('super_admin.userlist') || request()->routeIs('superadmin.eventlist') ? 'true' : 'false' }}" aria-controls="collapseManagement">
+            <span>User and Event Management</span>
+            <i class="fas fa-chevron-down float-right arrow-icon"></i>
+        </a>
+        <div id="collapseManagement" class="collapse {{ request()->routeIs('super_admin.userlist') || request()->routeIs('superadmin.eventlist') ? 'show' : '' }}" aria-labelledby="headingManagement" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a href="{{ route('super_admin.userlist') }}" class="collapse-item {{ request()->routeIs('super_admin.userlist') ? 'active-item' : '' }}">Manage All Users</a>
+                
+                <!-- Unique thick divider -->
+                <div class="thick-divider"></div>
+                
+                <a href="{{ route('superadmin.eventlist') }}" class="collapse-item {{ request()->routeIs('superadmin.eventlist') ? 'active-item' : '' }}">Manage All Events</a>
+            </div>
         </div>
-    </div>
-</li>
-
-
-
-    <!-- Display Manage All Users and Manage All Events links directly on mobile -->
-    <li class="nav-item d-md-none"> <!-- Visible only on mobile -->
-        <a href="{{ route('super_admin.userlist') }}" class="nav-link {{ request()->routeIs('super_admin.userlist') ? 'active' : '' }}">
-            <span>Manage All Users</span>
-            <i class="fas fa-users"></i>
-        </a>
-        <a href="{{ route('superadmin.eventlist') }}" class="nav-link {{ request()->routeIs('superadmin.eventlist') ? 'active' : '' }}">
-            <span>Manage All Events</span>
-            <i class="fas fa-solid fa-calendar-week"></i>
-        </a>
     </li>
 
     <!-- Divider -->
@@ -173,35 +159,50 @@
     border-radius: 2px; /* Optional: Add rounded corners */
 }
 
-    @media (max-width: 768px) {
-        /* Additional styles for mobile */
-        .collapse-item {
-            display: none; /* Hide collapse items on mobile */
-        }
-    }
+.admin-sidebar .nav-link.active, .collapse-item.active-item {
+    color: white !important;
+    background-color: #002a60 !important; /* Custom dark blue background */
+    font-weight: bold;
+}
 
-    .admin-sidebar .nav-link.active, .collapse-item.active-item {
-        color: white !important;
-        background-color: #002a60 !important; /* Custom dark blue background */
-        font-weight: bold;
-    }
+/* Smaller and dynamic arrow */
+.arrow-icon {
+    font-size: 0.75rem; /* Smaller size */
+    color: #002a60; /* Dark blue color */
+    transition: transform 0.3s; /* Smooth transition */
+}
 
-    /* Smaller and dynamic arrow */
-    .arrow-icon {
-        font-size: 0.75rem; /* Smaller size */
-        color: #002a60; /* Dark blue color */
-        transition: transform 0.3s; /* Smooth transition */
-    }
+/* Hide default Bootstrap arrow on collapsed items */
+.nav-link.collapsed::after,
+.nav-link::after {
+    display: none !important; /* Hide Bootstrap default arrow */
+    content: none !important;
+}
 
-    /* Hide default Bootstrap arrow on collapsed items */
-    .nav-link.collapsed::after,
-    .nav-link::after {
-        display: none !important; /* Hide Bootstrap default arrow */
-        content: none !important;
-    }
+/* Rotate custom arrow when expanded */
+.nav-link[aria-expanded="true"] .arrow-icon {
+    transform: rotate(180deg); /* Arrow points up when expanded */
+}
 
-    /* Rotate custom arrow when expanded */
-    .nav-link[aria-expanded="true"] .arrow-icon {
-        transform: rotate(180deg); /* Arrow points up when expanded */
+/* Position dropdown below its trigger */
+#collapseManagement {
+    position: relative;
+}
+
+/* Ensure dropdown opens below its trigger and doesn't cover the whole screen */
+@media (max-width: 768px) {
+    #collapseManagement {
+        position: static; /* Ensures it aligns properly within the sidebar */
     }
+    .collapse-inner {
+        width: auto; /* Limits width to content */
+        max-width: 80%; /* Adjusts width without covering the whole screen */
+        margin-left: 10px; /* Adjust as needed to center or align */
+    }
+}
 </style>
+
+
+
+
+

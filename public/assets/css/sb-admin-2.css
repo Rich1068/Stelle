@@ -49,6 +49,8 @@
 *::after {
   box-sizing: border-box;
 }
+
+
 .fc-customToday-button {
   background-color: #003366; /* Dark blue */
   border-radius: 50%; /* Make it circular */
@@ -2187,7 +2189,7 @@ h2 {
 }
 
 .admin-sidebar .nav-link {
-  color: #00008B !important;
+  color: #002a60  !important;
   font-weight: bold !important;
   font-size: 1.4rem !important;
   transition: background-color 0.3s ease, color 0.3s ease;
@@ -2213,7 +2215,7 @@ h2 {
 }
 
 .admin-sidebar .nav-link.active {
-  background-color: #00008B !important; /* Active color: Blue */
+  background-color: #002a60  !important; /* Active color: Blue */
   color: #ffffff !important; /* Text color for active item */
   border-radius: 5px;
   display: inline-block;
@@ -13572,61 +13574,58 @@ a:focus {
 /* Mobile view adjustments */
 @media (max-width: 768px) {
   .sidebar {
-    width: 13rem; /* Keep sidebar width */
-    min-height: 100vh;
+    width: 13rem;
+    height: 100vh; /* Full viewport height */
+    overflow-y: auto; /* Enable vertical scrolling */
     border-right: 1px solid darkgray;
     display: flex;
-    flex-direction: column; /* Align items vertically */
-    justify-content: flex-start; /* Align items from the top */
-    align-items: center; /* Center items horizontally */
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
     padding: 0;
   }
 
-  /* Add a divider between each nav item */
   .sidebar .nav-item {
-    width: 100%; /* Ensure nav items span the full width of the sidebar */
-    border-bottom: 1px solid #ddd; /* Light gray divider */
-    text-align: center; /* Center text */
+    width: 100%;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
   }
 
-  /* Adjust nav link appearance */
   .sidebar .nav-item .nav-link {
-    display: flex; /* Use flexbox to position text and icons */
-    justify-content: space-between; /* Space out text and icon */
-    align-items: center; /* Align text and icon vertically */
-    text-align: left; /* Align text to the left */
-    padding: 1rem; /* Adjust padding for better spacing */
-    width: 100%; /* Ensure full width for better display */
-    font-size: 1.2rem; /* Increase font size */
-    font-weight: bold; /* Make the text bold */
-    color: #333; /* Set a default text color */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: left;
+    padding: 1rem;
+    width: 100%;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
   }
 
-  /* Ensure text is displayed on the far left */
   .sidebar .nav-item .nav-link span {
-    font-size: 1.1rem; /* Increase text size */
-    text-align: left; /* Ensure text stays on the left */
-    margin-right: 0; /* Remove any right margin */
-    flex-grow: 1; /* Ensure the text takes up available space */
+    font-size: 1.1rem;
+    text-align: left;
+    margin-right: 0;
+    flex-grow: 1;
   }
 
-  /* Move icon to the far right */
   .sidebar .nav-item .nav-link i {
-    font-size: 1.6rem; /* Increase icon size */
-    margin-left: auto; /* Push icon to the far right */
+    font-size: 1.6rem;
+    margin-left: auto;
   }
 
-  /* Hover effect for nav item */
   .sidebar .nav-item .nav-link:hover {
-    background-color: #f1f1f1; /* Highlight when hovered */
-    border-radius: 4px; /* Rounded corners */
+    background-color: #f1f1f1;
+    border-radius: 4px;
   }
 
-  /* Optional: Adjust the bottom of the sidebar items */
   .sidebar .nav-item:last-child {
     margin-bottom: 1rem;
   }
 }
+
+
 
 .sidebar .nav-item .nav-link span {
   font-size: 0.9rem;
@@ -13648,7 +13647,6 @@ a:focus {
 
 .sidebar .nav-item .collapse .collapse-inner {
   border-radius: 0.35rem;
-  box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
 }
 
 .sidebar .nav-item .collapsing {
@@ -13661,7 +13659,7 @@ a:focus {
   padding: .5rem 0;
   min-width: 10rem;
   font-size: 0.85rem;
-  margin: 0 0 1rem 0;
+  text-align: center;
 }
 
 .sidebar .nav-item .collapse .collapse-inner .collapse-header,
