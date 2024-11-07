@@ -356,11 +356,11 @@ th, td {
 /* Adjust width to 90% on mobile */
 @media (max-width: 768px) {
   .search-input {
-    width: 90%; /* Full width on smaller screens */
+    width: 120%; /* Full width on smaller screens */
     margin-right: 0; /* Remove margin for better centering on mobile */
   }
   .search-wrapper {
-    width: 90%; /* Full width on smaller screens */
+    width: 120%; /* Full width on smaller screens */
     margin-right: 0; /* Remove margin for better centering on mobile */
   }
 }
@@ -944,8 +944,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
     padding: 20px; /* Reduce padding for mobile */
     margin: 15px auto; /* Adjust margin for mobile */
     width: 100%; /* Ensure it uses full width */
-    max-width: 90%; /* Set a maximum width to limit how wide it can go */
-    min-height: 100vh; /* Ensure the container takes full height */
+    max-width: 90%; /* Set a maximum width to limit how wide it can go */ 
     box-sizing: border-box; /* Includes padding and border in width/height calculation */
     margin: 20px auto;
   }
@@ -2010,7 +2009,7 @@ h2 {
 }
 
 .admin-sidebar .nav-link:hover {
-  background-color: #2c3e50 !important;
+  background-color: #002a60 !important;
   color: #ffffff !important;
 }
 
@@ -2048,7 +2047,7 @@ h2 {
 
 /* Ensures that the dropdown remains visible if it has the 'active' class */
 .admin-sidebar .collapse-item {
-  color: #00008B !important;
+  color: #002a60 !important;
   font-weight: bold !important;
   display: none; /* Default: hidden */
   transition: background-color 0.3s ease, color 0.3s ease;
@@ -13470,6 +13469,7 @@ a:focus {
   min-width: 10rem;
   font-size: 0.85rem;
   text-align: center;
+  margin: auto;
 }
 
 .sidebar .nav-item .collapse .collapse-inner .collapse-header,
