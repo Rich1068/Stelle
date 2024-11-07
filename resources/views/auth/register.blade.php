@@ -7,7 +7,7 @@
     <link rel="icon" href="{{ asset('images/stelle_icon.png') }}" type="image/x-icon">
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/custom.css"> <!-- Ensure custom styles are linked -->
-    <script>
+    <!-- <script>
         document.addEventListener('contextmenu', function(event) {
             event.preventDefault();
         });
@@ -20,7 +20,7 @@
                 event.preventDefault();
             }
         });
-    </script>
+    </script> -->
 </head>
 <body>
 

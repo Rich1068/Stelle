@@ -6,7 +6,7 @@
     <link rel="icon" href="{{ asset('images/stelle_icon.png') }}" type="image/x-icon">
     <title>Stelle</title>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
-    <script>
+    <!-- <script>
         document.addEventListener('contextmenu', function(event) {
             event.preventDefault();
         });
@@ -19,7 +19,7 @@
                 event.preventDefault();
             }
         });
-    </script>
+    </script> -->
 
     <link rel="stylesheet" href="/css/custom.css"> <!-- Ensure custom styles are linked -->
     <style>
