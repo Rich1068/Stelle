@@ -185,34 +185,7 @@
     background-color: #f0f4ff; /* Light blue tint on hover */
 }
 
-/* Cleaner Pagination Styling */
-.dataTables_wrapper .dataTables_paginate .paginate_button {
-    background: none;
-    color: #002060; /* Dark blue text */
-    border: none;
-    font-size: 0.85rem;
-    padding: 5px 10px;
-    margin: 0 2px;
-    cursor: pointer;
-    transition: color 0.2s ease;
-}
 
-/* Pagination Hover and Active Style */
-.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-    color: #004080; /* Slightly darker blue on hover */
-}
-
-.dataTables_wrapper .dataTables_paginate .paginate_button.current {
-    color: #ffffff; /* White text for active page */
-    background-color: #002060; /* Dark blue background for active page */
-    border-radius: 5px;
-}
-
-/* Remove Pagination Focus Outline */
-.dataTables_wrapper .dataTables_paginate .paginate_button:focus {
-    outline: none;
-    box-shadow: none;
-}
 
 /* Styling for Dropdown (entries selection) */
 
@@ -243,47 +216,7 @@
     margin: auto;
 }
 
-    /* Minimalist Pagination Styling */
-.dataTables_wrapper .dataTables_paginate .paginate_button {
-    background: none; /* No background */
-    color: #002060; /* Dark blue text */
-    border: none;
-    padding: 5px 10px;
-    margin: 0 2px;
-    cursor: pointer;
-    font-weight: normal;
-    transition: color 0.3s ease; /* Smooth color transition on hover */
-    outline: none; /* Remove focus outline */
-}
 
-/* Hover Effect for Pagination */
-.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-    color: #ffffff; /* White text on hover */
-    background: none; /* Ensure no background on hover */
-}
-
-/* Active Page Style */
-.dataTables_wrapper .dataTables_paginate .paginate_button.current {
-    color: #ffffff; /* White text for active page */
-    font-weight: bold; /* Bold for the active page */
-    background: none; /* Ensure no background */
-    outline: none; /* Remove outline */
-    box-shadow: none; /* Remove any default shadow */
-}
-
-/* Remove hover effect on active page */
-.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
-    background: none; /* No background on hover for active page */
-    color: #ffffff; /* Keep white text for consistency */
-    box-shadow: none; /* No shadow */
-}
-
-/* Remove focus outline on click */
-.dataTables_wrapper .dataTables_paginate .paginate_button:focus {
-    outline: none;
-    background: none;
-    box-shadow: none;
-}
 
 /* General Button Styles */
 .button-group {
@@ -387,11 +320,143 @@
     background-color: #e0e7ff; /* Light blue tint on hover */
 }
 
+
+</style>
+
+<style>
 .page-item.active .page-link {
-    background-color: #ffffff !important;
-    border-color: #001e54 !important;
-    color: #001e54 !important;
+  background-color: transparent !important;
+  border-color: transparent !important;
+  color: inherit !important;
+  font-weight: normal !important;
+}
+
+.pagination {
+  margin-top: 20px !important;
+  padding-bottom: 40px !important;
+  display: flex !important;
+  justify-content: center !important;
+  list-style-type: none !important;
+  margin-top: 10px !important;
+  padding: 0 !important;
+  align-items: center !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.pagination a, .pagination span {
+  display: inline-block !important;
+  color: grey !important;
+  text-decoration: none !important;
+  background-color: transparent !important;
+  border: none !important;
+  padding: 10px 15px !important;
+  margin: 0 5px !important;
+  font-weight: 600 !important;
+  font-size: 1rem !important;
+}
+
+.pagination .active span {
+  background-color: darkblue !important;
+  color: white !important;
+  font-weight: 800 !important;
+  border-radius: 50% !important;
+}
+
+.pagination a:hover {
+  background-color: lightgray !important;
+  color: white !important;
+  border-radius: 50% !important;
+}
+
+@media (max-width: 768px) {
+  .pagination {
+    justify-content: center !important;
+    margin: auto !important;
+  }
+
+  .pagination a, .pagination span {
+    padding: 6px 8px !important;
+    font-size: 0.85rem !important;
+    margin: 0 3px !important; /* Closer numbers */
+  }
+
+  .pagination .active span {
+    font-weight: 700 !important;
+  }
 }
 </style>
+<script>
+    $(document).ready(function() {
+        // Check if DataTable is already initialized and destroy it if so
+        if ($.fn.dataTable.isDataTable('#userDataTable')) {
+            $('#userDataTable').DataTable().destroy();
+        }
+
+        const table = $('#userDataTable').DataTable({
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": true,
+            "pageLength": 10,
+            "pagingType": "full_numbers", // Show full pagination (numbers)
+            "iDisplayLength": 10,  // Items per page
+            "fnDrawCallback": function (settings) {
+                // Check screen size and apply custom pagination for mobile and PC
+                var api = this.api();
+                var currentPage = api.page.info().page + 1;  // Get current page number
+                var totalPages = api.page.info().pages;     // Get total pages
+
+                 // On Mobile: Show only 3 pages (Previous, Current, Next)
+            if ($(window).width() <= 768) {
+                var pageNumbers = [];
+                if (currentPage === 1) {
+                    pageNumbers = [1, 2, 3];  // Show pages 1, 2, 3 when on the first page
+                } else if (currentPage === totalPages) {
+                    pageNumbers = [totalPages - 2, totalPages - 1, totalPages];  // Show last 3 pages
+                } else {
+                    pageNumbers = [currentPage - 1, currentPage, currentPage + 1];  // Show 3 pages around the current page
+                }
+
+                // Hide pages that are not part of the range for mobile
+                $('.dataTables_paginate .paginate_button').each(function() {
+                    var pageNumber = $(this).text();
+                    if (!pageNumbers.includes(parseInt(pageNumber)) && pageNumber !== "«" && pageNumber !== "»") {
+                        $(this).hide();
+                    } else {
+                        $(this).show();
+                    }
+                });
+
+                // Show the "Previous" and "Next" buttons
+                $('.dataTables_paginate .paginate_button.previous').show();
+                $('.dataTables_paginate .paginate_button.next').show();
+
+            } else {
+                // On PC: Show all page numbers
+                $('.dataTables_paginate .paginate_button').show();
+
+                // Hide "Previous" and "Next" if we're on the first or last page
+                $('.dataTables_paginate .paginate_button.previous').toggle(currentPage > 1); // Show 'Previous' if not on the first page
+                $('.dataTables_paginate .paginate_button.next').toggle(currentPage < totalPages); // Show 'Next' if not on the last page
+            }
+        }
+    });
+
+        // Role filter event handler
+        $('#roleFilter').on('change', function() {
+            const selectedRole = $(this).val();
+            if (selectedRole) {
+                table.column(3).search(`^${selectedRole}$`, true, false).draw();
+            } else {
+                table.column(3).search('').draw();
+            }
+        });
+    });
+</script>
+
+
 
 @endsection

@@ -49,58 +49,6 @@
 *::after {
   box-sizing: border-box;
 }
-@media (max-width: 768px) {
-  /* Hide horizontal scrollbar but keep functionality */
-  body, html {
-      overflow-x: auto;
-  }
-
-  /* Hide scrollbar for most browsers */
-  .dataTables_wrapper {
-      overflow-x: auto;
-      scrollbar-width: none; /* Firefox */
-  }
-
-  .dataTables_wrapper::-webkit-scrollbar {
-      display: none; /* Chrome, Safari, and Edge */
-  }
-
-  .dataTables_wrapper .dataTables_paginate {
-      text-align: center !important;
-      font-size: 0.4rem !important;
-      margin-top: 5px !important;
-      display: flex !important;
-      justify-content: center !important;
-      overflow-x: auto;
-      scrollbar-width: none; /* Firefox */
-  }
-
-  .dataTables_wrapper .dataTables_paginate::-webkit-scrollbar {
-      display: none; /* Chrome, Safari, and Edge */
-  }
-
-  .dataTables_wrapper .dataTables_paginate .paginate_button {
-      padding: 0 !important;
-      font-size: 0.35rem !important;
-      margin: 0 0.5px !important;
-      border: none !important;
-      background: none !important;
-      color: #007bff !important;
-      display: inline-block !important;
-      transition: none !important;
-  }
-
-  .dataTables_wrapper .dataTables_paginate .paginate_button.current {
-      background: none !important;
-      color: #ffffff !important;
-      border-radius: 0 !important;
-  }
-
-  .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-      color: #004080 !important;
-      transition: none !important;
-  }
-}
 
 
 /* CALENDAR */
@@ -2050,7 +1998,7 @@ h2 {
 .admin-sidebar .nav-link {
   color: #002a60  !important;
   font-weight: bold !important;
-  font-size: 1.4rem !important;
+  font-size: 1.2rem !important;
   transition: background-color 0.3s ease, color 0.3s ease;
   display: flex !important;
   justify-content: space-between !important;
@@ -2060,7 +2008,7 @@ h2 {
 .admin-sidebar .nav-link i {
   color: #003366 !important;
   transition: color 0.3s ease;
-  font-size: 1.2rem !important;
+  font-size: 1.0rem !important;
   margin-right: auto;
 }
 
@@ -13700,7 +13648,7 @@ a:focus {
   }
   .sidebar .nav-item .nav-link i {
     font-size: 15px;
-    margin-right: 0.25rem;
+    margin-right: 1rem;
   }
   .sidebar .nav-item .nav-link span {
     font-size: 1.2rem !;
