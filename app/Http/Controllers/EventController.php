@@ -42,10 +42,12 @@ class EventController extends Controller
     {
         $query = Event::query()->withCount([
             'participants as current_participants' => function ($query) {
-                $query->where('status_id', 1); // Only count accepted participants
+                $query->where('status_id', 1)
+                      ->whereHas('user', function ($userQuery) {
+                          $userQuery->whereNull('deleted_at');
+                      });
             }
         ]);
-
         // Show only ongoing events by default
         if (!$request->has('show_all') || $request->show_all != 'true') {
             $now = Carbon::now();
@@ -74,7 +76,7 @@ class EventController extends Controller
 
         $events = $query->paginate(10);
         $hasEvents = $events->count() > 0;
-
+        
         if ($request->ajax()) {
             return response()->json([
                 'eventsHtml' => view('event.partials.eventlist', compact('events'))->render(),
@@ -97,11 +99,14 @@ class EventController extends Controller
     
         // Start the event query
         $query = Event::whereIn('id', $eventIds)
-            ->withCount([
-                'participants as current_participants' => function ($query) {
-                    $query->where('status_id', 1); // Only count accepted participants
-                }
-            ]);
+        ->withCount([
+            'participants as current_participants' => function ($query) {
+                $query->where('status_id', 1)
+                      ->whereHas('user', function ($userQuery) {
+                          $userQuery->whereNull('deleted_at');
+                      });
+            }
+        ]);
     
         // Include deleted events if 'show_deleted' is set to true
         if ($request->has('show_deleted') && $request->show_deleted === 'true') {
