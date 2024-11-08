@@ -33,7 +33,7 @@
             @csrf
             @method('PATCH')
 
-            <div class="custom-bg-white" style="border-radius: 15px; background-color: white; padding-top: 20px;">
+            <div class="custom-bg-white" style="border-radius: 15px; background-color: white; padding-top: 20px; max-width: 76%;">
                 <!-- Title -->
                 <div class="col-md-12 mb-4">
                     <div class="event-field">
@@ -46,64 +46,62 @@
                     </div>
                 </div>
 
-                <!-- Date, Start Time, and End Time in One Column -->
-                <div class="col-md-12 mb-4">
-                    <div class="row">
-                        <!-- Date -->
-                        <div class="col-md-4 mb-3">
-                            <div class="event-field">
-                                <label for="start_date" class="flex items-center">
-                                    <i class="fas fa-calendar-day mr-2"></i>
-                                    <span class="font-bold">{{ __('Start Date') }}</span>
-                                </label>
-
-                                <x-text-input id="start_date" name="start_date" type="date" class="mt-1 block w-full event-input" :value="$startDate" :min="$minstartDate" required />
-                                <x-input-error class="mt-2" :messages="$errors->get('start_date')" />
-                            </div>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <div class="event-field">
-                                <label for="end_date" class="flex items-center">
-                                    <i class="fas fa-calendar-day mr-2"></i>
-                                    <span class="font-bold">{{ __('End Date') }}</span>
-                                </label>
-
-                                @php
-                                    $eventDate = old('end_date', $event->end_date);
-                                    // Allow past dates if the event's date is before today, otherwise set the min to today's date
-                                    $minDate = $eventDate >= $today ? $today : null;
-                                @endphp
-
-                                <x-text-input id="end_date" name="end_date" type="date" class="mt-1 block w-full event-input" :value="$endDate" :min="$minendDate" required />
-                                <x-input-error class="mt-2" :messages="$errors->get('end_date')" />
-                            </div>
-                        </div>
-
-                        <!-- Start Time -->
-                        <div class="col-md-4 mb-3">
-                            <div class="event-field">
-                                <label for="start_time" class="flex items-center">
-                                    <i class="fas fa-clock mr-2"></i>
-                                    <span class="font-bold">{{ __('Start Time') }}</span>
-                                </label>
-                                <x-text-input id="start_time" name="start_time" type="time" class="mt-1 block w-full event-input" :value="old('start_time', \Carbon\Carbon::parse($event->start_time)->format('H:i'))" required />
-                                <x-input-error class="mt-2" :messages="$errors->get('start_time')" />
-                            </div>
-                        </div>
-
-                        <!-- End Time -->
-                        <div class="col-md-4 mb-3">
-                            <div class="event-field">
-                                <label for="end_time" class="flex items-center">
-                                    <i class="fas fa-clock mr-2"></i>
-                                    <span class="font-bold">{{ __('End Time') }}</span>
-                                </label>
-                                <x-text-input id="end_time" name="end_time" type="time" class="mt-1 block w-full event-input" :value="old('end_time', \Carbon\Carbon::parse($event->end_time)->format('H:i'))" required />
-                                <x-input-error class="mt-2" :messages="$errors->get('end_time')" />
-                            </div>
-                        </div>
+        <div class="col-md-12 mb-4">
+            <div class="row">
+                <!-- Start Date -->
+                <div class="col-md-6 mb-3">
+                    <div class="event-field">
+                        <label for="start_date" class="flex items-center">
+                            <i class="fas fa-calendar-day mr-2"></i>
+                            <span class="font-bold">{{ __('Start Date') }}</span>
+                        </label>
+                        <x-text-input id="start_date" name="start_date" type="date" class="mt-1 block w-full event-input" :value="$startDate" :min="$minstartDate" required />
+                        <x-input-error class="mt-2" :messages="$errors->get('start_date')" />
                     </div>
                 </div>
+
+                <!-- End Date -->
+                <div class="col-md-6 mb-3">
+                    <div class="event-field">
+                        <label for="end_date" class="flex items-center">
+                            <i class="fas fa-calendar-day mr-2"></i>
+                            <span class="font-bold">{{ __('End Date') }}</span>
+                        </label>
+                        @php
+                            $eventDate = old('end_date', $event->end_date);
+                            $minDate = $eventDate >= $today ? $today : null;
+                        @endphp
+                        <x-text-input id="end_date" name="end_date" type="date" class="mt-1 block w-full event-input" :value="$endDate" :min="$minendDate" required />
+                        <x-input-error class="mt-2" :messages="$errors->get('end_date')" />
+                    </div>
+                </div>
+
+                <!-- Start Time -->
+                <div class="col-md-6 mb-3">
+                    <div class="event-field">
+                        <label for="start_time" class="flex items-center">
+                            <i class="fas fa-clock mr-2"></i>
+                            <span class="font-bold">{{ __('Start Time') }}</span>
+                        </label>
+                        <x-text-input id="start_time" name="start_time" type="time" class="mt-1 block w-full event-input" :value="old('start_time', \Carbon\Carbon::parse($event->start_time)->format('H:i'))" required />
+                        <x-input-error class="mt-2" :messages="$errors->get('start_time')" />
+                    </div>
+                </div>
+
+                <!-- End Time -->
+                <div class="col-md-6 mb-3">
+                    <div class="event-field">
+                        <label for="end_time" class="flex items-center">
+                            <i class="fas fa-clock mr-2"></i>
+                            <span class="font-bold">{{ __('End Time') }}</span>
+                        </label>
+                        <x-text-input id="end_time" name="end_time" type="time" class="mt-1 block w-full event-input" :value="old('end_time', \Carbon\Carbon::parse($event->end_time)->format('H:i'))" required />
+                        <x-input-error class="mt-2" :messages="$errors->get('end_time')" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
 <!-- Description -->
 <div class="col-md-12 mb-4">
     <div class="event-field">

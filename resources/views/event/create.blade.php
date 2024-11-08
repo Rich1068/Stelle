@@ -32,11 +32,11 @@
                     </div>
                 </div>
 
-                <!-- Date, Start Time, and End Time in One Column -->
+                                <!-- Date, Start Time, and End Time in One Column -->
                 <div class="col-md-12 mb-4">
                     <div class="row">
-                        <!-- Date -->
-                        <div class="col-md-4 mb-3">
+                        <!-- Row 1: Start Date and End Date -->
+                        <div class="col-md-6 mb-3">
                             <div class="event-field">
                                 <label for="start_date" class="flex items-center">
                                     <i class="fas fa-calendar-day mr-2"></i>
@@ -46,7 +46,7 @@
                                 <x-input-error class="mt-2" :messages="$errors->get('start_date')" />
                             </div>
                         </div>
-                        <div class="col-md-4 mb-3">
+                        <div class="col-md-6 mb-3">
                             <div class="event-field">
                                 <label for="end_date" class="flex items-center">
                                     <i class="fas fa-calendar-day mr-2"></i>
@@ -56,8 +56,9 @@
                                 <x-input-error class="mt-2" :messages="$errors->get('end_date')" />
                             </div>
                         </div>
-                        <!-- Start Time -->
-                        <div class="col-md-4 mb-3">
+
+                        <!-- Row 2: Start Time and End Time -->
+                        <div class="col-md-6 mb-3">
                             <div class="event-field">
                                 <label for="start_time" class="flex items-center">
                                     <i class="fas fa-clock mr-2"></i>
@@ -67,9 +68,7 @@
                                 <x-input-error class="mt-2" :messages="$errors->get('start_time')" />
                             </div>
                         </div>
-
-                        <!-- End Time -->
-                        <div class="col-md-4 mb-3">
+                        <div class="col-md-6 mb-3">
                             <div class="event-field">
                                 <label for="end_time" class="flex items-center">
                                     <i class="fas fa-clock mr-2"></i>
@@ -81,6 +80,7 @@
                         </div>
                     </div>
                 </div>
+
 
                 <!-- Description -->
                 <div class="col-md-12 mb-4">
