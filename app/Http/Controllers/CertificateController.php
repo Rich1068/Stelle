@@ -397,7 +397,28 @@ class CertificateController extends Controller
 
             // Retrieve certificate once
             $certificate = Certificate::where('event_id', $event_id)->firstOrFail();
-            
+            $certificateDesign = $certificate->design;
+
+            // Check if the certificate has the {{name}} placeholder
+            $hasPlaceholder = strpos($certificateDesign, '{{name}}') !== false;
+
+            // Generate a shared certificate if there's no {{name}} placeholder
+            $sharedCertPath = null;
+            if (!$hasPlaceholder) {
+                // Generate a generic filename for the shared certificate
+                $fileName = 'event_' . $event_id . '_certificate.png';
+                $imagePath = 'images/certificates/' . $fileName;
+                $sharedCertPath = 'storage/' . $imagePath;
+
+                // Decode the shared image data from the first user's `imageData`
+                $firstUserData = $data[0] ?? null;
+                if ($firstUserData && isset($firstUserData['imageData'])) {
+                    $imageContent = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $firstUserData['imageData']));
+                    Storage::disk('public')->put($imagePath, $imageContent);
+                    $savedFiles[] = $imagePath;
+                }
+            }
+
             // Get all existing CertUser records for this certificate and user list
             $existingCertUsers = CertUser::where('cert_id', $certificate->id)
                 ->whereIn('user_id', array_column($data, 'userId'))
@@ -416,22 +437,27 @@ class CertificateController extends Controller
                 $user = User::find($userId);
                 if (!$user) continue;
 
-                // Generate sanitized filename
-                $lastName = preg_replace('/[^a-zA-Z0-9]/', '', $user->last_name);
-                $fileName = $lastName . '-' . $event_id . '_' . uniqid() . '_certificate.png';
-                $imagePath = 'images/certificates/' . $fileName;
-                $pathDatabase = 'storage/' . $imagePath;
+                // Use the shared certificate path if there's no placeholder
+                $certPath = $sharedCertPath;
+                
+                if ($hasPlaceholder) {
+                    // Generate personalized filename for each user
+                    $lastName = preg_replace('/[^a-zA-Z0-9]/', '', $user->last_name);
+                    $fileName = $lastName . '-' . $event_id . '_' . uniqid() . '_certificate.png';
+                    $imagePath = 'images/certificates/' . $fileName;
+                    $certPath = 'storage/' . $imagePath;
 
-                // Decode and store the image
-                $imageContent = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $imageData));
-                Storage::disk('public')->put($imagePath, $imageContent);
-                $savedFiles[] = $imagePath;
+                    // Decode and store the image
+                    $imageContent = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $imageData));
+                    Storage::disk('public')->put($imagePath, $imageContent);
+                    $savedFiles[] = $imagePath;
+                }
 
                 // Prepare CertUser data for batch insert
                 $certUserRecords[] = [
                     'user_id' => $userId,
                     'cert_id' => $certificate->id,
-                    'cert_path' => $pathDatabase,
+                    'cert_path' => $certPath,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ];
@@ -448,7 +474,7 @@ class CertificateController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
 
-            // Cleanup saved files
+            // Cleanup saved files if any error occurs
             foreach ($savedFiles as $filePath) {
                 if (Storage::disk('public')->exists($filePath)) {
                     Storage::disk('public')->delete($filePath);
@@ -459,6 +485,7 @@ class CertificateController extends Controller
             return response()->json(['message' => 'Failed to send certificates.'], 500);
         }
     }
+
 
 
     public function getCertificateDesign($eventId)

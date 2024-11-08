@@ -83,33 +83,43 @@ const ExportModal = ({ isOpen, store, onClose, eventId, showLoadingModal }) => {
   
     setLoading(true);
     const originalJson = JSON.parse(JSON.stringify(store.toJSON())); // Deep clone the JSON
-  
-    // Step 1: Prepare all modified JSON copies with name replacements
-    const modifiedJsons = selectedNames.map(name => {
-      const jsonCopy = JSON.parse(JSON.stringify(originalJson)); // Clone JSON for each name
-      jsonCopy.pages.forEach(page => {
-        page.children.forEach(element => {
-          if (element.type === 'text' && element.text.includes('{{name}}')) {
-            element.text = element.text.replace('{{name}}', name); // Replace placeholder
-          }
-        });
-      });
-      return jsonCopy;
-    });
-  
+    
+    // Check if {{name}} exists in the JSON
+    const namePlaceholderExists = JSON.stringify(originalJson).includes('{{name}}');
+    
     const newImages = [];
   
     try {
-      // Step 2: Load each modified JSON only once, then capture the image
-      for (const json of modifiedJsons) {
-        await store.loadJSON(json); // Load modified JSON into the canvas
-        await store.waitLoading();  // Wait for the canvas to finish loading
-        const dataURL = await store.toDataURL(); // Capture canvas as image
-        newImages.push(dataURL); // Add the image URL to the array
+      if (namePlaceholderExists) {
+        // If {{name}} placeholder exists, generate a separate preview for each selected name
+        const modifiedJsons = selectedNames.map(name => {
+          const jsonCopy = JSON.parse(JSON.stringify(originalJson));
+          jsonCopy.pages.forEach(page => {
+            page.children.forEach(element => {
+              if (element.type === 'text' && element.text.includes('{{name}}')) {
+                element.text = element.text.replace('{{name}}', name);
+              }
+            });
+          });
+          return jsonCopy;
+        });
+  
+        // Loop through each modified JSON and generate the preview image
+        for (const json of modifiedJsons) {
+          await store.loadJSON(json);
+          await store.waitLoading();
+          const dataURL = await store.toDataURL();
+          newImages.push(dataURL);
+        }
+      } else {
+        // If {{name}} placeholder does not exist, generate only one preview
+        await store.loadJSON(originalJson);
+        await store.waitLoading();
+        const dataURL = await store.toDataURL();
+        newImages.push(dataURL);
       }
   
-      setImages(newImages); // Set all generated images at once
-  
+      setImages(newImages);
     } catch (error) {
       alert('Something went wrong while generating previews.');
       console.error('Error in preview generation:', error);
@@ -122,61 +132,75 @@ const ExportModal = ({ isOpen, store, onClose, eventId, showLoadingModal }) => {
 
   const handleGenerateAndSave = async () => {
     if (selectedNames.length === 0) {
-        alert('Please select at least one user before sending the certificate.');
-        return;
+      alert('Please select at least one user before sending the certificate.');
+      return;
     }
-
+  
     setLoading(true);
     showLoadingModal(true);
-
+  
     const originalJson = JSON.parse(JSON.stringify(store.toJSON())); // Clone the JSON once
     const certificateData = []; // Array to store data for batch saving
-
+  
+    // Check if {{name}} exists in the JSON
+    const namePlaceholderExists = JSON.stringify(originalJson).includes('{{name}}');
+  
     try {
-        // Generate all modified JSONs and data URLs in one batch
+      if (namePlaceholderExists) {
+        // If {{name}} placeholder exists, generate a unique certificate for each user
         for (const name of selectedNames) {
-            // Create a modified copy of the original JSON for each name
-            const modifiedJson = JSON.parse(JSON.stringify(originalJson));
-            modifiedJson.pages.forEach((page) => {
-                page.children = page.children.map((element) => {
-                    if (element.type === 'text' && element.text.includes('{{name}}')) {
-                        return { ...element, text: element.text.replace('{{name}}', name) };
-                    }
-                    return element;
-                });
+          const modifiedJson = JSON.parse(JSON.stringify(originalJson)); // Deep clone JSON
+          modifiedJson.pages.forEach((page) => {
+            page.children = page.children.map((element) => {
+              if (element.type === 'text' && element.text.includes('{{name}}')) {
+                return { ...element, text: element.text.replace('{{name}}', name) };
+              }
+              return element;
             });
-
-            await store.loadJSON(modifiedJson);
-            await store.waitLoading();
-
-            // Generate data URL for the modified JSON
-            const dataURL = await store.toDataURL();
-            const userId = getUserIdByName(name);
-
-            // Push certificate data for batch saving
-            certificateData.push({ userId, imageData: dataURL });
+          });
+  
+          await store.loadJSON(modifiedJson);
+          await store.waitLoading();
+  
+          const dataURL = await store.toDataURL();
+          const userId = getUserIdByName(name);
+  
+          certificateData.push({ userId, imageData: dataURL });
         }
-
-        // Send all certificates in a single request
-        const response = await axios.post(`/event/${eventId}/participants/send-certificates`, {
-            data: certificateData,
-        });
-
-        setLoading(false);
-        showLoadingModal(false);
-
-        if (response.data && response.data.message === 'Certificates sent successfully!') {
-            setTimeout(() => {
-                alert('Certificates saved successfully!');
-            }, 300);
-        }
-    } catch (error) {
-        console.error('Error generating and saving certificates:', error);
-    } finally {
-        await store.loadJSON(originalJson); // Reset to the original JSON after completion
+      } else {
+        // If no {{name}} placeholder, generate one certificate for all selected users
+        await store.loadJSON(originalJson);
         await store.waitLoading();
+        const dataURL = await store.toDataURL(); // Store single certificate dataURL
+  
+        // Use the same certificate for each user
+        for (const name of selectedNames) {
+          const userId = getUserIdByName(name);
+          certificateData.push({ userId, imageData: dataURL });
+        }
+      }
+  
+      // Send all certificates in a single request
+      const response = await axios.post(`/event/${eventId}/participants/send-certificates`, {
+        data: certificateData,
+      });
+  
+      setLoading(false);
+      showLoadingModal(false);
+  
+      if (response.data && response.data.message === 'Certificates sent successfully!') {
+        setTimeout(() => {
+          alert('Certificates saved successfully!');
+        }, 300);
+      }
+    } catch (error) {
+      console.error('Error generating and saving certificates:', error);
+    } finally {
+      await store.loadJSON(originalJson); // Reset to the original JSON after completion
+      await store.waitLoading();
     }
   };
+  
 
   const getUserIdByName = (name) => {
     const user = names.find((n) => n.full_name === name);

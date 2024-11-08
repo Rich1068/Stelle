@@ -43,60 +43,60 @@
 
                 <div class="event-view-info">
                 <!-- Display Date or Date Range -->
-                <div>
-                    <i class="fas fa-calendar-alt"></i>
-                    <span data-label="Dates: ">
-                        @if ($event->start_date === $event->end_date)
-                            {{ \Carbon\Carbon::parse($event->start_date)->format('F j, Y') }}
-                        @else
-                            {{ \Carbon\Carbon::parse($event->start_date)->format('F j, Y') }} - {{ \Carbon\Carbon::parse($event->end_date)->format('F j, Y') }}
-                        @endif
-                    </span>
-                </div>
+                    <div>
+                        <i class="fas fa-calendar-alt"></i>
+                        <span data-label="Dates: ">
+                            @if ($event->start_date === $event->end_date)
+                                {{ \Carbon\Carbon::parse($event->start_date)->format('F j, Y') }}
+                            @else
+                                {{ \Carbon\Carbon::parse($event->start_date)->format('F j, Y') }} - {{ \Carbon\Carbon::parse($event->end_date)->format('F j, Y') }}
+                            @endif
+                        </span>
+                    </div>
 
-                <!-- Display Address -->
-                <div>
-                    <i class="fas fa-map-marker-alt"></i>
-                    <span data-label="Address: ">{{ $event->address }}</span>
-                </div>
+                    <!-- Display Address -->
+                    <div>
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span data-label="Address: ">{{ $event->address }}</span>
+                    </div>
 
-                <!-- Display Time or Duration -->
-                <div>
-                    <i class="fas fa-clock"></i>
-                    <span data-label="Duration: ">
-                        @if ($event->start_date === $event->end_date)
-                            {{ \Carbon\Carbon::parse($event->start_time)->format('h:i A') }} to {{ \Carbon\Carbon::parse($event->end_time)->format('h:i A') }}
-                        @else
-                            {{ \Carbon\Carbon::parse($event->start_date)->format('F j, Y') }} {{ \Carbon\Carbon::parse($event->start_time)->format('h:i A') }} - {{ \Carbon\Carbon::parse($event->end_date)->format('F j, Y') }} {{ \Carbon\Carbon::parse($event->end_time)->format('h:i A') }}
-                        @endif
-                    </span>
-                </div>
+                    <!-- Display Time or Duration -->
+                    <div>
+                        <i class="fas fa-clock"></i>
+                        <span data-label="Duration: ">
+                            @if ($event->start_date === $event->end_date)
+                                {{ \Carbon\Carbon::parse($event->start_time)->format('h:i A') }} to {{ \Carbon\Carbon::parse($event->end_time)->format('h:i A') }}
+                            @else
+                                {{ \Carbon\Carbon::parse($event->start_date)->format('F j, Y') }} {{ \Carbon\Carbon::parse($event->start_time)->format('h:i A') }} - {{ \Carbon\Carbon::parse($event->end_date)->format('F j, Y') }} {{ \Carbon\Carbon::parse($event->end_time)->format('h:i A') }}
+                            @endif
+                        </span>
+                    </div>
 
-                <!-- Display Capacity -->
-                <div>
-                    <i class="fas fa-users"></i>
-                    <span data-label="Capacity: ">{{ $currentParticipants }}/{{ $event->capacity }}</span>
-                </div>
+                    <!-- Display Capacity -->
+                    <div>
+                        <i class="fas fa-users"></i>
+                        <span data-label="Capacity: ">{{ $currentParticipants }}/{{ $event->capacity }}</span>
+                    </div>
 
-                <!-- Display Mode -->
-                <div>
-                    <i class="fas fa-desktop"></i>
-                    <span data-label="Mode: ">{{ $event->mode }}</span>
-                </div>
+                    <!-- Display Mode -->
+                    <div>
+                        <i class="fas fa-desktop"></i>
+                        <span data-label="Mode: ">{{ $event->mode }}</span>
+                    </div>
 
-                <!-- Display Organizer -->
-                <div>
-                    <i class="fas fa-user"></i>
-                    <span data-label="By: ">
-                        <a href="{{ route('profile.view', $userevent->user->id) }}" class="no-link-style">
-                            {{ $userevent->user->first_name }} {{ $userevent->user->last_name }}
-                        </a>
-                        @if($userevent->user->trashed())
-                            <span style="color: red;">(DELETED)</span>
-                        @endif
-                    </span>
+                    <!-- Display Organizer -->
+                    <div>
+                        <i class="fas fa-user"></i>
+                        <span data-label="By: ">
+                            <a href="{{ route('profile.view', $userevent->user->id) }}" class="no-link-style">
+                                {{ $userevent->user->first_name }} {{ $userevent->user->last_name }}
+                            </a>
+                            @if($userevent->user->trashed())
+                                <span style="color: red;">(DELETED)</span>
+                            @endif
+                        </span>
+                    </div>
                 </div>
-            </div>
                 @if($event->trashed())
                 
                 @else
@@ -109,42 +109,40 @@
                         <span style="position: absolute; top: -8px; background: white; padding: 0 10px; font-weight: bold; font-size: 12px;">Admin Control</span>
                     </div>
 
-                    <div class="button-section"> 
-    <a href="{{ route('event.edit', $event->id) }}" class="btn btn-primary" 
-       style="flex: 1; min-width: 120px; text-align: center; padding: 10px;">
-        <span>Edit</span>
-    </a>
+    <div class="button-section"> 
+        <a href="{{ route('event.edit', $event->id) }}" class="btn btn-primary" 
+        style="flex: 1; min-width: 120px; text-align: center; padding: 10px;">
+            <span>Edit</span>
+        </a>
 
-    <div class="certificate-buttons">
-        @if ($certificate == null)
-            <a href="{{ route('event_certificates.create', $event->id) }}" class="btn btn-primary" 
-               style="flex: 1; min-width: 120px; text-align: center; padding: 10px;">
-                Create/Send Certificate
-            </a>
-        @else
-            <a href="{{ route('event_certificates.create', $event->id) }}" class="btn btn-primary" 
-               style="flex: 1; min-width: 120px; text-align: center; padding: 10px;">
-                Update/Send Certificate
-            </a>
-        @endif
+        <div class="certificate-buttons">
+            @if ($certificate == null)
+                <a href="{{ route('event_certificates.create', $event->id) }}" class="btn btn-primary" 
+                style="flex: 1; min-width: 120px; text-align: center; padding: 10px;">
+                    Create/Send Certificate
+                </a>
+            @else
+                <a href="{{ route('event_certificates.create', $event->id) }}" class="btn btn-primary" 
+                style="flex: 1; min-width: 120px; text-align: center; padding: 10px;">
+                    Update/Send Certificate
+                </a>
+            @endif
 
-        @if ($certificate && ($userevent->user_id == Auth::user()->id || Auth::user()->role_id == 1))
-            <button id="viewCertificateButton" class="btn btn-primary" 
-                    data-image-url="{{ asset($certificate->cert_path) }}" 
-                    style="flex: 1; min-width: 120px; text-align: center; padding: 10px;">
-                View Certificate
-            </button>
-        @endif
-                        </div>
+            @if ($certificate && ($userevent->user_id == Auth::user()->id || Auth::user()->role_id == 1))
+                <button id="viewCertificateButton" class="btn btn-primary" 
+                        data-image-url="{{ asset($certificate->cert_path) }}" 
+                        style="flex: 1; min-width: 120px; text-align: center; padding: 10px;">
+                    View Certificate
+                </button>
+            @endif
+        </div>
+    </div>  
+
+    <div style="width: 100%; text-align: left; position: relative; margin: 2px 0 10px;">
+        <hr style="margin: 0; border: 1px solid #ccc; width: 100%;" />
     </div>
-    
-
-  <div style="width: 100%; text-align: left; position: relative; margin: 2px 0 10px;">
-    <hr style="margin: 0; border: 1px solid #ccc; width: 100%;" />
-</div>
-                    </div>
-
-                    @endif
+            </div>
+                @endif
                 @if($userevent->user_id != Auth::user()->id)
                 
 
@@ -184,14 +182,10 @@
         <button type="button" class="btn btn-secondary" id="evaluationNotAvailableBtn" disabled>
             Evaluation Not Yet Available
         </button>
+        @endif
     @endif
-@endif
 
 <!-- View Certificate Button -->
-
-
-
-
                 @endif
             </div>
         </div>
