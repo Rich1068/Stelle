@@ -388,73 +388,79 @@ class CertificateController extends Controller
 
     public function sendCertificates(Request $request, $event_id)
     {
-        // Start the database transaction
         DB::beginTransaction();
-
-        // Array to store the paths of saved files, so they can be deleted if needed
         $savedFiles = [];
+        $certUserRecords = []; // Array to store batch data for CertUser
 
         try {
-            $data = $request->input('data'); // The array of {user_id, image_data} pairs
+            $data = $request->input('data');
+
+            // Retrieve certificate once
+            $certificate = Certificate::where('event_id', $event_id)->firstOrFail();
+            
+            // Get all existing CertUser records for this certificate and user list
+            $existingCertUsers = CertUser::where('cert_id', $certificate->id)
+                ->whereIn('user_id', array_column($data, 'userId'))
+                ->get()
+                ->pluck('user_id')
+                ->toArray();
 
             foreach ($data as $certData) {
                 $userId = $certData['userId'];
                 $imageData = $certData['imageData'];
 
-                $user = User::find($userId);
-                $lastName = preg_replace('/[^a-zA-Z0-9 ]/', '', $user->last_name); 
-                $lastName = str_replace(' ', '-', $lastName);
-                // Create a unique path for each certificate image
-                $pathDatabase = 'storage/images/certificates/' . $lastName . '-' . $event_id . '_certificate.png';
-                $imagePath = 'images/certificates/' . $lastName . '-' . $event_id . '_certificate.png';
-
-                // Store the image (assuming base64 encoded data)
-                $imageContent = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $imageData));
-                
-                // Check if a CertUser record with the same user and certificate already exists
-                $certificate = Certificate::where('event_id', $event_id)->first();
-
-                $existingCertUser = CertUser::where('user_id', $userId)
-                    ->where('cert_id', $certificate->id)
-                    ->first();
-
-                // If the record does not exist, create it
-                if (!$existingCertUser) {
-                    Storage::disk('public')->put($imagePath, $imageContent);
-
-                    // Track the saved file in case we need to delete it later
-                    $savedFiles[] = $imagePath;
-
-                    // Create an entry in CertUser
-                    CertUser::create([
-                        'user_id' => $userId,
-                        'cert_id' => $certificate->id,
-                        'cert_path' => $pathDatabase,
-                    ]);
+                if (in_array($userId, $existingCertUsers)) {
+                    continue; // Skip if certificate already exists for this user
                 }
+
+                $user = User::find($userId);
+                if (!$user) continue;
+
+                // Generate sanitized filename
+                $lastName = preg_replace('/[^a-zA-Z0-9]/', '', $user->last_name);
+                $fileName = $lastName . '-' . $event_id . '_' . uniqid() . '_certificate.png';
+                $imagePath = 'images/certificates/' . $fileName;
+                $pathDatabase = 'storage/' . $imagePath;
+
+                // Decode and store the image
+                $imageContent = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $imageData));
+                Storage::disk('public')->put($imagePath, $imageContent);
+                $savedFiles[] = $imagePath;
+
+                // Prepare CertUser data for batch insert
+                $certUserRecords[] = [
+                    'user_id' => $userId,
+                    'cert_id' => $certificate->id,
+                    'cert_path' => $pathDatabase,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
             }
 
-            // Commit the transaction
-            DB::commit();
+            // Batch insert CertUser records
+            if (!empty($certUserRecords)) {
+                CertUser::insert($certUserRecords);
+            }
 
+            DB::commit();
             return response()->json(['message' => 'Certificates sent successfully!']);
+            
         } catch (\Exception $e) {
-            // Rollback the transaction if an error occurs
             DB::rollBack();
 
-            // Optionally delete the saved files
+            // Cleanup saved files
             foreach ($savedFiles as $filePath) {
                 if (Storage::disk('public')->exists($filePath)) {
                     Storage::disk('public')->delete($filePath);
                 }
             }
 
-            // Optionally log the error
             \Log::error('Error sending certificates: ' . $e->getMessage());
-
             return response()->json(['message' => 'Failed to send certificates.'], 500);
         }
     }
+
+
     public function getCertificateDesign($eventId)
     {
         // Find the certificate by event ID
