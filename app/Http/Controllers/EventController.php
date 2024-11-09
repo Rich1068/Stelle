@@ -177,7 +177,7 @@ class EventController extends Controller
         $participants = EventParticipant::where('event_id', $id)
             ->where('status_id', 1)
             ->whereHas('user')
-            ->get();
+            ->paginate(10);
         $currentUser = Auth::user()->id;
         $existingForms = EvaluationForm::where('status_id', 1)
             ->where('created_by', Auth::id())
@@ -306,14 +306,16 @@ class EventController extends Controller
         $search = $request->input('search');
         $event = Event::findOrFail($id);
         $userevent = UserEvent::with('user')->where('event_id', $id)->whereHas('user')->firstOrFail();
+    
         $participants = EventParticipant::where('event_id', $id)
             ->whereHas('user', function ($query) use ($search) {
                 if ($search) {
                     $query->whereRaw("LOWER(CONCAT(first_name, ' ', last_name)) LIKE ?", ['%' . strtolower($search) . '%']);
                 }
             })
-            ->paginate(10);
-
+            ->paginate(10)
+            ->appends(['search' => $search]); // Append search query
+    
         return response()->json([
             'html' => view('event.partials.participantlist', compact('participants', 'event', 'userevent'))->render(),
         ]);

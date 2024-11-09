@@ -802,10 +802,13 @@
             $('#evaluationFormModal').modal('show');
         });
 
+        $(document).ready(function() {
+        // Handle search input
         $('#search-participants-list').on('input', function() {
             let searchQuery = $(this).val();
             let eventId = "{{ $event->id }}";
 
+            // Perform AJAX request for search
             $.ajax({
                 url: '/event/' + eventId + '/search-participants-list',
                 type: 'GET',
@@ -819,6 +822,28 @@
                 }
             });
         });
+
+        // Handle pagination click
+        $(document).on('click', '.pagination a', function(e) {
+            e.preventDefault();
+            let url = $(this).attr('href');
+            let searchQuery = $('#search-participants-list').val(); // Get the current search query
+
+            // Perform AJAX request for pagination with the search term
+            $.ajax({
+                url: url,
+                type: 'GET',
+                data: { search: searchQuery },
+                success: function(response) {
+                    // Update the participant list with the paginated results
+                    $('#participant-list-container').html(response.html);
+                },
+                error: function(xhr) {
+                    console.error('Error:', xhr.responseText);
+                }
+            });
+        });
+    });
         $('.remove-btn').off('click').on('click', function() {
             const userId = $(this).data('user-id');
             const eventId = "{{ $event->id }}";

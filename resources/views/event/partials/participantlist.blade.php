@@ -29,7 +29,7 @@
                     </div>
                 </div>
                 @if($userevent->user_id == Auth::user()->id || Auth::user()->role_id == 1)
-                @if($participant->user)<!-- Ensure that user exists before rendering the button -->
+                @if($participant->user)
                     <div class="participant-actions">
                         <button type="button" class="btn btn-danger remove-btn" data-user-id="{{ $participant->user->id }}">
                             Remove
@@ -39,5 +39,10 @@
                 @endif
             </div>
         @endforeach
+    </div>
+
+    <!-- Pagination Links -->
+    <div class="pagination-container">
+        {{ $participants->links() }}
     </div>
 </div>
