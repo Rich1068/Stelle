@@ -240,6 +240,33 @@
         font-size: 1rem !important;
         margin-bottom: 10px;
     }
+    .custom-alert-danger {
+        background-color: #f8d7da; /* Light red background */
+        border: 1px solid #f5c2c7; /* Red border */
+        color: #721c24; /* Darker red text */
+        border-radius: 10px; /* Rounded corners */
+        padding: 15px; /* Padding inside the alert box */
+        font-size: 16px; /* Slightly larger font size */
+        margin: 20px 0; /* Space around the alert box */
+        display: flex; /* Flexbox for aligning items */
+        align-items: center; /* Vertically center items */
+    }
+    .custom-alert-danger .alert-icon {
+        margin-right: 10px; /* Space between icon and text */
+        font-size: 24px; /* Larger icon size */
+        color: #721c24; /* Darker red for icon */
+    }
+    /* Close button inside the alert */
+    .custom-alert-danger .close {
+        margin-left: auto; /* Push close button to the right */
+        color: #721c24; /* Dark red for close icon */
+        font-size: 20px; /* Larger close icon */
+        cursor: pointer; /* Pointer cursor for close button */
+    }
+    /* On hover, change close button color */
+    .custom-alert-danger .close:hover {
+        color: #491217; /* Darker shade of red on hover */
+    }
 }
 </style>
 </head>
