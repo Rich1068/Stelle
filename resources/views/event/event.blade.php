@@ -224,7 +224,6 @@
             @endif
             @endif
         </div>
-    </div>
 <!-- Event Analytics Tab -->
 @if ($currentUser == $userevent->user->id || Auth::user()->role_id == 1)
 <div class="tab-pane" id="feedback">
