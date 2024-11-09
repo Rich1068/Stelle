@@ -424,6 +424,7 @@
         </div>
     </div>
 </div>
+</div>
 <style>
     /* Main button container styles */
 .button-section {
