@@ -28,21 +28,74 @@
                         @endif
                     </div>
                 </div>
+
+                <!-- Remove Button (Visible only for Super Admin or Event Creator) -->
                 @if($userevent->user_id == Auth::user()->id || Auth::user()->role_id == 1)
-                @if($participant->user)
-                    <div class="participant-actions">
-                        <button type="button" class="btn btn-danger remove-btn" data-user-id="{{ $participant->user->id }}">
-                            Remove
-                        </button>
-                    </div>
-                @endif
+                    @if($participant->user) <!-- Ensure user exists before rendering the button -->
+                        <div class="participant-actions">
+                            <button type="button" class="btn btn-danger remove-btn" data-user-id="{{ $participant->user->id }}">
+                                <span class="remove-text">Remove</span>
+                                <span class="remove-icon">X</span>
+                            </button>
+                        </div>
+                    @endif
                 @endif
             </div>
         @endforeach
     </div>
-
-    <!-- Pagination Links -->
-    <div class="pagination-container">
-        {{ $participants->links() }}
-    </div>
 </div>
+
+<style>
+.remove-btn {
+    width: auto;
+    height: auto;
+    border-radius: 15px; 
+    background-color: #d9534f;
+    color: white;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 8px 16px;
+}
+
+.remove-btn .remove-icon {
+    display: none;
+}
+
+.remove-btn .remove-text {
+    display: inline-block;
+}
+
+@media (max-width: 900px) {
+    .remove-btn .remove-text {
+        display: none;
+    }
+
+    .remove-btn .remove-icon {
+        display: inline-block;
+        border-radius: 50%; /* Fully circular for the 'X' button */
+        width: 20px; /* Make it a circle */
+        height: 20px; /* Make it a circle */
+        font-size: 18px; /* Adjust font size */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+    }
+
+    .remove-btn {
+        font-size: 16px;
+        padding: 5px 10px;
+    }
+}
+
+@media (max-width: 767px) {
+    .remove-btn {
+        font-size: 14px;
+        padding: 4px 8px;
+    }
+}
+</style>
