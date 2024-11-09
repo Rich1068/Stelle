@@ -18,15 +18,15 @@
     @foreach($users as $user)
         <div class="participant-list-item">
             <div class="participant-info">
-                <div class="participant-profile">
-                @if($user->usertable->profile_picture == null)
-                <img src="{{ asset('storage/images/profile_pictures/default.jpg') }}" alt="Default profile picture" style="max-width: 200px; max-height: 100px;">
-                @else
-                    <img src="{{ asset($user->usertable->profile_picture) }}" alt="Profile picture of {{ $user->usertable->first_name }}" style="max-width: 200px; max-height: 100px;">
-                @endif
+            <div class="participant-profile">
+                    @if($user->usertable->profile_picture == null)
+                        <img src="{{ asset('storage/images/profile_pictures/default.jpg') }}" alt="Default profile picture" class="profile-picture">
+                    @else
+                        <img src="{{ asset($user->usertable->profile_picture) }}" alt="Profile picture of {{ $user->usertable->first_name }}" class="profile-picture">
+                    @endif
                     <div class="participant-details">
                         <a href="{{ route('profile.view', $user->usertable->id) }}" class="participant-name">
-                        {{ $user->usertable->first_name }} {{ $user->usertable->last_name }}
+                            {{ $user->usertable->first_name }} {{ $user->usertable->last_name }}
                         </a>
                     </div>
                 </div>
