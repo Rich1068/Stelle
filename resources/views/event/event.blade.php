@@ -483,6 +483,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- JavaScript to handle tab switching and modal display -->
 <script>
+    
     $(document).ready(function() {
         $('#is_active_toggle').change(function() {
             const isChecked = $(this).is(':checked');
@@ -804,48 +805,7 @@
             $('#evaluationFormModal').modal('show');
         });
 
-        $(document).ready(function() {
-        // Handle search input
-        $('#search-participants-list').on('input', function() {
-            let searchQuery = $(this).val();
-            let eventId = "{{ $event->id }}";
-
-            // Perform AJAX request for search
-            $.ajax({
-                url: '/event/' + eventId + '/search-participants-list',
-                type: 'GET',
-                data: { search: searchQuery },
-                success: function(response) {
-                    // Update the participant list with the filtered results
-                    $('#participant-list-container').html(response.html);
-                },
-                error: function(xhr) {
-                    console.error('Error:', xhr.responseText);
-                }
-            });
-        });
-
-        // Handle pagination click
-        $(document).on('click', '.pagination a', function(e) {
-            e.preventDefault();
-            let url = $(this).attr('href');
-            let searchQuery = $('#search-participants-list').val(); // Get the current search query
-
-            // Perform AJAX request for pagination with the search term
-            $.ajax({
-                url: url,
-                type: 'GET',
-                data: { search: searchQuery },
-                success: function(response) {
-                    // Update the participant list with the paginated results
-                    $('#participant-list-container').html(response.html);
-                },
-                error: function(xhr) {
-                    console.error('Error:', xhr.responseText);
-                }
-            });
-        });
-    });
+        
         $('.remove-btn').off('click').on('click', function() {
             const userId = $(this).data('user-id');
             const eventId = "{{ $event->id }}";
@@ -871,6 +831,41 @@
                 });
             }
         });
+    });
+    $(document).ready(function() {
+        const eventId = "{{ $event->id }}";
+
+        // Function to fetch participants with optional search query and URL
+        function fetchParticipants(url = `/event/${eventId}/search-participants-list`, searchQuery = '') {
+            $.ajax({
+                url: url,
+                type: 'GET',
+                data: { search: searchQuery },
+                success: function(response) {
+                    $('#participant-list-container').html(response.html); // Update the list and pagination
+                },
+                error: function(xhr) {
+                    console.error('Error:', xhr.responseText);
+                }
+            });
+        }
+
+        // Trigger fetch on search input
+        $('#search-participants-list').on('input', function() {
+            const searchQuery = $(this).val();
+            fetchParticipants(`/event/${eventId}/search-participants-list`, searchQuery);
+        });
+
+        // Handle pagination click
+        $(document).on('click', '.pagination a', function(e) {
+            e.preventDefault();
+            const url = $(this).attr('href');
+            const searchQuery = $('#search-participants-list').val() || ''; // Default to empty if no search input
+            fetchParticipants(url, searchQuery);
+        });
+
+        // Initial load to display the participant list when the page loads
+        fetchParticipants(); // Call with default URL and no search query
     });
 
 </script>

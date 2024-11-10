@@ -43,6 +43,9 @@
             </div>
         @endforeach
     </div>
+    <div class="pagination-container">
+        {{ $participants->links() }}
+    </div>
 </div>
 
 <style>
