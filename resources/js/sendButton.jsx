@@ -242,7 +242,7 @@ const ExportModal = ({ isOpen, store, onClose, eventId, showLoadingModal }) => {
         </div>
         
         {/* Pagination Controls */}
-        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '10px' }}>
+        <div style={{ display: 'flex', justifyContent: 'center'}}>
           <Button onClick={() => handlePageChange('prev')} disabled={currentPage === 1}>
             Previous
           </Button>
@@ -267,17 +267,18 @@ const ExportModal = ({ isOpen, store, onClose, eventId, showLoadingModal }) => {
               alt={`Preview for ${selectedNames[index]}`}
               style={{
                 display: 'inline-block',
-                width: '100%',
+                width: '90%',
                 maxWidth: '600px',
                 height: 'auto',
                 boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)',
+                justifyContent: 'center'
               }}
             />
           ))}
         </div>
       </div>
   
-      <div className={Classes.DIALOG_FOOTER} style={{ padding: '0.5rem' }}>
+      <div className={Classes.DIALOG_FOOTER}>
         <div className={Classes.DIALOG_FOOTER_ACTIONS} style={{
           display: 'flex',
           flexDirection: window.innerWidth < 768 ? 'column' : 'row',
