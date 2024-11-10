@@ -136,7 +136,6 @@
                 </button>
             @endif
         </div>
-    </div>  
 
     <div style="width: 100%; text-align: left; position: relative; margin: 2px 0 10px;">
         <hr style="margin: 0; border: 1px solid #ccc; width: 100%;" />
@@ -162,7 +161,7 @@
                     @else
                         <button type="button" class="btn btn-secondary" disabled>Closed</button>
                     @endif
-                    @endif  
+                @endif  
 
     @if ($participant && $participant->status_id == 1)
     @if($event->evaluationForm && $event->evaluationForm->status_id == 1)
@@ -184,10 +183,10 @@
         </button>
         @endif
     @endif
-
+    </div>
 <!-- View Certificate Button -->
-                @endif
-            </div>
+    @endif
+    </div>
         </div>
         <!-- Participants Tab -->
         <div class="tab-pane" id="participants">
