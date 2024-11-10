@@ -53,7 +53,7 @@
                             @endif
                         </span>
                     </div>
-
+                    
                     <!-- Display Address -->
                     <div>
                         <i class="fas fa-map-marker-alt"></i>
@@ -101,7 +101,7 @@
                 
                 @else
                 @if($userevent->user_id == Auth::user()->id || Auth::user()->role_id == 1)
-                <div class="event-view-buttons" style="display: flex; flex-direction: column; align-items: flex-start;">
+                    <div class="event-view-buttons" style="display: flex; flex-direction: column; align-items: flex-start;">
            
                     <!-- Top Divider with Left-Aligned Text -->
                     <div style="width: 100%; text-align: left; position: relative; margin-top: 10px;">
@@ -127,7 +127,7 @@
                     Update/Send Certificate
                 </a>
             @endif
-
+            </div>
             @if ($certificate && ($userevent->user_id == Auth::user()->id || Auth::user()->role_id == 1))
                 <button id="viewCertificateButton" class="btn btn-primary" 
                         data-image-url="{{ asset($certificate->cert_path) }}" 
@@ -136,13 +136,13 @@
                 </button>
             @endif
         </div>
-    </div>  
+        
 
-    <div style="width: 100%; text-align: left; position: relative; margin: 2px 0 10px;">
+        <div style="width: 100%; text-align: left; position: relative; margin: 2px 0 10px;">
         <hr style="margin: 0; border: 1px solid #ccc; width: 100%;" />
-    </div>
-            </div>
-                @endif
+              
+        </div>
+            @endif
                 @if($userevent->user_id != Auth::user()->id)
                 
 
@@ -157,15 +157,17 @@
                             @csrf
                             <button type="submit" class="btn btn-primary">Join Event</button>
                         </form>
+
                     @elseif ($participant && $participant->status_id == 3)
                         <button type="button" class="btn btn-secondary" disabled>Pending</button>
                     @else
                         <button type="button" class="btn btn-secondary" disabled>Closed</button>
                     @endif
+                    
                     @endif  
-
-    @if ($participant && $participant->status_id == 1)
-    @if($event->evaluationForm && $event->evaluationForm->status_id == 1)
+                    </div>
+         @if ($participant && $participant->status_id == 1)
+                @if($event->evaluationForm && $event->evaluationForm->status_id == 1)
         @if($hasAnswered)
             <!-- Button with text "Evaluation Form Already Answered" -->
             <button type="button" class="btn btn-secondary" id="evaluationAnsweredBtn" disabled>
@@ -177,6 +179,7 @@
                 <button type="submit" class="btn btn-primary" style="margin-bottom: 10px;">Take Evaluation</button>
             </form>
         @endif
+        
     @else
         <!-- Button with text "Evaluation Not Yet Available" -->
         <button type="button" class="btn btn-secondary" id="evaluationNotAvailableBtn" disabled>
@@ -206,12 +209,13 @@
                     <i class="fas fa-search search-icon position-absolute" style="top: 50%; right: 20px; transform: translateY(-50%); color: #999;"></i>
                 </div>
             </div>
+            
             <div id="participant-list-container">
             @include('event.partials.participantlist', ['event' => $event, 'participants' => $participants, 'currentUser' => $currentUser, 'userevent' =>$userevent])
             </div>
             @if ($currentUser == $userevent->user->id || Auth::user()->role_id == 1)
             @if($event->trashed())
-                
+            </div>
             @else
             <a href="{{ route('events.pendingparticipants', $event->id) }}" class="position-relative">
                 <button type="submit" class="btn btn-primary-2 position-relative">
