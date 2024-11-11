@@ -60,35 +60,32 @@
     @if(!empty($questionsData))
     <!-- Grouped Comment Questions -->
     @php $commentCount = 0; @endphp
-    <div class="row mb-4">
+    <div class="row mb-4 d-flex align-items-start">
         @foreach ($questionsData as $index => $questionData)
             @if ($questionData['type'] === 'comment')
                 <div class="col-md-4 mb-2">
-                    <div class="card border-left-info shadow h-100 py-2">
+                    <div class="card border-left-info shadow py-2" style="min-height: 100px;">
                         <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col">
-                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                        {{ $questionData['question'] }}
-                                    </div>
-                                    <ul class="list-unstyled mt-2" style="font-size: 0.9rem; max-height: 150px; overflow-y: auto;">
-                                        @foreach ($questionData['answers'] as $answer)
-                                            <li><i class="fas fa-comment"></i> {{ $answer }}</li>
-                                        @endforeach
-                                    </ul>
-                                </div>
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                {{ $questionData['question'] }}
                             </div>
+                            <ul class="list-unstyled mt-2" style="font-size: 0.9rem; max-height: 200px; overflow-y: auto;">
+                                @foreach ($questionData['answers'] as $answer)
+                                    <li style="margin-bottom: 10px;">
+                                        <i class="fas fa-comment"></i>
+                                        <div style="display: inline-block; padding: 8px; border-radius: 5px; background-color: #f9f9f9; margin-left: 5px; color: #333;">
+                                            {{ $answer }}
+                                        </div>
+                                    </li>
+                                @endforeach
+                            </ul>
                         </div>
                     </div>
                 </div>
-                @php $commentCount++; @endphp
-                @if ($commentCount % 3 === 0)
-                    </div><div class="row mb-4">
-                @endif
             @endif
         @endforeach
-        </div>
-        @endif
+    </div>
+    @endif
         <div class="top-container-2 mb-4">
             <h5 class="font-weight-bold">
                 <i class="fas fa-check-square"></i> Answers - Radio Questions
