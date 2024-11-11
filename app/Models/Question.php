@@ -11,7 +11,8 @@ class Question extends Model
     protected $fillable = [
         'form_id',
         'question',
-        'type_id'
+        'type_id',
+        'order',
     ];
     public function evaluationForm()
     {

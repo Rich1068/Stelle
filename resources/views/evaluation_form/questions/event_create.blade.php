@@ -41,12 +41,26 @@
     <button type="submit" class="save-questions-btn">Save Questions</button>
 </form>
 
+<!-- Include SortableJS -->
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+
 <script>
+document.addEventListener('DOMContentLoaded', function () {
+    const questionsDiv = document.getElementById('questions');
+
+    // Initialize SortableJS on the questions container
+    Sortable.create(questionsDiv, {
+        animation: 150,
+        onEnd: function () {
+            recalculateOrder(); // Update order after dragging
+        }
+    });
+});
+
 function addQuestion(type) {
     const questionInput = document.getElementById('question-input').value.trim();
     const errorMessage = document.getElementById('error-message');
 
-    // Show error if input is empty
     if (questionInput === "") {
         errorMessage.innerText = "Please type a question before adding.";
         errorMessage.style.display = 'block';
@@ -58,7 +72,6 @@ function addQuestion(type) {
     const newQuestionDiv = document.createElement('div');
     newQuestionDiv.classList.add('form-group', 'question-group');
 
-    // Build question HTML based on type
     if (type === 'essay') {
         newQuestionDiv.innerHTML = `
             <div class="question-header">
@@ -85,77 +98,97 @@ function addQuestion(type) {
         `;
     }
 
-    // Add hidden input and remove button
     newQuestionDiv.innerHTML += `
         <input type="hidden" name="questions[${questionIndex}][type]" value="${type}">
+        <input type="hidden" name="questions[${questionIndex}][order]" value="${questionIndex}">
         <button type="button" class="remove-question" onclick="removeQuestion(this)">Remove</button>
     `;
 
-    // Append the new question and clear input
     questionsDiv.appendChild(newQuestionDiv);
     document.getElementById('question-input').value = "";
-    errorMessage.style.display = 'none'; // Hide the error message
+    errorMessage.style.display = 'none';
+
+    recalculateOrder(); // Update order for all questions
 }
 
 function autoExpand(textarea) {
     textarea.style.height = 'auto';
-    textarea.style.height = textarea.scrollHeight + 'px'; // Adjust height based on content
+    textarea.style.height = textarea.scrollHeight + 'px';
 }
 
 function removeQuestion(button) {
-    const questionDiv = button.parentElement; // Parent element of the remove button
-    questionDiv.remove(); // Remove question from DOM
+    if (confirm("Are you sure you want to remove this question?")) {
+        const questionDiv = button.parentElement;
+        questionDiv.remove();
+        recalculateOrder(); 
+    }
+}
+
+// Recalculate order of questions after add, remove, or reorder
+function recalculateOrder() {
+    const questionsDiv = document.getElementById('questions');
+    const questionGroups = questionsDiv.querySelectorAll('.question-group');
+
+    questionGroups.forEach((group, index) => {
+        group.querySelector('input[name$="[order]"]').value = index;
+
+        // Update name attributes to ensure proper form submission
+        group.querySelectorAll('textarea, input[type="hidden"]').forEach(input => {
+            const nameAttr = input.getAttribute('name');
+            if (nameAttr) {
+                const updatedName = nameAttr.replace(/\[.*?\]/, `[${index}]`);
+                input.setAttribute('name', updatedName);
+            }
+        });
+    });
 }
 
 function validateForm() {
     const questionsDiv = document.getElementById('questions');
     const errorMessage = document.getElementById('error-message');
 
-    // If no questions are present, show error message
     if (questionsDiv.children.length === 0) {
         errorMessage.innerText = "Please add at least one question.";
-        errorMessage.style.display = 'block'; // Show error message
-        return false; // Prevent form submission
+        errorMessage.style.display = 'block';
+        return false;
     }
-
-    // If valid, allow form submission
-    return true; 
+    return true;
 }
 </script>
 
 <style>
 .editable-question-input {
-    background-color: #003d8b; /* Dark blue background */
-    color: #ffffff; /* White text */
-    border: 2px solid #ffffff; /* White border */
-    border-radius: 9px; /* Rounded corners */
-    padding: 8px; /* Padding for the textarea */
-    width: 100%; /* Full width */
-    font-size: 1rem; /* Font size */
-    resize: none; /* Disable resizing */
-    overflow: hidden; /* Hide scrollbars */
-    min-height: 40px; /* Minimum height */
+    background-color: #003d8b;
+    color: #ffffff;
+    border: 2px solid #ffffff;
+    border-radius: 9px;
+    padding: 8px;
+    width: 100%;
+    font-size: 1rem;
+    resize: none;
+    overflow: hidden;
+    min-height: 40px;
 }
 
 .editable-question-input::placeholder {
-    color: #ffffff; /* Placeholder text color */
-    opacity: 0.7; /* Placeholder text opacity */
+    color: #ffffff;
+    opacity: 0.7;
 }
 
 .question-group .question-header {
-    margin-bottom: 8px; /* Space below header */
-    display: flex; /* Flexbox for alignment */
-    justify-content: center; /* Centering */
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: center;
 }
 
 .question-type {
-    font-weight: bold; /* Bold text */
-    margin-top: 5px; /* Space above the question type text */
-    text-align: center; /* Center align */
+    font-weight: bold;
+    margin-top: 5px;
+    text-align: center;
 }
 
 .question-group {
-    text-align: center; /* Center contents of the question group */
+    text-align: center;
 }
 </style>
 

@@ -3,7 +3,7 @@
 @section('body')
 
 <!-- Main Form Container -->
-<form action="{{ route('event-evaluation-forms.update', ['id' =>$id,'formId' => $form]) }}" method="POST" class="form-question-container" onsubmit="return validateForm()">
+<form action="{{ route('event-evaluation-forms.update', ['id' => $id, 'formId' => $form]) }}" method="POST" class="form-question-container" onsubmit="return validateForm()">
     @method('PUT')
     @csrf
 
@@ -29,16 +29,19 @@
 
     <!-- Existing Questions -->
     <div id="questions">
-        @foreach($questions as $question)
-            <div class="form-group question-group">
+        @foreach($questions as $index => $question)
+            <div class="form-group question-group" data-order="{{ $index }}">
                 <div class="question-content">
                     <label>{{ $question->type_id == 1 ? 'Essay Question:' : 'Radio Question:' }}</label>
                     
                     <!-- Hidden field for the question ID -->
-                    <input type="hidden" name="questions[{{ $loop->index }}][id]" value="{{ $question->id }}">
+                    <input type="hidden" name="questions[{{ $index }}][id]" value="{{ $question->id }}">
+
+                    <!-- Hidden field for question order -->
+                    <input type="hidden" name="questions[{{ $index }}][order]" value="{{ $index }}">
 
                     <!-- Text input for the question text -->
-                    <textarea name="questions[{{ $loop->index }}][text]" required oninput="autoExpandTextarea(this)">{{ $question->question }}</textarea>
+                    <textarea name="questions[{{ $index }}][text]" required oninput="autoExpandTextarea(this)">{{ $question->question }}</textarea>
 
                     @if($question->type_id == 1)
                         <div class="essay-underline"></div>
@@ -56,7 +59,7 @@
                     @endif
                 </div>
                 <button type="button" class="remove-question" onclick="removeQuestion(this)">Remove</button>
-                <input type="hidden" name="questions[{{ $loop->index }}][type]" value="{{ $question->type_id == 1 ? 'essay' : 'radio' }}">
+                <input type="hidden" name="questions[{{ $index }}][type]" value="{{ $question->type_id == 1 ? 'essay' : 'radio' }}">
             </div>
         @endforeach
     </div>
@@ -76,19 +79,28 @@
     <button type="submit" class="save-questions-btn">Update Questions</button>
 </form>
 
-<script>
-// Auto-expand textarea based on content
-function autoExpandTextarea(element) {
-    element.style.height = 'auto'; // Reset height to auto to calculate scroll height
-    element.style.height = `${element.scrollHeight}px`; // Set height based on scroll height
-}
+<!-- Include SortableJS -->
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
 
-// Attach auto-expand to the question-input field
-document.getElementById('question-input').addEventListener('input', function () {
-    autoExpandTextarea(this);
+<script>
+// Initialize SortableJS on the questions container
+document.addEventListener('DOMContentLoaded', function () {
+    const questionsDiv = document.getElementById('questions');
+
+    Sortable.create(questionsDiv, {
+        animation: 150,
+        onEnd: function () {
+            recalculateOrder(); // Update order after dragging
+        }
+    });
 });
 
-// Function to add a new essay question
+// Auto-expand textarea based on content
+function autoExpandTextarea(element) {
+    element.style.height = 'auto';
+    element.style.height = `${element.scrollHeight}px`;
+}
+
 function addEssayQuestion() {
     const questionInput = document.getElementById('question-input');
     const questionText = questionInput.value.trim();
@@ -107,16 +119,15 @@ function addEssayQuestion() {
         </div>
         <button type="button" class="remove-question" onclick="removeQuestion(this)">Remove</button>
         <input type="hidden" name="questions[${questionIndex}][type]" value="essay">
+        <input type="hidden" name="questions[${questionIndex}][order]" value="${questionIndex}">
     `;
 
     questionsDiv.appendChild(newQuestionDiv);
-
-    // Clear the input field and hide any error messages
     questionInput.value = "";
     document.getElementById('error-message').style.display = 'none';
+    recalculateOrder(); // Update order after adding
 }
 
-// Function to add a new radio question
 function addRadioQuestion() {
     const questionInput = document.getElementById('question-input');
     const questionText = questionInput.value.trim();
@@ -145,22 +156,41 @@ function addRadioQuestion() {
         </div>
         <button type="button" class="remove-question" onclick="removeQuestion(this)">Remove</button>
         <input type="hidden" name="questions[${questionIndex}][type]" value="radio">
+        <input type="hidden" name="questions[${questionIndex}][order]" value="${questionIndex}">
     `;
 
     questionsDiv.appendChild(newQuestionDiv);
-
-    // Clear the input field and hide any error messages
     questionInput.value = "";
     document.getElementById('error-message').style.display = 'none';
+    recalculateOrder(); // Update order after adding
 }
 
-// Function to remove a question
+// Recalculate order of questions after add, remove, or reorder
+function recalculateOrder() {
+    const questionsDiv = document.getElementById('questions');
+    const questionGroups = questionsDiv.querySelectorAll('.question-group');
+
+    questionGroups.forEach((group, index) => {
+        group.querySelector('input[name$="[order]"]').value = index;
+
+        group.querySelectorAll('textarea, input[type="hidden"]').forEach(input => {
+            const nameAttr = input.getAttribute('name');
+            if (nameAttr) {
+                const updatedName = nameAttr.replace(/\[.*?\]/, `[${index}]`);
+                input.setAttribute('name', updatedName);
+            }
+        });
+    });
+}
+
 function removeQuestion(button) {
-    const questionDiv = button.parentElement;
-    questionDiv.remove();
+    if (confirm("Are you sure you want to remove this question?")) {
+        const questionDiv = button.parentElement;
+        questionDiv.remove();
+        recalculateOrder();
+    }
 }
 
-// Form validation to ensure at least one question is present
 function validateForm() {
     const questionsDiv = document.getElementById('questions');
     if (questionsDiv.children.length === 0) {

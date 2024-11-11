@@ -41,7 +41,19 @@
     <button type="submit" class="save-questions-btn">Save Questions</button>
 </form>
 
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
 <script>
+document.addEventListener('DOMContentLoaded', function () {
+    const questionsDiv = document.getElementById('questions');
+
+    // Initialize SortableJS on the questions container
+    Sortable.create(questionsDiv, {
+        animation: 150,
+        onEnd: function () {
+            recalculateOrder(); // Update order after dragging
+        }
+    });
+});
 function addQuestion(type) {
     const questionInput = document.getElementById('question-input').value.trim();
     const errorMessage = document.getElementById('error-message');
@@ -85,9 +97,10 @@ function addQuestion(type) {
         `;
     }
 
-    // Add hidden input and remove button
+    // Add hidden inputs for type and order, and remove button
     newQuestionDiv.innerHTML += `
         <input type="hidden" name="questions[${questionIndex}][type]" value="${type}">
+        <input type="hidden" name="questions[${questionIndex}][order]" value="${questionIndex}">
         <button type="button" class="remove-question" onclick="removeQuestion(this)">Remove</button>
     `;
 
@@ -95,16 +108,41 @@ function addQuestion(type) {
     questionsDiv.appendChild(newQuestionDiv);
     document.getElementById('question-input').value = "";
     errorMessage.style.display = 'none'; // Hide the error message
+
+    // Recalculate order after adding
+    recalculateOrder();
 }
 
 function autoExpand(textarea) {
     textarea.style.height = 'auto';
-    textarea.style.height = textarea.scrollHeight + 'px'; // Adjust height based on content
+    textarea.style.height = textarea.scrollHeight + 'px';
 }
 
 function removeQuestion(button) {
-    const questionDiv = button.parentElement; // Parent element of the remove button
-    questionDiv.remove(); // Remove question from DOM
+    if (confirm("Are you sure you want to remove this question?")) {
+        const questionDiv = button.parentElement;
+        questionDiv.remove();
+        recalculateOrder(); 
+    }
+}
+
+function recalculateOrder() {
+    const questionsDiv = document.getElementById('questions');
+    const questionGroups = questionsDiv.querySelectorAll('.question-group');
+
+    questionGroups.forEach((group, index) => {
+        // Update the order hidden input field for each question
+        group.querySelector('input[name$="[order]"]').value = index;
+
+        // Update name attributes to maintain proper indexing
+        group.querySelectorAll('textarea, input[type="hidden"]').forEach(input => {
+            const nameAttr = input.getAttribute('name');
+            if (nameAttr) {
+                const updatedName = nameAttr.replace(/\[.*?\]/, `[${index}]`);
+                input.setAttribute('name', updatedName);
+            }
+        });
+    });
 }
 
 function validateForm() {
@@ -114,12 +152,10 @@ function validateForm() {
     // If no questions are present, show error message
     if (questionsDiv.children.length === 0) {
         errorMessage.innerText = "Please add at least one question.";
-        errorMessage.style.display = 'block'; // Show error message
-        return false; // Prevent form submission
+        errorMessage.style.display = 'block';
+        return false;
     }
-
-    // If valid, allow form submission
-    return true; 
+    return true; // Form is valid, allow submission
 }
 </script>
 
