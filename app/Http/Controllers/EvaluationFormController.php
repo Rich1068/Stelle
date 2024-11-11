@@ -425,7 +425,7 @@ class EvaluationFormController extends Controller
         
         // Ensure the form is active
         if ($evaluationForm && $evaluationForm->status_id == 1) {
-            $questions = Question::where('form_id', $formId)->get();
+            $questions = Question::where('form_id', $formId)->orderBy('order')->get();
             return view('evaluation_form.answer', compact('event', 'questions'));
         } else {
             return redirect()->back()->with('error', 'The evaluation form is not available.');
@@ -473,9 +473,11 @@ class EvaluationFormController extends Controller
     public function showEvaluationResults($id)
     {
         // Fetch the event with its related form, questions, and answers
-        $event = Event::with('evaluationForm.evalForm.questions.answers')
-            ->where('id', $id)
-            ->firstOrFail();
+        $event = Event::with(['evaluationForm.evalForm.questions' => function ($query) {
+            $query->orderBy('order'); // Sort questions by 'order' column here
+        }, 'evaluationForm.evalForm.questions.answers'])
+        ->where('id', $id)
+        ->firstOrFail();
 
         $eventFormId = $event->evaluationForm->id ?? null; // Get the event's specific form ID
 
