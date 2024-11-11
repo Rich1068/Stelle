@@ -58,35 +58,35 @@
     </div>
 
     @if(!empty($questionsData))
-        <!-- Grouped Comment Questions -->
-        @php $commentCount = 0; @endphp
-        <div class="row mb-4">
-            @foreach ($questionsData as $index => $questionData)
-                @if ($questionData['type'] === 'comment')
-                    <div class="col-md-4 mb-2">
-                        <div class="card border-left-info shadow h-100 py-2">
-                            <div class="card-body">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col">
-                                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                            {{ $questionData['question'] }}
-                                        </div>
-                                        <ul class="list-unstyled mt-2" style="font-size: 0.9rem;">
-                                            @foreach ($questionData['answers'] as $answer)
-                                                <li><i class="fas fa-comment"></i> {{ $answer }}</li>
-                                            @endforeach
-                                        </ul>
+    <!-- Grouped Comment Questions -->
+    @php $commentCount = 0; @endphp
+    <div class="row mb-4">
+        @foreach ($questionsData as $index => $questionData)
+            @if ($questionData['type'] === 'comment')
+                <div class="col-md-4 mb-2">
+                    <div class="card border-left-info shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col">
+                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                        {{ $questionData['question'] }}
                                     </div>
+                                    <ul class="list-unstyled mt-2" style="font-size: 0.9rem; max-height: 150px; overflow-y: auto;">
+                                        @foreach ($questionData['answers'] as $answer)
+                                            <li><i class="fas fa-comment"></i> {{ $answer }}</li>
+                                        @endforeach
+                                    </ul>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    @php $commentCount++; @endphp
-                    @if ($commentCount % 3 === 0)
-                        </div><div class="row mb-4">
-                    @endif
+                </div>
+                @php $commentCount++; @endphp
+                @if ($commentCount % 3 === 0)
+                    </div><div class="row mb-4">
                 @endif
-            @endforeach
+            @endif
+        @endforeach
         </div>
         @endif
         <div class="top-container-2 mb-4">
@@ -150,46 +150,56 @@
 
 <!-- Initialize Chart.js for Radio Questions -->
 <script>
-    @foreach($questionsData as $index => $questionData)
-        @if($questionData['type'] === 'radio')
-            var ctx_{{ $index }} = document.getElementById('radioChart_{{ $index }}').getContext('2d');
+@foreach($questionsData as $index => $questionData)
+    @if($questionData['type'] === 'radio')
+        var ctx_{{ $index }} = document.getElementById('radioChart_{{ $index }}').getContext('2d');
 
-            var chartData_{{ $index }} = {
-                labels: @json($staticRadioOptions),
-                datasets: [{
-                    label: '{{ $questionData['question'] }}',
-                    data: @json($questionData['values']),
-                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    borderWidth: 1
-                }]
-            };
+        var chartData_{{ $index }} = {
+            labels: @json($staticRadioOptions),
+            datasets: [{
+                label: '{{ $questionData['question'] }}',
+                data: @json($questionData['values']),
+                backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        };
 
-            var chartOptions_{{ $index }} = {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        display: true,
-                        position: 'bottom'
-                    }
+        var chartOptions_{{ $index }} = {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'bottom'
                 },
-                scales: {
-                    y: {
-                        ticks: {
-                            stepSize: 1, // Increment the y-axis by 1
-                            beginAtZero: true // Ensure the y-axis starts from 0
+                tooltip: {
+                    callbacks: {
+                        label: function(tooltipItem) {
+                            const value = tooltipItem.raw;
+                            const total = tooltipItem.dataset.data.reduce((acc, curr) => acc + curr, 0);
+                            const percentage = ((value / total) * 100).toFixed(1); // Calculate percentage
+                            return `${tooltipItem.label}: ${value} (${percentage}%)`; // Display count and percentage
                         }
                     }
                 }
-            };
+            },
+            scales: {
+                y: {
+                    ticks: {
+                        stepSize: 1, // Increment the y-axis by 1
+                        beginAtZero: true // Ensure the y-axis starts from 0
+                    }
+                }
+            }
+        };
 
-            var radioChart_{{ $index }} = new Chart(ctx_{{ $index }}, {
-                type: 'bar',
-                data: chartData_{{ $index }},
-                options: chartOptions_{{ $index }}
-            });
-        @endif
-    @endforeach
+        var radioChart_{{ $index }} = new Chart(ctx_{{ $index }}, {
+            type: 'bar',
+            data: chartData_{{ $index }},
+            options: chartOptions_{{ $index }}
+        });
+    @endif
+@endforeach
 </script>
 
 @endsection
