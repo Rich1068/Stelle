@@ -40,6 +40,7 @@ return new class extends Migration
             $table->foreignId('form_id')->constrained('evaluation_forms')->onDelete('cascade');
             $table->text('question');
             $table->foreignId('type_id')->constrained('question_types')->onDelete('cascade'); 
+            $table->integer('order')->default(0)->after('type_id');
             $table->timestamps();
         });
         Schema::create('answers', function (Blueprint $table) {
