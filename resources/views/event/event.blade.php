@@ -572,10 +572,11 @@
             });
         });
     });
-
+   
+    // age pie chart
     var userAgeData = {
-        labels: @json($userAgeData['labels'] ?? ['No Data']),
-        values: @json($userAgeData['values'] ?? [1]) // Show "No Data" if values are empty
+    labels: @json($userAgeData['labels'] ?? ['No Data']),
+    values: @json($userAgeData['values'] ?? [1]) // Show "No Data" if values are empty
     }; // Data passed from the controller
 
     var ageChartElement = document.getElementById("userAgeChart");
@@ -600,15 +601,18 @@
             data: chartData,
             options: {
                 maintainAspectRatio: false,
-                tooltips: {
-                    backgroundColor: "rgb(255,255,255)",
-                    bodyFontColor: "#858796",
-                    borderColor: '#dddfeb',
-                    borderWidth: 1,
-                    xPadding: 15,
-                    yPadding: 10,
-                    displayColors: false,
-                    caretPadding: 10,
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                const label = tooltipItem.label || '';
+                                const value = tooltipItem.raw;
+                                const total = tooltipItem.dataset.data.reduce((acc, curr) => acc + curr, 0);
+                                const percentage = ((value / total) * 100).toFixed(1); // Calculate percentage
+                                return `${label}: ${value} (${percentage}%)`; // Display count and percentage
+                            }
+                        }
+                    }
                 },
                 legend: {
                     display: false
@@ -617,7 +621,7 @@
             }
         });
     }
-
+    //gender chart
     var genderLabels = @json($genderLabels ?? ['No Data']);
     var genderCounts = @json($genderCounts ?? [1]);
 
@@ -643,15 +647,18 @@
             data: chartData,
             options: {
                 maintainAspectRatio: false,
-                tooltips: {
-                    backgroundColor: "rgb(255,255,255)",
-                    bodyFontColor: "#858796",
-                    borderColor: '#dddfeb',
-                    borderWidth: 1,
-                    xPadding: 15,
-                    yPadding: 10,
-                    displayColors: false,
-                    caretPadding: 10,
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                const label = tooltipItem.label || '';
+                                const value = tooltipItem.raw;
+                                const total = tooltipItem.dataset.data.reduce((acc, curr) => acc + curr, 0);
+                                const percentage = ((value / total) * 100).toFixed(1); // Calculate percentage
+                                return `${label}: ${value} (${percentage}%)`; // Display count and percentage
+                            }
+                        }
+                    }
                 },
                 legend: {
                     display: false
@@ -705,21 +712,24 @@
             },
             options: {
                 maintainAspectRatio: false,
-                tooltips: {
-                    backgroundColor: "rgb(255,255,255)",
-                    bodyFontColor: "#858796",
-                    borderColor: '#dddfeb',
-                    borderWidth: 1,
-                    xPadding: 15,
-                    yPadding: 10,
-                    displayColors: false,
-                    caretPadding: 10,
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                const label = tooltipItem.label || '';
+                                const value = tooltipItem.raw;
+                                const total = tooltipItem.dataset.data.reduce((acc, curr) => acc + curr, 0);
+                                const percentage = ((value / total) * 100).toFixed(1); // Calculate percentage
+                                return `${label}: ${value} (${percentage}%)`; // Display count and percentage
+                            }
+                        }
+                    }
                 },
                 legend: {
                     display: false
                 },
                 cutoutPercentage: 80,  // Adjust doughnut chart cutout size
-            },
+            }
         });
     }
 
@@ -740,21 +750,24 @@
             },
             options: {
                 maintainAspectRatio: false,
-                tooltips: {
-                    backgroundColor: "rgb(255,255,255)",
-                    bodyFontColor: "#858796",
-                    borderColor: '#dddfeb',
-                    borderWidth: 1,
-                    xPadding: 15,
-                    yPadding: 10,
-                    displayColors: false,
-                    caretPadding: 10,
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                const label = tooltipItem.label || '';
+                                const value = tooltipItem.raw;
+                                const total = tooltipItem.dataset.data.reduce((acc, curr) => acc + curr, 0);
+                                const percentage = ((value / total) * 100).toFixed(1); // Calculate percentage
+                                return `${label}: ${value} (${percentage}%)`; // Display count and percentage
+                            }
+                        }
+                    }
                 },
                 legend: {
                     display: false
                 },
                 cutoutPercentage: 80,
-            },
+            }
         });
     }
 
@@ -775,21 +788,24 @@
             },
             options: {
                 maintainAspectRatio: false,
-                tooltips: {
-                    backgroundColor: "rgb(255,255,255)",
-                    bodyFontColor: "#858796",
-                    borderColor: '#dddfeb',
-                    borderWidth: 1,
-                    xPadding: 15,
-                    yPadding: 10,
-                    displayColors: false,
-                    caretPadding: 10,
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                const label = tooltipItem.label || '';
+                                const value = tooltipItem.raw;
+                                const total = tooltipItem.dataset.data.reduce((acc, curr) => acc + curr, 0);
+                                const percentage = ((value / total) * 100).toFixed(1); // Calculate percentage
+                                return `${label}: ${value} (${percentage}%)`; // Display count and percentage
+                            }
+                        }
+                    }
                 },
                 legend: {
                     display: false
                 },
                 cutoutPercentage: 80,
-            },
+            }
         });
     }
 

@@ -412,9 +412,9 @@
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 <script>
-    // Pass Laravel data to JavaScript
-    var userCountData = @json($userCountData); // Ensure $chartData is passed from the controller
+    var userCountData = @json($userCountData); // Ensure $userCountData is passed from the controller
 
     // Pie Chart Example
     var ctx = document.getElementById("totalUserChart").getContext('2d');
@@ -431,15 +431,18 @@
         },
         options: {
             maintainAspectRatio: false,
-            tooltips: {
-                backgroundColor: "rgb(255,255,255)",
-                bodyFontColor: "#858796",
-                borderColor: '#dddfeb',
-                borderWidth: 1,
-                xPadding: 15,
-                yPadding: 10,
-                displayColors: false,
-                caretPadding: 10,
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function(tooltipItem) {
+                            const label = tooltipItem.label;
+                            const value = tooltipItem.raw;
+                            const total = tooltipItem.dataset.data.reduce((acc, curr) => acc + curr, 0);
+                            const percentage = ((value / total) * 100).toFixed(1);
+                            return `${label}: ${value} (${percentage}%)`;
+                        }
+                    }
+                }
             },
             legend: {
                 display: false
@@ -448,7 +451,7 @@
         },
     });
 
-    var genderData = @json($genderData); // Ensure $chartData is passed from the controller
+    var genderData = @json($genderData); // Ensure $genderData is passed from the controller
 
     // Pie Chart Example
     var ctx = document.getElementById("genderChart").getContext('2d');
@@ -465,15 +468,18 @@
         },
         options: {
             maintainAspectRatio: false,
-            tooltips: {
-                backgroundColor: "rgb(255,255,255)",
-                bodyFontColor: "#858796",
-                borderColor: '#dddfeb',
-                borderWidth: 1,
-                xPadding: 15,
-                yPadding: 10,
-                displayColors: false,
-                caretPadding: 10,
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function(tooltipItem) {
+                            const label = tooltipItem.label || '';
+                            const value = tooltipItem.raw;
+                            const total = tooltipItem.dataset.data.reduce((acc, curr) => acc + curr, 0);
+                            const percentage = ((value / total) * 100).toFixed(1); // Calculate percentage
+                            return `${label}: ${value} (${percentage}%)`; // Display count and percentage
+                        }
+                    }
+                }
             },
             legend: {
                 display: false
