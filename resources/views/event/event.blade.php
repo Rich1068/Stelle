@@ -821,32 +821,6 @@
             $('#evaluationFormModal').modal('show');
         });
 
-        
-        $('.remove-btn').off('click').on('click', function() {
-            const userId = $(this).data('user-id');
-            const eventId = "{{ $event->id }}";
-
-            if (confirm('Are you sure you want to remove this participant?')) {
-                $.ajax({
-                    url: '/event/' + eventId + '/participants/' + userId + '/remove',
-                    type: 'PATCH',
-                    data: {
-                        _token: '{{ csrf_token() }}'
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            $('.participant-list-item[data-user-id="' + userId + '"]').remove();
-                            alert('Participant removed successfully');
-                        } else {
-                            alert('Error: ' + response.message);
-                        }
-                    },
-                    error: function(xhr) {
-                        alert('Error: ' + xhr.responseText);
-                    }
-                });
-            }
-        });
     });
     $(document).ready(function() {
         const eventId = "{{ $event->id }}";
@@ -883,6 +857,30 @@
         // Initial load to display the participant list when the page loads
         fetchParticipants(); // Call with default URL and no search query
     });
-
+    $(document).on('click', '.remove-btn', function() {
+        const userId = $(this).data('user-id');
+        const eventId = "{{ $event->id }}";
+    
+        if (confirm('Are you sure you want to remove this participant?')) {
+            $.ajax({
+                url: '/event/' + eventId + '/participants/' + userId + '/remove',
+                type: 'PATCH',
+                data: {
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    if (response.success) {
+                        $('.participant-list-item[data-user-id="' + userId + '"]').remove();
+                        alert('Participant removed successfully');
+                    } else {
+                        alert('Error: ' + response.message);
+                    }
+                },
+                error: function(xhr) {
+                    alert('Error: ' + xhr.responseText);
+                }
+            });
+        }
+    });
 </script>
 @endsection

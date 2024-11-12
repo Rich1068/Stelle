@@ -308,12 +308,13 @@ class EventController extends Controller
         $userevent = UserEvent::with('user')->where('event_id', $id)->whereHas('user')->firstOrFail();
     
         $participants = EventParticipant::where('event_id', $id)
-            ->when($search, function ($query) use ($search) {
-                $query->whereHas('user', function ($userQuery) use ($search) {
-                    $userQuery->whereRaw("LOWER(CONCAT(first_name, ' ', last_name)) LIKE ?", ['%' . strtolower($search) . '%']);
-                });
-            })
-            ->paginate(10);
+        ->where('status_id', 1) // Add the condition for status_id
+        ->when($search, function ($query) use ($search) {
+            $query->whereHas('user', function ($userQuery) use ($search) {
+                $userQuery->whereRaw("LOWER(CONCAT(first_name, ' ', last_name)) LIKE ?", ['%' . strtolower($search) . '%']);
+            });
+        })
+        ->paginate(10);
     
         return response()->json([
             'html' => view('event.partials.participantlist', compact('participants', 'event', 'userevent'))->render(),
