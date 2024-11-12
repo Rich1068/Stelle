@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 class AuthenticatedSessionController extends Controller
 {
@@ -41,7 +42,8 @@ class AuthenticatedSessionController extends Controller
             }
             // Authenticate the user
             $request->authenticate();
-
+            // Get the current password to log out other sessions
+            $this->clearOtherSessions($user->id);
             // Regenerate session
             $request->session()->regenerate();
 
@@ -70,6 +72,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
+
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
@@ -77,5 +80,16 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/');
+    }
+
+
+    protected function clearOtherSessions(int $userId): void
+    {
+        if (config('session.driver') === 'database') {
+            DB::table('sessions')
+                ->where('user_id', $userId)
+                ->where('id', '!=', session()->getId()) // Keep current session
+                ->delete();
+        } 
     }
 }
