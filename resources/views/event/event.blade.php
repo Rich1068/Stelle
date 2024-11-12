@@ -142,28 +142,28 @@
               
         </div>
             @endif
-                @if($userevent->user_id != Auth::user()->id)
-                
-
-                    @if ($participant && $participant->status_id == 1)
-                    
-                        <p>You have been accepted to this event.</p>
-                    @elseif (\Carbon\Carbon::now('Asia/Manila')->isSameDay(\Carbon\Carbon::parse($event->start_date)) &&
-                    \Carbon\Carbon::now('Asia/Manila')->format('H:i:s') > $event->end_time || \Carbon\Carbon::parse($event->start_date . ' ' . $event->end_time)->isPast())
-                        <button type="button" class="btn btn-secondary" disabled>Closed</button>
-                    @elseif ($currentParticipants < $event->capacity && $participant == null)
+            @if($userevent->user_id != Auth::user()->id)
+                @if ($participant && $participant->status_id == 1)
+                    <p>You have been accepted to this event.</p>
+                @elseif (
+                    (\Carbon\Carbon::now('Asia/Manila')->greaterThanOrEqualTo(\Carbon\Carbon::parse($event->start_date . ' ' . $event->start_time)) &&
+                    \Carbon\Carbon::now('Asia/Manila')->lessThanOrEqualTo(\Carbon\Carbon::parse($event->end_date . ' ' . $event->end_time))) || // Ongoing
+                    \Carbon\Carbon::now('Asia/Manila')->lessThanOrEqualTo(\Carbon\Carbon::parse($event->start_date . ' ' . $event->start_time)) // Before start
+                )
+                    @if ($participant && $participant->status_id == 3)
+                        <button type="button" class="btn btn-secondary" disabled>Pending</button>
+                    @elseif ($currentParticipants < $event->capacity)
                         <form action="{{ route('event.join', $event->id) }}" method="POST" class="full-width-button">
                             @csrf
                             <button type="submit" class="btn btn-primary">Join Event</button>
                         </form>
-
-                    @elseif ($participant && $participant->status_id == 3)
-                        <button type="button" class="btn btn-secondary" disabled>Pending</button>
                     @else
                         <button type="button" class="btn btn-secondary" disabled>Closed</button>
                     @endif
-                @endif  
-
+                @else
+                    <button type="button" class="btn btn-secondary" disabled>Closed</button>
+                @endif
+            @endif
     @if ($participant && $participant->status_id == 1)
     @if($event->evaluationForm && $event->evaluationForm->status_id == 1)
         @if($hasAnswered)

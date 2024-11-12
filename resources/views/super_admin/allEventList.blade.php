@@ -62,16 +62,19 @@
                         </td>
                         <td class="d-none d-md-table-cell">{{ $event->current_participants }}/{{ $event->capacity }}</td>
                         <td>
-                            @if($event->trashed())
-                                <span style="color: red;">DELETED</span>
-                            @elseif(
-                                \Carbon\Carbon::now('Asia/Manila')->isSameDay(\Carbon\Carbon::parse($event->date)) &&
-                                    \Carbon\Carbon::now('Asia/Manila')->format('H:i:s') > $event->end_time || \Carbon\Carbon::parse($event->date . ' ' . $event->end_time)->isPast()
-                                )
-                                <span style="color: gray;">CLOSED</span>
-                            @else
-                                <span style="color: green;">ACTIVE</span>
-                            @endif
+                        @if($event->trashed())
+                            <span style="color: red;">DELETED</span>
+                        @elseif(
+                            (\Carbon\Carbon::now('Asia/Manila')->between(
+                                \Carbon\Carbon::parse($event->start_date . ' ' . $event->start_time),
+                                \Carbon\Carbon::parse($event->end_date . ' ' . $event->end_time)
+                            )) || 
+                            (\Carbon\Carbon::now('Asia/Manila')->lessThan(\Carbon\Carbon::parse($event->start_date . ' ' . $event->start_time)))
+                        )
+                            <span style="color: green;">ACTIVE</span>
+                        @else
+                            <span style="color: gray;">CLOSED</span>
+                        @endif
                         </td>
                         <td>{{ \Carbon\Carbon::parse($event->created_at)->format('Y-m-d') }}</td>
                         <td>
