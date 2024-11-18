@@ -171,11 +171,15 @@
             <button type="button" class="btn btn-secondary" id="evaluationAnsweredBtn" disabled>
                 Evaluation Form Already Answered
             </button>
-        @else
+        @elseif (\Carbon\Carbon::now('Asia/Manila')->greaterThanOrEqualTo(\Carbon\Carbon::parse($event->start_date . ' ' . $event->start_time)))
             <form action="{{ route('evaluation-form.take', ['id' => $event->id, 'form' => $evaluationForm->form_id]) }}" method="GET" class="full-width-button">
                 @csrf
                 <button type="submit" class="btn btn-primary" style="margin-bottom: 10px;">Take Evaluation</button>
             </form>
+        @else
+            <button type="button" class="btn btn-secondary" id="evaluationNotAvailableBtn" disabled>
+                Evaluation Not Yet Available
+            </button>     
         @endif
         
     @else
