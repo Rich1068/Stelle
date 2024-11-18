@@ -324,7 +324,7 @@
                 
     @else
     <!-- Create or Update Evaluation Form Button -->
-    <button type="button" class="btn btn-primary-2" data-toggle="modal" data-target="#evaluationFormModal">
+    <button type="button" class="btn btn-primary-2" id="setupEvaluationFormButton" data-toggle="modal" data-target="#evaluationFormModal">
         Setup Evaluation Form
     </button>
     @if($event->evaluationForm)
@@ -388,7 +388,8 @@
                 </form>
                 @endif
                 <!-- Option 2: Use Existing Evaluation Form -->
-                <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#existingFormModal">
+                <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#existingFormModal" {{ $hasAnswer ? 'disabled' : '' }}
+                    title="{{ $hasAnswer ? 'This action is not allowed because answers already exist.' : '' }}">
                     Use an Existing Evaluation Form
                 </button>
 
@@ -885,6 +886,25 @@
                 }
             });
         }
+    });
+    // for disabling editing of eval form when its public
+    document.addEventListener('DOMContentLoaded', function () {
+        const toggle = document.getElementById('is_active_toggle');
+        const setupButton = document.getElementById('setupEvaluationFormButton');
+
+        // Initial state check
+        if (toggle.checked) {
+            setupButton.disabled = true;
+        }
+
+        // Add event listener to toggle
+        toggle.addEventListener('change', function () {
+            if (this.checked) {
+                setupButton.disabled = true; // Disable button when toggle is checked
+            } else {
+                setupButton.disabled = false; // Enable button when toggle is unchecked
+            }
+        });
     });
 </script>
 @endsection

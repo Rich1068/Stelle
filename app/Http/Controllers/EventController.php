@@ -194,6 +194,8 @@ class EventController extends Controller
             ->where('user_id', Auth::user()->id)
             ->exists();
         }
+        $hasAnswers = Answer::where('event_form_id', $evaluationForm->id)
+                      ->exists();
         //user age chart in the event
         $usersBirthdate = User::whereHas('eventParticipant', function ($query) use ($id) {
             $query->where('event_id', $id)->where('status_id', 1);
@@ -285,6 +287,7 @@ class EventController extends Controller
             'existingForms' =>$existingForms,
             'currentParticipants' => $currentParticipants,
             'hasAnswered' => $hasAnswered,
+            'hasAnswers' => $hasAnswers,
             'certificate' => $certificate,
             'participants' => $participants,
             'currentUser' =>$currentUser,

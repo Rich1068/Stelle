@@ -267,6 +267,11 @@ class EvaluationFormController extends Controller
     {
         $evaluationForm = EvaluationForm::findOrFail($form);
         $questions = Question::where('form_id', $form)->orderBy('order')->get(); 
+        $event = Event::findOrFail($id);
+        if ($event->evaluationForm && $event->evaluationForm->status_id == 1) {
+            // Throw an error or redirect back with a message
+            return redirect()->back()->withErrors(['error' => 'The evaluation form is already active and cannot be modified.']);
+        }
 
         return view('evaluation_form.questions.event_edit', compact( 'form', 'questions','evaluationForm', 'id'));
     }
@@ -344,7 +349,13 @@ class EvaluationFormController extends Controller
         $request->validate([
             'form_id' => 'required|exists:evaluation_forms,id',
         ]);
-    
+        $event = Event::findOrFail($id);
+
+        // Check if the evaluation form is active
+        if ($event->evaluationForm && $event->evaluationForm->status_id == 1) {
+            // Throw an error or redirect back with a message
+            return redirect()->back()->withErrors(['error' => 'The evaluation form is already active and cannot be replaced.']);
+        }
         // Start a transaction
         DB::beginTransaction();
     
@@ -403,17 +414,24 @@ class EvaluationFormController extends Controller
     }
     public function toggleActivation(Request $request, $id, $formId)
     {
+        // Validate the input
+        $validated = $request->validate([
+            'is_active' => ['required', 'boolean'],
+        ]);
+    
+        // Find the evaluation form
         $evaluationForm = EventEvaluationForm::findOrFail($formId);
     
-        // Set the status based on `is_active` checkbox value
-        $evaluationForm->status_id = $request->is_active ? 1 : 2;
+        // Update the status based on `is_active`
+        $evaluationForm->status_id = $validated['is_active'] ? 1 : 2;
         $evaluationForm->save();
     
-        // Return a JSON response instead of a redirect
+        // Return a JSON response
         return response()->json([
             'success' => true,
-            'message' => $evaluationForm->status_id == 1 
-                ? 'The evaluation form is now activated and open to participants.' 
+            'status' => $evaluationForm->status_id,
+            'message' => $evaluationForm->status_id == 1
+                ? 'The evaluation form is now activated and open to participants.'
                 : 'The evaluation form is now deactivated and closed to participants.',
         ]);
     }
