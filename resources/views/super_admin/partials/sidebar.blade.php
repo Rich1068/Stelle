@@ -69,7 +69,7 @@
         <!-- Nav Item - Event Templates Management (Dropdown) -->
         <li class="nav-item">
             <a class="nav-link {{ request()->routeIs('evaluation.evaluationlist') || request()->routeIs('certificate.list') ? '' : 'collapsed' }}" href="#" data-toggle="collapse" data-target="#collapseEvaluationCertificates" aria-expanded="{{ request()->routeIs('evaluation.evaluationlist') || request()->routeIs('certificate.list') ? 'true' : 'false' }}" aria-controls="collapseEvaluationCertificates">
-                <span>Evaluation Form & Certificate Templates Management</span>
+                <span>Eval Forms & Cert Templates Management</span>
                 <i class="fas fa-chevron-down float-right arrow-icon"></i>
             </a>
             <div id="collapseEvaluationCertificates" class="collapse {{ request()->routeIs('evaluation.evaluationlist') || request()->routeIs('certificate.list') ? 'show' : '' }}" aria-labelledby="headingEvaluationCertificates" data-parent="#accordionSidebar">
@@ -90,7 +90,7 @@
         <!-- Nav Item - Management of System (Dropdown for User and Event Management) -->
         <li class="nav-item">
             <a class="nav-link {{ request()->routeIs('super_admin.userlist') || request()->routeIs('superadmin.eventlist') ? '' : 'collapsed' }}" href="#" data-toggle="collapse" data-target="#collapseManagement" aria-expanded="{{ request()->routeIs('super_admin.userlist') || request()->routeIs('superadmin.eventlist') ? 'true' : 'false' }}" aria-controls="collapseManagement">
-                <span>User and Event Management</span>
+                <span>All User and Event Management</span>
                 <i class="fas fa-chevron-down float-right arrow-icon"></i>
             </a>
             <div id="collapseManagement" class="collapse {{ request()->routeIs('super_admin.userlist') || request()->routeIs('superadmin.eventlist') ? 'show' : '' }}" aria-labelledby="headingManagement" data-parent="#accordionSidebar">

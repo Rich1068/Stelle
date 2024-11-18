@@ -26,6 +26,7 @@
                         <label for="title" class="flex items-center">
                             <i class="fas fa-heading mr-2"></i>
                             <span class="font-bold">{{ __('Title') }}</span>
+                            <span style="color:#ff3333;">*</span>
                         </label>
                         <x-text-input id="title" name="title" type="text" class="mt-1 block w-full event-input" :value="old('title')" required autofocus autocomplete="off" />
                         <x-input-error class="mt-2" :messages="$errors->get('title')" />
@@ -41,6 +42,7 @@
                                 <label for="start_date" class="flex items-center">
                                     <i class="fas fa-calendar-day mr-2"></i>
                                     <span class="font-bold">{{ __('Start Date') }}</span>
+                                    <span style="color:#ff3333;">*</span>
                                 </label>
                                 <x-text-input id="start_date" name="start_date" type="date" class="mt-1 block w-full event-input" :value="old('start_date')" :min="$today" required />
                                 <x-input-error class="mt-2" :messages="$errors->get('start_date')" />
@@ -51,6 +53,7 @@
                                 <label for="end_date" class="flex items-center">
                                     <i class="fas fa-calendar-day mr-2"></i>
                                     <span class="font-bold">{{ __('End Date') }}</span>
+                                    <span style="color:#ff3333;">*</span>
                                 </label>
                                 <x-text-input id="end_date" name="end_date" type="date" class="mt-1 block w-full event-input" :value="old('end_date')" :min="$today" required />
                                 <x-input-error class="mt-2" :messages="$errors->get('end_date')" />
@@ -63,8 +66,9 @@
                                 <label for="start_time" class="flex items-center">
                                     <i class="fas fa-clock mr-2"></i>
                                     <span class="font-bold">{{ __('Start Time') }}</span>
+                                    <span style="color:#ff3333;">*</span>
                                 </label>
-                                <x-text-input id="start_time" name="start_time" type="time" class="mt-1 block w-full event-input" :value="old('start_time')" required />
+                                <input id="start_time" name="start_time" class="mt-1 block w-full event-input" required />
                                 <x-input-error class="mt-2" :messages="$errors->get('start_time')" />
                             </div>
                         </div>
@@ -73,8 +77,9 @@
                                 <label for="end_time" class="flex items-center">
                                     <i class="fas fa-clock mr-2"></i>
                                     <span class="font-bold">{{ __('End Time') }}</span>
+                                    <span style="color:#ff3333;">*</span>
                                 </label>
-                                <x-text-input id="end_time" name="end_time" type="time" class="mt-1 block w-full event-input" :value="old('end_time')" required />
+                                <input id="end_time" name="end_time" class="mt-1 block w-full event-input" required />
                                 <x-input-error class="mt-2" :messages="$errors->get('end_time')" />
                             </div>
                         </div>
@@ -82,17 +87,18 @@
                 </div>
 
 
-                <!-- Description -->
-                <div class="col-md-12 mb-4">
-    <div class="event-field">
-        <label for="description" class="flex items-center">
-            <i class="fas fa-file-alt mr-2"></i>
-            <span class="font-bold">{{ __('Description') }}</span>
-        </label>
-        <textarea id="description" name="description" class="mt-1 block w-full event-input" oninput="autoResize(this)" rows="1" style="overflow:hidden;" required>{{ old('description') }}</textarea>
-        <x-input-error class="mt-2" :messages="$errors->get('description')" />
+    <!-- Description -->
+    <div class="col-md-12 mb-4">
+        <div class="event-field">
+            <label for="description" class="flex items-center">
+                <i class="fas fa-file-alt mr-2"></i>
+                <span class="font-bold">{{ __('Description') }}</span>
+                <span style="color:#ff3333;">*</span>
+            </label>
+            <textarea id="description" name="description" class="mt-1 block w-full event-input" oninput="autoResize(this)" rows="1" style="overflow:hidden;" required>{{ old('description') }}</textarea>
+            <x-input-error class="mt-2" :messages="$errors->get('description')" />
+        </div>
     </div>
-</div>
                 <!-- Capacity, Mode, and Address in One Column -->
                 <div class="col-md-12 mb-4">
                     <div class="row">
@@ -103,6 +109,7 @@
                                 <label for="capacity" class="flex items-center">
                                     <i class="fas fa-users mr-2"></i>
                                     <span class="font-bold">{{ __('Capacity') }}</span>
+                                    <span style="color:#ff3333;">*</span>
                                 </label>
                                 <x-text-input id="capacity" name="capacity" type="number" class="mt-1 block w-full event-input" :value="old('capacity')" min="1" required />
                                 <x-input-error class="mt-2" :messages="$errors->get('capacity')" />
@@ -115,6 +122,7 @@
                                 <label for="address" class="flex items-center">
                                     <i class="fas fa-map-marker-alt mr-2"></i>
                                     <span class="font-bold">{{ __('Address/Link') }}</span>
+                                    <span style="color:#ff3333;">*</span>
                                 </label>
                                 <x-text-input id="address" name="address" type="text" class="mt-1 block w-full event-input" :value="old('address')" required />
                                 <x-input-error class="mt-2" :messages="$errors->get('address')" />
@@ -127,8 +135,9 @@
                                 <label for="mode" class="flex items-center">
                                     <i class="fas fa-tachometer-alt mr-2"></i>
                                     <span class="font-bold">{{ __('Mode') }}</span>
+                                    <span style="color:#ff3333;">*</span>
                                 </label>
-                                <select id="mode" name="mode" class="block mt-1 w-full event-input">
+                                <select id="mode" name="mode" class="block mt-1 w-full event-input" required>
                                     <option value="">{{ __('Select Mode') }}</option>
                                     <option value="onsite" {{ old('mode') == 'onsite' ? 'selected' : '' }}>{{ __('Onsite') }}</option>
                                     <option value="virtual" {{ old('mode') == 'virtual' ? 'selected' : '' }}>{{ __('Virtual') }}</option>
@@ -136,7 +145,6 @@
                                 <x-input-error :messages="$errors->get('mode')" class="mt-2" />
                             </div>
                         </div>
-
                     </div>
                 </div>
 
@@ -151,8 +159,8 @@
                         
                         <!-- Custom button to trigger file input -->
                         <button type="button" class="custom-file-button" onclick="document.getElementById('event_banner').click()">
-    <i class="fas fa-upload"></i> <span class="bold-text">Choose File</span>
-</button>
+                            <i class="fas fa-upload"></i> <span class="bold-text">Choose File</span>
+                        </button>
                         
                         <x-input-error class="mt-2" :messages="$errors->get('event_banner')" />
                         <img id="image_preview" class="event-image-preview" style="display: none; max-width: 50%; margin-top: 10px;" />
@@ -165,9 +173,6 @@
                 </x-primary-button>
             </div>
             </div>
-
-            <!-- Submit Button -->
-          
         </form>
     </div>
 </section>
@@ -251,8 +256,31 @@
 }
 }
     </style>
-<script>
 
+<link rel="stylesheet" href="https://kendo.cdn.telerik.com/themes/10.0.1/default/default-ocean-blue.css"/>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://kendo.cdn.telerik.com/2024.4.1112/js/kendo.all.min.js"></script>
+
+<script>
+$("#start_time").kendoTimePicker({
+    componentType: "modern",
+    format: "HH:mm",
+    parseFormats: ["HH:mm"],
+    interval: {
+        hour: 1,
+        minute: 15,
+    }    
+});
+$("#end_time").kendoTimePicker({
+    componentType: "modern",
+    format: "HH:mm",
+    parseFormats: ["HH:mm"],
+    interval: {
+        hour: 1,
+        minute: 15,
+    }
+    
+});
 function previewImage(event) {
         const reader = new FileReader();
         reader.onload = function () {
@@ -265,12 +293,24 @@ function previewImage(event) {
      function autoResize(textarea) {
     textarea.style.height = 'auto';  // Reset height to auto to shrink if needed
     textarea.style.height = (textarea.scrollHeight) + 'px';  // Set the height based on the scroll height
-  }
+}
+
 
 function disableButton(button) {
+    // Disable the button to prevent multiple submissions
     button.disabled = true;
-    button.innerText = 'Submitting...';
-    button.form.submit();
+
+    // Update button text to indicate progress
+    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+
+    // Trigger the form submission
+    const form = button.closest("form");
+    if (form) {
+        form.submit();
+    }
+
+    // Prevent further events
+    return false;
 }
 
 document.getElementById('eventForm').addEventListener('keydown', function(event) {
@@ -278,5 +318,7 @@ document.getElementById('eventForm').addEventListener('keydown', function(event)
         event.preventDefault();
     }
 });
+
+
 </script>
 @endsection
