@@ -69,7 +69,7 @@
         <!-- Nav Item - Event Templates Management (Dropdown) -->
         <li class="nav-item">
             <a class="nav-link {{ request()->routeIs('evaluation.evaluationlist') || request()->routeIs('certificate.list') ? '' : 'collapsed' }}" href="#" data-toggle="collapse" data-target="#collapseEvaluationCertificates" aria-expanded="{{ request()->routeIs('evaluation.evaluationlist') || request()->routeIs('certificate.list') ? 'true' : 'false' }}" aria-controls="collapseEvaluationCertificates">
-                <span>Event Templates Management</span>
+                <span>Evaluation Form & Certificate Templates Management</span>
                 <i class="fas fa-chevron-down float-right arrow-icon"></i>
             </a>
             <div id="collapseEvaluationCertificates" class="collapse {{ request()->routeIs('evaluation.evaluationlist') || request()->routeIs('certificate.list') ? 'show' : '' }}" aria-labelledby="headingEvaluationCertificates" data-parent="#accordionSidebar">
