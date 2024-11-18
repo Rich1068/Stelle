@@ -174,7 +174,7 @@ Route::middleware(['auth', 'checkEventCreator'])->group(function () {
     Route::get('/event/{id}/search-pending-participants', [EventController::class, 'searchPendingParticipants'])->name('event.search.pendingparticipants');
     Route::patch('/event/{id}/participants/{user}/remove', [EventController::class, 'removeParticipant'])->name('event.removeParticipant');
     Route::post('/event/{id}/participants/send-certificates', [CertificateController::class, 'sendCertificates'])->name('sendCertificates');
-    
+    Route::get('/events/{id}/check-capacity', [EventController::class, 'checkCapacity'])->name('events.checkCapacity');
 
     //eval forms
     Route::get('/event/{id}/event-evaluation-forms/create', [EvaluationFormController::class, 'event_create'])->name('event-evaluation-forms.create');
