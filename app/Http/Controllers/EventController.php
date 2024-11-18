@@ -510,13 +510,16 @@ class EventController extends Controller
     {
         $eventuser = UserEvent::findOrFail($id);
         $event = Event::findOrFail($id);
-
+        $currentParticipants = EventParticipant::where('event_id', $id)
+            ->where('status_id', 1)
+            ->whereHas('user')
+            ->count();
         $participants = EventParticipant::where('event_id', $id)
                 ->where('status_id', 3)
                 ->whereHas('user')
                 ->paginate(10);
 
-        return view('event.pendingparticipants', compact('eventuser', 'participants', 'event'));
+        return view('event.pendingparticipants', compact('eventuser', 'participants', 'event', 'currentParticipants'));
     }
     public function searchPendingParticipants(Request $request, $id)
     {
@@ -543,7 +546,7 @@ class EventController extends Controller
     {
         $event = UserEvent::findOrFail($eventId);
         $request->validate([
-            'status_id' => ['required', 'string'],
+            'status_id' => ['required', 'string', 'in:1,2'],
         ]);
 
         $participant = EventParticipant::where('user_id', $participantId)
@@ -554,6 +557,13 @@ class EventController extends Controller
         $eventDetails = Event::findOrFail($eventId);
 
         if ($request->status_id == 1) {
+            $currentParticipants = EventParticipant::where('event_id', $eventId)
+            ->where('status_id', 1) // Only count accepted participants
+            ->count();
+    
+            if ($currentParticipants >= $event->capacity) {
+                return back()->withErrors(['error' => 'Event capacity is full. Cannot accept more participants.']);
+            }
             // User accepted
             event(new UserAcceptedToEvent($user, $eventDetails));
         } elseif ($request->status_id == 2) {
@@ -712,5 +722,17 @@ class EventController extends Controller
         $event->restore();
 
         return redirect()->route('superadmin.eventlist')->with('success', 'Event recovered successfully!');
+    }
+
+    //for pending participant checking capacity
+    public function checkCapacity($id)
+    {
+        $event = Event::findOrFail($id);
+        $currentParticipants = $event->participants()->where('status_id', 1)->count(); // Adjust based on your logic
+
+        return response()->json([
+            'currentParticipants' => $currentParticipants,
+            'capacity' => $event->capacity,
+        ]);
     }
 }

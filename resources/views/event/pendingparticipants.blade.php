@@ -9,6 +9,7 @@
 @if(session('error'))
     <div class="alert alert-danger">{{ session('error') }}</div>
 @endif
+<div id="capacityAlert"></div>
 
 <div id="notifications" class="position-fixed top-0 end-0 p-3">
     <!-- Notifications will be appended here -->
@@ -22,6 +23,9 @@
         <h2 class="font-weight-bold mt-2" style="color: grey;">
             {{ $event->title }}
         </h2>
+        <h5 id="participantCount" class="font-weight-bold mt-3" style="color: grey;">
+            {{$currentParticipants}} / {{$event->capacity}}
+        </h5>
     </div>
 </div>
 
@@ -36,7 +40,7 @@
 
     <!-- Participant List -->
     <div class="participant-list-container">
-    @include('event.partials.pendingparticipants', ['participants' => $participants, 'event' => $event])
+    @include('event.partials.pendingparticipants', ['participants' => $participants, 'event' => $event, 'currentParticipants' => $currentParticipants])
 </div>
 
 
@@ -125,7 +129,43 @@ $(document).ready(function() {
             }
         });
     });
+    $(document).ready(function () {
+    // Function to check event capacity
+    function checkCapacity(eventId) {
+        $.ajax({
+            url: `/events/${eventId}/check-capacity`,
+            method: 'GET',
+            success: function (response) {
+                const { currentParticipants, capacity } = response;
+                $('#participantCount').text(`${currentParticipants} / ${capacity}`);
+                // Update UI based on the capacity
+                if (currentParticipants >= capacity) {
+                    $('#capacityAlert').html(`
+                        <p class="alert alert-danger">The event is full. No more participants can be accepted.</p>
+                    `);
 
+                    // Disable all accept buttons
+                    $('.accept-btn').prop('disabled', true);
+                } else {
+                    $('#capacityAlert').html(''); // Clear the alert if not full
+                    $('.accept-btn').prop('disabled', false); // Enable buttons
+                }
+            },
+            error: function () {
+                console.error('Error checking capacity.');
+            }
+        });
+    }
+
+    // Call the function on page load
+    const eventId = '{{ $event->id }}'; // Ensure this is available
+    checkCapacity(eventId);
+
+    // Optionally, call it after an action (e.g., after accepting/declining a participant)
+    $('.accept-btn, .decline-btn').on('click', function () {
+        setTimeout(() => checkCapacity(eventId), 500); // Small delay to account for the action processing
+    });
+})
 </script>
 
 <style>
@@ -137,6 +177,12 @@ $(document).ready(function() {
 
     .search-icon {
         pointer-events: none;
+    }
+    .accept-btn:disabled {
+        background-color: #d6d6d6; /* Light gray background */
+        color: #8c8c8c; /* Gray text color */
+        cursor: not-allowed; /* Show "not allowed" cursor */
+        border: 1px solid #c0c0c0; /* Optional: light border */
     }
 </style>
 @endsection
