@@ -376,8 +376,10 @@
             </div>
             <div class="modal-body">
                 <!-- Option 1: Create Evaluation Form -->
+            
                 @if($event->evaluationForm)
-                <form action="{{ route('event-evaluation-forms.edit', ['formId' => $event->evaluationForm->form_id, 'id' => $event->id]) }}" method="GET" class="full-width-button">
+                <form action="{{ route('event-evaluation-forms.edit', ['formId' => $event->evaluationForm->form_id, 'id' => $event->id]) }}" method="GET" 
+                    class="full-width-button" id="updateEvaluationForm">
                     @csrf
                     <button type="submit" class="btn btn-primary-2 btn-block">Update Evaluation Form</button>
                 </form>
@@ -387,9 +389,9 @@
                     <button type="submit" class="btn btn-primary btn-block">Create Evaluation Form</button>
                 </form>
                 @endif
+                @if($currentUser == $userevent->user->id)
                 <!-- Option 2: Use Existing Evaluation Form -->
-                <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#existingFormModal" {{ $hasAnswer ? 'disabled' : '' }}
-                    title="{{ $hasAnswer ? 'This action is not allowed because answers already exist.' : '' }}">
+                <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#existingFormModal">
                     Use an Existing Evaluation Form
                 </button>
 
@@ -425,7 +427,7 @@
                         </div>
                     </div>
                 </div>
-
+                @endif
             </div>
         </div>
     </div>
@@ -904,6 +906,76 @@
             } else {
                 setupButton.disabled = false; // Enable button when toggle is unchecked
             }
+        });
+    });
+    document.addEventListener('DOMContentLoaded', function () {
+        const existingFormButton = document.querySelector('[data-target="#existingFormModal"]');
+        const eventId = '{{ $event->id }}'; // Pass the event ID to JavaScript
+        let shouldPoll = true; // Flag to control polling
+
+        function checkHasAnswers() {
+            if (!shouldPoll) return; // Stop polling if the flag is false
+
+            fetch(`/events/${eventId}/has-answers`, {
+                method: 'GET',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.hasAnswers) {
+                    // Update button state
+                    existingFormButton.disabled = true;
+                    existingFormButton.title = 'This action is not allowed because answers already exist.';
+
+                    // Stop further polling
+                    shouldPoll = false;
+                } else {
+                    existingFormButton.disabled = false;
+                    existingFormButton.title = '';
+                }
+
+                // Schedule the next polling request if needed
+                if (shouldPoll) {
+                    setTimeout(checkHasAnswers, 5000); // Wait 5 seconds before the next request
+                }
+            })
+            .catch(error => {
+                console.error('Error checking answers:', error);
+
+                // Retry after a delay if there's an error
+                if (shouldPoll) {
+                    setTimeout(checkHasAnswers, 5000); // Retry in 5 seconds
+                }
+            });
+        }
+
+        // Initial call to start polling
+        checkHasAnswers();
+    });
+    document.getElementById('updateEvaluationForm').addEventListener('submit', function (e) {
+        e.preventDefault(); // Prevent form submission for now
+        const eventId = '{{ $event->id }}'; // Pass the event ID to JavaScript
+
+        fetch(`/events/${eventId}/has-answers`, {
+            method: 'GET',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.hasAnswers) {
+                alert("Editing the Evaluation Form might affect the results. Press OK to continue");
+            }
+
+            // Submit the form after showing the alert
+            e.target.submit();
+        })
+        .catch(error => {
+            console.error('Error checking answers:', error);
+            alert("Unable to check answers at this time. Please try again later.");
         });
     });
 </script>

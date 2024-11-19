@@ -51,13 +51,13 @@
                         </div>
 
                         <!-- Separate Container for Delete Account Section -->
-                        <div class="delete-account-container">
+                        <!-- <div class="delete-account-container">
                             <h3 class="delete-profile-header">{{ __('Delete Account') }}</h3>
                             <div class="delete-profile-description">
                                 {{ __('Permanently delete your account.') }}
                             </div>
                             @include('profile.partials.delete-user-form')
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>

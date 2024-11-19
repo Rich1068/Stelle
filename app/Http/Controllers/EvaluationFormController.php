@@ -350,11 +350,16 @@ class EvaluationFormController extends Controller
             'form_id' => 'required|exists:evaluation_forms,id',
         ]);
         $event = Event::findOrFail($id);
-
+        $evaluationForm = $event->evaluationForm;
+        $hasAnswers = Answer::where('event_form_id', $evaluationForm->id)
+                      ->exists();
         // Check if the evaluation form is active
         if ($event->evaluationForm && $event->evaluationForm->status_id == 1) {
             // Throw an error or redirect back with a message
             return redirect()->back()->withErrors(['error' => 'The evaluation form is already active and cannot be replaced.']);
+        }
+        elseif ($hasAnswers){
+            return redirect()->back()->withErrors(['error' => 'The evaluation form already has answers and cannot be replaced.']);
         }
         // Start a transaction
         DB::beginTransaction();
@@ -502,7 +507,6 @@ class EvaluationFormController extends Controller
         // Get the number of participants
         $currentParticipants = EventParticipant::where('event_id', $id)
             ->where('status_id', 1)
-            ->whereHas('user')
             ->count();
 
         // Define the static radio options (1, 2, 3, 4, 5)
@@ -513,7 +517,8 @@ class EvaluationFormController extends Controller
         $questionsData = [];
 
         // Total users who answered, filtered by event_form_id
-        $answeredUsers = User::whereHas('answers', function ($query) use ($eventFormId) {
+        $answeredUsers = User::withTrashed()
+                ->whereHas('answers', function ($query) use ($eventFormId) {
                 $query->where('event_form_id', $eventFormId);
             })
             ->distinct()

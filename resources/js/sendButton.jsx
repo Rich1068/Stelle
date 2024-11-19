@@ -32,7 +32,16 @@ const ExportModal = ({ isOpen, store, onClose, eventId, showLoadingModal }) => {
   const fetchNames = async () => {
     try {
       const response = await axios.get(`/event/${eventId}/get-participants`);
-      setNames(response.data); // Assume data is an array of names
+      setNames(
+        response.data.map((participant) => ({
+          full_name: participant.full_name, // Actual name without "(DELETED)"
+          display_name: participant.is_deleted
+            ? `${participant.full_name} (DELETED)` // Add "(DELETED)" only for display
+            : participant.full_name,
+          user_id: participant.user_id,
+          is_deleted: participant.is_deleted, // Include soft delete status
+        }))
+      );
     } catch (error) {
       console.error('Error fetching names:', error);
     }
@@ -135,7 +144,18 @@ const ExportModal = ({ isOpen, store, onClose, eventId, showLoadingModal }) => {
       alert('Please select at least one user before sending the certificate.');
       return;
     }
-  
+    try {
+      // Check if a certificate exists for the event
+      const certificateExistsResponse = await axios.get(`/event/${eventId}/certificate-exists`);
+      if (!certificateExistsResponse.data.exists) {
+        alert('No certificate has been saved for this event. Please save a certificate before sending.');
+        return;
+      }
+    } catch (error) {
+      console.error('Error checking certificate existence:', error);
+      alert('An error occurred while verifying the certificate.');
+      return;
+    }
     setLoading(true);
     showLoadingModal(true);
   
@@ -190,7 +210,7 @@ const ExportModal = ({ isOpen, store, onClose, eventId, showLoadingModal }) => {
   
       if (response.data && response.data.message === 'Certificates sent successfully!') {
         setTimeout(() => {
-          alert('Certificates saved successfully!');
+          alert('Certificates sent successfully!');
         }, 300);
       }
     } catch (error) {
@@ -230,16 +250,16 @@ const ExportModal = ({ isOpen, store, onClose, eventId, showLoadingModal }) => {
           onChange={handleSelectAllChange}
           style={{ marginBottom: '10px' }}
         />
-        <div style={{ marginBottom: '20px', overflowY: 'auto', maxHeight: '200px' }}>
-          {currentNames.map((name, index) => (
-            <Checkbox
-              key={index}
-              label={name.full_name}
-              checked={selectedNames.includes(name.full_name)}
-              onChange={() => handleCheckboxChange(name.full_name)}
-            />
-          ))}
-        </div>
+      <div style={{ marginBottom: '20px', overflowY: 'auto', maxHeight: '200px' }}>
+        {currentNames.map((name, index) => (
+          <Checkbox
+            key={index}
+            label={name.display_name} // Use display_name for UI (includes "(DELETED)")
+            checked={selectedNames.includes(name.full_name)} // Use full_name for logic
+            onChange={() => handleCheckboxChange(name.full_name)} // Pass full_name to handle selection
+          />
+        ))}
+      </div>
         
         {/* Pagination Controls */}
         <div style={{ display: 'flex', justifyContent: 'center'}}>

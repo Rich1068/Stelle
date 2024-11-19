@@ -42,7 +42,7 @@ Route::middleware('auth')->group(function () {
     route::get('/profile', [ProfileController::class, 'profile'])->name('profile.profile');
     Route::get('/profile/{id}', [ProfileController::class, 'view'])->name('profile.view');
     Route::patch('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile/destroy', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    // Route::delete('/profile/destroy', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/get-provinces/{regionId}', [ProfileController::class, 'getProvinces']);
     Route::get('/help', [UserController::class, 'help'])->name('help.page');
 });
@@ -149,7 +149,6 @@ Route::middleware('auth')->group(function () {
     route::get('/events', [EventController::class, 'list'])->name('event.list');
     route::get('/event/{id}', [EventController::class, 'view'])->name('event.view');
     Route::post('/event/{id}/join', [EventController::class, 'join'])->name('event.join');
-    Route::get('/event/{id}/get-participants', [EventController::class, 'getParticipants']);
     Route::get('/event/{id}/search-participants-list', [EventController::class, 'searchParticipants'])->name('event.search.participants.list');
 
 });
@@ -175,6 +174,9 @@ Route::middleware(['auth', 'checkEventCreator'])->group(function () {
     Route::patch('/event/{id}/participants/{user}/remove', [EventController::class, 'removeParticipant'])->name('event.removeParticipant');
     Route::post('/event/{id}/participants/send-certificates', [CertificateController::class, 'sendCertificates'])->name('sendCertificates');
     Route::get('/events/{id}/check-capacity', [EventController::class, 'checkCapacity'])->name('events.checkCapacity');
+    Route::get('/events/{id}/has-answers', [EventController::class, 'hasAnswers'])->name('events.hasAnswers');
+    Route::get('/event/{id}/get-participants', [EventController::class, 'getParticipants']);
+    Route::get('/event/{id}/certificate-exists', [CertificateController::class, 'checkCertificateExists']);
 
     //eval forms
     Route::get('/event/{id}/event-evaluation-forms/create', [EvaluationFormController::class, 'event_create'])->name('event-evaluation-forms.create');

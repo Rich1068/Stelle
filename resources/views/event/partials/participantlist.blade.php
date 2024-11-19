@@ -14,6 +14,9 @@
                             <div class="participant-details">
                                 <a href="{{ route('profile.view', $participant->user->id) }}" class="participant-name">
                                     {{ $participant->user->first_name }} {{ $participant->user->last_name }}
+                                    @if($participant->user->trashed())
+                                        <span style="color: red;">(DELETED)</span>
+                                    @endif
                                 </a>
                                 @if($participant->user->role_id == 1) 
                                 <p class="participant-status">Super Admin</p>

@@ -196,30 +196,6 @@ class ProfileController extends Controller
     }
 
     
-
-    /**
-     * Delete the user's account.
-     */
-    public function destroy(Request $request)
-    {
-        $user = $request->user();
-
-        // Validate the password to confirm user identity before deletion
-        $request->validate([
-            'password' => ['required', 'current_password'], // current_password validates the entered password
-        ]);
-
-        // Perform soft delete
-        $user->delete();
-
-        // Optionally, logout the user and invalidate the session
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return redirect('/')->with('status', 'Your account has been deleted.');
-    }
-
     public function superadmin_destroy($id): RedirectResponse
     {
         // Find the user by ID
