@@ -83,17 +83,6 @@
         </div>
     </li>
 
-    <!-- Divider -->
-    <hr class="sidebar-divider">
-
-    <!-- Nav Item - FAQs -->
-    <li class="nav-item">
-        <a href="{{ route('help.page') }}" class="nav-link {{ request()->routeIs('help.page') ? 'active' : '' }}">
-            <span>FAQs</span>
-            <i class="fas fa-question-circle"></i>
-        </a>
-    </li>
-
     <hr class="sidebar-divider">
 
     <!-- Nav Item - Log Out -->
