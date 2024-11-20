@@ -63,7 +63,7 @@
                         <td class="d-none d-md-table-cell">{{ $event->current_participants }}/{{ $event->capacity }}</td>
                         <td>
                         @if($event->trashed())
-                            <span style="color: red;">DELETED</span>
+                            <span style="color: red;">ARCHIVED</span>
                         @elseif(
                             (\Carbon\Carbon::now('Asia/Manila')->between(
                                 \Carbon\Carbon::parse($event->start_date . ' ' . $event->start_time),
