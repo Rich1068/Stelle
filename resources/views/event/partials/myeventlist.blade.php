@@ -37,7 +37,7 @@
                     <h3 class="event-list-title mb-1">
                         @if($event->trashed())
                             <a href="{{ route('event.view', $event->id) }}" style="color: #001e54;">
-                                {{ $event->title }} <span style="color: red;">(DELETED)</span>
+                                {{ $event->title }} <span style="color: red;">(ARCHIVED)</span>
                             </a>
                         @else
                         <a href="{{ route('event.view', $event->id) }}" style="color: #001e54;">
@@ -67,8 +67,8 @@
                         <form action="{{ route('admin.event.deactivate', $event->id) }}" method="POST" style="display: inline;">
                             @csrf
                             @method('PATCH')
-                            <button type="submit" onclick="return confirm('Are you sure you want to delete this event?')" title="Delete Event" class="event-list-edit-btn" style="color: red; background: none; border: none; cursor: pointer;">
-                                Remove
+                            <button type="submit" onclick="return confirm('Are you sure you want to delete this event?')" title="Archive Event" class="event-list-edit-btn" style="color: red; background: none; border: none; cursor: pointer;">
+                                Archive
                             </button>
                         </form>
                         @endif

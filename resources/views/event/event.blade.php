@@ -25,7 +25,7 @@
         <div class="tab-pane active" id="main">
             <div class="event-view-content">
                 <div class="event-view-header">
-                    <h1 class="event-view-event-title">{{ $event->title }}@if($event->trashed()) <span style="color: red;">(DELETED)</span>@endif</h1>
+                    <h1 class="event-view-event-title">{{ $event->title }}@if($event->trashed()) <span style="color: red;">(ARCHIVED)</span>@endif</h1>
                     @if($event->event_banner == null)
                     @else
                     <img src="{{ asset($event->event_banner) }}" alt="Event banner" class="event-view-banner">
@@ -98,7 +98,7 @@
                     </div>
                 </div>
                 @if($event->trashed())
-                
+                </div>
                 @else
                 @if($userevent->user_id == Auth::user()->id || Auth::user()->role_id == 1)
                     <div class="event-view-buttons" style="display: flex; flex-direction: column; align-items: flex-start;">
