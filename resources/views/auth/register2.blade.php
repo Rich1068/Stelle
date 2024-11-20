@@ -13,6 +13,17 @@
         @csrf
 
         <div class="profile-edit-container">
+
+        <div class="logo-sectionz">
+        <img src="{{ asset('images/stellelogo.png') }}" alt="Logo" class="logo-image" />
+    </div>
+
+    <!-- Divider Section -->
+                    <div class="dividerz">
+                    <span class="divider-text">Please complete your registration by filling out all required fields</span>
+                </div>
+
+
             <!-- First Name & Middle Name -->
             <div class="profile-edit-row">
                 <div class="profile-edit-item profile-edit-item-half">
@@ -144,20 +155,33 @@
             </div>
 
             <!-- Profile Picture -->
-                    <div class="profile-edit-row">
-            <div class="profile-edit-item">
-                <x-input-label for="profile_picture" class="profile-edit-label">
-                    <i class="fas fa-camera"></i> {{ __('Profile Picture:') }}
-                </x-input-label>
-                <!-- Custom file input -->
-                <div class="custom-file-container">
-                    <input type="file" name="profile_picture" id="profile_picture" accept="image/*" class="file-input" />
-                    <label for="profile_picture" class="file-input-label">Choose File</label>
-                    <span id="file-name" class="file-name"></span>
-                </div>
-                <x-input-error class="profile-edit-error" :messages="$errors->get('profile_picture')" />
+                <div class="profile-edit-row">
+        <div class="profile-edit-item">
+            <x-input-label for="profile_picture" class="profile-edit-label">
+                <i class="fas fa-camera"></i> {{ __('Profile Picture:') }}
+            </x-input-label>
+            <!-- Custom file input -->
+            <div class="custom-file-container">
+                <input type="file" name="profile_picture" id="profile_picture" accept="image/*" class="file-input" onchange="previewImage(event)" />
+                <label for="profile_picture" class="file-input-label">Choose File</label>
+                <span id="file-name" class="file-name"></span>
             </div>
+
+            <!-- Image Preview Container -->
+            <div id="image-preview-container" class="image-preview-container">
+                @if ($user->profile_picture)
+                    <img id="image_preview" src="{{ asset($user->profile_picture) }}" alt="Profile Picture" class="profile-edit-image-preview">
+                @else
+                    <img id="image_preview" src="{{ asset('storage/images/profile_pictures/default.jpg') }}" alt="Default Profile Picture" class="profile-edit-image-preview">
+                @endif
+            </div>
+
+            <x-input-error class="profile-edit-error" :messages="$errors->get('profile_picture')" />
         </div>
+    </div>
+
+
+
 
 
             <!-- Submit Button -->
@@ -171,6 +195,23 @@
     </form>
 
 <script>
+function previewImage(event) {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = function() {
+        const imagePreview = document.getElementById('image-preview');
+        const imagePreviewContainer = document.getElementById('image-preview-container');
+        
+        imagePreview.src = reader.result;
+        imagePreviewContainer.style.display = 'block'; // Show the preview container
+    };
+
+    if (file) {
+        reader.readAsDataURL(file);
+    }
+}
+
 
 document.getElementById('profile_picture').addEventListener('change', function() {
     const fileName = this.files[0] ? this.files[0].name : 'No file chosen';

@@ -146,7 +146,7 @@
 
     body {
             margin: 0;
-            background: linear-gradient(to bottom right, #F99C9C, #ACDFF6);
+       
             background-size: 200% 200%; /* Infinite gradient effect */
             animation: gradientAnimation 10s ease infinite;
             min-height: 100vh;

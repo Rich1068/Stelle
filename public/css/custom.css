@@ -1,5 +1,6 @@
 /* Ensure the body fills the screen */
 body, html {
+
     margin: 0;
     display: flex;
     justify-content: center; /* Centers the container horizontally */
@@ -16,12 +17,12 @@ body, html {
 .profile-edit-container {
     display: flex;
     flex-wrap: wrap;
-    gap: 30px; /* Reduced gap between items */
+    gap: 25px; /* Reduced gap between items */
     justify-content: center; /* Centers the items horizontally */
     align-items: center; /* Centers the items vertically */
     width: 75%; /* Makes the form responsive by setting width to 90% */
     max-width: 60%;
-    margin: 40px auto; /* Increased top and bottom margin for container */
+    margin: 30px auto; /* Increased top and bottom margin for container */
     padding: 40px 20px; /* Increased padding for top/bottom */
     background-color: #ffffff; /* Light gray background for the entire container */
     border-radius: 10px; /* Rounded corners */
@@ -221,3 +222,51 @@ body, html {
     }
 }
 
+
+/* Logo Section */
+.logo-sectionz {
+    text-align: center;
+    margin-bottom: 10px; /* Reduced margin to bring the logo and divider closer */
+}
+
+.logo-image {
+    max-width: 170px !important; /* Significantly smaller logo size */
+    height: auto;
+}
+
+/* Divider Section */
+/* Divider Section */
+.dividerz {
+    border-top: 2px solid #003366;
+    width: 90%; /* Ensure the divider spans the full width of the container */
+    margin-top: 5px; /* Reduced margin on top to bring the divider closer to the logo */
+    margin-bottom: 20px; /* Optional: you can adjust this as needed */
+    position: relative; /* To position the text in the middle */
+}
+
+/* Text in the middle of the divider */
+.divider-text {
+    position: absolute;
+    top: -12px; /* Adjust based on the size of your divider */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #ffffff; /* White background for the text */
+    padding: 0 10px;
+    color: #003366; 
+    font-weight: bold;
+    font-size: 14px; /* Adjust font size as needed */
+}
+
+/* Image Preview Container */
+.image-preview-container {
+    margin-top: 15px; /* Space between file input and image preview */
+    display: block; /* Make sure it's shown */
+    text-align: center; /* Center the preview image */
+}
+
+/* Image Preview */
+.profile-edit-image-preview {
+    max-width: 150px; /* Limit the width of the preview image */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 10px; /* Optional: gives the image rounded corners */
+}
