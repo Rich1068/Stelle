@@ -145,6 +145,9 @@
             @if($userevent->user_id != Auth::user()->id)
                 @if ($participant && $participant->status_id == 1)
                     <p>You have been accepted to this event.</p>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#qrCodeModal-{{ $participant->user_id }}">
+                        Show QR Code
+                    </button>
                 @elseif (
                     (\Carbon\Carbon::now('Asia/Manila')->greaterThanOrEqualTo(\Carbon\Carbon::parse($event->start_date . ' ' . $event->start_time)) &&
                     \Carbon\Carbon::now('Asia/Manila')->lessThanOrEqualTo(\Carbon\Carbon::parse($event->end_date . ' ' . $event->end_time))) || // Ongoing
@@ -346,7 +349,7 @@
 
 </div>
 @endif
-<!-- Modal for certificate viewing -->
+<!-- Modals -->
 @if($certificate)
 <div class="modal fade" id="certificateModal" tabindex="-1" aria-labelledby="certificateModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -432,6 +435,24 @@
         </div>
     </div>
 </div>
+@if ($participant && $participant->status_id == 1)
+<div class="modal fade" id="qrCodeModal-{{ $participant->user_id }}" tabindex="-1" aria-labelledby="qrCodeModalLabel-{{ $participant->user_id }}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="qrCodeModalLabel-{{ $participant->user_id }}">QR Code</h5>
+            </div>
+            <div class="modal-body text-center">
+                @if ($participant->qr_code)
+                    <img src="{{ asset($participant->qr_code) }}" alt="QR Code" class="img-fluid" />
+                @else
+                    <p>No QR Code available.</p>
+                @endif
+            </div>
+        </div>
+    </div>
+</div>
+@endif
 </div>
 <style>
     /* Main button container styles */
@@ -523,6 +544,7 @@
             });
         });
     });
+
    document.addEventListener('DOMContentLoaded', function () {
     const tabButtons = document.querySelectorAll('.tab-button');
     const tabPanes = document.querySelectorAll('.tab-pane');
@@ -891,6 +913,7 @@
     });
     // for disabling editing of eval form when its public
     document.addEventListener('DOMContentLoaded', function () {
+        @if($userevent->user_id == Auth::user()->id || Auth::user()->role_id == 1)
         const toggle = document.getElementById('is_active_toggle');
         const setupButton = document.getElementById('setupEvaluationFormButton');
 
@@ -907,8 +930,10 @@
                 setupButton.disabled = false; // Enable button when toggle is unchecked
             }
         });
+        @endif
     });
     document.addEventListener('DOMContentLoaded', function () {
+        @if($userevent->user_id == Auth::user()->id || Auth::user()->role_id == 1)
         const existingFormButton = document.querySelector('[data-target="#existingFormModal"]');
         const eventId = '{{ $event->id }}'; // Pass the event ID to JavaScript
         let shouldPoll = true; // Flag to control polling
@@ -953,6 +978,7 @@
 
         // Initial call to start polling
         checkHasAnswers();
+        @endif
     });
     document.getElementById('updateEvaluationForm').addEventListener('submit', function (e) {
         e.preventDefault(); // Prevent form submission for now

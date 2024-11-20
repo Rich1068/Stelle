@@ -12,6 +12,7 @@ use App\Models\Answer;
 use App\Models\CertUser;
 use App\Models\Region;
 use App\Models\Province;
+use App\Models\AttendanceLog;
 use App\Models\EvaluationForm;
 use App\Models\EventEvaluationForm;
 use App\Models\EventCertificate;
@@ -30,6 +31,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class EventController extends Controller
 {
@@ -330,13 +332,16 @@ class EventController extends Controller
         $userevent = UserEvent::with('user')->where('event_id', $id)->whereHas('user')->firstOrFail();
     
         $participants = EventParticipant::where('event_id', $id)
-        ->where('status_id', 1) // Add the condition for status_id
-        ->when($search, function ($query) use ($search) {
-            $query->whereHas('user', function ($userQuery) use ($search) {
-                $userQuery->whereRaw("LOWER(CONCAT(first_name, ' ', last_name)) LIKE ?", ['%' . strtolower($search) . '%']);
-            });
+        ->where('status_id', 1)
+        ->whereHas('user', function ($query) use ($search) {
+            $query->withTrashed()
+                  ->whereRaw("LOWER(CONCAT(first_name, ' ', last_name)) LIKE ?", ['%' . strtolower($search) . '%']);
         })
+        ->with(['user' => function ($query) {
+            $query->withTrashed(); // Include soft-deleted users
+        }])
         ->paginate(10);
+        Log::info('Participants Query:', ['search' => $search, 'participants' => $participants]);
     
         return response()->json([
             'html' => view('event.partials.participantlist', compact('participants', 'event', 'userevent'))->render(),
@@ -534,11 +539,9 @@ class EventController extends Controller
         $event = Event::findOrFail($id);
         $currentParticipants = EventParticipant::where('event_id', $id)
             ->where('status_id', 1)
-            ->whereHas('user')
             ->count();
         $participants = EventParticipant::where('event_id', $id)
                 ->where('status_id', 3)
-                ->whereHas('user')
                 ->paginate(10);
 
         return view('event.pendingparticipants', compact('eventuser', 'participants', 'event', 'currentParticipants'));
@@ -553,6 +556,7 @@ class EventController extends Controller
         $participants = EventParticipant::where('event_id', $id)
             ->where('status_id', 3)
             ->whereHas('user', function ($query) use ($search) {
+                $query->withTrashed(); // Include soft-deleted users
                 if ($search) {
                     $query->whereRaw("LOWER(CONCAT(first_name, ' ', last_name)) LIKE ?", ['%' . strtolower($search) . '%']);
                 }
@@ -572,29 +576,44 @@ class EventController extends Controller
         ]);
 
         $participant = EventParticipant::where('user_id', $participantId)
-                                        ->whereHas('user');
+            ->where('event_id', $eventId)
+            ->whereHas('user', function ($query) {
+                $query->withTrashed(); // Include trashed users
+            })
+            ->firstOrFail();
         // Update the participant's status
-        $participant->update(['status_id' => $request->status_id]);
-        $user = User::findOrFail($participantId);
-        $eventDetails = Event::findOrFail($eventId);
 
+        $user = User::withTrashed()->findOrFail($participantId);
+        $eventDetails = Event::withTrashed()->findOrFail($eventId);
         if ($request->status_id == 1) {
+            
             $currentParticipants = EventParticipant::where('event_id', $eventId)
             ->where('status_id', 1) // Only count accepted participants
             ->count();
-    
-            if ($currentParticipants >= $event->capacity) {
+
+            if ($currentParticipants >= $eventDetails->capacity) {
                 return back()->withErrors(['error' => 'Event capacity is full. Cannot accept more participants.']);
             }
+            Log::info($currentParticipants);
+            $qrToken = Str::uuid()->toString();
+            $qrPath = 'storage/images/qr_codes/' . $qrToken . '.png';
+
+            $qrUrl = route('event.qr', ['event' => $eventId, 'token' => $qrToken]);
+            QrCode::format('png')->size(250)->generate($qrUrl, public_path($qrPath));
+    
+            // Save the QR code path to the participant
+            $participant->update([
+                'status_id' => 1,
+                'qr_code' => $qrPath,
+            ]);
             // User accepted
             event(new UserAcceptedToEvent($user, $eventDetails));
         } elseif ($request->status_id == 2) {
+            $participant->update(['status_id' => 2]);
             // User denied (assuming status_id 2 means 'denied')
             event(new UserDeniedFromEvent($user, $eventDetails));
         }
-
         
-
         return back()->with('success', 'Participant status updated successfully.');
 
     }
@@ -772,5 +791,38 @@ class EventController extends Controller
         return response()->json([
             'hasAnswers' => $hasAnswers,
         ]);
+    }
+
+    //////////////////////////////QR TESTING//////////////////////
+    public function handleQRCode(Request $request, $eventId, $token)
+    {
+        $event = Event::findOrFail($eventId);
+        $participant = EventParticipant::where('event_id', $eventId)
+            ->where('qr_code', 'LIKE', "%$token%")
+            ->first();
+
+        if (!$participant) {
+            return response()->json(['error' => 'Invalid QR code or participant not found.'], 404);
+        }
+
+        // Check if the scan is coming from the system
+        if ($request->has('system') && $request->query('system') === 'true') {
+            // Handle system attendance
+            if (!$participant->attended_at) {
+                $participant->update(['attended_at' => now()]);
+
+                // Optionally log attendance
+                AttendanceLog::create([
+                    'event_id' => $eventId,
+                    'user_id' => $participant->user_id,
+                    'scanned_at' => now(),
+                ]);
+            }
+
+            return response()->json(['success' => 'Attendance marked successfully.'], 200);
+        }
+
+        // For normal browser scans, show event information
+        return view('event.qr-info', compact('event', 'participant'));
     }
 }

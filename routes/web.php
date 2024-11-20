@@ -150,7 +150,7 @@ Route::middleware('auth')->group(function () {
     route::get('/event/{id}', [EventController::class, 'view'])->name('event.view');
     Route::post('/event/{id}/join', [EventController::class, 'join'])->name('event.join');
     Route::get('/event/{id}/search-participants-list', [EventController::class, 'searchParticipants'])->name('event.search.participants.list');
-
+    Route::get('/event/{event}/qr/{token}', [EventController::class, 'handleQRCode'])->name('event.qr');
 });
 
 //check if user joined the event
