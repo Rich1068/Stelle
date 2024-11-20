@@ -100,88 +100,86 @@
                 </div>
             </div>
 
-            <!-- Country & Region -->
-            <div class="profile-edit-row">
-                <div class="profile-edit-item profile-edit-item-half">
-                    <x-input-label for="country" class="profile-edit-label">
-                        <i class="fas fa-globe"></i> {{ __('Country:') }} <span style="color:#ff3333;">*</span>
-                    </x-input-label>
-                    <select id="country" name="country_id" class="profile-edit-select">
-                        <option value="">{{ __('Select Country') }}</option>
-                        @foreach($countries as $country)
-                            <option value="{{ $country->id }}" {{ old('country_id', $user->country_id) == $country->id ? 'selected' : '' }}>
-                                {{ $country->countryname }}
-                            </option>
-                        @endforeach
-                    </select>
-                    <x-input-error :messages="$errors->get('country_id')" class="profile-edit-error" style="color:#ff3333;"/>
-                </div>
-
-                <div class="profile-edit-item profile-edit-item-half" id="region-container" style="display: none;">
-                    <x-input-label for="region" class="profile-edit-label">
-                        <i class="fas fa-map"></i> {{ __('Region:') }} <span style="color:#ff3333;">*</span>
-                    </x-input-label>
-                    <select id="region" name="region_id" class="profile-edit-select">
-                        <option value="">{{ __('Select Region') }}</option>
-                        @foreach($regions as $region)
-                            <option value="{{ $region->id }}" {{ old('region_id', $user->region_id) == $region->id ? 'selected' : '' }}>
-                                {{ $region->regDesc }}
-                            </option>
-                        @endforeach
-                    </select>
-                    <x-input-error :messages="$errors->get('region_id')" class="profile-edit-error" style="color:#ff3333;"/>
-                </div>
-            </div>
-
-            <!-- Province & College -->
-            <div class="profile-edit-row">
-                <div class="profile-edit-item profile-edit-item-half" id="province-container" style="display: none;">
-                    <x-input-label for="province" class="profile-edit-label">
-                        <i class="fas fa-map-pin"></i> {{ __('Province:') }} <span style="color:#ff3333;">*</span>
-                    </x-input-label>
-                    <select id="province" name="province_id" class="profile-edit-select">
-                        <option value="">{{ __('Select Province') }}</option>
-                    </select>
-                    <x-input-error :messages="$errors->get('province_id')" class="profile-edit-error" style="color:#ff3333;"/>
-                </div>
-
-                <div class="profile-edit-item profile-edit-item-half">
-                    <x-input-label for="college" class="profile-edit-label">
-                        <i class="fas fa-university"></i> {{ __('College/University:') }} <span style="color:#ff3333;">*</span>
-                    </x-input-label>
-                    <x-text-input id="college" name="college" type="text" class="profile-edit-input" :value="old('college', $user->college)" autofocus autocomplete="college" placeholder="Enter College/University" />
-                    <x-input-error class="profile-edit-error" :messages="$errors->get('college')" style="color:#ff3333;"/>
-                </div>
-            </div>
-
-            <!-- Profile Picture -->
-                <div class="profile-edit-row">
-        <div class="profile-edit-item">
-            <x-input-label for="profile_picture" class="profile-edit-label">
-                <i class="fas fa-camera"></i> {{ __('Profile Picture:') }}
-            </x-input-label>
-            <!-- Custom file input -->
-            <div class="custom-file-container">
-                <input type="file" name="profile_picture" id="profile_picture" accept="image/*" class="file-input" onchange="previewImage(event)" />
-                <label for="profile_picture" class="file-input-label">Choose File</label>
-                <span id="file-name" class="file-name"></span>
-            </div>
-
-            <!-- Image Preview Container -->
-            <div id="image-preview-container" class="image-preview-container">
-                @if ($user->profile_picture)
-                    <img id="image_preview" src="{{ asset($user->profile_picture) }}" alt="Profile Picture" class="profile-edit-image-preview">
-                @else
-                    <img id="image_preview" src="{{ asset('storage/images/profile_pictures/default.jpg') }}" alt="Default Profile Picture" class="profile-edit-image-preview">
-                @endif
-            </div>
-
-            <x-input-error class="profile-edit-error" :messages="$errors->get('profile_picture')" />
-        </div>
+           <!-- Country & College/University -->
+<div class="profile-edit-row">
+    <div class="profile-edit-item profile-edit-item-half">
+        <x-input-label for="country" class="profile-edit-label">
+            <i class="fas fa-globe"></i> {{ __('Country:') }} <span style="color:#ff3333;">*</span>
+        </x-input-label>
+        <select id="country" name="country_id" class="profile-edit-select">
+            <option value="">{{ __('Select Country') }}</option>
+            @foreach($countries as $country)
+                <option value="{{ $country->id }}" {{ old('country_id', $user->country_id) == $country->id ? 'selected' : '' }}>
+                    {{ $country->countryname }}
+                </option>
+            @endforeach
+        </select>
+        <x-input-error :messages="$errors->get('country_id')" class="profile-edit-error" style="color:#ff3333;"/>
     </div>
 
+    <div class="profile-edit-item profile-edit-item-half">
+        <x-input-label for="college" class="profile-edit-label">
+            <i class="fas fa-university"></i> {{ __('College/University:') }} <span style="color:#ff3333;">*</span>
+        </x-input-label>
+        <x-text-input id="college" name="college" type="text" class="profile-edit-input" :value="old('college', $user->college)" autofocus autocomplete="college" placeholder="Enter College/University" />
+        <x-input-error class="profile-edit-error" :messages="$errors->get('college')" style="color:#ff3333;"/>
+    </div>
+</div>
+
+<!-- Province & Region -->
+<div class="profile-edit-row">
+    <div class="profile-edit-item profile-edit-item-half" id="region-container" style="display: none;">
+        <x-input-label for="region" class="profile-edit-label">
+            <i class="fas fa-map"></i> {{ __('Region:') }} <span style="color:#ff3333;">*</span>
+        </x-input-label>
+        <select id="region" name="region_id" class="profile-edit-select">
+            <option value="">{{ __('Select Region') }}</option>
+            @foreach($regions as $region)
+                <option value="{{ $region->id }}" {{ old('region_id', $user->region_id) == $region->id ? 'selected' : '' }}>
+                    {{ $region->regDesc }}
+                </option>
+            @endforeach
+        </select>
+        <x-input-error :messages="$errors->get('region_id')" class="profile-edit-error" style="color:#ff3333;"/>
+    </div>
+
+    <div class="profile-edit-item profile-edit-item-half" id="province-container" style="display: none;">
+        <x-input-label for="province" class="profile-edit-label">
+            <i class="fas fa-map-pin"></i> {{ __('Province:') }} <span style="color:#ff3333;">*</span>
+        </x-input-label>
+        <select id="province" name="province_id" class="profile-edit-select">
+            <option value="">{{ __('Select Province') }}</option>
+        </select>
+        <x-input-error :messages="$errors->get('province_id')" class="profile-edit-error" style="color:#ff3333;"/>
+    </div>
+</div>
 
 
+        <!-- Profile Picture -->
+<div class="profile-edit-row">
+    <div class="profile-edit-item">
+        <x-input-label for="profile_picture" class="profile-edit-label">
+            <i class="fas fa-camera"></i> {{ __('Profile Picture:') }}
+        </x-input-label>
+        <!-- Custom file input -->
+        <div class="custom-file-container">
+            <input type="file" name="profile_picture" id="profile_picture" accept="image/*" class="file-input" onchange="previewImage(event)" />
+            <label for="profile_picture" class="file-input-label">Choose File</label>
+            <span id="file-name" class="file-name"></span>
+        </div>
+
+        <!-- Image Preview Container -->
+        <div id="image-preview-container" class="image-preview-container">
+            @if ($user->profile_picture)
+                <img id="image_preview" src="{{ asset($user->profile_picture) }}" alt="Profile Picture" class="profile-edit-image-preview">
+            @else
+                <img id="image_preview" src="{{ asset('storage/images/profile_pictures/default.jpg') }}" alt="Default Profile Picture" class="profile-edit-image-preview">
+            @endif
+        </div>
+
+        <x-input-error class="profile-edit-error" :messages="$errors->get('profile_picture')" />
+    </div>
+</div>
 
 
             <!-- Submit Button -->

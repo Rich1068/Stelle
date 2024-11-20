@@ -270,3 +270,43 @@ body, html {
     height: auto; /* Maintain aspect ratio */
     border-radius: 10px; /* Optional: gives the image rounded corners */
 }
+/* Image Preview Container */
+.image-preview-container {
+    margin-top: 15px; /* Space between file input and image preview */
+    display: block; /* Make sure it's shown */
+    text-align: center; /* Center the preview image */
+}
+
+/* Image Preview */
+.profile-edit-image-preview {
+    max-width: 50px; /* Limit the width of the preview image to 50px */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 10px; /* Optional: gives the image rounded corners */
+}
+/* Profile Edit Item */
+.profile-edit-item {
+    flex: 0 0 45%; /* Each item takes up to 45% of the row width */
+    max-width: 40%; /* Limits the width to 45% */
+    margin-bottom: 10px; /* Reduced space between rows */
+    display: flex; /* Enables flexbox */
+    flex-direction: column; /* Stack items vertically */
+    justify-content: center; /* Vertically center the items */
+    align-items: center; /* Horizontally center the items */
+    text-align: center; /* Centers the content inside */
+}
+
+/* Custom File Container */
+.custom-file-container {
+    display: flex; /* Makes sure the file input and label are on the same line */
+    flex-direction: column; /* Aligns the input and label vertically */
+    justify-content: center; /* Vertically center the content */
+    align-items: center; /* Horizontally center the content */
+    width: 100%; /* Ensure full width usage */
+}
+.profile-edit-item {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    text-align: center !important;
+}
