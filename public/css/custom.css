@@ -20,12 +20,13 @@ body, html {
     justify-content: center; /* Centers the items horizontally */
     align-items: center; /* Centers the items vertically */
     width: 75%; /* Makes the form responsive by setting width to 90% */
-    max-width: 65%;
+    max-width: 60%;
     margin: 40px auto; /* Increased top and bottom margin for container */
     padding: 40px 20px; /* Increased padding for top/bottom */
     background-color: #ffffff; /* Light gray background for the entire container */
     border-radius: 10px; /* Rounded corners */
     color: #003366; /* Dark blue text color */
+    box-shadow: -10px 0px 15px rgba(0, 0, 0, 0.1);
 }
 
 /* Left Section Container */
@@ -42,7 +43,7 @@ body, html {
 .profile-edit-row {
     display: flex;
     width: 100%;
-    gap: 40px; /* Reduced space between fields */
+    gap: 60px; /* Reduced space between fields */
     flex-wrap: wrap; 
     justify-content: center; /* Ensures that items are centered horizontally */
     margin: auto;
@@ -51,7 +52,7 @@ body, html {
 /* Profile Edit Item */
 .profile-edit-item {
     flex: 0 0 45%; /* Each item takes up to 45% of the row width */
-    max-width: 45%; /* Limits the width to 45% */
+    max-width: 40%; /* Limits the width to 45% */
     margin-bottom: 10px; /* Reduced space between rows */
 }
 
