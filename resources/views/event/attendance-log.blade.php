@@ -44,7 +44,7 @@
                                             {{ $log->user->last_name ?? '' }}
                                         </td>
                                         <td>{{ $log->user->email ?? 'N/A' }}</td>
-                                        <td>{{ $log->scanned_at->format('Y-m-d H:i:s') }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($log->scanned_at)->format('Y-m-d H:i:s') }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -87,6 +87,7 @@
     document.addEventListener('DOMContentLoaded', function () {
         const qrScanner = document.getElementById('qrScanner');
         const feedbackElement = document.getElementById('scannerFeedback');
+        let lastScanTime = 0;
 
         if (!qrScanner) {
             console.error("QR scanner element not found!");
@@ -97,26 +98,40 @@
         const html5QrCode = new Html5Qrcode("qrScanner");
 
         html5QrCode.start(
-            { facingMode: "environment" },
-            {
-                fps: 30,
-                qrbox: { width: 250, height: 250 }, // Adjust as needed
-            },
-            (decodedText, decodedResult) => {
+        { facingMode: "environment" },
+        {
+            fps: 30,
+            qrbox: { width: 250, height: 250 }, // Adjust as needed
+        },
+        (decodedText, decodedResult) => {
+            const currentTime = new Date().getTime();
+
+            if (currentTime - lastScanTime > 3000) {
+                lastScanTime = currentTime; // Update the last scan time
                 console.log("QR Code detected:", decodedText);
                 feedbackElement.textContent = `QR Code Scanned: ${decodedText}`;
-            },
-            (errorMessage) => {
-                feedbackElement.textContent = "Scanning for QR codes...";
+
+                // Call your function to mark attendance
+                markAttendance(decodedText);
+            } else {
+                console.log("Skipping scan: too frequent");
+                feedbackElement.textContent = "Scanning too quickly. Please wait...";
             }
+        },
+        (errorMessage) => {
+            console.warn("QR Code scan error:", errorMessage);
+            feedbackElement.textContent = "Scanning for QR codes...";
+        }
         ).catch(err => {
             console.error("Error initializing QR code scanner:", err);
             feedbackElement.textContent = "Error initializing scanner.";
         });
 
         // Function to mark attendance using AJAX
-        function markAttendance(token) {
-            const url = `/events/{{ $event->id }}/qr/${token}?system=true`;
+        function markAttendance(decodedText) {
+            const token = decodedText.split('/').pop(); // Extract token from the QR code URL
+            const url = `/event/{{ $event->id }}/qr/${token}?system=true`;
+
             fetch(url, {
                 method: 'GET',
                 headers: {

@@ -595,11 +595,11 @@ class EventController extends Controller
                 return back()->withErrors(['error' => 'Event capacity is full. Cannot accept more participants.']);
             }
             Log::info($currentParticipants);
-            $qrToken = Str::random(6);
+            $qrToken = Str::uuid()->toString();
             $qrPath = 'storage/images/qr_codes/' . $qrToken . '.png';
 
             $qrUrl = route('event.qr', ['event' => $eventId, 'token' => $qrToken]);
-            QrCode::format('png')->size(400)->generate($qrUrl, public_path($qrPath));
+            QrCode::format('png')->size(300)->generate($qrUrl, public_path($qrPath));
     
             // Save the QR code path to the participant
             $participant->update([
@@ -800,8 +800,9 @@ class EventController extends Controller
     
         // Validate the QR token and participant
         $participant = EventParticipant::where('event_id', $eventId)
-            ->where('qr_code', $token) // Use strict matching
+            ->where('qr_code', 'LIKE', "%$token%")
             ->first();
+    
     
         if (!$participant) {
             return response()->json(['error' => 'Invalid QR code or participant not found.'], 404);
@@ -810,12 +811,12 @@ class EventController extends Controller
         // Check if the scan is coming from the system
         if ($request->has('system') && $request->query('system') === 'true') {
             // Check if already attended
-            if ($participant->attended_at) {
-                return response()->json(['error' => 'Participant already marked as attended.'], 400);
-            }
+            // if ($participant->attended_at) {
+            //     return response()->json(['error' => 'Participant already marked as attended.'], 400);
+            // }
     
-            // Mark attendance
-            $participant->update(['attended_at' => now()]);
+            // // Mark attendance
+            // $participant->update(['attended_at' => now()]);
     
             // Log attendance
             AttendanceLog::create([
@@ -824,7 +825,15 @@ class EventController extends Controller
                 'scanned_at' => now(),
             ]);
     
-            return response()->json(['success' => 'Attendance marked successfully.'], 200);
+            return response()->json([
+                'success' => true,
+                'user' => [
+                    'first_name' => $participant->user->first_name,
+                    'last_name' => $participant->user->last_name,
+                    'email' => $participant->user->email,
+                ],
+                'scanned_at' => now(),
+            ]);
         }
     
         // For normal browser scans, show event information
