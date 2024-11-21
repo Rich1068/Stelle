@@ -239,6 +239,12 @@
                     @endif
                 </button>
             </a>
+
+            <a href="{{ route('event.attendance-log', $event->id) }}" class="position-relative">
+                <button type="submit" class="btn btn-primary-2 position-relative">
+                    View Attendance Logs
+                </button>
+            </a>
             @endif
             @endif
         </div>

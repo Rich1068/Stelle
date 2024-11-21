@@ -595,11 +595,11 @@ class EventController extends Controller
                 return back()->withErrors(['error' => 'Event capacity is full. Cannot accept more participants.']);
             }
             Log::info($currentParticipants);
-            $qrToken = Str::uuid()->toString();
+            $qrToken = Str::random(6);
             $qrPath = 'storage/images/qr_codes/' . $qrToken . '.png';
 
             $qrUrl = route('event.qr', ['event' => $eventId, 'token' => $qrToken]);
-            QrCode::format('png')->size(250)->generate($qrUrl, public_path($qrPath));
+            QrCode::format('png')->size(400)->generate($qrUrl, public_path($qrPath));
     
             // Save the QR code path to the participant
             $participant->update([
@@ -797,32 +797,52 @@ class EventController extends Controller
     public function handleQRCode(Request $request, $eventId, $token)
     {
         $event = Event::findOrFail($eventId);
+    
+        // Validate the QR token and participant
         $participant = EventParticipant::where('event_id', $eventId)
-            ->where('qr_code', 'LIKE', "%$token%")
+            ->where('qr_code', $token) // Use strict matching
             ->first();
-
+    
         if (!$participant) {
             return response()->json(['error' => 'Invalid QR code or participant not found.'], 404);
         }
-
+    
         // Check if the scan is coming from the system
         if ($request->has('system') && $request->query('system') === 'true') {
-            // Handle system attendance
-            if (!$participant->attended_at) {
-                $participant->update(['attended_at' => now()]);
-
-                // Optionally log attendance
-                AttendanceLog::create([
-                    'event_id' => $eventId,
-                    'user_id' => $participant->user_id,
-                    'scanned_at' => now(),
-                ]);
+            // Check if already attended
+            if ($participant->attended_at) {
+                return response()->json(['error' => 'Participant already marked as attended.'], 400);
             }
-
+    
+            // Mark attendance
+            $participant->update(['attended_at' => now()]);
+    
+            // Log attendance
+            AttendanceLog::create([
+                'event_id' => $eventId,
+                'user_id' => $participant->user_id,
+                'scanned_at' => now(),
+            ]);
+    
             return response()->json(['success' => 'Attendance marked successfully.'], 200);
         }
-
+    
         // For normal browser scans, show event information
         return view('event.qr-info', compact('event', 'participant'));
+    }
+
+    public function showAttendanceLog($id)
+    {
+        $event = Event::withTrashed()->findOrFail($id);
+    
+        // Paginate logs instead of retrieving all
+        $logs = AttendanceLog::where('event_id', $id)
+            ->with(['user' => function ($query) {
+                $query->withTrashed(); // Include users who may have been soft-deleted
+            }])
+            ->orderBy('scanned_at', 'desc')
+            ->paginate(10);
+    
+        return view('event.attendance-log', compact('event', 'logs'));
     }
 }
