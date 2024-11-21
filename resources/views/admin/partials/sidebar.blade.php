@@ -1,11 +1,13 @@
 @php
+// Add any PHP logic here if needed.
 @endphp
+
 <!-- Main Sidebar Container -->
 <!-- Sidebar -->
 <ul class="navbar-nav admin-sidebar bg-primary sidebar sidebar-light accordion" id="accordionSidebar">
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand sidebar-head d-flex align-items-center justify-content-center" href="{{ route('admin.dashboard') }}">
-        <i class="fas fa-th sidebar-icon"></i> <!-- Change the icon class as needed -->
+        <i class="fas fa-th sidebar-icon"></i>
         <div class="sidebar-brand-text mx-3">Dashboard</div>
     </a>
 
@@ -63,34 +65,31 @@
 
     <hr class="sidebar-divider">
 
-    <!-- Nav Item - Manage Evaluation Form -->
+    <!-- Nav Item - Manage Evaluation Form and Certificates (Dropdown) -->
     <li class="nav-item">
-        <a href="{{ route('evaluation.evaluationlist') }}" class="nav-link {{ request()->routeIs('evaluation.evaluationlist') ? 'active' : '' }}">
-            <span>Manage Evaluation Forms</span>
-            <i class="fas fa-clipboard-list"></i>
+        <a class="nav-link {{ request()->routeIs('evaluation.evaluationlist') || request()->routeIs('certificate.list') ? '' : 'collapsed' }}" href="#" data-toggle="collapse" data-target="#collapseEvaluationCertificates" aria-expanded="{{ request()->routeIs('evaluation.evaluationlist') || request()->routeIs('certificate.list') ? 'true' : 'false' }}" aria-controls="collapseEvaluationCertificates">
+            <span>Event Templates Management</span>
+            <i class="fas fa-chevron-down float-right arrow-icon"></i>
         </a>
+        <div id="collapseEvaluationCertificates" class="collapse {{ request()->routeIs('evaluation.evaluationlist') || request()->routeIs('certificate.list') ? 'show' : '' }}" aria-labelledby="headingEvaluationCertificates" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a href="{{ route('evaluation.evaluationlist') }}" class="collapse-item {{ request()->routeIs('evaluation.evaluationlist') ? 'active-item' : '' }}">Evaluation Forms</a>
+                
+                <!-- Unique thick divider -->
+                <div class="thick-divider"></div>
+                
+                <a href="{{ route('certificate.list') }}" class="collapse-item {{ request()->routeIs('certificate.list') ? 'active-item' : '' }}">Certificate Templates</a>
+            </div>
+        </div>
     </li>
 
     <hr class="sidebar-divider">
-    <li class="nav-item">
-        <a href="{{ route('certificate.list') }}" class="nav-link {{ request()->routeIs('certificate.list') ? 'active' : '' }}">
-            <span>Manage Certificate Templates</span>
-            <i class="fas fa-folder"></i>
-        </a>
-    </li>
 
-    <hr class="sidebar-divider">
-    <li class="nav-item">
-        <a href="{{ route('help.page') }}" class="nav-link {{ request()->routeIs('help.page') ? 'active' : '' }}">
-            <span>FAQs</span>
-            <i class="fas fa-question-circle"></i> </i>
-        </a>
-    </li>
-    <hr class="sidebar-divider">
+    <!-- Nav Item - Log Out -->
     <li class="nav-item">
         <a href="#" class="nav-link" data-toggle="modal" data-target="#logoutModal">
             <span>Log Out</span>
-            <i class="fas fa-sign-out-alt"></i> <!-- Changed the icon for clarity -->
+            <i class="fas fa-sign-out-alt"></i>
         </a>
     </li>
 </ul>
@@ -120,3 +119,57 @@
     </div>
 </div>
 <!-- End of Sidebar -->
+
+<style>
+    .thick-divider {
+        height: 2px;
+        background-color: #001e54;
+        margin: 5px 0;
+        border-radius: 2px;
+    }
+
+    .admin-sidebar .nav-link.active, .collapse-item.active-item {
+        color: white !important;
+        background-color: #002a60 !important;
+        font-weight: bold;
+    }
+
+    .arrow-icon {
+        font-size: 0.75rem;
+        color: #002a60;
+        transition: transform 0.3s;
+    }
+
+    .nav-link.collapsed::after,
+    .nav-link::after {
+        display: none !important;
+        content: none !important;
+    }
+
+    .nav-link[aria-expanded="true"] .arrow-icon {
+        transform: rotate(180deg);
+    }
+
+    #collapseManagement, #collapseEvaluationCertificates {
+        position: relative;
+    }
+
+    @media (max-width: 768px) {
+        #collapseManagement, #collapseEvaluationCertificates {
+            position: static;
+        }
+        .collapse-inner {
+            width: auto;
+            max-width: 80%;
+            margin-left: 10px;
+        }
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        if (window.innerWidth <= 768) {
+            $('#accordionSidebar').collapse('hide');
+        }
+    });
+</script>

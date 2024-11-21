@@ -26,8 +26,22 @@
         <!-- Actions -->
         <div class="participant-actions">
             <div class="button-container">
-                <button type="button" class="btn btn-success accept-btn" data-user-id="{{ $participant->user_id }}" data-event-id="{{ $event->id }}">Accept</button>
-                <button type="button" class="btn btn-danger decline-btn" data-user-id="{{ $participant->user_id }}" data-event-id="{{ $event->id }}">Decline</button>
+                <button 
+                    type="button" 
+                    class="btn btn-success accept-btn" 
+                    data-user-id="{{ $participant->user_id }}" 
+                    data-event-id="{{ $event->id }}"
+                >
+                    Accept
+                </button>
+                <button 
+                    type="button" 
+                    class="btn btn-danger decline-btn" 
+                    data-user-id="{{ $participant->user_id }}" 
+                    data-event-id="{{ $event->id }}"
+                >
+                    Decline
+                </button>
             </div>
         </div>
     </div>

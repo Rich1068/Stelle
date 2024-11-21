@@ -12,6 +12,7 @@ use App\Models\Answer;
 use App\Models\CertUser;
 use App\Models\Region;
 use App\Models\Province;
+use App\Models\AttendanceLog;
 use App\Models\EvaluationForm;
 use App\Models\EventEvaluationForm;
 use App\Models\EventCertificate;
@@ -30,6 +31,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class EventController extends Controller
 {
@@ -44,7 +46,7 @@ class EventController extends Controller
             'participants as current_participants' => function ($query) {
                 $query->where('status_id', 1)
                       ->whereHas('user', function ($userQuery) {
-                          $userQuery->whereNull('deleted_at');
+                        $userQuery->withTrashed();
                       });
             }
         ]);
@@ -103,7 +105,7 @@ class EventController extends Controller
             'participants as current_participants' => function ($query) {
                 $query->where('status_id', 1)
                       ->whereHas('user', function ($userQuery) {
-                          $userQuery->whereNull('deleted_at');
+                        $userQuery->withTrashed();
                       });
             }
         ]);
@@ -160,7 +162,6 @@ class EventController extends Controller
         }])->where('event_id', $id)->first();
         $currentParticipants = EventParticipant::where('event_id', $id)
             ->where('status_id', 1)
-            ->whereHas('user')
             ->count();
         $event = Event::withTrashed()->findOrFail($id);
 
@@ -170,13 +171,20 @@ class EventController extends Controller
         //this is for the current user joining the event
         $eventParticipant = EventParticipant::where('event_id', $id)
             ->where('user_id', Auth::user()->id)
-            ->whereHas('user')
+            ->whereHas('user', function ($query) {
+                $query->withTrashed(); // Include both active and trashed users
+            })
             ->first();
 
         //overall participants
         $participants = EventParticipant::where('event_id', $id)
             ->where('status_id', 1)
-            ->whereHas('user')
+            ->whereHas('user', function ($query) {
+                $query->withTrashed(); // Include soft-deleted users
+            })
+            ->with(['user' => function ($query) {
+                $query->withTrashed(); // Include soft-deleted users in eager loading
+            }])
             ->paginate(10);
         $currentUser = Auth::user()->id;
         $existingForms = EvaluationForm::where('status_id', 1)
@@ -186,7 +194,9 @@ class EventController extends Controller
 
         $pendingParticipantsCount = EventParticipant::where('event_id', $event->id)
         ->where('status_id', 3) // Assuming status_id 3 represents pending status
-        ->whereHas('user')
+        ->whereHas('user', function ($query) {
+            $query->withTrashed(); // Include both active and trashed users
+        })
         ->count();
         $evaluationForm = $event->evaluationForm;
         if ($evaluationForm) {
@@ -194,10 +204,18 @@ class EventController extends Controller
             ->where('user_id', Auth::user()->id)
             ->exists();
         }
+        $hasAnswers = false;
+        if ($evaluationForm) {
+        $hasAnswers = Answer::where('event_form_id', $evaluationForm->id)
+                      ->exists();
+        }
         //user age chart in the event
-        $usersBirthdate = User::whereHas('eventParticipant', function ($query) use ($id) {
-            $query->where('event_id', $id)->where('status_id', 1);
-            })->select('birthdate')->get();
+        $usersBirthdate = User::withTrashed() // Include soft-deleted users
+            ->whereHas('eventParticipant', function ($query) use ($id) {
+                $query->where('event_id', $id)->where('status_id', 1);
+            })
+            ->select('birthdate')
+            ->get();
 
         $userAges = $usersBirthdate->map(function ($user) {
             return $user->birthdate ? Carbon::parse($user->birthdate)->age : 'N/A';
@@ -219,16 +237,17 @@ class EventController extends Controller
         ];
 
         //user gender chart in the event
-        $userGenders = User::whereHas('eventParticipant', function ($query) use ($id) {
-            $query->where('event_id', $id)->where('status_id', 1);
-        })
-        ->select('gender')
-        ->get()
-        ->groupBy(function ($user) {
-            return $user->gender ?? 'N/A'; // Use 'N/A' if gender is null
-        })
-        ->map(function ($users) {
-            return $users->count();
+        $userGenders = User::withTrashed() // Include soft-deleted users
+            ->whereHas('eventParticipant', function ($query) use ($id) {
+                $query->where('event_id', $id)->where('status_id', 1);
+            })
+            ->select('gender')
+            ->get()
+            ->groupBy(function ($user) {
+                return $user->gender ?? 'N/A'; // Use 'N/A' if gender is null
+            })
+            ->map(function ($users) {
+                return $users->count();
         });
 
         $genderLabels = $userGenders->keys();  // Extract the gender labels
@@ -238,16 +257,19 @@ class EventController extends Controller
         //region and province chart
         // Group participants by the region_id of their associated user, and handle null values
         $regionData = $participants->groupBy(function ($participant) {
-            return $participant->user->region_id ? $participant->user->region->regDesc : 'N/A'; // Use regDesc, or 'N/A' if region_id is null
+            // Safely access region_id and regDesc
+            $user = $participant->user;
+            return $user && $user->region ? $user->region->regDesc : 'N/A';
         })->map(function ($region) {
             return $region->count();
         });
 
         // Group participants by the province_id of their associated user, and handle null values
         $provinceData = $participants->groupBy(function ($participant) {
-            return $participant->user->province_id ? $participant->user->province->provDesc : 'N/A'; // Use provDesc, or 'N/A' if province_id is null
+            $user = $participant->user; // Check if the user relationship exists
+            return $user && $user->province ? $user->province->provDesc : 'N/A'; // Use provDesc if available, fallback to 'N/A'
         })->map(function ($province) {
-            return $province->count();
+            return $province->count(); // Count participants in each province group
         });
 
         // Prepare the labels and counts for the charts
@@ -259,18 +281,19 @@ class EventController extends Controller
 
         //college chart
         $colleges = $participants->map(function ($participant) {
-            $college = $participant->user->college;
+            // Safely check if the user relationship exists
+            $user = $participant->user;
         
-            // Handle null or empty values for college
-            if ($college === null || trim($college) === '') {
-                return 'N/A';  // Use 'N/A' for participants with no college info
+            // If the user is null, return 'N/A'
+            if (!$user || $user->college === null || trim($user->college) === '') {
+                return 'N/A'; // Use 'N/A' for participants with no college info
             }
         
-            // Normalize the college name (e.g., convert to lowercase and capitalize each word)
-            $college = strtolower(trim($college));
+            // Normalize the college name
+            $college = strtolower(trim($user->college));
             return ucwords($college); // Capitalize first letter of each word
         })->groupBy(function ($college) {
-            return $college;
+            return $college; // Group by college name
         })->map(function ($group) {
             return $group->count(); // Count the occurrences of each college
         });
@@ -285,6 +308,7 @@ class EventController extends Controller
             'existingForms' =>$existingForms,
             'currentParticipants' => $currentParticipants,
             'hasAnswered' => $hasAnswered,
+            'hasAnswers' => $hasAnswers,
             'certificate' => $certificate,
             'participants' => $participants,
             'currentUser' =>$currentUser,
@@ -308,13 +332,16 @@ class EventController extends Controller
         $userevent = UserEvent::with('user')->where('event_id', $id)->whereHas('user')->firstOrFail();
     
         $participants = EventParticipant::where('event_id', $id)
-        ->where('status_id', 1) // Add the condition for status_id
-        ->when($search, function ($query) use ($search) {
-            $query->whereHas('user', function ($userQuery) use ($search) {
-                $userQuery->whereRaw("LOWER(CONCAT(first_name, ' ', last_name)) LIKE ?", ['%' . strtolower($search) . '%']);
-            });
+        ->where('status_id', 1)
+        ->whereHas('user', function ($query) use ($search) {
+            $query->withTrashed()
+                  ->whereRaw("LOWER(CONCAT(first_name, ' ', last_name)) LIKE ?", ['%' . strtolower($search) . '%']);
         })
+        ->with(['user' => function ($query) {
+            $query->withTrashed(); // Include soft-deleted users
+        }])
         ->paginate(10);
+        Log::info('Participants Query:', ['search' => $search, 'participants' => $participants]);
     
         return response()->json([
             'html' => view('event.partials.participantlist', compact('participants', 'event', 'userevent'))->render(),
@@ -510,13 +537,14 @@ class EventController extends Controller
     {
         $eventuser = UserEvent::findOrFail($id);
         $event = Event::findOrFail($id);
-
+        $currentParticipants = EventParticipant::where('event_id', $id)
+            ->where('status_id', 1)
+            ->count();
         $participants = EventParticipant::where('event_id', $id)
                 ->where('status_id', 3)
-                ->whereHas('user')
                 ->paginate(10);
 
-        return view('event.pendingparticipants', compact('eventuser', 'participants', 'event'));
+        return view('event.pendingparticipants', compact('eventuser', 'participants', 'event', 'currentParticipants'));
     }
     public function searchPendingParticipants(Request $request, $id)
     {
@@ -528,6 +556,7 @@ class EventController extends Controller
         $participants = EventParticipant::where('event_id', $id)
             ->where('status_id', 3)
             ->whereHas('user', function ($query) use ($search) {
+                $query->withTrashed(); // Include soft-deleted users
                 if ($search) {
                     $query->whereRaw("LOWER(CONCAT(first_name, ' ', last_name)) LIKE ?", ['%' . strtolower($search) . '%']);
                 }
@@ -543,26 +572,48 @@ class EventController extends Controller
     {
         $event = UserEvent::findOrFail($eventId);
         $request->validate([
-            'status_id' => ['required', 'string'],
+            'status_id' => ['required', 'string', 'in:1,2'],
         ]);
 
         $participant = EventParticipant::where('user_id', $participantId)
-                                        ->whereHas('user');
+            ->where('event_id', $eventId)
+            ->whereHas('user', function ($query) {
+                $query->withTrashed(); // Include trashed users
+            })
+            ->firstOrFail();
         // Update the participant's status
-        $participant->update(['status_id' => $request->status_id]);
-        $user = User::findOrFail($participantId);
-        $eventDetails = Event::findOrFail($eventId);
 
+        $user = User::withTrashed()->findOrFail($participantId);
+        $eventDetails = Event::withTrashed()->findOrFail($eventId);
         if ($request->status_id == 1) {
+            
+            $currentParticipants = EventParticipant::where('event_id', $eventId)
+            ->where('status_id', 1) // Only count accepted participants
+            ->count();
+
+            if ($currentParticipants >= $eventDetails->capacity) {
+                return back()->withErrors(['error' => 'Event capacity is full. Cannot accept more participants.']);
+            }
+            Log::info($currentParticipants);
+            $qrToken = Str::random(6);
+            $qrPath = 'storage/images/qr_codes/' . $qrToken . '.png';
+
+            $qrUrl = route('event.qr', ['event' => $eventId, 'token' => $qrToken]);
+            QrCode::format('png')->size(400)->generate($qrUrl, public_path($qrPath));
+    
+            // Save the QR code path to the participant
+            $participant->update([
+                'status_id' => 1,
+                'qr_code' => $qrPath,
+            ]);
             // User accepted
             event(new UserAcceptedToEvent($user, $eventDetails));
         } elseif ($request->status_id == 2) {
+            $participant->update(['status_id' => 2]);
             // User denied (assuming status_id 2 means 'denied')
             event(new UserDeniedFromEvent($user, $eventDetails));
         }
-
         
-
         return back()->with('success', 'Participant status updated successfully.');
 
     }
@@ -592,16 +643,14 @@ class EventController extends Controller
 ///////////////FOR CERTIFICATE////////////////////////
     public function getParticipants($event_id)
     {
-        // Fetch the participants for the given event_id and filter out soft-deleted users
+        // Fetch the participants for the given event_id and include soft-deleted users
         $participants = EventParticipant::where('event_id', $event_id)
             ->where('status_id', 1)
             ->whereHas('user', function ($query) {
-                // Ignore users that are soft-deleted
-                $query->whereNull('deleted_at');
+                $query->withTrashed(); // Include soft-deleted users
             })
             ->with(['user' => function ($query) {
-                // Ensure only non-soft-deleted users are fetched
-                $query->whereNull('deleted_at');
+                $query->withTrashed(); // Include soft-deleted users in eager loading
             }])
             ->get()
             ->map(function ($participant) {
@@ -610,17 +659,20 @@ class EventController extends Controller
                             ($participant->user->middle_name ?? '') . ' ' .
                             $participant->user->last_name;
 
-                // Return the full name and user ID
                 return [
-                    'full_name' => trim($fullName),
-                    'user_id' => $participant->user->id
+                    'full_name' => trim($fullName), // Actual full name without (DELETED)
+                    'display_name' => $participant->user->trashed() 
+                        ? trim($fullName) . ' (DELETED)' // Add (DELETED) for display purposes
+                        : trim($fullName),
+                    'user_id' => $participant->user->id,
+                    'is_deleted' => $participant->user->trashed(), // True if soft-deleted
                 ];
             });
 
-        // Return the participant full names as a JSON response
+        // Return the participants as a JSON response
         return response()->json($participants);
     }
-
+/////////////////////////////////////////////////////////////////////
 
 
     public function getCalendarEvents(Request $request)
@@ -712,5 +764,85 @@ class EventController extends Controller
         $event->restore();
 
         return redirect()->route('superadmin.eventlist')->with('success', 'Event recovered successfully!');
+    }
+
+    //for pending participant checking capacity
+    public function checkCapacity($id)
+    {
+        $event = Event::findOrFail($id);
+        $currentParticipants = $event->participants()->where('status_id', 1)->count(); // Adjust based on your logic
+
+        return response()->json([
+            'currentParticipants' => $currentParticipants,
+            'capacity' => $event->capacity,
+        ]);
+    }
+    //checking if eval form has answers
+    public function hasAnswers($id)
+    {
+        // Check if answers exist for the event
+        $event = Event::withTrashed()->findOrFail($id);
+        $evaluationForm = $event->evaluationForm;
+        if ($evaluationForm) {
+            $hasAnswers = Answer::where('event_form_id', $evaluationForm->id)
+                          ->exists();
+            }
+
+        return response()->json([
+            'hasAnswers' => $hasAnswers,
+        ]);
+    }
+
+    //////////////////////////////QR TESTING//////////////////////
+    public function handleQRCode(Request $request, $eventId, $token)
+    {
+        $event = Event::findOrFail($eventId);
+    
+        // Validate the QR token and participant
+        $participant = EventParticipant::where('event_id', $eventId)
+            ->where('qr_code', $token) // Use strict matching
+            ->first();
+    
+        if (!$participant) {
+            return response()->json(['error' => 'Invalid QR code or participant not found.'], 404);
+        }
+    
+        // Check if the scan is coming from the system
+        if ($request->has('system') && $request->query('system') === 'true') {
+            // Check if already attended
+            if ($participant->attended_at) {
+                return response()->json(['error' => 'Participant already marked as attended.'], 400);
+            }
+    
+            // Mark attendance
+            $participant->update(['attended_at' => now()]);
+    
+            // Log attendance
+            AttendanceLog::create([
+                'event_id' => $eventId,
+                'user_id' => $participant->user_id,
+                'scanned_at' => now(),
+            ]);
+    
+            return response()->json(['success' => 'Attendance marked successfully.'], 200);
+        }
+    
+        // For normal browser scans, show event information
+        return view('event.qr-info', compact('event', 'participant'));
+    }
+
+    public function showAttendanceLog($id)
+    {
+        $event = Event::withTrashed()->findOrFail($id);
+    
+        // Paginate logs instead of retrieving all
+        $logs = AttendanceLog::where('event_id', $id)
+            ->with(['user' => function ($query) {
+                $query->withTrashed(); // Include users who may have been soft-deleted
+            }])
+            ->orderBy('scanned_at', 'desc')
+            ->paginate(10);
+    
+        return view('event.attendance-log', compact('event', 'logs'));
     }
 }

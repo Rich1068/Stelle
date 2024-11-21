@@ -226,7 +226,7 @@ export const App = () => {
         <Workspace store={store} style={{ width: '100%', height: '100%' }} />
         <ZoomButtons store={store} />
         <Button onClick={() => saveDesign(eventId, setCertificateId)} style={{ top: 10, right: -100 }}>
-          Save Design
+          Save Certificate
         </Button>
         <Button onClick={() => setIsModalOpen(true)} style={{ top: 10, right: -100 }}>
           Save as Template

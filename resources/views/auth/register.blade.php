@@ -55,46 +55,46 @@
             <!-- First Name -->
             <div class="input-group">
                 <x-input-label for="first_name" class="register-label">
-                    {{ __('First Name') }}
+                    {{ __('First Name') }}<span style="color:#ff3333;">*</span>
                 </x-input-label>
                 <x-text-input id="first_name" class="register-input" type="text" name="first_name" :value="old('first_name')" required autofocus autocomplete="first-name" placeholder="Input First Name Here" />
-                <x-input-error :messages="$errors->get('first_name')" class="mt-2" />
+                <x-input-error :messages="$errors->get('first_name')" class="mt-2" style="color:#ff3333;"/>
             </div>
 
             <!-- Last Name -->
             <div class="input-group">
                 <x-input-label for="last_name" class="register-label">
-                    {{ __('Last Name') }}
+                    {{ __('Last Name') }}<span style="color:#ff3333;">*</span>
                 </x-input-label>
                 <x-text-input id="last_name" class="register-input" type="text" name="last_name" :value="old('last_name')" required autofocus autocomplete="family-name" placeholder="Input Last Name Here" />
-                <x-input-error :messages="$errors->get('last_name')" class="mt-2" />
+                <x-input-error :messages="$errors->get('last_name')" class="mt-2" style="color:#ff3333;"/>
             </div>
 
             <!-- Email Address -->
             <div class="input-group">
                 <x-input-label for="email" class="register-label">
-                    {{ __('Email') }}
+                    {{ __('Email') }}<span style="color:#ff3333;">*</span>
                 </x-input-label>
                 <x-text-input id="email" class="register-input" type="email" name="email" :value="old('email')" required autocomplete="email" placeholder="Input Email Here" />
-                <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                <x-input-error :messages="$errors->get('email')" class="mt-2" style="color:#ff3333;"/>
             </div>
 
             <!-- Password -->
             <div class="input-group">
                 <x-input-label for="password" class="register-label">
-                    {{ __('Create Password') }}
+                    {{ __('Create Password') }}<span style="color:#ff3333;">*</span>
                 </x-input-label>
                 <x-text-input id="password" class="register-input" type="password" name="password" required autocomplete="new-password" placeholder="Create Password Here" />
-                <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                <x-input-error :messages="$errors->get('password')" class="mt-2" style="color:#ff3333;"/>
             </div>
 
             <!-- Confirm Password -->
             <div class="input-group">
                 <x-input-label for="password_confirmation" class="register-label">
-                    {{ __('Retype Password') }}
+                    {{ __('Retype Password') }}<span style="color:#ff3333;">*</span>
                 </x-input-label>
                 <x-text-input id="password_confirmation" class="register-input" type="password" name="password_confirmation" required autocomplete="new-password" placeholder="Retype Password Here" />
-                <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+                <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" style="color:#ff3333;"/>
             </div>
 
             <!-- Sign Up Button -->
@@ -146,7 +146,7 @@
 
     body {
             margin: 0;
-            background: linear-gradient(to bottom right, #F99C9C, #ACDFF6);
+       
             background-size: 200% 200%; /* Infinite gradient effect */
             animation: gradientAnimation 10s ease infinite;
             min-height: 100vh;

@@ -19,28 +19,10 @@
         
             <div class="profile-info">
                 <h2 class="name-bold">{{ $user->first_name }} {{ $user->middle_name }} {{ $user->last_name }}</h2>
-    <p style="font-size: 1.3em; color: #003d80; display: inline;">
-        <strong class="bio-label" style="font-size: 1.2em; color: #003d80; margin-right: 5px;">Bio:</strong> 
-        <span style="font-size: 1.2em; color: grey;">
-            @if($user->description == null) 
-                N/A 
-            @else 
-                {{ $user->description }} 
-            @endif
-        </span>
-    </p>
-
-
-
-
-        </div>
-    
-        
+            </div>
         <a href="{{ route('profile.edit') }}" class="btn-edit">
             <i class="fas fa-pencil-alt"></i> <span>Edit</span>
         </a>
-
-        
     </div>
 
     <!-- Profile Body Grid Layout -->

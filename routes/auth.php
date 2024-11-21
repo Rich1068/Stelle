@@ -37,6 +37,8 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+    Route::get('/register/step2', [RegisteredUserController::class, 'showStep2'])->name('register.step2');
+    Route::post('/register/step2', [RegisteredUserController::class, 'registerStep2'])->name('register.step2.submit');
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
                 ->name('logout');
     Route::get('verify-email', EmailVerificationPromptController::class)

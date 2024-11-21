@@ -434,7 +434,7 @@ class CertificateController extends Controller
                     continue; // Skip if certificate already exists for this user
                 }
 
-                $user = User::find($userId);
+                $user = User::withTrashed()->find($userId);
                 if (!$user) continue;
 
                 // Use the shared certificate path if there's no placeholder
@@ -535,6 +535,14 @@ class CertificateController extends Controller
         $certificate->save();
 
         return redirect()->route('certificate.list')->with('success', 'Certificate deleted successfully!');
+    }
+
+
+//////Checking if Certificate is saved before sending///////////////
+    public function checkCertificateExists($eventId)
+    {
+        $exists = Certificate::where('event_id', $eventId)->exists();
+        return response()->json(['exists' => $exists]);
     }
 
 }

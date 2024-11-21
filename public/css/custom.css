@@ -1,0 +1,312 @@
+/* Ensure the body fills the screen */
+body, html {
+
+    margin: 0;
+    display: flex;
+    justify-content: center; /* Centers the container horizontally */
+    align-items: center; /* Centers the container vertically */
+    font-family: Arial, sans-serif; /* Ensure good font rendering */
+}
+/* Style for disabled input fields */
+.profile-edit-input:disabled {
+    background-color: #e2e2e2; /* Dark grey */
+    color: #000000; /* White text for contrast */
+}
+
+/* Profile Edit Container */
+.profile-edit-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px; /* Reduced gap between items */
+    justify-content: center; /* Centers the items horizontally */
+    align-items: center; /* Centers the items vertically */
+    width: 75%; /* Makes the form responsive by setting width to 90% */
+    max-width: 60%;
+    margin: 30px auto; /* Increased top and bottom margin for container */
+    padding: 40px 20px; /* Increased padding for top/bottom */
+    background-color: #ffffff; /* Light gray background for the entire container */
+    border-radius: 10px; /* Rounded corners */
+    color: #003366; /* Dark blue text color */
+    box-shadow: -10px 0px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Left Section Container */
+.profile-left, .profile-right {
+    margin-top: 10px;
+    background-color: rgb(151, 151, 151); /* White background for the left and right sections */
+    padding: 20px; /* Padding inside each section */
+    border-radius: 8px; /* Slightly rounded corners for the sections */
+    width: 45%; /* Each section takes up 45% of the container width */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Light shadow for separation */
+}
+
+/* Profile Edit Row */
+.profile-edit-row {
+    display: flex;
+    width: 100%;
+    gap: 60px; /* Reduced space between fields */
+    flex-wrap: wrap; 
+    justify-content: center; /* Ensures that items are centered horizontally */
+    margin: auto;
+}
+
+/* Profile Edit Item */
+.profile-edit-item {
+    flex: 0 0 45%; /* Each item takes up to 45% of the row width */
+    max-width: 40%; /* Limits the width to 45% */
+    margin-bottom: 10px; /* Reduced space between rows */
+}
+
+/* Profile Input Fields */
+.profile-edit-input, .profile-edit-select, .profile-edit-textarea {
+    width: 100%; /* Ensures full width within the container */
+    padding: 10px; /* Reduced padding for more compactness */
+    margin-top: 5px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background-color: #f0f0f0; /* Applied background color to the input fields */
+    font-size: 14px; /* Reduced font size for a more compact form */
+    font-weight: 600;
+}
+
+/* Label Styling */
+.profile-edit-label {
+    font-size: 13px; /* Slightly smaller label font */
+    font-weight: bold;
+    margin-bottom: 4px; /* Reduced space between label and input */
+    display: block;
+    color: #003366; /* Dark blue color for the label text */
+}
+
+/* Error Styling */
+.profile-edit-error {
+    font-size: 11px; /* Reduced error font size */
+    color: #ff3333;
+    margin-top: 4px; /* Reduced margin */
+}
+
+/* Profile Picture Styling */
+.profile-edit-row .profile-edit-item input[type="file"] {
+    padding: 10px; /* Reduced padding for file input */
+    font-size: 14px; /* Smaller font size for file input */
+}
+
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .profile-left, .profile-right {
+        width: 100%; /* On smaller screens, each section takes full width */
+    }
+
+    .profile-edit-item {
+        flex: 0 0 70%; /* On smaller screens, each field takes up 70% width */
+        max-width: 70%;
+    }
+
+    .profile-edit-container {
+        width: 95%; /* Slightly reduce container width for small screens */
+    }
+
+    .btn {
+        width: 100%; /* Ensures button takes up full width on mobile */
+    }
+}
+
+/* Zoom friendly */
+@media (max-width: 480px) {
+    .profile-edit-input, .profile-edit-select, .profile-edit-textarea {
+        font-size: 16px; /* Smaller font size for better compactness */
+        padding: 12px; /* Adjusted padding for touch targets */
+    }
+
+    .btn {
+        font-size: 18px; /* Slightly larger button text */
+        padding: 15px 25px; /* Larger button padding */
+    }
+}
+/* Custom button style */
+.custom-button {
+    background-color: #003366; /* Dark blue background */
+    color: white; /* White text */
+    font-weight: bold; /* Bold text */
+    padding: 16px 32px; /* Increased padding for a taller button */
+    border-radius: 15px; /* Rounded corners */
+    border: none; /* Remove border */
+    max-width: 90%; /* Button width is 90% of the available width */
+    width: 90%; /* Make button take up 90% of the available width */
+    cursor: pointer; /* Change cursor on hover */
+    transition: background-color 0.3s, color 0.3s, box-shadow 0.3s; /* Smooth transition */
+    text-align: center; /* Center text */
+    white-space: nowrap; /* Ensure text stays in one line */
+    box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.2); /* Add shadow to the button itself */
+}
+
+/* Hover effect */
+.custom-button:hover {
+    background-color: white; /* White background on hover */
+    color: #003366; /* Dark blue text on hover */
+    box-shadow: 2px 2px 18px rgba(0, 0, 0, 0.4); /* Darker shadow on hover */
+}
+
+/* Optional: For better responsiveness */
+.profile-edit-item-full {
+    display: flex;
+    justify-content: center; /* Center the button */
+    align-items: center; /* Center vertically */
+}
+
+/* For smaller mobile screens, make sure the button covers the full width */
+@media (max-width: 768px) {
+    .custom-button {
+        padding: 14px 24px; /* Adjust padding for smaller screens */
+        max-width: 90%; /* Button takes up 90% of the width */
+    }
+}
+
+/* Ensuring text stays in a straight line and not wrapping */
+.custom-button {
+    white-space: nowrap; /* Prevent text from wrapping */
+}
+/* Hide the default file input */
+.file-input {
+    display: none; /* Hide the default file input */
+}
+
+/* Style the custom label (acting as the button) */
+.custom-file-upload {
+    display: inline-block; /* Make it inline */
+}
+
+
+/* Hover effect for the custom file button */
+/* Custom file input container */
+.custom-file-container {
+    position: relative;
+    display: inline-block;
+}
+
+.file-input {
+    display: none; /* Hide the default file input */
+}
+
+.file-input-label {
+    display: inline-block;
+    background-color: #003366; /* Dark blue color */
+    color: white;
+    padding: 8px 16px; /* Smaller padding */
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px; /* Smaller text size */
+    font-weight: bold; /* Bold text */
+    width: auto; /* Let the button size based on content */
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+.file-input-label:hover {
+    background-color: #002244; /* Darker blue on hover */
+}
+
+.file-name {
+    display: block;
+    margin-top: 8px;
+    font-size: 14px;
+    color: #555;
+    font-weight: bold;
+}
+
+/* For small screens */
+@media (max-width: 576px) {
+    .file-input-label {
+        width: 100%; /* Make the button full width on smaller screens */
+    }
+}
+
+
+/* Logo Section */
+.logo-sectionz {
+    text-align: center;
+    margin-bottom: 10px; /* Reduced margin to bring the logo and divider closer */
+}
+
+.logo-image {
+    max-width: 170px !important; /* Significantly smaller logo size */
+    height: auto;
+}
+
+/* Divider Section */
+/* Divider Section */
+.dividerz {
+    border-top: 2px solid #003366;
+    width: 90%; /* Ensure the divider spans the full width of the container */
+    margin-top: 5px; /* Reduced margin on top to bring the divider closer to the logo */
+    margin-bottom: 20px; /* Optional: you can adjust this as needed */
+    position: relative; /* To position the text in the middle */
+}
+
+/* Text in the middle of the divider */
+.divider-text {
+    position: absolute;
+    top: -12px; /* Adjust based on the size of your divider */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #ffffff; /* White background for the text */
+    padding: 0 10px;
+    color: #003366; 
+    font-weight: bold;
+    font-size: 14px; /* Adjust font size as needed */
+}
+
+/* Image Preview Container */
+.image-preview-container {
+    margin-top: 15px; /* Space between file input and image preview */
+    display: block; /* Make sure it's shown */
+    text-align: center; /* Center the preview image */
+}
+
+/* Image Preview */
+.profile-edit-image-preview {
+    max-width: 150px; /* Limit the width of the preview image */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 10px; /* Optional: gives the image rounded corners */
+}
+/* Image Preview Container */
+.image-preview-container {
+    margin-top: 15px; /* Space between file input and image preview */
+    display: block; /* Make sure it's shown */
+    text-align: center; /* Center the preview image */
+}
+
+/* Image Preview */
+.profile-edit-image-preview {
+    max-width: 50px; /* Limit the width of the preview image to 50px */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 10px; /* Optional: gives the image rounded corners */
+}
+/* Profile Edit Item */
+.profile-edit-item {
+    flex: 0 0 45%; /* Each item takes up to 45% of the row width */
+    max-width: 40%; /* Limits the width to 45% */
+    margin-bottom: 10px; /* Reduced space between rows */
+    display: flex; /* Enables flexbox */
+    flex-direction: column; /* Stack items vertically */
+    justify-content: center; /* Vertically center the items */
+    align-items: center; /* Horizontally center the items */
+    text-align: center; /* Centers the content inside */
+}
+
+/* Custom File Container */
+.custom-file-container {
+    display: flex; /* Makes sure the file input and label are on the same line */
+    flex-direction: column; /* Aligns the input and label vertically */
+    justify-content: center; /* Vertically center the content */
+    align-items: center; /* Horizontally center the content */
+    width: 100%; /* Ensure full width usage */
+}
+.profile-edit-item {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    text-align: center !important;
+}

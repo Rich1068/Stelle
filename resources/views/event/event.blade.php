@@ -8,7 +8,10 @@
 @if(session('error'))
     <div class="alert alert-danger">{{ session('error') }}</div>
 @endif
-
+@php
+    $currentTime = \Carbon\Carbon::now('Asia/Manila');
+    $eventStartTime = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $event->start_date . ' ' . $event->start_time, 'Asia/Manila');
+@endphp
 <div class="event-view-container">
     <!-- Tab Navigation -->
     <div class="tabs">
@@ -25,7 +28,7 @@
         <div class="tab-pane active" id="main">
             <div class="event-view-content">
                 <div class="event-view-header">
-                    <h1 class="event-view-event-title">{{ $event->title }}@if($event->trashed()) <span style="color: red;">(DELETED)</span>@endif</h1>
+                    <h1 class="event-view-event-title">{{ $event->title }}@if($event->trashed()) <span style="color: red;">(ARCHIVED)</span>@endif</h1>
                     @if($event->event_banner == null)
                     @else
                     <img src="{{ asset($event->event_banner) }}" alt="Event banner" class="event-view-banner">
@@ -98,7 +101,7 @@
                     </div>
                 </div>
                 @if($event->trashed())
-                
+                </div>
                 @else
                 @if($userevent->user_id == Auth::user()->id || Auth::user()->role_id == 1)
                     <div class="event-view-buttons" style="display: flex; flex-direction: column; align-items: flex-start;">
@@ -145,10 +148,18 @@
             @if($userevent->user_id != Auth::user()->id)
                 @if ($participant && $participant->status_id == 1)
                     <p>You have been accepted to this event.</p>
+
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#qrCodeModal-{{ $participant->user_id }}">
+                        Show QR Code
+                    </button>
                 @elseif (
-                    (\Carbon\Carbon::now('Asia/Manila')->greaterThanOrEqualTo(\Carbon\Carbon::parse($event->start_date . ' ' . $event->start_time)) &&
-                    \Carbon\Carbon::now('Asia/Manila')->lessThanOrEqualTo(\Carbon\Carbon::parse($event->end_date . ' ' . $event->end_time))) || // Ongoing
-                    \Carbon\Carbon::now('Asia/Manila')->lessThanOrEqualTo(\Carbon\Carbon::parse($event->start_date . ' ' . $event->start_time)) // Before start
+                    (\Carbon\Carbon::now('Asia/Manila')->between(
+                        \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $event->start_date . ' ' . $event->start_time, 'Asia/Manila'),
+                        \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $event->end_date . ' ' . $event->end_time, 'Asia/Manila')
+                    )) || // Ongoing
+                    \Carbon\Carbon::now('Asia/Manila')->lessThan(
+                \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $event->start_date . ' ' . $event->start_time, 'Asia/Manila')
+                    ) // Before start
                 )
                     @if ($participant && $participant->status_id == 3)
                         <button type="button" class="btn btn-secondary" disabled>Pending</button>
@@ -171,11 +182,16 @@
             <button type="button" class="btn btn-secondary" id="evaluationAnsweredBtn" disabled>
                 Evaluation Form Already Answered
             </button>
-        @else
+        @elseif ($currentTime->gte($eventStartTime))
             <form action="{{ route('evaluation-form.take', ['id' => $event->id, 'form' => $evaluationForm->form_id]) }}" method="GET" class="full-width-button">
                 @csrf
                 <button type="submit" class="btn btn-primary" style="margin-bottom: 10px;">Take Evaluation</button>
             </form>
+        @else
+            <button type="button" class="btn btn-secondary" id="evaluationNotAvailableBtn" disabled>
+                Evaluation Not Yet Available
+                
+            </button>     
         @endif
         
     @else
@@ -221,6 +237,12 @@
                     @if($pendingParticipantsCount > 0)
                         <span class="badge bg-danger pending-badge">{{ $pendingParticipantsCount }}</span>
                     @endif
+                </button>
+            </a>
+
+            <a href="{{ route('event.attendance-log', $event->id) }}" class="position-relative">
+                <button type="submit" class="btn btn-primary-2 position-relative">
+                    View Attendance Logs
                 </button>
             </a>
             @endif
@@ -320,7 +342,7 @@
                 
     @else
     <!-- Create or Update Evaluation Form Button -->
-    <button type="button" class="btn btn-primary-2" data-toggle="modal" data-target="#evaluationFormModal">
+    <button type="button" class="btn btn-primary-2" id="setupEvaluationFormButton" data-toggle="modal" data-target="#evaluationFormModal">
         Setup Evaluation Form
     </button>
     @if($event->evaluationForm)
@@ -342,7 +364,7 @@
 
 </div>
 @endif
-<!-- Modal for certificate viewing -->
+<!-- Modals -->
 @if($certificate)
 <div class="modal fade" id="certificateModal" tabindex="-1" aria-labelledby="certificateModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -372,8 +394,10 @@
             </div>
             <div class="modal-body">
                 <!-- Option 1: Create Evaluation Form -->
+            
                 @if($event->evaluationForm)
-                <form action="{{ route('event-evaluation-forms.edit', ['formId' => $event->evaluationForm->form_id, 'id' => $event->id]) }}" method="GET" class="full-width-button">
+                <form action="{{ route('event-evaluation-forms.edit', ['formId' => $event->evaluationForm->form_id, 'id' => $event->id]) }}" method="GET" 
+                    class="full-width-button" id="updateEvaluationForm">
                     @csrf
                     <button type="submit" class="btn btn-primary-2 btn-block">Update Evaluation Form</button>
                 </form>
@@ -383,6 +407,7 @@
                     <button type="submit" class="btn btn-primary btn-block">Create Evaluation Form</button>
                 </form>
                 @endif
+                @if($currentUser == $userevent->user->id)
                 <!-- Option 2: Use Existing Evaluation Form -->
                 <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#existingFormModal">
                     Use an Existing Evaluation Form
@@ -420,11 +445,29 @@
                         </div>
                     </div>
                 </div>
-
+                @endif
             </div>
         </div>
     </div>
 </div>
+@if ($participant && $participant->status_id == 1)
+<div class="modal fade" id="qrCodeModal-{{ $participant->user_id }}" tabindex="-1" aria-labelledby="qrCodeModalLabel-{{ $participant->user_id }}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="qrCodeModalLabel-{{ $participant->user_id }}">QR Code</h5>
+            </div>
+            <div class="modal-body text-center">
+                @if ($participant->qr_code)
+                    <img src="{{ asset($participant->qr_code) }}" alt="QR Code" class="img-fluid" />
+                @else
+                    <p>No QR Code available.</p>
+                @endif
+            </div>
+        </div>
+    </div>
+</div>
+@endif
 </div>
 <style>
     /* Main button container styles */
@@ -516,6 +559,7 @@
             });
         });
     });
+
    document.addEventListener('DOMContentLoaded', function () {
     const tabButtons = document.querySelectorAll('.tab-button');
     const tabPanes = document.querySelectorAll('.tab-pane');
@@ -881,6 +925,99 @@
                 }
             });
         }
+    });
+    // for disabling editing of eval form when its public
+    document.addEventListener('DOMContentLoaded', function () {
+        @if($userevent->user_id == Auth::user()->id || Auth::user()->role_id == 1)
+        const toggle = document.getElementById('is_active_toggle');
+        const setupButton = document.getElementById('setupEvaluationFormButton');
+
+        // Initial state check
+        if (toggle.checked) {
+            setupButton.disabled = true;
+        }
+
+        // Add event listener to toggle
+        toggle.addEventListener('change', function () {
+            if (this.checked) {
+                setupButton.disabled = true; // Disable button when toggle is checked
+            } else {
+                setupButton.disabled = false; // Enable button when toggle is unchecked
+            }
+        });
+        @endif
+    });
+    document.addEventListener('DOMContentLoaded', function () {
+        @if($userevent->user_id == Auth::user()->id || Auth::user()->role_id == 1)
+        const existingFormButton = document.querySelector('[data-target="#existingFormModal"]');
+        const eventId = '{{ $event->id }}'; // Pass the event ID to JavaScript
+        let shouldPoll = true; // Flag to control polling
+
+        function checkHasAnswers() {
+            if (!shouldPoll) return; // Stop polling if the flag is false
+
+            fetch(`/events/${eventId}/has-answers`, {
+                method: 'GET',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.hasAnswers) {
+                    // Update button state
+                    existingFormButton.disabled = true;
+                    existingFormButton.title = 'This action is not allowed because answers already exist.';
+
+                    // Stop further polling
+                    shouldPoll = false;
+                } else {
+                    existingFormButton.disabled = false;
+                    existingFormButton.title = '';
+                }
+
+                // Schedule the next polling request if needed
+                if (shouldPoll) {
+                    setTimeout(checkHasAnswers, 5000); // Wait 5 seconds before the next request
+                }
+            })
+            .catch(error => {
+                console.error('Error checking answers:', error);
+
+                // Retry after a delay if there's an error
+                if (shouldPoll) {
+                    setTimeout(checkHasAnswers, 5000); // Retry in 5 seconds
+                }
+            });
+        }
+
+        // Initial call to start polling
+        checkHasAnswers();
+        @endif
+    });
+    document.getElementById('updateEvaluationForm').addEventListener('submit', function (e) {
+        e.preventDefault(); // Prevent form submission for now
+        const eventId = '{{ $event->id }}'; // Pass the event ID to JavaScript
+
+        fetch(`/events/${eventId}/has-answers`, {
+            method: 'GET',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.hasAnswers) {
+                alert("Editing the Evaluation Form might affect the results. Press OK to continue");
+            }
+
+            // Submit the form after showing the alert
+            e.target.submit();
+        })
+        .catch(error => {
+            console.error('Error checking answers:', error);
+            alert("Unable to check answers at this time. Please try again later.");
+        });
     });
 </script>
 @endsection

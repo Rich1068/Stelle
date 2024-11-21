@@ -51,15 +51,15 @@ class AuthenticatedSessionController extends Controller
             if (!$request->user()->hasVerifiedEmail()) {
                 return redirect()->route('verification.notice');
             }
-
-            if ($request->user()->role_id == 1) {
-                return redirect()->route('super_admin.dashboard');
-            } elseif ($request->user()->role_id == 2) {
-                return redirect()->route('admin.dashboard');
-            } elseif ($request->user()->role_id == 3) {
-                return redirect()->route('user.dashboard');
+            if ($request->user()->email_verified_at){
+                if ($request->user()->role_id == 1) {
+                    return redirect()->route('super_admin.dashboard');
+                } elseif ($request->user()->role_id == 2) {
+                    return redirect()->route('admin.dashboard');
+                } elseif ($request->user()->role_id == 3) {
+                    return redirect()->route('user.dashboard');
+                }
             }
-
             return redirect()->intended(route('auth.login'));
         } catch (\Exception $e) {
             Log::error('Login failed: ' . $e->getMessage());

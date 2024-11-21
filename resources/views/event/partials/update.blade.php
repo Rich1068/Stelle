@@ -40,9 +40,10 @@
                         <label for="title" class="flex items-center">
                             <i class="fas fa-heading mr-2"></i>
                             <span class="font-bold">{{ __('Title') }}</span>
+                            <span style="color:#ff3333;">*</span>
                         </label>
                         <x-text-input id="title" name="title" type="text" class="mt-1 block w-full event-input" :value="old('title', $event->title)" required autofocus autocomplete="off" />
-                        <x-input-error class="mt-2" :messages="$errors->get('title')" />
+                        <x-input-error class="mt-2" :messages="$errors->get('title')" style="color:#ff3333;"/>
                     </div>
                 </div>
 
@@ -54,9 +55,10 @@
                         <label for="start_date" class="flex items-center">
                             <i class="fas fa-calendar-day mr-2"></i>
                             <span class="font-bold">{{ __('Start Date') }}</span>
+                            <span style="color:#ff3333;">*</span>
                         </label>
                         <x-text-input id="start_date" name="start_date" type="date" class="mt-1 block w-full event-input" :value="$startDate" :min="$minstartDate" required />
-                        <x-input-error class="mt-2" :messages="$errors->get('start_date')" />
+                        <x-input-error class="mt-2" :messages="$errors->get('start_date')" style="color:#ff3333;"/>
                     </div>
                 </div>
 
@@ -66,37 +68,40 @@
                         <label for="end_date" class="flex items-center">
                             <i class="fas fa-calendar-day mr-2"></i>
                             <span class="font-bold">{{ __('End Date') }}</span>
+                            <span style="color:#ff3333;">*</span>
                         </label>
                         @php
                             $eventDate = old('end_date', $event->end_date);
                             $minDate = $eventDate >= $today ? $today : null;
                         @endphp
                         <x-text-input id="end_date" name="end_date" type="date" class="mt-1 block w-full event-input" :value="$endDate" :min="$minendDate" required />
-                        <x-input-error class="mt-2" :messages="$errors->get('end_date')" />
+                        <x-input-error class="mt-2" :messages="$errors->get('end_date')" style="color:#ff3333;"/>
                     </div>
                 </div>
 
-                <!-- Start Time -->
                 <div class="col-md-6 mb-3">
                     <div class="event-field">
                         <label for="start_time" class="flex items-center">
                             <i class="fas fa-clock mr-2"></i>
                             <span class="font-bold">{{ __('Start Time') }}</span>
+                            <span style="color:#ff3333;">*</span>
                         </label>
-                        <x-text-input id="start_time" name="start_time" type="time" class="mt-1 block w-full event-input" :value="old('start_time', \Carbon\Carbon::parse($event->start_time)->format('H:i'))" required />
-                        <x-input-error class="mt-2" :messages="$errors->get('start_time')" />
+                        <!-- Use a standard input for Kendo UI TimePicker -->
+                        <input id="start_time" name="start_time" type="text" class="mt-1 block w-full event-input" value="{{ old('start_time', \Carbon\Carbon::parse($event->start_time)->format('H:i')) }}" required />
+                        <x-input-error class="mt-2" :messages="$errors->get('start_time')" style="color:#ff3333;" />
                     </div>
                 </div>
 
-                <!-- End Time -->
                 <div class="col-md-6 mb-3">
                     <div class="event-field">
                         <label for="end_time" class="flex items-center">
                             <i class="fas fa-clock mr-2"></i>
                             <span class="font-bold">{{ __('End Time') }}</span>
+                            <span style="color:#ff3333;">*</span>
                         </label>
-                        <x-text-input id="end_time" name="end_time" type="time" class="mt-1 block w-full event-input" :value="old('end_time', \Carbon\Carbon::parse($event->end_time)->format('H:i'))" required />
-                        <x-input-error class="mt-2" :messages="$errors->get('end_time')" />
+                        <!-- Use a standard input for Kendo UI TimePicker -->
+                        <input id="end_time" name="end_time" type="text" class="mt-1 block w-full event-input" value="{{ old('end_time', \Carbon\Carbon::parse($event->end_time)->format('H:i')) }}" required />
+                        <x-input-error class="mt-2" :messages="$errors->get('end_time')" style="color:#ff3333;" />
                     </div>
                 </div>
             </div>
@@ -108,9 +113,10 @@
         <label for="description" class="flex items-center">
             <i class="fas fa-file-alt mr-2"></i>
             <span class="font-bold">{{ __('Description') }}</span>
+            <span style="color:#ff3333;">*</span>
         </label>
         <textarea id="description" name="description" class="mt-1 block w-full event-input" oninput="autoResize(this)" rows="1" style="overflow:hidden;" required>{{ old('description', $event->description) }}</textarea>
-        <x-input-error class="mt-2" :messages="$errors->get('description')" />
+        <x-input-error class="mt-2" :messages="$errors->get('description')" style="color:#ff3333;"/>
     </div>
 </div>
                 <!-- Capacity, Mode, and Address in One Column -->
@@ -123,9 +129,10 @@
                                 <label for="capacity" class="flex items-center">
                                     <i class="fas fa-users mr-2"></i>
                                     <span class="font-bold">{{ __('Capacity') }}</span>
+                                    <span style="color:#ff3333;">*</span>
                                 </label>
                                 <x-text-input id="capacity" name="capacity" type="number" class="mt-1 block w-full event-input" :value="old('capacity', $event->capacity)" min="1" required />
-                                <x-input-error class="mt-2" :messages="$errors->get('capacity')" />
+                                <x-input-error class="mt-2" :messages="$errors->get('capacity')" style="color:#ff3333;"/>
                             </div>
                         </div>
 
@@ -135,9 +142,10 @@
                                 <label for="address" class="flex items-center">
                                     <i class="fas fa-map-marker-alt mr-2"></i>
                                     <span class="font-bold">{{ __('Address/Link') }}</span>
+                                    <span style="color:#ff3333;">*</span>
                                 </label>
                                 <x-text-input id="address" name="address" type="text" class="mt-1 block w-full event-input" :value="old('address', $event->address)" required />
-                                <x-input-error class="mt-2" :messages="$errors->get('address')" />
+                                <x-input-error class="mt-2" :messages="$errors->get('address')" style="color:#ff3333;"/>
                             </div>
                         </div>
 
@@ -147,13 +155,14 @@
                                 <label for="mode" class="flex items-center">
                                     <i class="fas fa-tachometer-alt mr-2"></i>
                                     <span class="font-bold">{{ __('Mode') }}</span>
+                                    <span style="color:#ff3333;">*</span>
                                 </label>
-                                <select id="mode" name="mode" class="block mt-1 w-full event-input">
+                                <select id="mode" name="mode" class="block mt-1 w-full event-input" required>
                                     <option value="">{{ __('Select Mode') }}</option>
                                     <option value="onsite" {{ old('mode', $event->mode) == 'onsite' ? 'selected' : '' }}>{{ __('Onsite') }}</option>
                                     <option value="virtual" {{ old('mode', $event->mode) == 'virtual' ? 'selected' : '' }}>{{ __('Virtual') }}</option>
                                 </select>
-                                <x-input-error :messages="$errors->get('mode')" class="mt-2" />
+                                <x-input-error :messages="$errors->get('mode')" class="mt-2" style="color:#ff3333;"/>
                             </div>
                         </div>
                     </div>
@@ -248,12 +257,32 @@
     }
 
 </style>
+<link rel="stylesheet" href="https://kendo.cdn.telerik.com/themes/10.0.1/default/default-ocean-blue.css"/>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://kendo.cdn.telerik.com/2024.4.1112/js/kendo.all.min.js"></script>
 
 <script>
-      function autoResize(textarea) {
-        textarea.style.height = 'auto';  // Reset height to auto to shrink if needed
-        textarea.style.height = (textarea.scrollHeight) + 'px';  // Set the height based on the scroll height
-    }
+
+    // Initialize Kendo TimePicker for Start Time
+    $("#start_time").kendoTimePicker({
+        componentType: "modern", 
+        format: "HH:mm",         
+        parseFormats: ["HH:mm"], 
+        interval: 15            
+    });
+
+    // Initialize Kendo TimePicker for End Time
+    $("#end_time").kendoTimePicker({
+        componentType: "modern", 
+        format: "HH:mm",         
+        parseFormats: ["HH:mm"], 
+        interval: 15             
+    });
+
+function autoResize(textarea) {
+    textarea.style.height = 'auto';  // Reset height to auto to shrink if needed
+    textarea.style.height = (textarea.scrollHeight) + 'px';  // Set the height based on the scroll height
+}
 function previewImage(event) {
     var reader = new FileReader();
     reader.onload = function() {

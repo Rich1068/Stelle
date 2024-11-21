@@ -40,16 +40,6 @@
                     <span style="color: red;">(DELETED)</span>
                 @endif
             </h2>
-                <p style="font-size: 1.3em; color: #003d80; display: inline;">
-                    <strong class="bio-label" style="font-size: 1.2em; color: #003d80; margin-right: 5px;">Bio:</strong> 
-                    <span style="font-size: 1.2em; color: grey;">
-                        @if($user->description == null)
-                            N/A
-                        @else
-                            {{ $user->description }}
-                        @endif
-                    </span>
-                </p>
             </div>
             @if(Auth::user()->role_id == 1)
             <a href="{{ route('superadmin.editProfile', ['id' => $user->id]) }}" class="btn-edit">

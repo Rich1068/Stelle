@@ -267,6 +267,11 @@ class EvaluationFormController extends Controller
     {
         $evaluationForm = EvaluationForm::findOrFail($form);
         $questions = Question::where('form_id', $form)->orderBy('order')->get(); 
+        $event = Event::findOrFail($id);
+        if ($event->evaluationForm && $event->evaluationForm->status_id == 1) {
+            // Throw an error or redirect back with a message
+            return redirect()->back()->withErrors(['error' => 'The evaluation form is already active and cannot be modified.']);
+        }
 
         return view('evaluation_form.questions.event_edit', compact( 'form', 'questions','evaluationForm', 'id'));
     }
@@ -344,7 +349,18 @@ class EvaluationFormController extends Controller
         $request->validate([
             'form_id' => 'required|exists:evaluation_forms,id',
         ]);
-    
+        $event = Event::findOrFail($id);
+        $evaluationForm = $event->evaluationForm;
+        $hasAnswers = Answer::where('event_form_id', $evaluationForm->id)
+                      ->exists();
+        // Check if the evaluation form is active
+        if ($event->evaluationForm && $event->evaluationForm->status_id == 1) {
+            // Throw an error or redirect back with a message
+            return redirect()->back()->withErrors(['error' => 'The evaluation form is already active and cannot be replaced.']);
+        }
+        elseif ($hasAnswers){
+            return redirect()->back()->withErrors(['error' => 'The evaluation form already has answers and cannot be replaced.']);
+        }
         // Start a transaction
         DB::beginTransaction();
     
@@ -403,17 +419,24 @@ class EvaluationFormController extends Controller
     }
     public function toggleActivation(Request $request, $id, $formId)
     {
+        // Validate the input
+        $validated = $request->validate([
+            'is_active' => ['required', 'boolean'],
+        ]);
+    
+        // Find the evaluation form
         $evaluationForm = EventEvaluationForm::findOrFail($formId);
     
-        // Set the status based on `is_active` checkbox value
-        $evaluationForm->status_id = $request->is_active ? 1 : 2;
+        // Update the status based on `is_active`
+        $evaluationForm->status_id = $validated['is_active'] ? 1 : 2;
         $evaluationForm->save();
     
-        // Return a JSON response instead of a redirect
+        // Return a JSON response
         return response()->json([
             'success' => true,
-            'message' => $evaluationForm->status_id == 1 
-                ? 'The evaluation form is now activated and open to participants.' 
+            'status' => $evaluationForm->status_id,
+            'message' => $evaluationForm->status_id == 1
+                ? 'The evaluation form is now activated and open to participants.'
                 : 'The evaluation form is now deactivated and closed to participants.',
         ]);
     }
@@ -484,7 +507,6 @@ class EvaluationFormController extends Controller
         // Get the number of participants
         $currentParticipants = EventParticipant::where('event_id', $id)
             ->where('status_id', 1)
-            ->whereHas('user')
             ->count();
 
         // Define the static radio options (1, 2, 3, 4, 5)
@@ -495,7 +517,8 @@ class EvaluationFormController extends Controller
         $questionsData = [];
 
         // Total users who answered, filtered by event_form_id
-        $answeredUsers = User::whereHas('answers', function ($query) use ($eventFormId) {
+        $answeredUsers = User::withTrashed()
+                ->whereHas('answers', function ($query) use ($eventFormId) {
                 $query->where('event_form_id', $eventFormId);
             })
             ->distinct()
