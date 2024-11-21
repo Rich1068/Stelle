@@ -8,7 +8,10 @@
 @if(session('error'))
     <div class="alert alert-danger">{{ session('error') }}</div>
 @endif
-
+@php
+    $currentTime = \Carbon\Carbon::now('Asia/Manila');
+    $eventStartTime = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $event->start_date . ' ' . $event->start_time, 'Asia/Manila');
+@endphp
 <div class="event-view-container">
     <!-- Tab Navigation -->
     <div class="tabs">
@@ -145,13 +148,18 @@
             @if($userevent->user_id != Auth::user()->id)
                 @if ($participant && $participant->status_id == 1)
                     <p>You have been accepted to this event.</p>
+
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#qrCodeModal-{{ $participant->user_id }}">
                         Show QR Code
                     </button>
                 @elseif (
-                    (\Carbon\Carbon::now('Asia/Manila')->greaterThanOrEqualTo(\Carbon\Carbon::parse($event->start_date . ' ' . $event->start_time)) &&
-                    \Carbon\Carbon::now('Asia/Manila')->lessThanOrEqualTo(\Carbon\Carbon::parse($event->end_date . ' ' . $event->end_time))) || // Ongoing
-                    \Carbon\Carbon::now('Asia/Manila')->lessThanOrEqualTo(\Carbon\Carbon::parse($event->start_date . ' ' . $event->start_time)) // Before start
+                    (\Carbon\Carbon::now('Asia/Manila')->between(
+                        \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $event->start_date . ' ' . $event->start_time, 'Asia/Manila'),
+                        \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $event->end_date . ' ' . $event->end_time, 'Asia/Manila')
+                    )) || // Ongoing
+                    \Carbon\Carbon::now('Asia/Manila')->lessThan(
+                \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $event->start_date . ' ' . $event->start_time, 'Asia/Manila')
+                    ) // Before start
                 )
                     @if ($participant && $participant->status_id == 3)
                         <button type="button" class="btn btn-secondary" disabled>Pending</button>
@@ -174,7 +182,7 @@
             <button type="button" class="btn btn-secondary" id="evaluationAnsweredBtn" disabled>
                 Evaluation Form Already Answered
             </button>
-        @elseif (\Carbon\Carbon::now('Asia/Manila')->greaterThanOrEqualTo(\Carbon\Carbon::parse($event->start_date . ' ' . $event->start_time)))
+        @elseif ($currentTime->gte($eventStartTime))
             <form action="{{ route('evaluation-form.take', ['id' => $event->id, 'form' => $evaluationForm->form_id]) }}" method="GET" class="full-width-button">
                 @csrf
                 <button type="submit" class="btn btn-primary" style="margin-bottom: 10px;">Take Evaluation</button>
@@ -182,6 +190,7 @@
         @else
             <button type="button" class="btn btn-secondary" id="evaluationNotAvailableBtn" disabled>
                 Evaluation Not Yet Available
+                
             </button>     
         @endif
         
