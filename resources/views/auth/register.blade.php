@@ -6,7 +6,7 @@
     <title>Stelle</title>
     <link rel="icon" href="{{ asset('images/stelle_icon.png') }}" type="image/x-icon">
     <link rel="stylesheet" href="/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/custom.css"> <!-- Ensure custom styles are linked -->
+  
     <!-- <script>
         document.addEventListener('contextmenu', function(event) {
             event.preventDefault();
@@ -181,14 +181,14 @@
     gap: 30px; /* Gap between the form and carousel */
     align-items: start;
     padding: 10px;
-    max-width: 80% !important;
+    max-width: 90% !important;
     margin: 0 auto; /* Center the container */
 }
 
     .register-account {
     width: 90% !important; /* Form width */
     padding: 15px 20px !important;
-    margin: 10px auto;
+    margin: 20px auto;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -200,7 +200,7 @@
 
     /* Ensure input fields shrink with the container */
     .register-input {
-        width: 100% !important; /* Full width for inputs */
+        width: 95% !important; /* Full width for inputs */
         padding: 8px !important; /* Reduce padding inside inputs */
         font-size: 0.95rem !important; /* Slightly reduce font size */
         flex: 1; /* Allow inputs to flex and fit */
