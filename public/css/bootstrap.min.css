@@ -638,8 +638,8 @@ body {
     }
 
     .stelle-logo {
-        margin-top: 15px !important; /* Add space above the logo */
-        max-width: 120px !important; /* Reduce the logo size a bit */
+        margin-top: 20px !important; /* Add space above the logo */
+        max-width: 140px !important; /* Reduce the logo size a bit */
     }
 
     .image-section {
@@ -658,7 +658,7 @@ body {
 
     .google-button {
         margin-top: 15px !important; /* Adjust space above Google button */
-        margin-bottom: 15px !important; /* Adjust space below Google button */
+        margin-bottom: 25px !important; /* Adjust space below Google button */
         font-size: 0.9rem !important; /* Slightly smaller font for Google button */
     }
 }
