@@ -460,6 +460,9 @@
             <div class="modal-body text-center">
                 @if ($participant->qr_code)
                     <img src="{{ asset($participant->qr_code) }}" alt="QR Code" class="img-fluid" />
+                    <a href="{{ asset($participant->qr_code) }}" download="QR_Code_{{ $participant->user_id }}.png" class="btn btn-primary">
+                        Download QR Code
+                    </a>
                 @else
                     <p>No QR Code available.</p>
                 @endif
