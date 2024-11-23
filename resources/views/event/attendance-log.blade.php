@@ -2,27 +2,30 @@
 
 @section('body')
 <div class="container-fluid">
-    <h1 class="my-4 text-center">Event Attendance for {{ $event->name }}</h1>
+    <h1 class="my-4 text-left font-weight-bold">Event Attendance for {{ $event->title }}</h1>
 
     <div class="row">
         <!-- Left Side: QR Code Scanner -->
-        <div class="col-lg-6 col-md-12 mb-4">
+        <div class="col-lg-4 col-md-12 mb-4">
             <div class="card">
                 <div class="card-header text-center">
-                    <h4>QR Code Scanner</h4>
+                    <h4 class ="m-0 font-weight-bold text-primary">QR Code Scanner</h4>
                 </div>
                 <div class="card-body">
                     <div id="qrScanner" style="width: 100%; height: auto; border: 1px solid #ccc;"></div>
                     <p class="text-center mt-3" id="scannerFeedback">Initializing scanner...</p>
+                    <div class="text-center mt-3">
+                        <button id="toggleCamera" class="btn btn-primary">Turn Camera Off</button>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- Right Side: Attendance Logs -->
-        <div class="col-lg-6 col-md-12">
+        <div class="col-lg-8 col-md-12">
             <div class="card">
                 <div class="card-header text-center">
-                    <h4>Attendance Logs</h4>
+                    <h4 class ="m-0 font-weight-bold text-primary">Attendance Logs</h4>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -44,7 +47,7 @@
                                             {{ $log->user->last_name ?? '' }}
                                         </td>
                                         <td>{{ $log->user->email ?? 'N/A' }}</td>
-                                        <td>{{ \Carbon\Carbon::parse($log->scanned_at)->format('Y-m-d H:i:s') }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($log->scanned_at)->setTimezone('Asia/Manila')->format('Y-m-d h:i:s A') }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -63,8 +66,9 @@
     #qrScanner {
         border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        height: 300px;
+        height: 200px;
     }
+
 </style>
 @endsection
 
@@ -74,62 +78,114 @@
 <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/html5-qrcode/minified/html5-qrcode.min.js"></script>
 
-<script>
-    // Initialize DataTables
-    $(document).ready(function () {
-        $('#attendanceLogsTable').DataTable({
-            "pageLength": 10,
-            "order": [[3, "desc"]], // Order by "Scanned At" column descending
-        });
-    });
 
-    // QR Code Scanner Initialization
+<script>
     document.addEventListener('DOMContentLoaded', function () {
         const qrScanner = document.getElementById('qrScanner');
         const feedbackElement = document.getElementById('scannerFeedback');
+        const toggleCameraButton = document.getElementById('toggleCamera');
         let lastScanTime = 0;
+        let html5QrCode = null;
+        let isCameraOn = true;
 
-        if (!qrScanner) {
-            console.error("QR scanner element not found!");
-            feedbackElement.textContent = "Scanner element not available.";
-            return;
-        }
+        // Initialize DataTables
+        $(document).ready(function () {
+            $('#attendanceLogsTable').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: `/events/{{ $event->id }}/logs`,
+                    type: 'GET',
+                },
+                columns: [
+                    { data: null, name: null }, // Placeholder for the `#` column
+                    { data: 'name', name: 'name' },
+                    { data: 'email', name: 'email' },
+                    { data: 'scanned_at', name: 'scanned_at' },
+                ],
+                order: [[3, 'desc']], // Default order by scanned_at descending
+                columnDefs: [
+                    {
+                        targets: 0, // Target the first column (the `#` column)
+                        orderable: false, // Prevent sorting on the `#` column itself
+                        render: function (data, type, row, meta) {
+                            const table = $('#attendanceLogsTable').DataTable();
+                            const info = table.page.info();
+                            const ascending = table.order()[0][1] === 'asc'; // Check current sort direction
 
-        const html5QrCode = new Html5Qrcode("qrScanner");
-
-        html5QrCode.start(
-        { facingMode: "environment" },
-        {
-            fps: 30,
-            qrbox: { width: 250, height: 250 }, // Adjust as needed
-        },
-        (decodedText, decodedResult) => {
-            const currentTime = new Date().getTime();
-
-            if (currentTime - lastScanTime > 3000) {
-                lastScanTime = currentTime; // Update the last scan time
-                console.log("QR Code detected:", decodedText);
-                feedbackElement.textContent = `QR Code Scanned: ${decodedText}`;
-
-                // Call your function to mark attendance
-                markAttendance(decodedText);
-            } else {
-                console.log("Skipping scan: too frequent");
-                feedbackElement.textContent = "Scanning too quickly. Please wait...";
-            }
-        },
-        (errorMessage) => {
-            console.warn("QR Code scan error:", errorMessage);
-            feedbackElement.textContent = "Scanning for QR codes...";
-        }
-        ).catch(err => {
-            console.error("Error initializing QR code scanner:", err);
-            feedbackElement.textContent = "Error initializing scanner.";
+                            if (ascending) {
+                                // Global ascending row number for filtered dataset
+                                return meta.row + 1 + (info.start);
+                            } else {
+                                // Global descending row number for filtered dataset
+                                return info.recordsDisplay - (meta.row + info.start);
+                            }
+                        },
+                    },
+                ],
+                
+            });
         });
+
+        // Initialize QR Code Scanner
+        function startScanner() {
+            html5QrCode = new Html5Qrcode("qrScanner");
+            html5QrCode.start(
+                { facingMode: "environment" },
+                {
+                    fps: 1,
+                    qrbox: { width: 200, height: 200 },
+                },
+                (decodedText) => {
+                    const currentTime = new Date().getTime();
+                    if (currentTime - lastScanTime > 4000) {
+                        lastScanTime = currentTime;
+                        console.log("QR Code detected:", decodedText);
+                        feedbackElement.textContent = `QR Code Scanned: ${decodedText}`;
+                        markAttendance(decodedText);
+                    } else {
+                        feedbackElement.textContent = "Scanning too quickly. Please wait...";
+                    }
+                },
+                (errorMessage) => {
+                    feedbackElement.textContent = "Scanning for QR codes...";
+                }
+            ).catch(err => {
+                console.error("Error initializing QR code scanner:", err);
+                feedbackElement.textContent = "Error initializing scanner.";
+            });
+        }
+
+        function stopScanner() {
+            if (html5QrCode) {
+                html5QrCode.stop().then(() => {
+                    console.log("Camera stopped.");
+                    html5QrCode.clear();
+                }).catch(err => {
+                    console.error("Error stopping QR code scanner:", err);
+                });
+            }
+        }
+
+        // Toggle Camera On/Off
+        toggleCameraButton.addEventListener('click', function () {
+            if (isCameraOn) {
+                stopScanner();
+                toggleCameraButton.textContent = "Turn Camera On";
+                feedbackElement.textContent = "Camera is off.";
+            } else {
+                startScanner();
+                toggleCameraButton.textContent = "Turn Camera Off";
+            }
+            isCameraOn = !isCameraOn;
+        });
+
+        // Start Scanner on Page Load
+        startScanner();
 
         // Function to mark attendance using AJAX
         function markAttendance(decodedText) {
-            const token = decodedText.split('/').pop(); // Extract token from the QR code URL
+            const token = decodedText.split('/').pop();
             const url = `/event/{{ $event->id }}/qr/${token}?system=true`;
 
             fetch(url, {
@@ -152,18 +208,17 @@
                 console.error('Error:', error);
             });
         }
+        function formatToLocalTime(utcTime) {
+            const localDate = new Date(utcTime);
+            return localDate.toLocaleString('en-US', { timeZone: 'Asia/Manila' });
+        }
 
         // Function to dynamically update the logs table
-        function updateLogs(data) {
+        function updateLogs() {
             const table = $('#attendanceLogsTable').DataTable();
-            const newRow = table.row.add([
-                table.rows().count() + 1,
-                `${data.user.first_name} ${data.user.last_name}`,
-                data.user.email,
-                new Date(data.scanned_at).toLocaleString(),
-            ]);
-            newRow.draw();
+            table.ajax.reload(null, false); // Reload the table data without resetting pagination
         }
+        
     });
 </script>
 @endsection

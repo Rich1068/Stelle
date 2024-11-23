@@ -177,7 +177,7 @@ Route::middleware(['auth', 'checkEventCreator'])->group(function () {
     Route::get('/events/{id}/has-answers', [EventController::class, 'hasAnswers'])->name('events.hasAnswers');
     Route::get('/event/{id}/get-participants', [EventController::class, 'getParticipants']);
     Route::get('/event/{id}/certificate-exists', [CertificateController::class, 'checkCertificateExists']);
-    
+    Route::get('/events/{id}/logs', [EventController::class, 'fetchAttendanceLogs']);
     Route::get('/events/{id}/attendance-log', [EventController::class, 'showAttendanceLog'])->name('event.attendance-log');
 
 

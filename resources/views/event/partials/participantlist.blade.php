@@ -14,16 +14,19 @@
                             <div class="participant-details">
                                 <a href="{{ route('profile.view', $participant->user->id) }}" class="participant-name">
                                     {{ $participant->user->first_name }} {{ $participant->user->last_name }}
+                                    @if(in_array($participant->user_id, $attendanceLog))
+                                            <span style="color: green; !important;" title="Attended">&#10003;</span>
+                                    @endif
                                     @if($participant->user->trashed())
                                         <span style="color: red;">(DELETED)</span>
                                     @endif
                                 </a>
                                 @if($participant->user->role_id == 1) 
-                                <p class="participant-status">Super Admin</p>
+                                    <p class="participant-status">Super Admin</p>
                                 @elseif($participant->user->role_id == 2)
-                                <p class="participant-status">Admin</p>
+                                    <p class="participant-status">Admin</p>
                                 @elseif($participant->user->role_id == 3)
-                                <p class="participant-status">User</p>
+                                    <p class="participant-status">User</p>
                                 @endif
                             </div>
                         @else
@@ -31,6 +34,8 @@
                         @endif
                     </div>
                 </div>
+
+                <!-- Attendance Check -->
 
                 <!-- Remove Button (Visible only for Super Admin or Event Creator) -->
                 @if($userevent->user_id == Auth::user()->id || Auth::user()->role_id == 1)
@@ -50,6 +55,7 @@
         {{ $participants->links() }}
     </div>
 </div>
+
 
 <style>
 .remove-btn {
@@ -73,6 +79,10 @@
 
 .remove-btn .remove-text {
     display: inline-block;
+}
+.attendance-status {
+    margin-top: 5px;
+    font-size: 14px;
 }
 
 @media (max-width: 900px) {

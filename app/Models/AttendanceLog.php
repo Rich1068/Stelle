@@ -14,6 +14,9 @@ class AttendanceLog extends Model
         'user_id',
         'scanned_at',
     ];
+    protected $casts = [
+        'scanned_at' => 'datetime',
+    ];
     public function user()
     {
         return $this->belongsTo(User::class);
