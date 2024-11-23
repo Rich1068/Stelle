@@ -24,6 +24,8 @@ return Application::configure(basePath: dirname(__DIR__))
             'checkUserJoinedEvent' => \App\Http\Middleware\CheckUserJoinedEvent::class,
             'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
             'redirectIfAuthenticatedToDashboard' => \App\Http\Middleware\RedirectIfAuthenticatedToDashboard::class,
+            'checkRegistrationStep' => \App\Http\Middleware\CheckRegistrationStep::class,
+            'restrictRegistrationStep2' => \App\Http\Middleware\RestrictRegistrationStep2::class
         ]);
 
     })

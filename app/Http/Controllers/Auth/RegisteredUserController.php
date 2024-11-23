@@ -94,6 +94,7 @@ class RegisteredUserController extends Controller
             // Update the profile picture path in the validated data
         } 
         $user->update([
+            'salutation' => $request->salutation,
             'middle_name' => $request->middle_name,
             'gender' => $request->gender,
             'country_id' => $request->country_id,
@@ -103,6 +104,7 @@ class RegisteredUserController extends Controller
             'college' => $request->college,
             'contact_number' => $request->contact_number,
             'birthdate' => $request->birthdate,
+            'profile_completed' => true,
         ]);
         // Trigger the registered event to send email verification
         event(new Registered($user));
