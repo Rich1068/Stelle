@@ -8,7 +8,10 @@
 @if(session('error'))
     <div class="alert alert-danger">{{ session('error') }}</div>
 @endif
-
+@php
+    $currentTime = \Carbon\Carbon::now('Asia/Manila');
+    $eventStartTime = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $event->start_date . ' ' . $event->start_time, 'Asia/Manila');
+@endphp
 <div class="event-view-container">
     <!-- Tab Navigation -->
     <div class="tabs">
@@ -145,10 +148,18 @@
             @if($userevent->user_id != Auth::user()->id)
                 @if ($participant && $participant->status_id == 1)
                     <p>You have been accepted to this event.</p>
+
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#qrCodeModal-{{ $participant->user_id }}">
+                        Show QR Code
+                    </button>
                 @elseif (
-                    (\Carbon\Carbon::now('Asia/Manila')->greaterThanOrEqualTo(\Carbon\Carbon::parse($event->start_date . ' ' . $event->start_time)) &&
-                    \Carbon\Carbon::now('Asia/Manila')->lessThanOrEqualTo(\Carbon\Carbon::parse($event->end_date . ' ' . $event->end_time))) || // Ongoing
-                    \Carbon\Carbon::now('Asia/Manila')->lessThanOrEqualTo(\Carbon\Carbon::parse($event->start_date . ' ' . $event->start_time)) // Before start
+                    (\Carbon\Carbon::now('Asia/Manila')->between(
+                        \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $event->start_date . ' ' . $event->start_time, 'Asia/Manila'),
+                        \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $event->end_date . ' ' . $event->end_time, 'Asia/Manila')
+                    )) || // Ongoing
+                    \Carbon\Carbon::now('Asia/Manila')->lessThan(
+                \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $event->start_date . ' ' . $event->start_time, 'Asia/Manila')
+                    ) // Before start
                 )
                     @if ($participant && $participant->status_id == 3)
                         <button type="button" class="btn btn-secondary" disabled>Pending</button>
@@ -171,7 +182,7 @@
             <button type="button" class="btn btn-secondary" id="evaluationAnsweredBtn" disabled>
                 Evaluation Form Already Answered
             </button>
-        @elseif (\Carbon\Carbon::now('Asia/Manila')->greaterThanOrEqualTo(\Carbon\Carbon::parse($event->start_date . ' ' . $event->start_time)))
+        @elseif ($currentTime->gte($eventStartTime))
             <form action="{{ route('evaluation-form.take', ['id' => $event->id, 'form' => $evaluationForm->form_id]) }}" method="GET" class="full-width-button">
                 @csrf
                 <button type="submit" class="btn btn-primary" style="margin-bottom: 10px;">Take Evaluation</button>
@@ -179,6 +190,7 @@
         @else
             <button type="button" class="btn btn-secondary" id="evaluationNotAvailableBtn" disabled>
                 Evaluation Not Yet Available
+                
             </button>     
         @endif
         
@@ -225,6 +237,12 @@
                     @if($pendingParticipantsCount > 0)
                         <span class="badge bg-danger pending-badge">{{ $pendingParticipantsCount }}</span>
                     @endif
+                </button>
+            </a>
+
+            <a href="{{ route('event.attendance-log', $event->id) }}" class="position-relative">
+                <button type="submit" class="btn btn-primary-2 position-relative">
+                    View Attendance Logs
                 </button>
             </a>
             @endif
@@ -346,7 +364,7 @@
 
 </div>
 @endif
-<!-- Modal for certificate viewing -->
+<!-- Modals -->
 @if($certificate)
 <div class="modal fade" id="certificateModal" tabindex="-1" aria-labelledby="certificateModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -432,6 +450,24 @@
         </div>
     </div>
 </div>
+@if ($participant && $participant->status_id == 1)
+<div class="modal fade" id="qrCodeModal-{{ $participant->user_id }}" tabindex="-1" aria-labelledby="qrCodeModalLabel-{{ $participant->user_id }}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="qrCodeModalLabel-{{ $participant->user_id }}">QR Code</h5>
+            </div>
+            <div class="modal-body text-center">
+                @if ($participant->qr_code)
+                    <img src="{{ asset($participant->qr_code) }}" alt="QR Code" class="img-fluid" />
+                @else
+                    <p>No QR Code available.</p>
+                @endif
+            </div>
+        </div>
+    </div>
+</div>
+@endif
 </div>
 <style>
     /* Main button container styles */
@@ -523,6 +559,7 @@
             });
         });
     });
+
    document.addEventListener('DOMContentLoaded', function () {
     const tabButtons = document.querySelectorAll('.tab-button');
     const tabPanes = document.querySelectorAll('.tab-pane');
@@ -891,6 +928,7 @@
     });
     // for disabling editing of eval form when its public
     document.addEventListener('DOMContentLoaded', function () {
+        @if($userevent->user_id == Auth::user()->id || Auth::user()->role_id == 1)
         const toggle = document.getElementById('is_active_toggle');
         const setupButton = document.getElementById('setupEvaluationFormButton');
 
@@ -907,8 +945,10 @@
                 setupButton.disabled = false; // Enable button when toggle is unchecked
             }
         });
+        @endif
     });
     document.addEventListener('DOMContentLoaded', function () {
+        @if($userevent->user_id == Auth::user()->id || Auth::user()->role_id == 1)
         const existingFormButton = document.querySelector('[data-target="#existingFormModal"]');
         const eventId = '{{ $event->id }}'; // Pass the event ID to JavaScript
         let shouldPoll = true; // Flag to control polling
@@ -953,6 +993,7 @@
 
         // Initial call to start polling
         checkHasAnswers();
+        @endif
     });
     document.getElementById('updateEvaluationForm').addEventListener('submit', function (e) {
         e.preventDefault(); // Prevent form submission for now

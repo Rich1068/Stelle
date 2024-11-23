@@ -150,7 +150,7 @@ Route::middleware('auth')->group(function () {
     route::get('/event/{id}', [EventController::class, 'view'])->name('event.view');
     Route::post('/event/{id}/join', [EventController::class, 'join'])->name('event.join');
     Route::get('/event/{id}/search-participants-list', [EventController::class, 'searchParticipants'])->name('event.search.participants.list');
-
+    Route::get('/event/{event}/qr/{token}', [EventController::class, 'handleQRCode'])->name('event.qr');
 });
 
 //check if user joined the event
@@ -177,6 +177,9 @@ Route::middleware(['auth', 'checkEventCreator'])->group(function () {
     Route::get('/events/{id}/has-answers', [EventController::class, 'hasAnswers'])->name('events.hasAnswers');
     Route::get('/event/{id}/get-participants', [EventController::class, 'getParticipants']);
     Route::get('/event/{id}/certificate-exists', [CertificateController::class, 'checkCertificateExists']);
+    
+    Route::get('/events/{id}/attendance-log', [EventController::class, 'showAttendanceLog'])->name('event.attendance-log');
+
 
     //eval forms
     Route::get('/event/{id}/event-evaluation-forms/create', [EvaluationFormController::class, 'event_create'])->name('event-evaluation-forms.create');
