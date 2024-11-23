@@ -310,17 +310,18 @@ body, html {
     
     .profile-edit-container {
         width: 80%; 
-        max-width: 80%; 
+        max-width: 100%; 
         margin: 0 auto; 
         padding: 20px; /* Adjusted padding for mobile */
         margin-top: 20px;
-        margin-bottom: 20px !important;
+   
+        
     }   
 
    
     .profile-edit-row {
         flex-direction: column; 
-        gap: 20px; 
+        gap: 5px; 
         align-items: center; 
     }
 
@@ -349,7 +350,7 @@ body, html {
     
     .profile-edit-label {
         font-size: 16px; 
-        margin-bottom: 10px; 
+
     }
 
     
@@ -373,7 +374,7 @@ body, html {
     /* Logo adjustments */
     .logo-sectionz img {
         width: 160px; /* Slightly bigger logo on mobile */
-        margin-top: 10px;
+ 
     }
 
     /* Image preview adjustments */
@@ -389,5 +390,9 @@ body, html {
 
     
     font-size: 12px;
+}
+#region-container, #province-container {
+    min-width: 400px; 
+    width: 100%; 
 }
 }

@@ -121,7 +121,7 @@
         <x-text-input id="college" name="college" type="text" class="profile-edit-input" :value="old('college', $user->college)" autofocus autocomplete="college" placeholder="Enter College/University" />
         <x-input-error class="profile-edit-error" :messages="$errors->get('college')" style="color:#ff3333;"/>
     </div>
-</div>
+</div>  
 
 <!-- Province & Region -->
 <div class="profile-edit-row">
