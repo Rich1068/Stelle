@@ -347,9 +347,12 @@ class EventController extends Controller
             $query->withTrashed(); // Include soft-deleted users
         }])
         ->paginate(10);
-
+        $attendanceLog = AttendanceLog::where('event_id', $id)
+            ->distinct()
+            ->pluck('user_id') // Get distinct user IDs of attendees
+            ->toArray();
         return response()->json([
-            'html' => view('event.partials.participantlist', compact('participants', 'event', 'userevent'))->render(),
+            'html' => view('event.partials.participantlist', compact('participants', 'event', 'userevent', 'attendanceLog'))->render(),
         ]);
     }////////////////////
 
@@ -567,7 +570,7 @@ class EventController extends Controller
                 }
             })
             ->paginate(10);
-    
+        
         return response()->json([
             'html' => view('event.partials.pendingparticipants', compact('participants', 'event'))->render(),
         ]);

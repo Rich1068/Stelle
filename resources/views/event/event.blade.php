@@ -225,7 +225,7 @@
             </div>
             
             <div id="participant-list-container">
-            @include('event.partials.participantlist', ['event' => $event, 'participants' => $participants, 'currentUser' => $currentUser, 'userevent' =>$userevent])
+            @include('event.partials.participantlist', ['event' => $event, 'participants' => $participants, 'currentUser' => $currentUser, 'userevent' =>$userevent, 'attendanceLog' => $attendanceLog])
             </div>
             @if ($currentUser == $userevent->user->id || Auth::user()->role_id == 1)
             @if($event->trashed())
@@ -948,7 +948,7 @@
         @endif
     });
     document.addEventListener('DOMContentLoaded', function () {
-        @if($userevent->user_id == Auth::user()->id || Auth::user()->role_id == 1)
+        @if($userevent->user_id == Auth::user()->id)
         const existingFormButton = document.querySelector('[data-target="#existingFormModal"]');
         const eventId = '{{ $event->id }}'; // Pass the event ID to JavaScript
         let shouldPoll = true; // Flag to control polling
