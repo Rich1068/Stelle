@@ -11,7 +11,7 @@
             background-color: #F99C9C; /* Fallback background color */
         }
         .outer {
-            background: linear-gradient(to bottom right, #F99C9C, #ACDFF6); /* Gradient background */
+            background: #aac2db;
             padding: 20px; /* Space around the container */
         }
         .container {

@@ -22,7 +22,7 @@
     </script>
     <style>
         body {
-            background-color: #f8f9fa;
+            background: #aac2db;
         }
         .white-container {
             background-color: white;

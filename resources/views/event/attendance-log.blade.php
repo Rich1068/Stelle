@@ -2,7 +2,12 @@
 
 @section('body')
 <div class="container-fluid">
-    <h1 class="my-4 text-left font-weight-bold">Event Attendance for {{ $event->title }}</h1>
+        <div class="top-container my-4">
+            <h2 class="font-weight-bold">
+                <i class="fas fa-calendar-alt"></i> Event Attendance for {{ $event->title }}
+            </h2>
+        </div>
+
 
     <div class="row">
         <!-- Left Side: QR Code Scanner -->
@@ -68,6 +73,69 @@
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         height: 200px;
     }
+
+.page-item.active .page-link {
+  background-color: transparent !important;
+  border-color: transparent !important;
+  color: inherit !important;
+  font-weight: normal !important;
+}
+
+.pagination {
+  margin-top: 20px !important;
+  padding-bottom: 40px !important;
+  display: flex !important;
+  justify-content: center !important;
+  list-style-type: none !important;
+  margin-top: 10px !important;
+  padding: 0 !important;
+  align-items: center !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.pagination a, .pagination span {
+  display: inline-block !important;
+  color: grey !important;
+  text-decoration: none !important;
+  background-color: transparent !important;
+  border: none !important;
+  padding: 10px 15px !important;
+  margin: 0 5px !important;
+  font-weight: 600 !important;
+  font-size: 1rem !important;
+}
+
+.pagination .active span {
+  background-color: darkblue !important;
+  color: white !important;
+  font-weight: 800 !important;
+  border-radius: 50% !important;
+}
+
+.pagination a:hover {
+  background-color: lightgray !important;
+  color: white !important;
+  border-radius: 50% !important;
+}
+
+@media (max-width: 768px) {
+  .pagination {
+    justify-content: center !important;
+    margin: auto !important;
+  }
+
+  .pagination a, .pagination span {
+    padding: 6px 8px !important;
+    font-size: 0.85rem !important;
+    margin: 0 3px !important; /* Closer numbers */
+  }
+
+  .pagination .active span {
+    font-weight: 700 !important;
+  }
+}
+
 
 </style>
 @endsection

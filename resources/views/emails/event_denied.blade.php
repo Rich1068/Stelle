@@ -12,7 +12,7 @@
             background-color: #F99C9C;
         }
         .outer {
-            background: linear-gradient(to bottom right, #F99C9C, #ACDFF6);
+            background: #aac2db;
             padding: 20px;
         }
         .container {
