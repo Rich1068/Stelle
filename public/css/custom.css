@@ -156,12 +156,7 @@ body, html {
 }
 
 /* For smaller mobile screens, make sure the button covers the full width */
-@media (max-width: 768px) {
-    .custom-button {
-        padding: 14px 24px; /* Adjust padding for smaller screens */
-        max-width: 90%; /* Button takes up 90% of the width */
-    }
-}
+
 
 /* Ensuring text stays in a straight line and not wrapping */
 .custom-button {
@@ -215,12 +210,7 @@ body, html {
     font-weight: bold;
 }
 
-/* For small screens */
-@media (max-width: 576px) {
-    .file-input-label {
-        width: 100%; /* Make the button full width on smaller screens */
-    }
-}
+
 
 
 /* Logo Section */
@@ -309,4 +299,95 @@ body, html {
     justify-content: center !important;
     align-items: center !important;
     text-align: center !important;
+}
+
+/* Mobile-specific adjustments */
+@media (max-width: 768px) {
+
+    .file-input-label {
+        width: 70%; /
+    }
+    
+    .profile-edit-container {
+        width: 80%; 
+        max-width: 80%; 
+        margin: 0 auto; 
+        padding: 20px; /* Adjusted padding for mobile */
+        margin-top: 20px;
+        margin-bottom: 20px !important;
+    }   
+
+   
+    .profile-edit-row {
+        flex-direction: column; 
+        gap: 20px; 
+        align-items: center; 
+    }
+
+   
+    .profile-edit-item {
+        width: 100%; 
+        max-width: 600px; 
+        margin-top: 20px; /* Add top margin */
+        margin-bottom: 15px; /* Space between items */
+        display: flex;
+        flex-direction: column; 
+        align-items: center; 
+    }
+
+    /* Input fields should be centered and large */
+    .profile-edit-input, .profile-edit-select, .profile-edit-textarea {
+        width: 80%; 
+        padding: 15px; 
+        margin-top: 10px; 
+        font-size: 16px; 
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        background-color: #f0f0f0; 
+    }
+
+    
+    .profile-edit-label {
+        font-size: 16px; 
+        margin-bottom: 10px; 
+    }
+
+    
+    .btn, .custom-button {
+        width: 100%; 
+        padding: 15px 25px; 
+        font-size: 18px; 
+    }
+
+    /* Add more top margin to the fields */
+    .profile-edit-item {
+        margin-top: 20px; /* More margin on top for fields */
+    }
+
+    
+    
+    .dividerz {
+        margin-top: 30px;
+    }
+
+    /* Logo adjustments */
+    .logo-sectionz img {
+        width: 160px; /* Slightly bigger logo on mobile */
+        margin-top: 10px;
+    }
+
+    /* Image preview adjustments */
+    .profile-edit-image-preview {
+        max-width: 60; 
+        height: auto;
+    }
+    .custom-button {
+    max-width: 95%;
+}
+
+.divider-text {
+
+    
+    font-size: 12px;
+}
 }
