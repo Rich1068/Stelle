@@ -15,7 +15,7 @@ body {
 .main-container {
     display: flex;
     background: white;
-    border-radius: 20px;
+    border-radius: 12px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     max-width: 900px;
     max-height: 680px; /* Adjusted height to reduce excess space */
@@ -607,12 +607,12 @@ body {
 @media (min-width: 769px) and (max-width: 1800px) {
     /* General adjustments for larger screens */
     .main-container {
-        width: 75% !important; /* Keep width as 75% */
+        width: 85% !important; /* Keep width as 75% */
         height: auto !important; /* Ensure height adjusts to content */
     }
 
     .login-container {
-        width: 50% !important; /* Slightly narrower login container */
+        width: 80% !important; /* Slightly narrower login container */
         padding: 5px !important; /* Further reduce padding */
         max-height: none !important; /* Ensure no height restriction */
     }
