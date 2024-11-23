@@ -62,7 +62,7 @@
         }
     </style>
 </head>
-<body style="background: linear-gradient(to bottom right, #F99C9C, #ACDFF6);">
+<body style="background: #aac2db;">
     <table width="100%" height="100%" cellpadding="0" cellspacing="0" border="0" style="min-height: 100vh; display: table;">
         <tr>
             <td align="center" valign="middle"> <!-- Center vertically -->

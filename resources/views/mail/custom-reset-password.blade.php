@@ -13,7 +13,7 @@
         }
     </style>
 </head>
-<body style="margin: 0; padding: 0; background: linear-gradient(to bottom right, #F99C9C, #ACDFF6) !important;">
+<body style="margin: 0; padding: 0; background: #aac2db;">
 
     <table width="100%" cellpadding="0" cellspacing="0" border="0" style="padding: 50px 0;">
         <tr>
