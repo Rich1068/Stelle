@@ -216,8 +216,11 @@
     /* Adjust button styles */
 
     .or-divider {
-        margin: 8px 0 !important; /* Reduce vertical space for the divider */
-    }
+  display: block; /* Ensures it respects margin rules */
+  margin: auto; /* Centers horizontally */
+  text-align: center; /* Centers the text "or" inside the div */
+  width: fit-content; /* Optional: makes the div shrink to its content */
+}
 
     /* Adjust the logo size */
     .stelle-logo {
