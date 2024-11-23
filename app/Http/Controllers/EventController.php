@@ -300,6 +300,11 @@ class EventController extends Controller
         $collegeLabels = $colleges->keys(); 
         $collegeCounts = $colleges->values();
 
+        $attendanceLog = AttendanceLog::where('event_id', $id)
+            ->distinct()
+            ->pluck('user_id') // Get distinct user IDs of attendees
+            ->toArray();
+
         return view('event.event', [
             'event' => $event,
             'userevent' => $userevent,
@@ -322,6 +327,7 @@ class EventController extends Controller
             'provinceCounts' => $provinceCounts,
             'collegeLabels'=> $collegeLabels,
             'collegeCounts'=> $collegeCounts,
+            'attendanceLog' => $attendanceLog,
         ]);
     }
 
@@ -341,8 +347,7 @@ class EventController extends Controller
             $query->withTrashed(); // Include soft-deleted users
         }])
         ->paginate(10);
-        Log::info('Participants Query:', ['search' => $search, 'participants' => $participants]);
-    
+
         return response()->json([
             'html' => view('event.partials.participantlist', compact('participants', 'event', 'userevent'))->render(),
         ]);
@@ -595,11 +600,11 @@ class EventController extends Controller
                 return back()->withErrors(['error' => 'Event capacity is full. Cannot accept more participants.']);
             }
             Log::info($currentParticipants);
-            $qrToken = Str::uuid()->toString();
+            $qrToken = Str::random(10);
             $qrPath = 'storage/images/qr_codes/' . $qrToken . '.png';
 
             $qrUrl = route('event.qr', ['event' => $eventId, 'token' => $qrToken]);
-            QrCode::format('png')->size(300)->generate($qrUrl, public_path($qrPath));
+            QrCode::format('png')->size(300)->margin(2)->generate($qrUrl, public_path($qrPath));
     
             // Save the QR code path to the participant
             $participant->update([
@@ -850,8 +855,76 @@ class EventController extends Controller
                 $query->withTrashed(); // Include users who may have been soft-deleted
             }])
             ->orderBy('scanned_at', 'desc')
-            ->paginate(10);
+            ->get();
     
         return view('event.attendance-log', compact('event', 'logs'));
+    }
+
+    public function fetchAttendanceLogs(Request $request, $id)
+    {
+        $columns = ['id', 'name', 'email', 'scanned_at'];
+
+        $totalRecords = AttendanceLog::where('event_id', $id)->count();
+
+        $query = AttendanceLog::where('event_id', $id)
+            ->with(['user' => function ($query) {
+                $query->withTrashed(); // Include soft-deleted users
+            }]);
+
+
+        // Apply global search filter
+        if (!empty($request->input('search.value'))) {
+            $searchValue = $request->input('search.value');
+            $query->whereHas('user', function ($q) use ($searchValue) {
+                $q->where('first_name', 'LIKE', "%{$searchValue}%")
+                  ->orWhere('last_name', 'LIKE', "%{$searchValue}%")
+                  ->orWhere('email', 'LIKE', "%{$searchValue}%");
+            });
+        }
+
+        // Count filtered records before pagination
+        $filteredRecords = $query->count();
+
+        // Apply ordering
+        if (!empty($request->input('order.0.column'))) {
+            $orderBy = $columns[$request->input('order.0.column')];
+            $direction = $request->input('order.0.dir', 'asc');
+        
+            // Handle ordering for related `user` fields
+            if ($orderBy === 'name') {
+                $query->join('users', 'attendance_logs.user_id', '=', 'users.id')
+                      ->orderByRaw("CONCAT(users.first_name, ' ', users.last_name) {$direction}");
+            } elseif ($orderBy === 'email') {
+                $query->join('users', 'attendance_logs.user_id', '=', 'users.id')
+                      ->orderBy("users.email", $direction);
+            } else {
+                $query->orderBy($orderBy, $direction);
+            }
+        }
+
+        // Apply pagination
+        $start = $request->input('start', 0);
+        $length = $request->input('length', 10);
+        $logs = $query->skip($start)->take($length)->get();
+
+        // Format data for DataTables
+        $data = [];
+        foreach ($logs as $index => $log) {
+            $isDeleted = $log->user && $log->user->trashed(); // Check if the user is soft-deleted
+            $data[] = [
+                'name' => $log->user
+                    ? $log->user->first_name . ' ' . $log->user->last_name . ($isDeleted ? ' (DELETED)' : '')
+                    : 'Unknown',
+                'email' => $log->user ? $log->user->email : 'N/A',
+                'scanned_at' => $log->scanned_at->timezone('Asia/Manila')->format('Y-m-d h:i:s A'),
+            ];
+        }
+
+        return response()->json([
+            'draw' => intval($request->input('draw')),
+            'recordsTotal' => $totalRecords,
+            'recordsFiltered' => $filteredRecords,
+            'data' => $data,
+        ]);
     }
 }

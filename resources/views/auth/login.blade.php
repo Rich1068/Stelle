@@ -296,7 +296,7 @@
         <div class="image-section">
             <img src="/images/illustration1.png" alt="Illustration" class="illustration">
             <p class="signup-text">Don't have an account? <a href="/register" class="signup-link">Sign Up Here</a></p>
-            <p class="signup-text">Chek Out The <a href="https://psite.org/r3/" class="signup-link">Official PSITE-CL Website</a></p>
+            <p class="signup-text">Check Out The <a href="https://psite.org/r3/" class="signup-link">Official PSITE-CL Website</a></p>
         </div>
 
         <!-- Login Form Section -->
