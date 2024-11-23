@@ -61,3 +61,9 @@ Route::middleware('auth')->group(function () {
 
 
 });
+
+Route::middleware(['auth', 'restrictRegistrationStep2'])->group(function () {
+    Route::get('/register/step2', [RegisteredUserController::class, 'showStep2'])->name('register.step2');
+    Route::post('/register/step2', [RegisteredUserController::class, 'registerStep2'])->name('register.step2.submit');
+
+});

@@ -19,29 +19,26 @@
     </div>
 
     <!-- Divider Section -->
-                    <div class="dividerz">
-                    <span class="divider-text">Please complete your registration by filling out all required fields</span>
-                </div>
-
-
+    <div class="dividerz">
+        <span class="divider-text">Please complete your registration by filling out all required fields</span>
+    </div>
             <!-- First Name & Middle Name -->
-            <div class="profile-edit-row">
-                <div class="profile-edit-item profile-edit-item-half">
-                    <x-input-label for="first_name" class="profile-edit-label">
-                        <i class="fas fa-user"></i> {{ __('First Name:') }}
-                    </x-input-label>
-                    <x-text-input id="first_name" name="first_name" type="text" class="profile-edit-input" :value="old('first_name', $user->first_name)" disabled  />
-                    <x-input-error class="profile-edit-error" :messages="$errors->get('first_name')" />
-                </div>
-                <div class="profile-edit-item profile-edit-item-half">
-                    <x-input-label for="middle_name" class="profile-edit-label">
-                        <i class="fas fa-user"></i> {{ __('Middle Name:') }}
-                    </x-input-label>
-                    <x-text-input id="middle_name" name="middle_name" type="text" class="profile-edit-input" :value="old('middle_name', $user->middle_name)" autofocus autocomplete="middle_name" placeholder="Enter Middle Name" />
-                    <x-input-error class="profile-edit-error" :messages="$errors->get('middle_name')" />
-                </div>
-            </div>
-
+    <div class="profile-edit-row">
+        <div class="profile-edit-item profile-edit-item-half">
+            <x-input-label for="first_name" class="profile-edit-label">
+                <i class="fas fa-user"></i> {{ __('First Name:') }}
+            </x-input-label>
+            <x-text-input id="first_name" name="first_name" type="text" class="profile-edit-input" :value="old('first_name', $user->first_name)" disabled  />
+            <x-input-error class="profile-edit-error" :messages="$errors->get('first_name')" />
+        </div>
+        <div class="profile-edit-item profile-edit-item-half">
+            <x-input-label for="middle_name" class="profile-edit-label">
+                <i class="fas fa-user"></i> {{ __('Middle Name:') }}
+            </x-input-label>
+            <x-text-input id="middle_name" name="middle_name" type="text" class="profile-edit-input" :value="old('middle_name', $user->middle_name)" autofocus autocomplete="middle_name" placeholder="Enter Middle Name" />
+            <x-input-error class="profile-edit-error" :messages="$errors->get('middle_name')" />
+        </div>
+    </div>
             <!-- Last Name & Salutation -->
             <div class="profile-edit-row">
                 <div class="profile-edit-item profile-edit-item-half">
@@ -128,7 +125,8 @@
 
 <!-- Province & Region -->
 <div class="profile-edit-row">
-    <div class="profile-edit-item profile-edit-item-half" id="region-container" style="display: none;">
+    <!-- Region Field -->
+    <div class="custom profile-edit-item-half" id="region-container" style="display: none;">
         <x-input-label for="region" class="profile-edit-label">
             <i class="fas fa-map"></i> {{ __('Region:') }} <span style="color:#ff3333;">*</span>
         </x-input-label>
@@ -140,17 +138,18 @@
                 </option>
             @endforeach
         </select>
-        <x-input-error :messages="$errors->get('region_id')" class="profile-edit-error" style="color:#ff3333;"/>
+        <x-input-error :messages="$errors->get('region_id')" class="profile-edit-error" style="color:#ff3333;" />
     </div>
 
-    <div class="profile-edit-item profile-edit-item-half" id="province-container" style="display: none;">
+    <!-- Province Field -->
+    <div class="custom profile-edit-item-half" id="province-container" style="display: none;">
         <x-input-label for="province" class="profile-edit-label">
             <i class="fas fa-map-pin"></i> {{ __('Province:') }} <span style="color:#ff3333;">*</span>
         </x-input-label>
         <select id="province" name="province_id" class="profile-edit-select">
             <option value="">{{ __('Select Province') }}</option>
         </select>
-        <x-input-error :messages="$errors->get('province_id')" class="profile-edit-error" style="color:#ff3333;"/>
+        <x-input-error :messages="$errors->get('province_id')" class="profile-edit-error" style="color:#ff3333;" />
     </div>
 </div>
 
@@ -180,18 +179,37 @@
         <x-input-error class="profile-edit-error" :messages="$errors->get('profile_picture')" />
     </div>
 </div>
-
-
             <!-- Submit Button -->
-                        <div class="profile-edit-item profile-edit-item-full">
+            <div class="profile-edit-item profile-edit-item-full">
                 <button type="submit" class="profile-edit-button custom-button">
                     {{ __('Complete Registration') }}
                 </button>
-            </div>
+                <hr>
 
-        </div>
     </form>
-
+            <form method="POST" action="{{ route('logout') }}" class="mt-2">
+                @csrf
+                <span class="text-sm logout-span" style="cursor: pointer;" onclick="this.closest('form').submit();">
+                    {{ __('Log Out') }}
+                </span>
+            </form>
+    </div>
+</div>
+<style>
+    #region-container,
+    #province-container {
+        display: none; !important 
+    }
+    .custom {
+        flex-direction: column !important;
+        justify-content: center !important;
+        align-items: center !important;
+        text-align: center !important;
+        flex: 0 0 45%;
+        max-width: 40%;
+        margin-bottom: 10px;
+    }
+</style>
 <script>
 function previewImage(event) {
     const file = event.target.files[0];
@@ -230,37 +248,47 @@ function previewImage(event) {
 function loadProvinces(regionId, selectedProvince = null) {
     const provinceSelect = document.getElementById('province');
 
-    if (regionId) {
+    if (regionId && !isNaN(regionId)) {
         fetch(`/get-provinces/${regionId}`)
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP Error: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(data => {
-                provinceSelect.innerHTML = '<option value="">{{ __('Select Province') }}</option>'; // Reset provinces
-                data.forEach(province => {
-                    const option = document.createElement('option');
-                    option.value = province.id;
-                    option.textContent = province.provDesc;
-                    if (selectedProvince && selectedProvince == province.id) {
-                        option.selected = true; // Set the selected province
-                    }
-                    provinceSelect.appendChild(option);
-                });
+                provinceSelect.innerHTML = '<option value="">Select Province</option>'; // Reset provinces
+                if (data.length > 0) {
+                    data.forEach(province => {
+                        const option = document.createElement('option');
+                        option.value = province.id;
+                        option.textContent = province.provDesc;
+                        if (selectedProvince && selectedProvince == province.id) {
+                            option.selected = true;
+                        }
+                        provinceSelect.appendChild(option);
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching provinces:', error);
+                provinceSelect.innerHTML = '<option value="">Failed to load provinces</option>';
             });
     } else {
-        provinceSelect.innerHTML = '<option value="">{{ __('Select Province') }}</option>'; // Reset province if no region is selected
+        provinceSelect.innerHTML = '<option value="">Select Province</option>'; // Reset province
     }
 }
-
 
 function handleCountryChange(countryId, selectedRegion = null, selectedProvince = null) {
     const regionContainer = document.getElementById('region-container');
     const provinceContainer = document.getElementById('province-container');
 
-    // Show region and province if country is the Philippines (replace '177' with the actual ID for Philippines)
+    // Show region and province if country is Philippines (ID = 177)
     if (countryId == '177') {
         regionContainer.style.display = 'block';
         provinceContainer.style.display = 'block';
 
-        // If region is already selected (on page load), load provinces
+        // Load provinces if a region is pre-selected
         if (selectedRegion) {
             document.getElementById('region').value = selectedRegion;
             loadProvinces(selectedRegion, selectedProvince);
@@ -268,26 +296,26 @@ function handleCountryChange(countryId, selectedRegion = null, selectedProvince 
     } else {
         regionContainer.style.display = 'none';
         provinceContainer.style.display = 'none';
-        document.getElementById('region').value = ''; // Reset region
-        document.getElementById('province').innerHTML = '<option value="">{{ __('Select Province') }}</option>'; // Reset province
+        document.getElementById('region').value = ''; // Reset region dropdown
+        document.getElementById('province').innerHTML = '<option value="">Select Province</option>'; // Reset province dropdown
     }
 }
 
 document.addEventListener('DOMContentLoaded', function () {
     const countrySelect = document.getElementById('country');
-    const selectedCountry = countrySelect.value; // Pre-selected country
-    const selectedRegion = "{{ old('region_id', $user->region_id) }}"; // Pre-selected region from server
-    const selectedProvince = "{{ old('province_id', $user->province_id) }}"; // Pre-selected province from server
+    const selectedCountry = countrySelect.value; // Get pre-selected country ID
+    const selectedRegion = "{{ old('region_id', $user->region_id) }}";
+    const selectedProvince = "{{ old('province_id', $user->province_id) }}";
 
-    // Handle initial load (pre-selected country, region, and province)
+    // Trigger initial load for hiding/showing fields
     handleCountryChange(selectedCountry, selectedRegion, selectedProvince);
 
-    // Event listener for country change
+    // Add event listener for country dropdown change
     countrySelect.addEventListener('change', function () {
         handleCountryChange(this.value);
     });
 
-    // Event listener for region change
+    // Add event listener for region dropdown change
     document.getElementById('region').addEventListener('change', function () {
         const regionId = this.value;
         loadProvinces(regionId);

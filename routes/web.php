@@ -33,8 +33,11 @@ Route::get('/auth/google/callback', [GoogleController::class, 'googlecallback'])
 
 Route::get('/account-deleted', [ProfileController::class, 'accountDeleted'])->name('account.deleted');
 
+Route::middleware(['auth'])->group(function () {
+    Route::get('/get-provinces/{regionId}', [ProfileController::class, 'getProvinces']);
+});
 //check if logged in
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'checkRegistrationStep'])->group(function () {
     Route::get('/get-events', [EventController::class, 'getCalendarEvents'])->name('events.get');
     Route::get('/get-adminevents', [EventController::class, 'getAdminOnlyEvents'])->name('adminevents.get');
     Route::get('/profile/MyCertificates', [ProfileController::class, 'myCertificates'])->name('profile.mycertificates');
@@ -43,7 +46,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile/{id}', [ProfileController::class, 'view'])->name('profile.view');
     Route::patch('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
     // Route::delete('/profile/destroy', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/get-provinces/{regionId}', [ProfileController::class, 'getProvinces']);
     Route::get('/help', [UserController::class, 'help'])->name('help.page');
 });
 
@@ -51,7 +53,7 @@ require __DIR__.'/auth.php';
 
 
 //super admin
-Route::middleware(['auth','super_admin'])->group(function () {
+Route::middleware(['auth','super_admin', 'checkRegistrationStep'])->group(function () {
 
     route::get('/super-admin/dashboard', [SuperAdminController::class, 'index'])->middleware('verified')->name('super_admin.dashboard');
     route::get('/super-admin/userlist',[SuperAdminController::class,'userlist'])->name('super_admin.userlist');
@@ -73,7 +75,7 @@ Route::middleware(['auth','super_admin'])->group(function () {
 });
 
 //admin
-Route::middleware(['auth','admin'])->group(function () {
+Route::middleware(['auth','admin', 'checkRegistrationStep'])->group(function () {
 
     route::get('/admin/dashboard', [AdminController::class, 'index'])->middleware('verified')->name('admin.dashboard');
     Route::get('/admin/dashboard/get-events-data', [AdminController::class, 'getAdminCreatedEventsData'])->name('admin.getEventsData');
@@ -81,7 +83,7 @@ Route::middleware(['auth','admin'])->group(function () {
     
 });
 //user
-Route::middleware(['auth','user'])->group(function () {
+Route::middleware(['auth','user', 'checkRegistrationStep'])->group(function () {
     route::get('/user/dashboard', [UserController::class, 'index'])->middleware('verified')->name('user.dashboard');
     Route::get('/user/dashboard/events-data', [UserController::class, 'getEventsData']);
 });
@@ -92,7 +94,7 @@ route::get('/unauthorized', function () {
 
 
 //check role if super admin or admin
-Route::middleware(['auth', 'checkRole:1,2'])->group(function () {
+Route::middleware(['auth', 'checkRole:1,2', 'checkRegistrationStep'])->group(function () {
     Route::get('/profile/{id}/events-data', [ProfileController::class, 'getEventsData'])->name('profile.eventsData');
     Route::get('/profile/{id}/events-created-data', [ProfileController::class, 'getEventsCreatedData'])->name('profile.getAdminCreatedEventsData');
     Route::get('/profile/{id}/events-joined-data', [ProfileController::class, 'getEventsJoinedData'])->name('profile.getAdminJoinedEventsData');
@@ -141,7 +143,7 @@ Route::middleware(['auth', 'checkRole:1,2'])->group(function () {
 
 
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'checkRegistrationStep'])->group(function () {
 
 
     //overall event view and join
@@ -154,7 +156,7 @@ Route::middleware('auth')->group(function () {
 });
 
 //check if user joined the event
-Route::middleware(['auth','checkUserJoinedEvent'])->group(function () {
+Route::middleware(['auth','checkUserJoinedEvent', 'checkRegistrationStep'])->group(function () {
     //Answer event form
     Route::get('/event/{id}/evaluation-form/{form}/take', [EvaluationFormController::class, 'take'])->name('evaluation-form.take');
     Route::post('/event/{id}/submit-evaluation', [EvaluationFormController::class, 'submit'])->name('evaluation-form.submit');
@@ -162,7 +164,7 @@ Route::middleware(['auth','checkUserJoinedEvent'])->group(function () {
 });
 
 //checks the creator of event
-Route::middleware(['auth', 'checkEventCreator'])->group(function () {
+Route::middleware(['auth', 'checkEventCreator', 'checkRegistrationStep'])->group(function () {
 
     //update event info
     route::get('/event/{id}/edit', [EventController::class, 'edit'])->name('event.edit');
@@ -196,7 +198,7 @@ Route::middleware(['auth', 'checkEventCreator'])->group(function () {
 });
 
 //check role if user
-Route::middleware(['auth', 'checkRole:3'])->group(function () {
+Route::middleware(['auth', 'checkRole:3', 'checkRegistrationStep'])->group(function () {
     Route::post('/register-admin', [ProfileController::class, 'registerAdmin'])->name('register.admin');
 });
 
