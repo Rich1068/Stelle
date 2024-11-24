@@ -68,6 +68,59 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
 
 <style>
+    /* General table styles */
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch; 
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  word-wrap: break-word; 
+}
+
+.table th, .table td {
+  text-align: center;
+  vertical-align: middle;
+  word-break: break-word; 
+  font-size: 1rem; 
+  padding: 8px;
+}
+
+
+@media (max-width: 768px) {
+  .table th, .table td {
+    font-size: 0.85rem; 
+    padding: 6px; 
+  }
+
+  .table th {
+    font-weight: bold; 
+    background-color: #f8f9fa; 
+  }
+
+  .table td {
+    white-space: normal; 
+  }
+}
+
+
+@media (max-width: 576px) {
+  .table th, .table td {
+    font-size: 0.8rem; 
+    padding: 4px; 
+  }
+}
+
+
+@media (min-width: 992px) {
+  .table th, .table td {
+    font-size: 1.1rem; 
+    padding: 10px;
+  }
+}
+
     #qrScanner {
         border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
