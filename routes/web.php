@@ -145,7 +145,6 @@ Route::middleware(['auth', 'checkRole:1,2', 'checkRegistrationStep'])->group(fun
 
 Route::middleware(['auth', 'checkRegistrationStep'])->group(function () {
 
-
     //overall event view and join
     route::resource('events', EventController::class);
     route::get('/events', [EventController::class, 'list'])->name('event.list');
@@ -153,6 +152,8 @@ Route::middleware(['auth', 'checkRegistrationStep'])->group(function () {
     Route::post('/event/{id}/join', [EventController::class, 'join'])->name('event.join');
     Route::get('/event/{id}/search-participants-list', [EventController::class, 'searchParticipants'])->name('event.search.participants.list');
     Route::get('/event/{event}/qr/{token}', [EventController::class, 'handleQRCode'])->name('event.qr');
+
+
 });
 
 //check if user joined the event

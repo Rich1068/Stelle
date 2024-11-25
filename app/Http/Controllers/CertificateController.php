@@ -429,6 +429,7 @@ class CertificateController extends Controller
             foreach ($data as $certData) {
                 $userId = $certData['userId'];
                 $imageData = $certData['imageData'];
+                $uniqueId = $certData['uniqueId'] ?? null;
 
                 if (in_array($userId, $existingCertUsers)) {
                     continue; // Skip if certificate already exists for this user
@@ -443,7 +444,7 @@ class CertificateController extends Controller
                 if ($hasPlaceholder) {
                     // Generate personalized filename for each user
                     $lastName = preg_replace('/[^a-zA-Z0-9]/', '', $user->last_name);
-                    $fileName = $lastName . '-' . $event_id . '_' . uniqid() . '_certificate.png';
+                    $fileName = $lastName . '-' . $event_id . '-' . $uniqueId . '.png';
                     $imagePath = 'images/certificates/' . $fileName;
                     $certPath = 'storage/' . $imagePath;
 
@@ -458,6 +459,7 @@ class CertificateController extends Controller
                     'user_id' => $userId,
                     'cert_id' => $certificate->id,
                     'cert_path' => $certPath,
+                    'unique_id' => $uniqueId,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ];
@@ -544,5 +546,7 @@ class CertificateController extends Controller
         $exists = Certificate::where('event_id', $eventId)->exists();
         return response()->json(['exists' => $exists]);
     }
+////////////////////////////////////////////////////////////////////////////
+
 
 }

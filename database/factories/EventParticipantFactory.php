@@ -16,7 +16,7 @@ class EventParticipantFactory extends Factory
         static $userIds = null;
 
         if ($userIds === null) {
-            $userIds = User::whereBetween('id', [3, 50])->pluck('id')->shuffle();
+            $userIds = User::whereBetween('id', [10, 50])->pluck('id')->shuffle();
         }
 
         // Use Sequence to assign a unique user_id for each EventParticipant

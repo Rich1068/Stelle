@@ -31,10 +31,11 @@ class UserFactory extends Factory
             'email' => $this->faker->unique()->safeEmail,
             'email_verified_at' => now(),
             'password' => Hash::make('password'), // Default password for seeded users
-            'role_id' => 3, // Random existing role
+            'role_id' => 3,
             'gender' => $this->faker->randomElement(['male', 'female']),
             'birthdate' => $this->faker->date,
             'contact_number' => $this->faker->phoneNumber,
+            'profile_completed' => true,
         ];
     }
 

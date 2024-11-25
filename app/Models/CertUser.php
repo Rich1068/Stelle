@@ -11,7 +11,8 @@ class CertUser extends Model
     protected $fillable = [
         'cert_id',
         'user_id',
-        'cert_path'
+        'cert_path',
+        'unique_id'
     ];
 
     public function user()

@@ -39,7 +39,7 @@ if (csrfTokenMetaTag) {
 }
 
 const store = createStore({
-  key: 'yLE9pwerTxIv_NjfzWbr',
+  key: import.meta.env.VITE_POLOTNO_API_KEY,
   showCredit: true,
 });
 

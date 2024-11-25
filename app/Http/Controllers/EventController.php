@@ -627,24 +627,28 @@ class EventController extends Controller
     }
 
 
-    public function removeParticipant($id, $user)
+    public function removeParticipant($id, $userId)
     {
+        // Retrieve the participant, including soft-deleted users
         $participant = EventParticipant::where('event_id', $id)
-                        ->where('user_id', $user)
+                        ->where('user_id', $userId)
                         ->first();
-    
+        
         if ($participant) {
             // Set status_id to 2 to mark as removed
             $participant->status_id = 2;
             $participant->save();
-
-            $user = $participant->user; // Assuming the relationship exists
-            $eventDetails = Event::findOrFail($id);
-            event(new UserRemovedFromEvent($user, $eventDetails));
     
+            // Retrieve the user, including soft-deleted ones
+            $user = User::withTrashed()->find($userId); // Make sure to include soft-deleted users
+            $eventDetails = Event::findOrFail($id);
+    
+            // Fire the removal event
+            event(new UserRemovedFromEvent($user, $eventDetails));
+        
             return response()->json(['success' => true]);
         }
-    
+        
         return response()->json(['success' => false, 'message' => 'Participant not found.'], 404);
     }
 
@@ -663,9 +667,9 @@ class EventController extends Controller
             ->get()
             ->map(function ($participant) {
                 // Concatenate user's first, middle, and last name
-                $fullName = $participant->user->first_name . ' ' .
-                            ($participant->user->middle_name ?? '') . ' ' .
-                            $participant->user->last_name;
+                $fullName = $participant->user->first_name .
+                    ($participant->user->middle_name ? ' ' . $participant->user->middle_name : '') .
+                    ' ' . $participant->user->last_name;
 
                 return [
                     'full_name' => trim($fullName), // Actual full name without (DELETED)

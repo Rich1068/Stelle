@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Classes, Dialog, Checkbox } from '@blueprintjs/core';
 import axios from 'axios';
+import { createStore } from 'polotno/model/store';
+import { v4 as uuidv4 } from 'uuid';
 
 // Loading Modal Component
 const LoadingModal = ({ isOpen }) => (
@@ -86,121 +88,206 @@ const ExportModal = ({ isOpen, store, onClose, eventId, showLoadingModal }) => {
   // PREVIEW
   const handleGenerate = async () => {
     if (selectedNames.length === 0) {
-      alert('Please select at least one user before generating the preview.');
+      alert("Please select at least one user before generating the preview.");
       return;
     }
   
     setLoading(true);
     const originalJson = JSON.parse(JSON.stringify(store.toJSON())); // Deep clone the JSON
-    
-    // Check if {{name}} exists in the JSON
-    const namePlaceholderExists = JSON.stringify(originalJson).includes('{{name}}');
-    
+  
     const newImages = [];
   
     try {
-      if (namePlaceholderExists) {
-        // If {{name}} placeholder exists, generate a separate preview for each selected name
-        const modifiedJsons = selectedNames.map(name => {
-          const jsonCopy = JSON.parse(JSON.stringify(originalJson));
-          jsonCopy.pages.forEach(page => {
-            page.children.forEach(element => {
-              if (element.type === 'text' && element.text.includes('{{name}}')) {
-                element.text = element.text.replace('{{name}}', name);
+      // Check if {{name}} exists in the JSON
+      const namePlaceholderExists = JSON.stringify(originalJson).includes("{{name}}");
+  
+      // Prepare modified JSONs
+      const modifiedJsons = selectedNames.map((name, index) => {
+        const jsonCopy = JSON.parse(JSON.stringify(originalJson));
+  
+        jsonCopy.pages.forEach((page) => {
+          // Replace {{name}} placeholder only if it exists
+          if (namePlaceholderExists) {
+            page.children.forEach((element) => {
+              if (element.type === "text" && element.text.includes("{{name}}")) {
+                element.text = element.text.replace("{{name}}", name);
               }
             });
-          });
-          return jsonCopy;
+          }
+  
+          // Generate a random unique ID using uuid
+          const uniqueId = uuidv4();
+  
+          // Add a background box for the unique ID
+          const idBackground = {
+            id: `uniqueIdBg-${index}`, // Unique ID for the background box
+            type: "figure",
+            name: "rectangle",
+            x: 0, // Adjust X position
+            y: jsonCopy.height - (jsonCopy.height * 0.03), // Adjust Y position for the background
+            width: jsonCopy.width * 0.4, 
+            height: jsonCopy.height * 0.03, // 3% of the canvas height
+            fill: "rgba(0, 0, 0, 0.7)", // Semi-transparent black background
+            draggable: false,
+            selectable: false,
+          };
+  
+          // Add the unique ID text
+          const idText = {
+            id: `uniqueId-${index}`, // Unique ID for the text
+            type: "text",
+            x: jsonCopy.width * 0.02, // 2% margin from the left edge of the canvas
+            y: jsonCopy.height - (jsonCopy.height * 0.026), // Slightly above the background box center
+            width: jsonCopy.width * 0.35, // Slightly smaller than the background box width
+            height: jsonCopy.height * 0.02, // Height based on canvas size
+            text: `ID: CERT-${uniqueId}`, // Unique ID text
+            fontSize: jsonCopy.width * 0.015, // Font size relative to canvas height
+            fontFamily: "Roboto",
+            fill: "white", // High-contrast text color
+            align: "left", // Align text
+            verticalAlign: "middle",
+            draggable: false,
+            selectable: false,
+            alwaysOnTop: true,
+          };
+  
+          // Add the elements to the page
+          page.children.push(idBackground);
+          page.children.push(idText);
         });
   
-        // Loop through each modified JSON and generate the preview image
-        for (const json of modifiedJsons) {
-          await store.loadJSON(json);
-          await store.waitLoading();
-          const dataURL = await store.toDataURL();
-          newImages.push(dataURL);
-        }
-      } else {
-        // If {{name}} placeholder does not exist, generate only one preview
-        await store.loadJSON(originalJson);
+        return jsonCopy;
+      });
+  
+      // Render images from modified JSONs
+      for (const json of modifiedJsons) {
+        await store.loadJSON(json); // Load the modified JSON
         await store.waitLoading();
-        const dataURL = await store.toDataURL();
-        newImages.push(dataURL);
+        const dataURL = await store.toDataURL(); // Generate the image
+        newImages.push(dataURL); // Store the generated image
       }
   
-      setImages(newImages);
+      setImages(newImages); // Update the state with all generated images
     } catch (error) {
-      alert('Something went wrong while generating previews.');
-      console.error('Error in preview generation:', error);
+      alert("Something went wrong while generating previews.");
+      console.error("Error in preview generation:", error);
     } finally {
       setLoading(false);
       await store.loadJSON(originalJson); // Restore original JSON after previews
       await store.waitLoading();
     }
   };
+  
 
+  
   const handleGenerateAndSave = async () => {
     if (selectedNames.length === 0) {
-      alert('Please select at least one user before sending the certificate.');
+      alert("Please select at least one user before sending the certificate.");
       return;
     }
+  
     try {
       // Check if a certificate exists for the event
       const certificateExistsResponse = await axios.get(`/event/${eventId}/certificate-exists`);
       if (!certificateExistsResponse.data.exists) {
-        alert('No certificate has been saved for this event. Please save a certificate before sending.');
+        alert("No certificate has been saved for this event. Please save a certificate before sending.");
         return;
       }
     } catch (error) {
-      console.error('Error checking certificate existence:', error);
-      alert('An error occurred while verifying the certificate.');
+      console.error("Error checking certificate existence:", error);
+      alert("An error occurred while verifying the certificate.");
       return;
     }
+  
     setLoading(true);
     showLoadingModal(true);
   
     const originalJson = JSON.parse(JSON.stringify(store.toJSON())); // Clone the JSON once
-    const certificateData = []; // Array to store data for batch saving
+    let certificateData = [];
   
     // Check if {{name}} exists in the JSON
-    const namePlaceholderExists = JSON.stringify(originalJson).includes('{{name}}');
+    const namePlaceholderExists = JSON.stringify(originalJson).includes("{{name}}");
   
     try {
       if (namePlaceholderExists) {
-        // If {{name}} placeholder exists, generate a unique certificate for each user
-        for (const name of selectedNames) {
-          const modifiedJson = JSON.parse(JSON.stringify(originalJson)); // Deep clone JSON
+        // Generate personalized certificates in parallel
+        const promises = selectedNames.map(async (name, index) => {
+          const modifiedJson = JSON.parse(JSON.stringify(originalJson)); // Clone the JSON for modification
+          const uniqueId = `CERT-${uuidv4()}`; // Generate a unique ID for the certificate
+  
           modifiedJson.pages.forEach((page) => {
-            page.children = page.children.map((element) => {
-              if (element.type === 'text' && element.text.includes('{{name}}')) {
-                return { ...element, text: element.text.replace('{{name}}', name) };
+            // Replace {{name}} placeholder
+            page.children.forEach((element) => {
+              if (element.type === "text" && element.text.includes("{{name}}")) {
+                element.text = element.text.replace("{{name}}", name);
               }
-              return element;
             });
+  
+            // Add a background box for the unique ID
+            const idBackground = {
+              id: `uniqueIdBg-${index}`, // Unique ID for the background box
+              type: "figure",
+              name: "rectangle",
+              x: 0, // Adjust X position
+              y: modifiedJson.height - (modifiedJson.height * 0.03), // Adjust Y position for the background
+              width: modifiedJson.width * 0.4, 
+              height: modifiedJson.height * 0.03, // 3% of the canvas height
+              fill: "rgba(0, 0, 0, 0.7)", // Semi-transparent black background
+              draggable: false,
+              selectable: false,
+            };
+    
+            // Add the unique ID text
+            const idText = {
+              id: `uniqueId-${index}`, // Unique ID for the text
+              type: "text",
+              x: modifiedJson.width * 0.02, // 2% margin from the left edge of the canvas
+              y: modifiedJson.height - (modifiedJson.height * 0.026), // Slightly above the background box center
+              width: modifiedJson.width * 0.35, // Slightly smaller than the background box width
+              height: modifiedJson.height * 0.02, // Height based on canvas size
+              text: `ID: ${uniqueId}`, // Unique ID text
+              fontSize: modifiedJson.width * 0.015, // Font size relative to canvas height
+              fontFamily: "Roboto",
+              fill: "white", // High-contrast text color
+              align: "left", // Align text
+              verticalAlign: "middle",
+              draggable: false,
+              selectable: false,
+              alwaysOnTop: true,
+            };
+  
+            // Add the background and text to the page
+            page.children.push(idBackground);
+            page.children.push(idText);
           });
   
+          // Load modified JSON into the Polotno store
           await store.loadJSON(modifiedJson);
           await store.waitLoading();
+          const dataURL = await store.toDataURL(); // Generate the image
   
-          const dataURL = await store.toDataURL();
           const userId = getUserIdByName(name);
+          return { userId, imageData: dataURL, uniqueId }; // Include uniqueId in the data
+        });
   
-          certificateData.push({ userId, imageData: dataURL });
-        }
+        certificateData = await Promise.all(promises);
       } else {
-        // If no {{name}} placeholder, generate one certificate for all selected users
+        // Generate shared certificate
+        const uniqueId = `CERT-${uuidv4()}`; // Generate a single unique ID for the shared certificate
+  
         await store.loadJSON(originalJson);
         await store.waitLoading();
-        const dataURL = await store.toDataURL(); // Store single certificate dataURL
+        const dataURL = await store.toDataURL();
   
-        // Use the same certificate for each user
-        for (const name of selectedNames) {
-          const userId = getUserIdByName(name);
-          certificateData.push({ userId, imageData: dataURL });
-        }
+        // Use shared certificate for all participants
+        certificateData = selectedNames.map((name) => ({
+          userId: getUserIdByName(name),
+          imageData: dataURL,
+          uniqueId, // Same ID for all users
+        }));
       }
   
-      // Send all certificates in a single request
+      // Send certificates to backend
       const response = await axios.post(`/event/${eventId}/participants/send-certificates`, {
         data: certificateData,
       });
@@ -208,15 +295,15 @@ const ExportModal = ({ isOpen, store, onClose, eventId, showLoadingModal }) => {
       setLoading(false);
       showLoadingModal(false);
   
-      if (response.data && response.data.message === 'Certificates sent successfully!') {
+      if (response.data && response.data.message === "Certificates sent successfully!") {
         setTimeout(() => {
-          alert('Certificates sent successfully!');
+          alert("Certificates sent successfully!");
         }, 300);
       }
     } catch (error) {
-      console.error('Error generating and saving certificates:', error);
+      console.error("Error generating and saving certificates:", error);
     } finally {
-      await store.loadJSON(originalJson); // Reset to the original JSON after completion
+      await store.loadJSON(originalJson); // Reset the Polotno store to the original JSON
       await store.waitLoading();
     }
   };
