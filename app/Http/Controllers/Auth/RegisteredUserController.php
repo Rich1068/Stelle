@@ -74,7 +74,6 @@ class RegisteredUserController extends Controller
         $request->validate([
             'middle_name' => ['nullable', 'string', 'max:255'],
             'profile_picture' => ['nullable', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
-            'salutation' => ['nullable', 'string', 'max:255'],
             'gender' => ['required', 'string', 'in:male,female'],
             'country_id' => ['required', 'int'],
             'region_id' => ['nullable', 'int', 'required_if:country_id,177'], 
@@ -94,7 +93,6 @@ class RegisteredUserController extends Controller
             // Update the profile picture path in the validated data
         } 
         $user->update([
-            'salutation' => $request->salutation,
             'middle_name' => $request->middle_name,
             'gender' => $request->gender,
             'country_id' => $request->country_id,

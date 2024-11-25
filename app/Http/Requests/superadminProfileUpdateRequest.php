@@ -21,14 +21,13 @@ class superadminProfileUpdateRequest extends FormRequest
             'middle_name' => ['nullable', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255',Rule::unique(User::class)->ignore($this->route('id'))],
             'profile_picture' => ['nullable', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
-            'gender' => ['nullable', 'string', 'in:male,female'],
-            'country_id' => ['nullable', 'int'],
+            'gender' => ['required', 'string', 'in:male,female'],
+            'country_id' => ['required', 'int'],
             'region_id' => ['nullable', 'int'],
             'province_id' => ['nullable', 'int'],
-            'description' => ['nullable', 'string', 'max:255'],
             'college' => ['nullable', 'string', 'max:255'],
-            'contact_number' => ['nullable', 'string', 'max:11', 'regex:/^[\d\-]+$/'],
-            'birthdate' => ['nullable', 'date', 'before:today', 'after:1900-01-01'],
+            'contact_number' => ['required', 'string', 'max:11', 'regex:/^[\d\-]+$/'],
+            'birthdate' => ['required', 'date', 'before:today', 'after:1900-01-01'],
         ];
     }
 }

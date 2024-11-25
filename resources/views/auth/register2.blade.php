@@ -49,34 +49,23 @@
                     <x-input-error class="profile-edit-error" :messages="$errors->get('last_name')" />
                 </div>
                 <div class="profile-edit-item profile-edit-item-half">
-                    <x-input-label for="salutation" class="profile-edit-label">
-                        <i class="fas fa-user"></i> {{ __('Salutation:') }}
-                    </x-input-label>
-                    <x-text-input id="salutation" name="salutation" type="text" class="profile-edit-input" :value="old('salutation', $user->salutation)" autofocus autocomplete="salutation" placeholder="Example: Dr., Mr., Ms. "   />
-                    <x-input-error class="profile-edit-error" :messages="$errors->get('salutation')" />
-                </div>
-            </div>
-
-            <!-- Email & Contact Number -->
-            <div class="profile-edit-row">
-                <div class="profile-edit-item profile-edit-item-half">
                     <x-input-label for="email" class="profile-edit-label">
                         <i class="fas fa-envelope"></i> {{ __('Email:') }}
                     </x-input-label>
                     <x-text-input id="email" name="email" type="email" class="profile-edit-input" :value="old('email', $user->email)" disabled  />
                     <x-input-error class="profile-edit-error" :messages="$errors->get('email')" />
                 </div>
+            </div>
+
+            <!-- Email & Contact Number -->
+            <div class="profile-edit-row">
                 <div class="profile-edit-item profile-edit-item-half">
                     <x-input-label for="contact_number" class="profile-edit-label">
                         <i class="fas fa-phone"></i> {{ __('Contact Number:') }} <span style="color:#ff3333;">*</span>
                     </x-input-label>
-                    <x-text-input id="contact_number" name="contact_number" type="text" class="profile-edit-input" :value="old('contact_number', $user->contact_number)" autofocus autocomplete="contact_number" placeholder="123-456-7890" />
+                    <x-text-input id="contact_number" name="contact_number" type="text" class="profile-edit-input" :value="old('contact_number', $user->contact_number)" autofocus autocomplete="contact_number" placeholder="0912-345-6789" />
                     <x-input-error class="profile-edit-error" :messages="$errors->get('contact_number')" style="color:#ff3333;"/>
                 </div>
-            </div>
-
-            <!-- Gender & Birthdate -->
-            <div class="profile-edit-row">
                 <div class="profile-edit-item profile-edit-item-half">
                     <x-input-label for="gender" class="profile-edit-label">
                         <i class="fas fa-venus-mars"></i> {{ __('Gender:') }} <span style="color:#ff3333;">*</span>
@@ -88,6 +77,10 @@
                     </select>
                     <x-input-error :messages="$errors->get('gender')" class="profile-edit-error" style="color:#ff3333;"/>
                 </div>
+            </div>
+
+            <!-- Gender & Birthdate -->
+            <div class="profile-edit-row">
                 <div class="profile-edit-item profile-edit-item-half">
                     <x-input-label for="birthdate" class="profile-edit-label">
                         <i class="fas fa-pencil-alt"></i> {{ __('Birthdate:') }} <span style="color:#ff3333;">*</span>
@@ -95,31 +88,58 @@
                     <input id="birthdate" name="birthdate" type="date" class="profile-edit-textarea" value="{{ old('birthdate', $user->birthdate) }}" required autofocus autocomplete="bday">
                     <x-input-error class="profile-edit-error" :messages="$errors->get('birthdate')" style="color:#ff3333;"/>
                 </div>
+                <div class="profile-edit-item profile-edit-item-half">
+                    <x-input-label for="country" class="profile-edit-label">
+                        <i class="fas fa-globe"></i> {{ __('Country:') }} <span style="color:#ff3333;">*</span>
+                    </x-input-label>
+                    <select id="country" name="country_id" class="profile-edit-select">
+                        <option value="">{{ __('Select Country') }}</option>
+                        @foreach($countries as $country)
+                            <option value="{{ $country->id }}" {{ old('country_id', $user->country_id) == $country->id ? 'selected' : '' }}>
+                                {{ $country->countryname }}
+                            </option>
+                        @endforeach
+                    </select>
+                    <x-input-error :messages="$errors->get('country_id')" class="profile-edit-error" style="color:#ff3333;"/>
+                </div>
             </div>
-
            <!-- Country & College/University -->
 <div class="profile-edit-row">
-    <div class="profile-edit-item profile-edit-item-half">
-        <x-input-label for="country" class="profile-edit-label">
-            <i class="fas fa-globe"></i> {{ __('Country:') }} <span style="color:#ff3333;">*</span>
-        </x-input-label>
-        <select id="country" name="country_id" class="profile-edit-select">
-            <option value="">{{ __('Select Country') }}</option>
-            @foreach($countries as $country)
-                <option value="{{ $country->id }}" {{ old('country_id', $user->country_id) == $country->id ? 'selected' : '' }}>
-                    {{ $country->countryname }}
-                </option>
-            @endforeach
-        </select>
-        <x-input-error :messages="$errors->get('country_id')" class="profile-edit-error" style="color:#ff3333;"/>
-    </div>
-
     <div class="profile-edit-item profile-edit-item-half">
         <x-input-label for="college" class="profile-edit-label">
             <i class="fas fa-university"></i> {{ __('College/University:') }} <span style="color:#ff3333;">*</span>
         </x-input-label>
         <x-text-input id="college" name="college" type="text" class="profile-edit-input" :value="old('college', $user->college)" autofocus autocomplete="college" placeholder="Enter College/University" />
         <x-input-error class="profile-edit-error" :messages="$errors->get('college')" style="color:#ff3333;"/>
+    </div>
+    <div class="profile-edit-item profile-edit-item-half">
+        <x-input-label for="profile_picture" class="profile-edit-label">
+            <i class="fas fa-camera"></i> {{ __('Profile Picture:') }}
+        </x-input-label>
+
+        <!-- Dashed Border Container -->
+        <div class="file-upload-container-with-border">
+            <div class="file-upload-container">
+                <!-- Upload Button and File Name -->
+                <label for="profile_picture" class="file-input-label">
+                    <i class="fas fa-upload"></i> Upload
+                </label>
+                <input type="file" name="profile_picture" id="profile_picture" accept="image/*" class="file-input" onchange="previewImageAndName(event)" />
+                <span id="file-name" class="file-name">No file chosen</span>
+            </div>
+
+            <!-- Image Preview -->
+            <div id="image-preview-container" class="image-preview-container">
+                <img
+                    id="image_preview"
+                    src="{{ $user->profile_picture ? asset($user->profile_picture) : asset('storage/images/profile_pictures/default.jpg') }}"
+                    alt="Profile Picture"
+                    class="profile-edit-image-preview"
+                />
+            </div>
+        </div>
+
+        <x-input-error class="profile-edit-error" :messages="$errors->get('profile_picture')" />
     </div>
 </div>  
 
@@ -156,28 +176,7 @@
 
         <!-- Profile Picture -->
 <div class="profile-edit-row">
-    <div class="profile-edit-item">
-        <x-input-label for="profile_picture" class="profile-edit-label">
-            <i class="fas fa-camera"></i> {{ __('Profile Picture:') }}
-        </x-input-label>
-        <!-- Custom file input -->
-        <div class="custom-file-container">
-            <input type="file" name="profile_picture" id="profile_picture" accept="image/*" class="file-input" onchange="previewImage(event)" />
-            <label for="profile_picture" class="file-input-label">Choose File</label>
-            <span id="file-name" class="file-name"></span>
-        </div>
-
-        <!-- Image Preview Container -->
-        <div id="image-preview-container" class="image-preview-container">
-            @if ($user->profile_picture)
-                <img id="image_preview" src="{{ asset($user->profile_picture) }}" alt="Profile Picture" class="profile-edit-image-preview">
-            @else
-                <img id="image_preview" src="{{ asset('storage/images/profile_pictures/default.jpg') }}" alt="Default Profile Picture" class="profile-edit-image-preview">
-            @endif
-        </div>
-
-        <x-input-error class="profile-edit-error" :messages="$errors->get('profile_picture')" />
-    </div>
+    
 </div>
             <!-- Submit Button -->
             <div class="profile-edit-item profile-edit-item-full">
@@ -209,6 +208,71 @@
         max-width: 40%;
         margin-bottom: 10px;
     }
+    .profile-edit-item {
+    margin-bottom: 20px;
+}
+
+
+.file-upload-container-with-border {
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    padding-left: 20px;
+    padding-right: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px; /* Space between elements inside the border */
+    max-width: 400px; /* Adjust to your design */
+    margin: auto; /* Center the container horizontally */
+    background-color: #f9f9f9;
+    transition: border-color 0.3s ease;
+}
+
+.file-upload-container-with-border:hover {
+    border-color: #007bff;
+}
+
+/* File upload container */
+.file-upload-container {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between button and file name */
+}
+
+/* Upload button */
+.file-input-label {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    background-color: #003366;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.file-input-label:hover {
+    background-color: #003b8b;
+}
+
+/* File name display */
+.file-name {
+    font-size: 14px;
+    color: #555;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px; /* Adjust width based on your layout */
+}
+
+/* Hide default file input */
+.file-input {
+    display: none;
+}
+
+
+
 </style>
 <script>
 function previewImage(event) {
@@ -235,14 +299,26 @@ document.getElementById('profile_picture').addEventListener('change', function()
 });
 
 
-function previewImage(event) {
-    var reader = new FileReader();
-    reader.onload = function() {
-        var output = document.getElementById('image_preview');
-        output.src = reader.result;
-        output.style.display = 'block';
+function previewImageAndName(event) {
+    const file = event.target.files[0];
+    const preview = document.getElementById("image_preview");
+    const fileNameDisplay = document.getElementById("file-name");
+
+    if (file) {
+        // Update the file name display
+        fileNameDisplay.textContent = file.name;
+
+        // Update the image preview
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            preview.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    } else {
+        // Reset if no file is chosen
+        fileNameDisplay.textContent = "No file chosen";
+        preview.src = "{{ asset('storage/images/profile_pictures/default.jpg') }}";
     }
-    reader.readAsDataURL(event.target.files[0]);
 }
 
 function loadProvinces(regionId, selectedProvince = null) {
