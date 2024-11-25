@@ -27,7 +27,7 @@ class superadminProfileUpdateRequest extends FormRequest
             'province_id' => ['nullable', 'int'],
             'description' => ['nullable', 'string', 'max:255'],
             'college' => ['nullable', 'string', 'max:255'],
-            'contact_number' => ['nullable', 'string', 'max:11', 'regex:/^\d+$/'],
+            'contact_number' => ['nullable', 'string', 'max:11', 'regex:/^[\d\-]+$/'],
             'birthdate' => ['nullable', 'date', 'before:today', 'after:1900-01-01'],
         ];
     }
