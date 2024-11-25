@@ -104,6 +104,21 @@
                 </div>
             </div>
         </li>
+        <li class="nav-item">
+            <a class="nav-link {{ request()->routeIs('super_admin.userlist') || request()->routeIs('superadmin.eventlist') ? '' : 'collapsed' }}" href="#" data-toggle="collapse" data-target="#collapseManagement" aria-expanded="{{ request()->routeIs('super_admin.userlist') || request()->routeIs('superadmin.eventlist') ? 'true' : 'false' }}" aria-controls="collapseManagement">
+                <span>Organization</span>
+                <i class="fas fa-chevron-down float-right arrow-icon"></i>
+            </a>
+            <div id="collapseManagement" class="collapse {{ request()->routeIs('super_admin.userlist') || request()->routeIs('superadmin.eventlist') ? 'show' : '' }}" aria-labelledby="headingManagement" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a href="{{ route('super_admin.userlist') }}" class="collapse-item {{ request()->routeIs('super_admin.userlist') ? 'active-item' : '' }}">Organization List</a>
+                    <div class="thick-divider"></div>
+                    <a href="{{ route('super_admin.userlist') }}" class="collapse-item {{ request()->routeIs('super_admin.userlist') ? 'active-item' : '' }}">My Organization</a>
+                    <div class="thick-divider"></div>
+                    <a href="{{ route('superadmin.eventlist') }}" class="collapse-item {{ request()->routeIs('superadmin.eventlist') ? 'active-item' : '' }}">Create Organization</a>
+                </div>
+            </div>
+        </li>
 
         <hr class="sidebar-divider">
 
