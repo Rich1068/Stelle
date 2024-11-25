@@ -36,6 +36,7 @@ class UserFactory extends Factory
             'birthdate' => $this->faker->date,
             'contact_number' => $this->faker->phoneNumber,
             'profile_completed' => true,
+            'college' => 'Angeles University Foundation'
         ];
     }
 

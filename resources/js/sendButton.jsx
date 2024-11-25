@@ -4,6 +4,7 @@ import axios from 'axios';
 import { createStore } from 'polotno/model/store';
 import { v4 as uuidv4 } from 'uuid';
 
+
 // Loading Modal Component
 const LoadingModal = ({ isOpen }) => (
   <Dialog
@@ -28,6 +29,7 @@ const ExportModal = ({ isOpen, store, onClose, eventId, showLoadingModal }) => {
   const [filteredNames, setFilteredNames] = useState([]);
   const [searchQuery, setSearchQuery] = useState(''); 
   const [selectAllExceptSent, setSelectAllExceptSent] = useState(false);
+  const [eventDetails, setEventDetails] = useState({ title: "", address: "" });
   // Pagination states
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
@@ -36,13 +38,18 @@ const ExportModal = ({ isOpen, store, onClose, eventId, showLoadingModal }) => {
   const fetchNames = async () => {
     try {
       const response = await axios.get(`/event/${eventId}/get-participants`);
-      const participantData = response.data.map((participant) => ({
+  
+      // Extract event details
+      const { participants, event_title, address } = response.data;
+  
+      const participantData = participants.map((participant) => ({
         full_name: participant.full_name, // Actual name without "(DELETED)"
         display_name: participant.is_deleted
           ? `${participant.full_name} (DELETED)` // Add "(DELETED)" only for display
           : participant.full_name,
         user_id: participant.user_id,
-        is_deleted: participant.is_deleted, // Include soft delete status
+        is_deleted: participant.is_deleted,
+        college: participant.college,
         certificate_received: participant.certificate_received,
       }));
   
@@ -59,8 +66,47 @@ const ExportModal = ({ isOpen, store, onClose, eventId, showLoadingModal }) => {
   
       setNames(sortedParticipants); // Set sorted participants
       setFilteredNames(sortedParticipants); // Initialize filtered names with sorted participants
+  
+      // Set event details (if needed elsewhere)
+      setEventDetails({ title: event_title, address });
     } catch (error) {
-      console.error('Error fetching names:', error);
+      console.error("Error fetching names:", error);
+    }
+  };
+
+  const refreshParticipantList = async () => {
+    try {
+      const response = await axios.get(`/event/${eventId}/get-participants`);
+      const { participants } = response.data;
+  
+      // Transform and sort data
+      const updatedParticipants = participants.map((participant) => ({
+        full_name: participant.full_name,
+        display_name: participant.display_name,
+        user_id: participant.user_id,
+        is_deleted: participant.is_deleted,
+        college: participant.college,
+        certificate_received: participant.certificate_received,
+      }));
+  
+      // Sort participants as needed
+      const sortedParticipants = updatedParticipants.sort((a, b) => {
+        if (!a.certificate_received && b.certificate_received) return -1;
+        if (a.certificate_received && !b.certificate_received) return 1;
+        return 0;
+      });
+  
+      setNames(sortedParticipants); // Update state
+      setFilteredNames(sortedParticipants); // Update filtered list
+      const updatedSelectedNames = selectedNames.filter(
+        (name) => !updatedParticipants.find(
+          (participant) => participant.full_name === name && participant.certificate_received
+        )
+      );
+  
+      setSelectedNames(updatedSelectedNames);
+    } catch (error) {
+      console.error("Error refreshing participant list:", error);
     }
   };
 
@@ -158,11 +204,16 @@ const ExportModal = ({ isOpen, store, onClose, eventId, showLoadingModal }) => {
     try {
       // Check if {{name}} exists in the JSON
       const namePlaceholderExists = JSON.stringify(originalJson).includes("{{name}}");
+      const schoolPlaceholderExists = JSON.stringify(originalJson).includes("{{school}}");
+      const eventTitlePlaceholderExists = JSON.stringify(originalJson).includes("{{event_title}}");
+      const addressPlaceholderExists = JSON.stringify(originalJson).includes("{{address}}");
   
       // Prepare modified JSONs
       const modifiedJsons = selectedNames.map((name, index) => {
         const jsonCopy = JSON.parse(JSON.stringify(originalJson));
-  
+        const user = names.find((n) => n.full_name === name);
+        const college = user ? user.college : "";
+
         jsonCopy.pages.forEach((page) => {
           // Replace {{name}} placeholder only if it exists
           if (namePlaceholderExists) {
@@ -172,7 +223,27 @@ const ExportModal = ({ isOpen, store, onClose, eventId, showLoadingModal }) => {
               }
             });
           }
-  
+          if (schoolPlaceholderExists) {
+            page.children.forEach((element) => {
+              if (element.type === "text" && element.text.includes("{{school}}")) {
+                element.text = element.text.replace("{{school}}", college);
+              }
+            });
+          }
+          if (eventTitlePlaceholderExists) {
+            page.children.forEach((element) => {
+              if (element.type === "text" && element.text.includes("{{event_title}}")) {
+                element.text = element.text.replace("{{event_title}}", eventDetails.title);
+              }
+            });
+          }
+          if (addressPlaceholderExists) {
+            page.children.forEach((element) => {
+              if (element.type === "text" && element.text.includes("{{address}}")) {
+                element.text = element.text.replace("{{address}}", eventDetails.address);
+              }
+            });
+          }
           // Generate a random unique ID using uuid
           const uniqueId = uuidv4();
   
@@ -236,14 +307,35 @@ const ExportModal = ({ isOpen, store, onClose, eventId, showLoadingModal }) => {
     }
   };
   
-
+  const saveDesign = async (eventId) => {
+    const canvasData = store.toJSON();
   
+    try {
+      const dataURL = await store.toDataURL();
+  
+      const response = await axios.post(`/event/${eventId}/certificates/save`, {
+        canvas: canvasData,
+        image: dataURL,
+      });
+  
+      alert('Design saved successfully!');
+      return response.data.certificateId; // Return the certificateId directly
+    } catch (error) {
+      console.error('Error saving design:', error);
+      return null; // Return null if saving fails
+    }
+  };
+
   const handleGenerateAndSave = async () => {
     if (selectedNames.length === 0) {
       alert("Please select at least one user before sending the certificate.");
       return;
     }
-  
+    const certificateId = await saveDesign(eventId); // Save design and get the certificateId
+    if (!certificateId) {
+      alert("Failed to save the certificate design. Cannot proceed with sending.");
+      return;
+    }
     try {
       // Check if a certificate exists for the event
       const certificateExistsResponse = await axios.get(`/event/${eventId}/certificate-exists`);
@@ -260,108 +352,113 @@ const ExportModal = ({ isOpen, store, onClose, eventId, showLoadingModal }) => {
     setLoading(true);
     showLoadingModal(true);
   
-    const originalJson = JSON.parse(JSON.stringify(store.toJSON())); // Clone the JSON once
-    let certificateData = [];
+    const originalJson = JSON.parse(JSON.stringify(store.toJSON())); // Deep clone the JSON
+    const certificateData = []; // Array to store data for batch saving
   
-    // Check if {{name}} exists in the JSON
     const namePlaceholderExists = JSON.stringify(originalJson).includes("{{name}}");
+    const schoolPlaceholderExists = JSON.stringify(originalJson).includes("{{school}}");
+    const eventTitlePlaceholderExists = JSON.stringify(originalJson).includes("{{event_title}}");
+    const addressPlaceholderExists = JSON.stringify(originalJson).includes("{{address}}");
   
     try {
-      if (namePlaceholderExists) {
-        // Generate personalized certificates in parallel
-        const promises = selectedNames.map(async (name, index) => {
-          const modifiedJson = JSON.parse(JSON.stringify(originalJson)); // Clone the JSON for modification
-          const uniqueId = `CERT-${uuidv4()}`; // Generate a unique ID for the certificate
+      const modifiedJsons = selectedNames.map((name, index) => {
+        const jsonCopy = JSON.parse(JSON.stringify(originalJson));
+        const user = names.find((n) => n.full_name === name);
+        const college = user ? user.college : "";
   
-          modifiedJson.pages.forEach((page) => {
-            // Replace {{name}} placeholder
+        jsonCopy.pages.forEach((page) => {
+          if (namePlaceholderExists) {
             page.children.forEach((element) => {
               if (element.type === "text" && element.text.includes("{{name}}")) {
                 element.text = element.text.replace("{{name}}", name);
               }
             });
+          }
+          if (schoolPlaceholderExists) {
+            page.children.forEach((element) => {
+              if (element.type === "text" && element.text.includes("{{school}}")) {
+                element.text = element.text.replace("{{school}}", college);
+              }
+            });
+          }
+          if (eventTitlePlaceholderExists) {
+            page.children.forEach((element) => {
+              if (element.type === "text" && element.text.includes("{{event_title}}")) {
+                element.text = element.text.replace("{{event_title}}", eventDetails.title);
+              }
+            });
+          }
+          if (addressPlaceholderExists) {
+            page.children.forEach((element) => {
+              if (element.type === "text" && element.text.includes("{{address}}")) {
+                element.text = element.text.replace("{{address}}", eventDetails.address);
+              }
+            });
+          }
   
-            // Add a background box for the unique ID
-            const idBackground = {
-              id: `uniqueIdBg-${index}`, // Unique ID for the background box
-              type: "figure",
-              name: "rectangle",
-              x: 0, // Adjust X position
-              y: modifiedJson.height - (modifiedJson.height * 0.03), // Adjust Y position for the background
-              width: modifiedJson.width * 0.4, 
-              height: modifiedJson.height * 0.03, // 3% of the canvas height
-              fill: "rgba(0, 0, 0, 0.7)", // Semi-transparent black background
-              draggable: false,
-              selectable: false,
-            };
-    
-            // Add the unique ID text
-            const idText = {
-              id: `uniqueId-${index}`, // Unique ID for the text
-              type: "text",
-              x: modifiedJson.width * 0.02, // 2% margin from the left edge of the canvas
-              y: modifiedJson.height - (modifiedJson.height * 0.026), // Slightly above the background box center
-              width: modifiedJson.width * 0.35, // Slightly smaller than the background box width
-              height: modifiedJson.height * 0.02, // Height based on canvas size
-              text: `ID: ${uniqueId}`, // Unique ID text
-              fontSize: modifiedJson.width * 0.015, // Font size relative to canvas height
-              fontFamily: "Roboto",
-              fill: "white", // High-contrast text color
-              align: "left", // Align text
-              verticalAlign: "middle",
-              draggable: false,
-              selectable: false,
-              alwaysOnTop: true,
-            };
+          const uniqueId = uuidv4();
+          const idBackground = {
+            id: `uniqueIdBg-${index}`,
+            type: "figure",
+            name: "rectangle",
+            x: 0,
+            y: jsonCopy.height - jsonCopy.height * 0.03,
+            width: jsonCopy.width * 0.4,
+            height: jsonCopy.height * 0.03,
+            fill: "rgba(0, 0, 0, 0.7)",
+            draggable: false,
+            selectable: false,
+          };
   
-            // Add the background and text to the page
-            page.children.push(idBackground);
-            page.children.push(idText);
-          });
+          const idText = {
+            id: `uniqueId-${index}`,
+            type: "text",
+            x: jsonCopy.width * 0.02,
+            y: jsonCopy.height - jsonCopy.height * 0.026,
+            width: jsonCopy.width * 0.35,
+            height: jsonCopy.height * 0.02,
+            text: `ID: CERT-${uniqueId}`,
+            fontSize: jsonCopy.width * 0.015,
+            fontFamily: "Roboto",
+            fill: "white",
+            align: "left",
+            verticalAlign: "middle",
+            draggable: false,
+            selectable: false,
+            alwaysOnTop: true,
+          };
   
-          // Load modified JSON into the Polotno store
-          await store.loadJSON(modifiedJson);
-          await store.waitLoading();
-          const dataURL = await store.toDataURL(); // Generate the image
-  
-          const userId = getUserIdByName(name);
-          return { userId, imageData: dataURL, uniqueId }; // Include uniqueId in the data
+          page.children.push(idBackground);
+          page.children.push(idText);
         });
   
-        certificateData = await Promise.all(promises);
-      } else {
-        // Generate shared certificate
-        const uniqueId = `CERT-${uuidv4()}`; // Generate a single unique ID for the shared certificate
+        return jsonCopy;
+      });
   
-        await store.loadJSON(originalJson);
+      for (const json of modifiedJsons) {
+        await store.loadJSON(json);
         await store.waitLoading();
         const dataURL = await store.toDataURL();
-  
-        // Use shared certificate for all participants
-        certificateData = selectedNames.map((name) => ({
-          userId: getUserIdByName(name),
-          imageData: dataURL,
-          uniqueId, // Same ID for all users
-        }));
+        const userId = getUserIdByName(selectedNames[modifiedJsons.indexOf(json)]);
+        certificateData.push({ userId, imageData: dataURL });
       }
   
-      // Send certificates to backend
+      // Send all certificates in a single request
       const response = await axios.post(`/event/${eventId}/participants/send-certificates`, {
         data: certificateData,
       });
   
-      setLoading(false);
-      showLoadingModal(false);
-  
       if (response.data && response.data.message === "Certificates sent successfully!") {
-        setTimeout(() => {
-          alert("Certificates sent successfully!");
-        }, 300);
+        alert("Certificates sent successfully!");
+        await refreshParticipantList();
       }
     } catch (error) {
       console.error("Error generating and saving certificates:", error);
+      alert("An error occurred while generating or saving certificates.");
     } finally {
-      await store.loadJSON(originalJson); // Reset the Polotno store to the original JSON
+      setLoading(false);
+      showLoadingModal(false);
+      await store.loadJSON(originalJson); // Restore the original JSON after completion
       await store.waitLoading();
     }
   };

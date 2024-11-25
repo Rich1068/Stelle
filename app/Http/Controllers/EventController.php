@@ -655,42 +655,44 @@ class EventController extends Controller
 ///////////////FOR CERTIFICATE////////////////////////
 public function getParticipants($event_id)
 {
+    $event = Event::findOrFail($event_id);
     // Fetch the participants for the given event_id and include soft-deleted users
+    $certificates = CertUser::whereHas('certificate', function ($query) use ($event_id) {
+        $query->where('event_id', $event_id);
+    })->pluck('user_id')->toArray();
+    
     $participants = EventParticipant::where('event_id', $event_id)
         ->where('status_id', 1)
         ->whereHas('user', function ($query) {
-            $query->withTrashed(); // Include soft-deleted users
+            $query->withTrashed();
         })
         ->with(['user' => function ($query) {
-            $query->withTrashed(); // Include soft-deleted users 
+            $query->withTrashed();
         }])
         ->get()
-        ->map(function ($participant) use ($event_id) {
-            // Concatenate user's first, middle, and last name
+        ->map(function ($participant) use ($certificates) {
             $fullName = $participant->user->first_name .
                 ($participant->user->middle_name ? ' ' . $participant->user->middle_name : '') .
                 ' ' . $participant->user->last_name;
-
-            // Check if the certificate exists for this user and event
-            $certificateReceived = CertUser::where('user_id', $participant->user->id)
-                ->whereHas('certificate', function ($query) use ($event_id) {
-                    $query->where('event_id', $event_id);
-                })
-                ->exists();
-
+    
             return [
-                'full_name' => trim($fullName), // Actual full name without (DELETED)
-                'display_name' => $participant->user->trashed() 
-                    ? trim($fullName) . ' (DELETED)' // Add (DELETED) for display purposes
+                'full_name' => trim($fullName),
+                'display_name' => $participant->user->trashed()
+                    ? trim($fullName) . ' (DELETED)'
                     : trim($fullName),
                 'user_id' => $participant->user->id,
-                'is_deleted' => $participant->user->trashed(), // True if soft-deleted
-                'certificate_received' => $certificateReceived, // True if certificate sent
+                'is_deleted' => $participant->user->trashed(),
+                'college' => $participant->user->college,
+                'certificate_received' => in_array($participant->user->id, $certificates), // Optimized check
             ];
         });
 
     // Return the participants as a JSON response
-    return response()->json($participants);
+    return response()->json([
+        'participants' => $participants,
+        'event_title' => $event->title, // Add event title
+        'address' => $event->address,  // Add event address
+    ]);
 }
 /////////////////////////////////////////////////////////////////////
 

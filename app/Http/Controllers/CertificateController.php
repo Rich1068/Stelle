@@ -225,7 +225,7 @@ class CertificateController extends Controller
 
         Log::info('Certificate saved successfully for event ID: ' . $id);
 
-        return response()->json(['message' => 'Certificate saved!']);
+        return response()->json(['certificateId' => $certificate->id, 'message' => 'Certificate saved!']);
     }
 
     public function event_saveCanvas_asTemplate(Request $request)
