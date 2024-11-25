@@ -25,7 +25,9 @@ const ExportModal = ({ isOpen, store, onClose, eventId, showLoadingModal }) => {
   const [selectedNames, setSelectedNames] = useState([]); // Selected names for image generation
   const [selectAll, setSelectAll] = useState(false);
   const [images, setImages] = useState([]);
-
+  const [filteredNames, setFilteredNames] = useState([]);
+  const [searchQuery, setSearchQuery] = useState(''); 
+  const [selectAllExceptSent, setSelectAllExceptSent] = useState(false);
   // Pagination states
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
@@ -34,16 +36,29 @@ const ExportModal = ({ isOpen, store, onClose, eventId, showLoadingModal }) => {
   const fetchNames = async () => {
     try {
       const response = await axios.get(`/event/${eventId}/get-participants`);
-      setNames(
-        response.data.map((participant) => ({
-          full_name: participant.full_name, // Actual name without "(DELETED)"
-          display_name: participant.is_deleted
-            ? `${participant.full_name} (DELETED)` // Add "(DELETED)" only for display
-            : participant.full_name,
-          user_id: participant.user_id,
-          is_deleted: participant.is_deleted, // Include soft delete status
-        }))
-      );
+      const participantData = response.data.map((participant) => ({
+        full_name: participant.full_name, // Actual name without "(DELETED)"
+        display_name: participant.is_deleted
+          ? `${participant.full_name} (DELETED)` // Add "(DELETED)" only for display
+          : participant.full_name,
+        user_id: participant.user_id,
+        is_deleted: participant.is_deleted, // Include soft delete status
+        certificate_received: participant.certificate_received,
+      }));
+  
+      // Sort participants: not sent users first, then sent users
+      const sortedParticipants = participantData.sort((a, b) => {
+        if (!a.certificate_received && b.certificate_received) {
+          return -1; // `a` (not sent) comes before `b` (sent)
+        }
+        if (a.certificate_received && !b.certificate_received) {
+          return 1; // `b` (not sent) comes before `a` (sent)
+        }
+        return 0; // Keep original order for users with the same status
+      });
+  
+      setNames(sortedParticipants); // Set sorted participants
+      setFilteredNames(sortedParticipants); // Initialize filtered names with sorted participants
     } catch (error) {
       console.error('Error fetching names:', error);
     }
@@ -55,6 +70,22 @@ const ExportModal = ({ isOpen, store, onClose, eventId, showLoadingModal }) => {
     }
   }, [eventId]);
 
+  useEffect(() => {
+    setFilteredNames(names); // Reset filtered names when modal opens
+  }, [names]);
+
+  const handleSearchChange = (e) => {
+    const query = e.target.value.toLowerCase();
+    setSearchQuery(query);
+    setFilteredNames(
+      names.filter((name) =>
+        name.display_name.toLowerCase().includes(query)
+      )
+    );
+    setSelectAll(false); // Reset select all when search query changes
+    setSelectedNames([]); // Reset selected names
+  };
+
   const handleCheckboxChange = (name) => {
     setSelectedNames((prevSelected) => {
       const updatedSelected = prevSelected.includes(name)
@@ -62,6 +93,10 @@ const ExportModal = ({ isOpen, store, onClose, eventId, showLoadingModal }) => {
         : [...prevSelected, name];
 
       setSelectAll(updatedSelected.length === names.length);
+      setSelectAllExceptSent(
+        updatedSelected.length ===
+          names.filter((n) => !n.certificate_received).length // Check if all not-sent participants are selected
+      );
       return updatedSelected;
     });
   };
@@ -71,11 +106,34 @@ const ExportModal = ({ isOpen, store, onClose, eventId, showLoadingModal }) => {
     setSelectedNames(!selectAll ? names.map((n) => n.full_name) : []);
   };
 
+  const handleSelectAllExceptSent = () => {
+    if (selectAllExceptSent) {
+      // Deselect all not-sent users
+      setSelectedNames((prevSelected) =>
+        prevSelected.filter((name) =>
+          names.some(
+            (n) => n.full_name === name && n.certificate_received // Keep only sent users in the selection
+          )
+        )
+      );
+      setSelectAllExceptSent(false); // Uncheck the checkbox
+    } else {
+      // Select all not-sent users
+      const notSentNames = names
+        .filter((name) => !name.certificate_received) // Filter out users who have received certificates
+        .map((name) => name.full_name); // Get their full names
+  
+      setSelectedNames(notSentNames); // Update selected names with only not-sent users
+      setSelectAll(false); // Ensure "Select All" is unchecked
+      setSelectAllExceptSent(true); // Check the "Select All Except Sent" checkbox
+    }
+  };
+
   // Pagination logic
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentNames = names.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(names.length / itemsPerPage);
+  const currentNames = filteredNames.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(filteredNames.length / itemsPerPage);
 
   const handlePageChange = (direction) => {
     if (direction === 'next' && currentPage < totalPages) {
@@ -330,21 +388,46 @@ const ExportModal = ({ isOpen, store, onClose, eventId, showLoadingModal }) => {
       }}
     >
       <div className={Classes.DIALOG_BODY} style={{ padding: '1rem' }}>
-        <h5>Select Names:</h5>
-        <Checkbox
-          label="Select All"
-          checked={selectAll}
-          onChange={handleSelectAllChange}
-          style={{ marginBottom: '10px' }}
+      <h5>Select Names:</h5>
+      <input
+          type="text"
+          placeholder="Search for a participant..."
+          value={searchQuery}
+          onChange={handleSearchChange}
+          style={{
+            marginBottom: '10px',
+            padding: '5px',
+            width: '100%',
+            border: '1px solid #ddd',
+            borderRadius: '4px',
+          }}
         />
+      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
+      <Checkbox
+        label="Select All"
+        checked={selectAll}
+        onChange={handleSelectAllChange}
+        style={{ marginBottom: '10px' }}
+      />
+      <Checkbox
+        label="Select All Except Sent"
+        checked={selectAllExceptSent} // This will not have a persisted state
+        onChange={handleSelectAllExceptSent}
+      />
+      </div>
       <div style={{ marginBottom: '20px', overflowY: 'auto', maxHeight: '200px' }}>
         {currentNames.map((name, index) => (
-          <Checkbox
-            key={index}
-            label={name.display_name} // Use display_name for UI (includes "(DELETED)")
-            checked={selectedNames.includes(name.full_name)} // Use full_name for logic
-            onChange={() => handleCheckboxChange(name.full_name)} // Pass full_name to handle selection
-          />
+          <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
+            <Checkbox
+              label={name.display_name} // Use display_name for UI (includes "(DELETED)")
+              checked={selectedNames.includes(name.full_name)} // Use full_name for logic
+              onChange={() => handleCheckboxChange(name.full_name)} // Pass full_name to handle selection
+              disabled={name.certificate_received} // Disable if certificate is already sent
+            />
+            {name.certificate_received && (
+              <span style={{ marginLeft: '10px', color: 'green', fontSize: '12px' }}>✔ Sent</span>
+            )}
+          </div>
         ))}
       </div>
         

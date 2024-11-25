@@ -653,37 +653,45 @@ class EventController extends Controller
     }
 
 ///////////////FOR CERTIFICATE////////////////////////
-    public function getParticipants($event_id)
-    {
-        // Fetch the participants for the given event_id and include soft-deleted users
-        $participants = EventParticipant::where('event_id', $event_id)
-            ->where('status_id', 1)
-            ->whereHas('user', function ($query) {
-                $query->withTrashed(); // Include soft-deleted users
-            })
-            ->with(['user' => function ($query) {
-                $query->withTrashed(); // Include soft-deleted users in eager loading
-            }])
-            ->get()
-            ->map(function ($participant) {
-                // Concatenate user's first, middle, and last name
-                $fullName = $participant->user->first_name .
-                    ($participant->user->middle_name ? ' ' . $participant->user->middle_name : '') .
-                    ' ' . $participant->user->last_name;
+public function getParticipants($event_id)
+{
+    // Fetch the participants for the given event_id and include soft-deleted users
+    $participants = EventParticipant::where('event_id', $event_id)
+        ->where('status_id', 1)
+        ->whereHas('user', function ($query) {
+            $query->withTrashed(); // Include soft-deleted users
+        })
+        ->with(['user' => function ($query) {
+            $query->withTrashed(); // Include soft-deleted users 
+        }])
+        ->get()
+        ->map(function ($participant) use ($event_id) {
+            // Concatenate user's first, middle, and last name
+            $fullName = $participant->user->first_name .
+                ($participant->user->middle_name ? ' ' . $participant->user->middle_name : '') .
+                ' ' . $participant->user->last_name;
 
-                return [
-                    'full_name' => trim($fullName), // Actual full name without (DELETED)
-                    'display_name' => $participant->user->trashed() 
-                        ? trim($fullName) . ' (DELETED)' // Add (DELETED) for display purposes
-                        : trim($fullName),
-                    'user_id' => $participant->user->id,
-                    'is_deleted' => $participant->user->trashed(), // True if soft-deleted
-                ];
-            });
+            // Check if the certificate exists for this user and event
+            $certificateReceived = CertUser::where('user_id', $participant->user->id)
+                ->whereHas('certificate', function ($query) use ($event_id) {
+                    $query->where('event_id', $event_id);
+                })
+                ->exists();
 
-        // Return the participants as a JSON response
-        return response()->json($participants);
-    }
+            return [
+                'full_name' => trim($fullName), // Actual full name without (DELETED)
+                'display_name' => $participant->user->trashed() 
+                    ? trim($fullName) . ' (DELETED)' // Add (DELETED) for display purposes
+                    : trim($fullName),
+                'user_id' => $participant->user->id,
+                'is_deleted' => $participant->user->trashed(), // True if soft-deleted
+                'certificate_received' => $certificateReceived, // True if certificate sent
+            ];
+        });
+
+    // Return the participants as a JSON response
+    return response()->json($participants);
+}
 /////////////////////////////////////////////////////////////////////
 
 
@@ -805,7 +813,7 @@ class EventController extends Controller
         ]);
     }
 
-    //////////////////////////////QR TESTING//////////////////////
+    //////////////////////////////QR STUFF//////////////////////
     public function handleQRCode(Request $request, $eventId, $token)
     {
         $event = Event::findOrFail($eventId);
