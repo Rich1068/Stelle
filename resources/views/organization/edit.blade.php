@@ -5,14 +5,14 @@
 <div class="top-container">
     <h2 class="font-weight-bold mb-0">
         <i class="fas fa-list me-2"></i> <!-- List icon -->
-        Create Organization
+        Edit Organization
     </h2>
 </div>
 <section class="event-form-container">
     <div class="event-form">
 
         <!-- Form Section -->
-        <form method="post" action="{{ route('organization.store') }}" enctype="multipart/form-data" id="eventForm">
+        <form method="post" action="{{ route('organization.update', $organization->id) }}" enctype="multipart/form-data" id="eventForm">
             @csrf
             @method('POST')
 
@@ -25,7 +25,7 @@
                             <span class="font-bold">{{ __('Name') }}</span>
                             <span style="color:#ff3333;">*</span>
                         </label>
-                        <x-text-input id="name" name="name" type="text" class="mt-1 block w-full event-input" :value="old('name')" required autofocus autocomplete="off" />
+                        <x-text-input id="name" name="name" type="text" class="mt-1 block w-full event-input" :value="old('name', $organization->name)" required autofocus autocomplete="off" />
                         <x-input-error class="mt-2" :messages="$errors->get('name')" />
                     </div>
                 </div>
@@ -36,7 +36,7 @@
                         <i class="fas fa-file-alt mr-2"></i>
                         <span class="font-bold">{{ __('Description') }}</span>
                     </label>
-                    <textarea id="description" name="description" class="mt-1 block w-full event-input" oninput="autoResize(this)" rows="1" style="overflow:hidden;" >{{ old('description') }}</textarea>
+                    <textarea id="description" name="description" class="mt-1 block w-full event-input" oninput="autoResize(this)" rows="1" style="overflow:hidden;" >{{ old('description', $organization->description) }}</textarea>
                     <x-input-error class="mt-2" :messages="$errors->get('description')" />
                 </div>
             </div>
@@ -51,7 +51,7 @@
                                     <span class="font-bold">{{ __('Contact Email') }}</span>
                                     <span style="color:#ff3333;">*</span>
                                 </label>
-                                <x-text-input id="contact_email" name="contact_email" type="text" class="mt-1 block w-full event-input" :value="old('contact_email')" required />
+                                <x-text-input id="contact_email" name="contact_email" type="text" class="mt-1 block w-full event-input" :value="old('contact_email', $organization->contact_email)" required />
                                 <x-input-error class="mt-2" :messages="$errors->get('contact_email')" />
                             </div>
                         </div>
@@ -62,7 +62,7 @@
                                     <span class="font-bold">{{ __('Contact Number') }}</span>
                                     <span style="color:#ff3333;">*</span>
                                 </label>
-                                <x-text-input id="contact_phone" name="contact_phone" type="text" class="mt-1 block w-full event-input" :value="old('contact_phone')" required />
+                                <x-text-input id="contact_phone" name="contact_phone" type="text" class="mt-1 block w-full event-input" :value="old('contact_phone', $organization->contact_phone)" required />
                                 <x-input-error class="mt-2" :messages="$errors->get('contact_phone')" />
                             </div>
                         </div>
@@ -81,7 +81,9 @@
                                 </button>
                                 
                                 <x-input-error class="mt-2" :messages="$errors->get('icon')" />
-                                <img id="image_preview" class="event-image-preview" style="display: none; max-width: 50%; margin-top: 10px;" />
+                                <img id="image_preview" class="event-image-preview" 
+                                    src="{{ $organization->icon ? asset($organization->icon) : '' }}" 
+                                    style="display: {{ $organization->icon ? 'block' : 'none' }}; max-width: 50%; margin-top: 10px;" />
                             </div>
                         </div>
                     </div>

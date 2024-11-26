@@ -8,6 +8,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\EvaluationFormController;
 use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\Auth\GoogleController;
 
@@ -47,10 +48,25 @@ Route::middleware(['auth', 'checkRegistrationStep'])->group(function () {
     Route::patch('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
     // Route::delete('/profile/destroy', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/help', [UserController::class, 'help'])->name('help.page');
+
+    //organization stuff
+    Route::get('/organizations', [OrganizationController::class, 'list'])->name('organization.list');
+    Route::get('/myorganizations', [OrganizationController::class, 'mylist'])->name('organization.mylist');
+    Route::get('/organization/{id}', [OrganizationController::class, 'view'])->name('organization.view');
+    Route::post('/organization/{id}/join', [OrganizationController::class, 'join'])->name('organization.join');
+
 });
 
 require __DIR__.'/auth.php';
 
+Route::middleware(['auth', 'checkRegistrationStep', 'organizationOwner'])->group(function () {
+
+    Route::get('/organization/{id}/edit', [OrganizationController::class, 'edit'])->name('organization.edit');
+    Route::post('/organization/{id}/update', [OrganizationController::class, 'update'])->name('organization.update');
+    Route::get('/organization/{id}/pending-members', [OrganizationController::class, 'showPendingMembers'])->name('organization.pendingmembers');
+    Route::post('/organization/{id}/pending-members/{member}/update', [OrganizationController::class, 'updateMemberStatus'])->name('participants.updateStatus');
+    Route::post('/organization/{id}/toggle', [OrganizationController::class, 'toggleStatus'])->name('organization.toggle');
+});
 
 //super admin
 Route::middleware(['auth','super_admin', 'checkRegistrationStep'])->group(function () {
@@ -138,6 +154,9 @@ Route::middleware(['auth', 'checkRole:1,2', 'checkRegistrationStep'])->group(fun
     Route::get('/event/{id}/certificates/viewCert/{certId}', [CertificateController::class, 'viewImage'])->name('certificates.view');
     Route::get('/event/{id}/certificates/{certId}/show', [CertificateController::class, 'showCertificateImage'])->name('certificates.show');
 
+
+    Route::get('/organization/create', [OrganizationController::class, 'create'])->name('organization.create');
+    Route::post('/organization/store', [OrganizationController::class, 'store'])->name('organization.store');
 });
 
 

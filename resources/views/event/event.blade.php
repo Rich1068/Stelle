@@ -28,7 +28,7 @@
         <div class="tab-pane active" id="main">
             <div class="event-view-content">
                 <div class="event-view-header">
-                    <h1 class="event-view-event-title">{{ $event->title }}@if($event->trashed()) <span style="color: red;">(ARCHIVED)</span>@endif</h1>
+                    <h1 class="event-view-event-title" style="padding-top:10px">{{ $event->title }}@if($event->trashed()) <span style="color: red;">(ARCHIVED)</span>@endif</h1>
                     @if($event->event_banner == null)
                     @else
                     <img src="{{ asset($event->event_banner) }}" alt="Event banner" class="event-view-banner">
@@ -930,6 +930,7 @@
         }
     });
     // for disabling editing of eval form when its public
+    @if($event->evaluationForm)
     document.addEventListener('DOMContentLoaded', function () {
         @if($userevent->user_id == Auth::user()->id || Auth::user()->role_id == 1)
         const toggle = document.getElementById('is_active_toggle');
@@ -950,8 +951,9 @@
         });
         @endif
     });
+    @endif
     document.addEventListener('DOMContentLoaded', function () {
-        @if($userevent->user_id == Auth::user()->id)
+        @if($userevent->user_id == Auth::user()->id && $event->evaluationForm)
         const existingFormButton = document.querySelector('[data-target="#existingFormModal"]');
         const eventId = '{{ $event->id }}'; // Pass the event ID to JavaScript
         let shouldPoll = true; // Flag to control polling
@@ -998,6 +1000,7 @@
         checkHasAnswers();
         @endif
     });
+    @if($event->evaluationForm)
     document.getElementById('updateEvaluationForm').addEventListener('submit', function (e) {
         e.preventDefault(); // Prevent form submission for now
         const eventId = '{{ $event->id }}'; // Pass the event ID to JavaScript
@@ -1022,5 +1025,6 @@
             alert("Unable to check answers at this time. Please try again later.");
         });
     });
+    @endif
 </script>
 @endsection

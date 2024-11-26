@@ -25,7 +25,8 @@ return Application::configure(basePath: dirname(__DIR__))
             'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
             'redirectIfAuthenticatedToDashboard' => \App\Http\Middleware\RedirectIfAuthenticatedToDashboard::class,
             'checkRegistrationStep' => \App\Http\Middleware\CheckRegistrationStep::class,
-            'restrictRegistrationStep2' => \App\Http\Middleware\RestrictRegistrationStep2::class
+            'restrictRegistrationStep2' => \App\Http\Middleware\RestrictRegistrationStep2::class,
+            'organizationOwner' => \App\Http\Middleware\CheckOrganizationOwner::class
         ]);
 
     })

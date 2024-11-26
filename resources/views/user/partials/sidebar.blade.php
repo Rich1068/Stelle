@@ -40,6 +40,21 @@
     </li>
 
     <hr class="sidebar-divider">
+        <li class="nav-item">
+            <a class="nav-link {{ request()->routeIs('organization.list') || request()->routeIs('organization.mylist') || request()->routeIs('organization.create') ? '' : 'collapsed' }}" href="#" data-toggle="collapse" data-target="#collapseOrganization" aria-expanded="{{ request()->routeIs('organization.list') || request()->routeIs('organization.mylist') || request()->routeIs('organization.create') ? 'true' : 'false' }}" aria-controls="collapseOrganization">
+                <span>Organization</span>
+                <i class="fas fa-chevron-down float-right arrow-icon"></i>
+            </a>
+            <div id="collapseOrganization" class="collapse {{ request()->routeIs('organization.list') || request()->routeIs('organization.mylist') || request()->routeIs('organization.create') ? 'show' : '' }}" aria-labelledby="headingOrganization" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a href="{{ route('organization.list') }}" class="collapse-item {{ request()->routeIs('organization.list') ? 'active-item' : '' }}">Organization List</a>
+                    <div class="thick-divider"></div>
+                    <a href="{{ route('organization.mylist') }}" class="collapse-item {{ request()->routeIs('organization.mylist') ? 'active-item' : '' }}">My Organizations</a>
+                </div>
+            </div>
+        </li>
+
+    <hr class="sidebar-divider">
 
     <!-- Nav Item - Logout -->
     <li class="nav-item">
@@ -74,4 +89,50 @@
         </div>
     </div>
 </div>
+
+<style>
+    .thick-divider {
+        height: 2px;
+        background-color: #001e54;
+        margin: 5px 0;
+        border-radius: 2px;
+    }
+
+    .admin-sidebar .nav-link.active, .collapse-item.active-item {
+        color: white !important;
+        background-color: #002a60 !important;
+        font-weight: bold;
+    }
+
+    .arrow-icon {
+        font-size: 0.75rem;
+        color: #002a60;
+        transition: transform 0.3s;
+    }
+
+    .nav-link.collapsed::after,
+    .nav-link::after {
+        display: none !important;
+        content: none !important;
+    }
+
+    .nav-link[aria-expanded="true"] .arrow-icon {
+        transform: rotate(180deg);
+    }
+
+    #collapseOrganization {
+        position: relative;
+    }
+
+    @media (max-width: 768px) {
+        #collapseOrganization{
+            position: static;
+        }
+        .collapse-inner {
+            width: auto;
+            max-width: 80%;
+            margin-left: 10px;
+        }
+    }
+</style>
 <!-- End of Sidebar -->

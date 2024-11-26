@@ -314,7 +314,7 @@ th, td {
   display: flex;
   align-items: center;
   justify-content: flex-start; /* Make sure the button stays close to the input */
-  width: 60%; /* Adjust width of search field */
+  width: 120%; /* Adjust width of search field */
   margin-right: 10px;
   background-color: #fff;
   border-radius: 10px;
@@ -333,29 +333,7 @@ th, td {
   padding-left: 10px;
   border-radius: 10px 0 0 10px; /* Rounded corners for input */
 }
-.search-wrapper { 
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  width: 60%; /* Default width for larger screens */
-  margin-right: 10px;
-  background-color: #fff;
-  border-radius: 10px;
-  padding: 0;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  height: 48px;
-}
 
-.search-input {
-  flex: 1;
-  border: none;
-  outline: none;
-  height: 100%;
-  font-size: 1rem;
-  color: #1a2a5c;
-  padding-left: 10px;
-  border-radius: 10px 0 0 10px;
-}
 
 /* Adjust width to 90% on mobile */
 @media (max-width: 768px) {
@@ -1855,7 +1833,7 @@ margin: 10px 15px; /* Add horizontal margin to avoid text touching edges */
     grid-template-columns: 1fr; /* Single column on mobile */
     gap: 20px;
     padding: 20px;
-    max-width: 80%; /* Maximum width */
+    max-width: 90%; /* Maximum width */
   }
 
   .event-field {
@@ -1890,7 +1868,7 @@ margin: 10px 15px; /* Add horizontal margin to avoid text touching edges */
     grid-template-columns: 1fr; /* Single column on mobile */
     gap: 20px;
     padding: 20px;
-    max-width: 80%; /* Maximum width */
+    max-width: 90%; /* Maximum width */
   }
 
   .event-field {
@@ -2051,7 +2029,7 @@ h2 {
 
 /* Ensures that the dropdown remains visible if it has the 'active' class */
 .admin-sidebar .collapse-item {
-  color: #002a60 !important;
+  color: #002a60;
   font-weight: bold !important;
   display: none; /* Default: hidden */
   transition: background-color 0.3s ease, color 0.3s ease;

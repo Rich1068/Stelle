@@ -82,6 +82,23 @@
             </div>
         </div>
     </li>
+    <hr class="sidebar-divider">
+
+    <li class="nav-item">
+            <a class="nav-link {{ request()->routeIs('organization.list') || request()->routeIs('organization.mylist') || request()->routeIs('organization.create') ? '' : 'collapsed' }}" href="#" data-toggle="collapse" data-target="#collapseOrganization" aria-expanded="{{ request()->routeIs('organization.list') || request()->routeIs('organization.mylist') || request()->routeIs('organization.create') ? 'true' : 'false' }}" aria-controls="collapseOrganization">
+                <span>Organization</span>
+                <i class="fas fa-chevron-down float-right arrow-icon"></i>
+            </a>
+            <div id="collapseOrganization" class="collapse {{ request()->routeIs('organization.list') || request()->routeIs('organization.mylist') || request()->routeIs('organization.create') ? 'show' : '' }}" aria-labelledby="headingOrganization" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a href="{{ route('organization.list') }}" class="collapse-item {{ request()->routeIs('organization.list') ? 'active-item' : '' }}">Organization List</a>
+                    <div class="thick-divider"></div>
+                    <a href="{{ route('organization.mylist') }}" class="collapse-item {{ request()->routeIs('organization.mylist') ? 'active-item' : '' }}">My Organizations</a>
+                    <div class="thick-divider"></div>
+                    <a href="{{ route('organization.create') }}" class="collapse-item {{ request()->routeIs('organization.create') ? 'active-item' : '' }}">Create Organization</a>
+                </div>
+            </div>
+        </li>
 
     <hr class="sidebar-divider">
 
@@ -150,12 +167,12 @@
         transform: rotate(180deg);
     }
 
-    #collapseManagement, #collapseEvaluationCertificates {
+    #collapseManagement, #collapseEvaluationCertificates, #collapseOrganization {
         position: relative;
     }
 
     @media (max-width: 768px) {
-        #collapseManagement, #collapseEvaluationCertificates {
+        #collapseManagement, #collapseEvaluationCertificates, #collapseOrganization {
             position: static;
         }
         .collapse-inner {
