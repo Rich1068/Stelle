@@ -52,6 +52,7 @@ Route::middleware(['auth', 'checkRegistrationStep'])->group(function () {
     //organization stuff
     Route::get('/organizations', [OrganizationController::class, 'list'])->name('organization.list');
     Route::get('/myorganizations', [OrganizationController::class, 'mylist'])->name('organization.mylist');
+    Route::get('/organization/create', [OrganizationController::class, 'create'])->name('organization.create');
     Route::get('/organization/{id}', [OrganizationController::class, 'view'])->name('organization.view');
     Route::post('/organization/{id}/join', [OrganizationController::class, 'join'])->name('organization.join');
 

@@ -11,10 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            // Add new columns
-            $table->dropColumn('description'); // Uncomment if the description column is no longer needed
-        });
+
     }
 
     /**
