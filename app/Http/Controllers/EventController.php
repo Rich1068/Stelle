@@ -865,7 +865,7 @@ public function getParticipants($event_id)
     //////////////////////////////QR STUFF//////////////////////
     public function handleQRCode(Request $request, $eventId, $token)
     {
-        $event = Event::findOrFail($eventId);
+        $event = Event::findOrFail((int)$eventId);
     
         // Validate the QR token and participant
         $participant = EventParticipant::where('event_id', $eventId)

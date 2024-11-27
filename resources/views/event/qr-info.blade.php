@@ -6,10 +6,10 @@
     <title>Event Information</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
-<body>
+<body style="background: #aac2db;">
     <div class="container mt-5">
         <div class="card shadow">
-            <div class="card-header bg-primary text-white text-center">
+            <div class="card-header text-white text-center" style="background:#002a60;">
                 <h3>Event Information</h3>
             </div>
             <div class="card-body">
@@ -36,7 +36,7 @@
                 </h5>
             </div>
             <div class="card-footer text-center">
-                <a href="{{ url()->previous() }}" class="btn btn-secondary">Go Back</a>
+                <a href="{{ url('/event/' . $event->id) }}" class="btn btn-primary" style="background:#002a60 !important;">Go to Event Page</a>
             </div>
         </div>
     </div>

@@ -35,6 +35,7 @@ Route::get('/auth/google/redirect', [GoogleController::class, 'googlepage'])->na
 Route::get('/auth/google/callback', [GoogleController::class, 'googlecallback'])->name('google.callback');
 
 Route::get('/account-deleted', [ProfileController::class, 'accountDeleted'])->name('account.deleted');
+Route::get('/event/{event}/qr/{token}', [EventController::class, 'handleQRCode'])->name('event.qr');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/get-provinces/{regionId}', [ProfileController::class, 'getProvinces']);
@@ -176,7 +177,7 @@ Route::middleware(['auth', 'checkRegistrationStep'])->group(function () {
     route::get('/event/{id}', [EventController::class, 'view'])->name('event.view');
     Route::post('/event/{id}/join', [EventController::class, 'join'])->name('event.join');
     Route::get('/event/{id}/search-participants-list', [EventController::class, 'searchParticipants'])->name('event.search.participants.list');
-    Route::get('/event/{event}/qr/{token}', [EventController::class, 'handleQRCode'])->name('event.qr');
+
 
 
 });
