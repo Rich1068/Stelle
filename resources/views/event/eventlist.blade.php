@@ -14,9 +14,15 @@
     </h2>
 </div>
 
-<!-- Filter Form -->
-<div class="event-filter-container p-3 mb-3">
-    <div class="d-flex flex-column flex-md-row justify-content-center align-items-center">
+<div class="d-flex justify-content-between align-items-center filter-container mb-3">
+    <div class="form-switch show-all-container">
+        <input class="form-check-input" type="checkbox" id="show-all-events">
+        <label class="form-check-label" for="show-all-events">
+            Show All Events
+        </label>
+    </div>
+
+    <div class="d-flex flex-column flex-md-row justify-content-end event-filters">
         <!-- Search input with search icon inside the same container -->
         <div class="search-wrapper position-relative mb-3 mb-md-0 me-md-3">
             <input type="text" id="eventSearch" class="form-control search-input" placeholder="Search for events...">
@@ -26,18 +32,21 @@
         </div>
 
         <!-- Sort and date input inside the same container -->
-        <div class="d-flex align-items-center sort-date-wrapper">
+        <div class="d-flex align-items-center sort-date-wrapper" style="margin-right:1.5%;">
             <input type="date" name="date" class="form-control date-input" id="date-input">
             <button class="btn btn-outline-secondary ms-2" id="clear-date-btn" type="button">Clear Date</button>
         </div>
-    </div>
-</div>
 
-<div class="form-switch show-all-container">
-    <input class="form-check-input" type="checkbox" id="show-all-events">
-    <label class="form-check-label" for="show-all-events">
-        Show All Events
-    </label>
+        <!-- Organization filter -->
+        <div class="d-flex align-items-center">
+            <select id="organizationFilter" class="form-select">
+                <option value="">{{ __('All Organizations') }}</option>
+                @foreach ($organizations as $organization)
+                    <option value="{{ $organization->id }}">{{ $organization->name }}</option>
+                @endforeach
+            </select>
+        </div>
+    </div>
 </div>
 
 
@@ -97,14 +106,15 @@
     function fetchFilteredEvents() {
         const selectedDate = document.getElementById('date-input').value;
         const showAllEvents = document.getElementById('show-all-events').checked;
-
+        const selectedOrganization = document.getElementById('organizationFilter').value;
         // Send AJAX request to filter events by date and toggle between ongoing/all events
         $.ajax({
             url: '{{ route('event.list') }}',
             type: 'GET',
             data: {
                 date: selectedDate,
-                show_all: showAllEvents ? 'true' : 'false'
+                show_all: showAllEvents ? 'true' : 'false',
+                organization: selectedOrganization
             },
             success: function(data) {
                 // Update the event list and pagination with the new filtered data
@@ -120,7 +130,7 @@
             }
         });
     }
-
+    document.getElementById('organizationFilter').addEventListener('change', fetchFilteredEvents);
     function toggleNoEventsMessage(hasResults) {
         const noEventsContainer = document.querySelector('.no-events-container');
         noEventsContainer.style.display = hasResults ? 'none' : 'block';
@@ -130,6 +140,9 @@
 
 
 <style>
+.filter-container {
+    padding: 0 5%;
+}
 .show-all-container {
     background-color: #003366; 
     border-radius: 15px;
@@ -137,7 +150,6 @@
     display: inline-flex; /* Use inline-flex to limit the container width to its content */
     align-items: center; /* Vertically center the switch and label */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    margin-left: 20px; /* Adjust as needed to move the container to the right */
     width: auto; /* Ensure the container fits the content */
     color: white; /* Set text color to white */
 }
@@ -203,17 +215,84 @@
     display: block;
 }
 
-@media (max-width: 768px) {
-    .event-date-container {
-        flex-direction: row; /* Change to horizontal on mobile */
-        justify-content: center;
-        gap: 5px; /* Add some spacing between elements */
+@media (min-width: 768px) and (max-width: 1024px) {
+    /* Adjusting container padding for tablets */
+    .filter-container {
+        flex-direction: column; /* Stack vertically */
+        align-items: stretch; /* Align filters to full width */
+        padding: 10px;
+        gap: 15px; /* Add spacing between filters */
     }
 
-    .event-date-container span {
-        display: inline; /* Align text horizontally */
+    .show-all-container {
+        margin-bottom: 10px; /* Add space below */
+    }
+
+    .event-filters {
+        flex-direction: column; /* Stack filters vertically */
+        width: 100%;
+        gap: 10px; /* Space between filters */
+    }
+
+    .event-filters > * {
+        margin: 0; /* Remove margin */
+        width: 100%; /* Make filters full width */
+    }
+
+    .search-wrapper,
+    .sort-date-wrapper,
+    #organizationFilter {
+        width: 100%; /* Full width for individual elements */
+    }
+
+    /* Align the toggle switch in the center for portrait view */
+    .show-all-container {
+        justify-content: center; /* Center the toggle switch */
     }
 }
 
+#organizationFilter {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 120%;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 0;
+    border-color: #fff;
+    height: 48px;
+}
+
+
+#organizationFilter option {
+    padding: 5px; /* Space inside the dropdown options */
+}
+.ms-3 {
+    margin-left: 10px; /* Adjust space from surrounding elements */
+    align-items: center; /* Vertically center the dropdown */
+}
+
+.form-select {
+    min-width: 200px; /* Adjust width for better readability */
+    max-width: 300px; /* Prevent overly wide dropdowns */
+}
+
+@media (max-width: 768px) {
+    .d-flex.justify-content-between {
+        flex-direction: column; /* Stack vertically */
+        align-items: stretch; /* Make full-width */
+        gap: 10px; /* Reduce gap between sections */
+    }
+
+    .event-filters {
+        flex-direction: column; /* Stack filters vertically */
+        align-items: stretch;
+    }
+
+    .event-filters > * {
+        margin-left: 0; /* Reset left margin for vertical layout */
+        margin-bottom: 10px; /* Add spacing below each filter */
+    }
+}
 </style>
 @endsection

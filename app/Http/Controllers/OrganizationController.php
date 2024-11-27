@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\Organization;
 use App\Models\OrganizationMember;
+use App\Models\OrganizationRole;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -111,8 +112,9 @@ class OrganizationController extends Controller
         $overallMember = OrganizationMember::where('organization_id', $id)
                         ->where('user_id', Auth::id())
                         ->first();
+        $organizationRoles = OrganizationRole::all();
 
-        return view('organization.organization', compact('organization', 'totalMembers','pendingMembersCount', 'members', 'overallMember'));
+        return view('organization.organization', compact('organization', 'totalMembers','pendingMembersCount', 'members', 'overallMember', 'organizationRoles'));
     }
     public function create(): View
     {
@@ -140,7 +142,7 @@ class OrganizationController extends Controller
                 // Move the uploaded file to the desired directory
                 $file->storeAs('/images/org_icons', $filename);
             }
-            // Create the event record
+
             $organization = Organization::create([
                 'name' => $request->name,
                 'description' => $request->description,
@@ -150,12 +152,11 @@ class OrganizationController extends Controller
                 'owner_id' => Auth::id(),
                 'is_open' => true
             ]);
-
-            // Create a user-event record
             OrganizationMember::create([
                 'user_id' => Auth::id(),
                 'organization_id' => $organization->id,
-                'status_id' => 1
+                'status_id' => 1,
+                'org_role_id'=>1
             ]);
 
             // Commit the transaction
@@ -317,7 +318,7 @@ class OrganizationController extends Controller
 
         // If accepting the member (status_id = 1)
         if ($request->status_id == 1) {
-            $member->update(['status_id' => 1]);
+            $member->update(['status_id' => 1, 'org_role_id' => 3]);
             return response()->json([
                 'message' => 'Member has been accepted successfully.',
             ], 200);
@@ -355,5 +356,60 @@ class OrganizationController extends Controller
             'message' => $organization->is_open ? 'Organization is now open.' : 'Organization is now closed.',
             'is_open' => $organization->is_open,
         ]);
+    }
+
+    public function changeRole(Request $request, $id, $memberId)
+    {
+        // Validate the request
+        $request->validate([
+            'org_role_id' => 'required|exists:organization_roles,id',
+        ]);
+    
+        // Find the organization
+        $organization = Organization::findOrFail($id);
+        $organizationMember = OrganizationMember::where('organization_id', $id)->where('user_id', $memberId)->first();
+        // Check if the authenticated user is the owner of the organization
+        if (Auth::id() !== $organization->owner_id) {
+            abort(403, 'Unauthorized action. Only the organization owner can change roles.');
+        }
+    
+        if ($organization->owner_id == Auth::id() && $request->org_role_id == 1) {
+            // Transfer ownership
+            $organization->owner_id = $memberId;
+            $organizationMember->org_role_id = 1;
+            $organization->save();
+            $organizationMember->save();
+    
+            // Update the current user's role to Organizer
+            $currentOwner = OrganizationMember::where('organization_id', $id)
+                ->where('user_id', Auth::id())
+                ->first();
+            $currentOwner->org_role_id = 2;
+            $currentOwner->save();
+        } else {
+            $member = OrganizationMember::where('organization_id', $id)
+                ->where('user_id', $memberId)
+                ->firstOrFail();
+    
+            $member->org_role_id = $request->org_role_id;
+            $member->save();
+        }
+    
+        return back()->with('success', 'Member role updated successfully.');
+    }
+    
+
+    public function removeMember($id, $memberId)
+    {
+        $member = OrganizationMember::where('organization_id', $id)
+            ->where('user_id', $memberId)
+            ->firstOrFail();
+
+        // Update the member's status_id to 2 (Removed)
+        $member->status_id = 2;
+        $member->org_role_id = null;
+        $member->save();
+
+        return back()->with('success', 'Member removed successfully.');
     }
 }

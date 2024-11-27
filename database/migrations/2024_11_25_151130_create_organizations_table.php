@@ -23,14 +23,22 @@ return new class extends Migration
             $table->timestamps(); // Created and updated timestamps
             $table->softDeletes();
         });
+        Schema::create('organization_roles', function (Blueprint $table) {
+            $table->id();
+            $table->string('role'); // Role name, e.g., 'Owner', 'Organizer', 'Member'
+            $table->timestamps();
+        });
 
         Schema::create('organization_members', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('organization_id')->constrained('organizations')->onDelete('cascade');
             $table->foreignId('status_id')->constrained('participant_statuses')->onDelete('cascade'); 
+            $table->foreignId('org_role_id')->nullable()->constrained('organization_roles')->onDelete('cascade');
             $table->timestamps();
         });
+
+
     }
 
     /**
@@ -39,6 +47,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('organization_members');
+        Schema::dropIfExists('organization_roles');
         Schema::dropIfExists('organizations');
     }
 };

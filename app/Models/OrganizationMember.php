@@ -11,7 +11,8 @@ class OrganizationMember extends Model
     protected $fillable = [
         'user_id',
         'organization_id',
-        'status_id'
+        'status_id',
+        'org_role_id'
     ];
     public function member()
     {

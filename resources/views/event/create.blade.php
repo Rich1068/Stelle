@@ -21,7 +21,7 @@
 
             <div class="custom-bg-white" style="border-radius: 15px; background-color: white; padding-top: 20px;">
                 <!-- Title -->
-                <div class="col-md-12 mb-4">
+                <div class="col-md-12 mb-2">
                     <div class="event-field">
                         <label for="title" class="flex items-center">
                             <i class="fas fa-heading mr-2"></i>
@@ -29,12 +29,12 @@
                             <span style="color:#ff3333;">*</span>
                         </label>
                         <x-text-input id="title" name="title" type="text" class="mt-1 block w-full event-input" :value="old('title')" required autofocus autocomplete="off" />
-                        <x-input-error class="mt-2" :messages="$errors->get('title')" />
+                        <x-input-error class="mt-2" :messages="$errors->get('title')" style="color:#ff3333;"/>
                     </div>
                 </div>
 
                                 <!-- Date, Start Time, and End Time in One Column -->
-                <div class="col-md-12 mb-4">
+                <div class="col-md-12 mb-2">
                     <div class="row">
                         <!-- Row 1: Start Date and End Date -->
                         <div class="col-md-6 mb-3">
@@ -45,7 +45,7 @@
                                     <span style="color:#ff3333;">*</span>
                                 </label>
                                 <x-text-input id="start_date" name="start_date" type="date" class="mt-1 block w-full event-input" :value="old('start_date')" :min="$today" required />
-                                <x-input-error class="mt-2" :messages="$errors->get('start_date')" />
+                                <x-input-error class="mt-2" :messages="$errors->get('start_date')" style="color:#ff3333;"/>
                             </div>
                         </div>
                         <div class="col-md-6 mb-3">
@@ -56,7 +56,7 @@
                                     <span style="color:#ff3333;">*</span>
                                 </label>
                                 <x-text-input id="end_date" name="end_date" type="date" class="mt-1 block w-full event-input" :value="old('end_date')" :min="$today" required />
-                                <x-input-error class="mt-2" :messages="$errors->get('end_date')" />
+                                <x-input-error class="mt-2" :messages="$errors->get('end_date')" style="color:#ff3333;"/>
                             </div>
                         </div>
 
@@ -69,7 +69,7 @@
                                     <span style="color:#ff3333;">*</span>
                                 </label>
                                 <input id="start_time" name="start_time" class="mt-1 block w-full event-input" required />
-                                <x-input-error class="mt-2" :messages="$errors->get('start_time')" />
+                                <x-input-error class="mt-2" :messages="$errors->get('start_time')" style="color:#ff3333;"/>
                             </div>
                         </div>
                         <div class="col-md-6 mb-3">
@@ -80,27 +80,25 @@
                                     <span style="color:#ff3333;">*</span>
                                 </label>
                                 <input id="end_time" name="end_time" class="mt-1 block w-full event-input" required />
-                                <x-input-error class="mt-2" :messages="$errors->get('end_time')" />
+                                <x-input-error class="mt-2" :messages="$errors->get('end_time')" style="color:#ff3333;"/>
                             </div>
                         </div>
                     </div>
                 </div>
-
-
     <!-- Description -->
-    <div class="col-md-12 mb-4">
-        <div class="event-field">
-            <label for="description" class="flex items-center">
-                <i class="fas fa-file-alt mr-2"></i>
-                <span class="font-bold">{{ __('Description') }}</span>
-                <span style="color:#ff3333;">*</span>
-            </label>
-            <textarea id="description" name="description" class="mt-1 block w-full event-input" oninput="autoResize(this)" rows="1" style="overflow:hidden;" required>{{ old('description') }}</textarea>
-            <x-input-error class="mt-2" :messages="$errors->get('description')" />
+        <div class="col-md-12 mb-2">
+            <div class="event-field">
+                <label for="description" class="flex items-center">
+                    <i class="fas fa-file-alt mr-2"></i>
+                    <span class="font-bold">{{ __('Description') }}</span>
+                    <span style="color:#ff3333;">*</span>
+                </label>
+                <textarea id="description" name="description" class="mt-1 block w-full event-input" oninput="autoResize(this)" rows="1" style="overflow:hidden;" required>{{ old('description') }}</textarea>
+                <x-input-error class="mt-2" :messages="$errors->get('description')" style="color:#ff3333;"/>
+            </div>
         </div>
-    </div>
                 <!-- Capacity, Mode, and Address in One Column -->
-                <div class="col-md-12 mb-4">
+                <div class="col-md-12 mb-2">
                     <div class="row">
 
                         <!-- Capacity -->
@@ -112,7 +110,7 @@
                                     <span style="color:#ff3333;">*</span>
                                 </label>
                                 <x-text-input id="capacity" name="capacity" type="number" class="mt-1 block w-full event-input" :value="old('capacity')" min="1" required />
-                                <x-input-error class="mt-2" :messages="$errors->get('capacity')" />
+                                <x-input-error class="mt-2" :messages="$errors->get('capacity')" style="color:#ff3333;"/>
                             </div>
                         </div>
 
@@ -125,7 +123,7 @@
                                     <span style="color:#ff3333;">*</span>
                                 </label>
                                 <x-text-input id="address" name="address" type="text" class="mt-1 block w-full event-input" :value="old('address')" required />
-                                <x-input-error class="mt-2" :messages="$errors->get('address')" />
+                                <x-input-error class="mt-2" :messages="$errors->get('address')" style="color:#ff3333;"/>
                             </div>
                         </div>
 
@@ -142,28 +140,51 @@
                                     <option value="onsite" {{ old('mode') == 'onsite' ? 'selected' : '' }}>{{ __('Onsite') }}</option>
                                     <option value="virtual" {{ old('mode') == 'virtual' ? 'selected' : '' }}>{{ __('Virtual') }}</option>
                                 </select>
-                                <x-input-error :messages="$errors->get('mode')" class="mt-2" />
+                                <x-input-error :messages="$errors->get('mode')" class="mt-2" style="color:#ff3333;"/>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-md-12 mb-4">
-                    <div class="event-field">
-                        <label for="event_banner" class="flex items-center">
-                            <i class="fas fa-image mr-2"></i>
-                            <span class="font-bold">{{ __('Event Banner') }}</span>
-                        </label>
-                        <!-- Hide the original file input -->
-                        <input id="event_banner" name="event_banner" type="file" accept="image/*" onchange="previewImage(event)" style="display: none;" />
-                        
-                        <!-- Custom button to trigger file input -->
-                        <button type="button" class="custom-file-button" onclick="document.getElementById('event_banner').click()">
-                            <i class="fas fa-upload"></i> <span class="bold-text">Choose File</span>
-                        </button>
-                        
-                        <x-input-error class="mt-2" :messages="$errors->get('event_banner')" />
-                        <img id="image_preview" class="event-image-preview" style="display: none; max-width: 50%; margin-top: 10px;" />
+                <div class="col-md-12 mb-2">
+                    <div class="row">
+                        <div class="col-md-8 mb-3">
+                            <div class="event-field">
+                                <label for="event_banner" class="flex items-center">
+                                    <i class="fas fa-image mr-2"></i>
+                                    <span class="font-bold">{{ __('Event Banner') }}</span>
+                                </label>
+                                <!-- Hide the original file input -->
+                                <input id="event_banner" name="event_banner" type="file" accept="image/*" onchange="previewImage(event)" style="display: none;" />
+                                
+                                <!-- Custom button to trigger file input -->
+                                <button type="button" class="custom-file-button" onclick="document.getElementById('event_banner').click()">
+                                    <i class="fas fa-upload"></i> <span class="bold-text">Choose File</span>
+                                </button>
+                                
+                                <x-input-error class="mt-2" :messages="$errors->get('event_banner')" style="color:#ff3333;"/>
+                                <img id="image_preview" class="event-image-preview" style="display: none; max-width: 50%; margin-top: 10px;" />
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="event-field">
+                                <label for="organization" class="flex items-center">
+                                    <i class="fas fa-building mr-2"></i>
+                                    <span class="font-bold">{{ __('Organization') }}</span>
+                                    <span style="color:#ff3333;">*</span>
+                                </label>
+                                <select id="organization" name="organization_id" class="block mt-1 w-full event-input" required>
+                                    <option value="">{{ __('Select Organization') }}</option>
+                                    <option value="null" {{ old('organization_id') == 'null' ? 'selected' : '' }}>{{ __('N/A') }}</option>
+                                    @foreach ($organizations as $organization)
+                                        <option value="{{ $organization->id }}" {{ old('organization_id') == $organization->id ? 'selected' : '' }}>
+                                            {{ $organization->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <x-input-error :messages="$errors->get('organization_id')" class="mt-2" style="color:#ff3333;"/>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -268,7 +289,7 @@ $("#start_time").kendoTimePicker({
     parseFormats: ["HH:mm"],
     interval: {
         hour: 1,
-        minute: 15,
+        minute: 5,
     }    
 });
 $("#end_time").kendoTimePicker({
@@ -277,7 +298,7 @@ $("#end_time").kendoTimePicker({
     parseFormats: ["HH:mm"],
     interval: {
         hour: 1,
-        minute: 15,
+        minute: 5,
     }
     
 });

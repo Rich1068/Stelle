@@ -26,6 +26,10 @@ class Event extends Model
     {
         return $this->hasMany(CertTemplate::class);
     }
+    public function organization()
+    {
+        return $this->belongsTo(Organization::class);
+    }
 
     protected $fillable = [
         'title', 'description', 'start_date', 'end_date', 'address', 

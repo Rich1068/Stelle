@@ -47,7 +47,7 @@
                     </div>
                 </div>
 
-        <div class="col-md-12 mb-4">
+        <div class="col-md-12 mb-2">
             <div class="row">
                 <!-- Start Date -->
                 <div class="col-md-6 mb-3">
@@ -108,7 +108,7 @@
         </div>
 
 <!-- Description -->
-<div class="col-md-12 mb-4">
+<div class="col-md-12 mb-2">
     <div class="event-field">
         <label for="description" class="flex items-center">
             <i class="fas fa-file-alt mr-2"></i>
@@ -120,7 +120,7 @@
     </div>
 </div>
                 <!-- Capacity, Mode, and Address in One Column -->
-                <div class="col-md-12 mb-4">
+                <div class="col-md-12 mb-2">
                     <div class="row">
 
                         <!-- Capacity -->
@@ -168,31 +168,58 @@
                     </div>
                 </div>
 
+                <div class="col-md-12 mb-2">
+                    <div class="row">
                 <!-- Event Banner -->
-                <div class="col-md-12 mb-4">
-    <div class="event-field">
-        <label for="event_banner" class="flex items-center">
-            <i class="fas fa-image mr-2"></i>
-            <span class="font-bold">{{ __('Event Banner') }}</span>
-        </label>
-        <input id="event_banner" name="event_banner" type="file" accept="image/*" class="mt-1 block w-full event-input" onchange="previewImage(event)" style="display: none;" />
-        <button type="button" class="custom-file-button" onclick="document.getElementById('event_banner').click()">
-            <i class="fas fa-upload"></i> <span class="bold-text">Update Event Banner</span>
-        </button>
-        <div class="mt-2">
-            <label for="remove_event_banner">
-                {{ __('Remove Event Banner') }}
-                <input type="checkbox" name="remove_event_banner" id="remove_event_banner" value="1">
-            </label>
-        </div>
-        <x-input-error class="mt-2" :messages="$errors->get('event_banner')" />
+                    <div class="col-md-8 mb-3">
+                        <div class="event-field">
+                            <label for="event_banner" class="flex items-center">
+                                <i class="fas fa-image mr-2"></i>
+                                <span class="font-bold">{{ __('Event Banner') }}</span>
+                            </label>
+                            <input id="event_banner" name="event_banner" type="file" accept="image/*" class="mt-1 block w-full event-input" onchange="previewImage(event)" style="display: none;" />
+                            <button type="button" class="custom-file-button" onclick="document.getElementById('event_banner').click()">
+                                <i class="fas fa-upload"></i> <span class="bold-text">Update Event Banner</span>
+                            </button>
+                            <div class="mt-2">
+                                <label for="remove_event_banner" style="display: flex; align-items: center; gap: 8px; font-size: 14px; !important">
+                                    <input type="checkbox" name="remove_event_banner" id="remove_event_banner" value="1">
+                                    {{ __('Remove Event Banner') }}
+                                </label>
+                            </div>
+                            <x-input-error class="mt-2" :messages="$errors->get('event_banner')" />
 
-        <!-- Image preview section for the selected file -->
-        <img id="image_preview" class="event-image-preview" 
-            src="{{ $event->event_banner ? asset($event->event_banner) : '' }}" 
-            style="display: {{ $event->event_banner ? 'block' : 'none' }}; margin-top: 10px;" />
+                            <!-- Image preview section for the selected file -->
+                            <img id="image_preview" class="event-image-preview" 
+                                src="{{ $event->event_banner ? asset($event->event_banner) : '' }}" 
+                                style="display: {{ $event->event_banner ? 'block' : 'none' }}; margin-top: 10px;" />
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="event-field">
+                            <label for="organization" class="flex items-center">
+                                <i class="fas fa-building mr-2"></i>
+                                <span class="font-bold">{{ __('Organization') }}</span>
+                                <span style="color:#ff3333;">*</span>
+                            </label>
+                            <select id="organization" name="organization_id" class="block mt-1 w-full event-input" required>
+                                <option value="">{{ __('Select Organization') }}</option>
+                                <option value="null" 
+                                    {{ (old('organization_id') === 'null' || (isset($event) && is_null($event->organization_id))) ? 'selected' : '' }}>
+                                    {{ __('N/A') }}
+                                </option>
+                                @foreach ($organizations as $organization)
+                                    <option value="{{ $organization->id }}" 
+                                        {{ (old('organization_id') == $organization->id || (isset($event) && $event->organization_id == $organization->id)) ? 'selected' : '' }}>
+                                        {{ $organization->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <x-input-error :messages="$errors->get('organization_id')" class="mt-2" style="color:#ff3333;" />
+                        </div>
+                    </div>
+                </div>
     </div>
-</div>
 
                 <div class="flex items-center gap-4 mb-4">
                     <x-primary-button id="editEventButton" type="submit" class="btn-primary" onclick="disableButton(this)">
@@ -268,7 +295,10 @@
         componentType: "modern", 
         format: "HH:mm",         
         parseFormats: ["HH:mm"], 
-        interval: 15            
+        interval: {
+            hour: 1,
+            minute: 5,
+        }           
     });
 
     // Initialize Kendo TimePicker for End Time
@@ -276,7 +306,10 @@
         componentType: "modern", 
         format: "HH:mm",         
         parseFormats: ["HH:mm"], 
-        interval: 15             
+        interval: {
+            hour: 1,
+            minute: 5,
+        }          
     });
 
 function autoResize(textarea) {

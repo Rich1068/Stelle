@@ -16,6 +16,7 @@ use App\Models\AttendanceLog;
 use App\Models\EvaluationForm;
 use App\Models\EventEvaluationForm;
 use App\Models\EventCertificate;
+use App\Models\Organization;
 use App\Events\UserAcceptedToEvent;
 use App\Events\UserRemovedFromEvent;
 use Illuminate\View\View;
@@ -37,7 +38,14 @@ class EventController extends Controller
 {
     public function create(): View
     {
-        return view('event.create');
+        $user = Auth::user();
+        $organizations = Organization::where('owner_id', $user->id)
+            ->orWhereHas('members', function ($query) use ($user) {
+                $query->where('user_id', $user->id)
+                    ->whereIn('org_role_id', [1, 2]);
+            })
+            ->get();
+        return view('event.create', compact('organizations'));
     }
 
     public function list(Request $request)
@@ -76,6 +84,10 @@ class EventController extends Controller
             ->orderBy('end_date', 'asc')
             ->orderBy('start_time', 'asc');
 
+        // organization drop down    
+        if ($request->has('organization') && $request->organization) {
+                $query->where('organization_id', $request->organization);
+            }
         $events = $query->paginate(10);
         $hasEvents = $events->count() > 0;
         
@@ -86,8 +98,9 @@ class EventController extends Controller
                 'hasEvents' => $hasEvents,
             ]);
         }
+        $organizations = Organization::all();
 
-        return view('event.eventlist', compact('events'));
+        return view('event.eventlist', compact('events', 'organizations'));
     }
 
     public function myEventlist(Request $request)
@@ -135,6 +148,12 @@ class EventController extends Controller
                       ->whereDate('end_date', '>=', $selectedDate);
             });
         }
+
+            // Apply organization filter
+        if ($request->has('organization') && $request->organization != '') {
+            $organizationId = $request->organization === 'null' ? null : $request->organization;
+            $query->where('organization_id', $organizationId);
+        }
         // Order the results by start_date, end_date, and start_time
         $query->orderBy('start_date', 'asc')
               ->orderBy('end_date', 'asc')
@@ -142,7 +161,12 @@ class EventController extends Controller
     
         $events = $query->paginate(10);
         $hasEvents = $events->count() > 0;
-    
+
+        $organizations = Organization::where('owner_id', $userId)
+            ->orWhereHas('members', function ($query) use ($userId) {
+                $query->where('user_id', $userId)->whereIn('org_role_id', [1, 2]); // 1 = Owner, 2 = Organizer
+            })->get();
+
         // Check if the request is an AJAX request (for filtering without reloading)
         if ($request->ajax()) {
             return response()->json([
@@ -152,7 +176,7 @@ class EventController extends Controller
             ]);
         }
     
-        return view('event.myeventlist', compact('events'));
+        return view('event.myeventlist', compact('events', 'organizations'));
     }
  //////////////////////////////////////////////////////////   
     public function view($id): View
@@ -359,7 +383,7 @@ class EventController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $validator = Validator::make($request->all(), [
-            'title' => ['required', 'string', 'max:255'],
+            'title' => ['required', 'string', 'max:255', 'unique:events,title'],
             'description' => ['required', 'string', 'max:500'],
             'start_date' => ['required', 'date', 'date_format:Y-m-d'],
             'end_date' => ['required', 'date', 'date_format:Y-m-d', 'after_or_equal:start_date'],
@@ -368,9 +392,20 @@ class EventController extends Controller
             'start_time' => ['required', 'date_format:H:i'],
             'end_time' => ['required', 'date_format:H:i'],
             'capacity' => ['required', 'integer', 'min:1'],
-            'event_banner' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048']
+            'event_banner' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
+            'organization_id' => [
+                'nullable',
+                function ($attribute, $value, $fail) {
+                    if ($value === 'null') {
+                        return; // Allow "N/A" as valid input
+                    }
+                    if (!is_null($value) && Organization::where('id', $value)->exists()) {
+                        $fail('The selected organization is invalid.');
+                    }
+                },
+            ],
         ]);
-    
+
         // Add custom validation logic in the after method
         $validator->after(function ($validator) use ($request) {
             if ($request->start_date === $request->end_date) {
@@ -383,6 +418,7 @@ class EventController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
+
         // Start a database transaction
         DB::beginTransaction();
         try {
@@ -406,7 +442,8 @@ class EventController extends Controller
                 'end_time' => $request->end_time,
                 'capacity' => $request->capacity,
                 'event_banner' => $relativePath ?? $request->event_banner,
-                'mode' => $request->mode
+                'mode' => $request->mode,
+                'organization_id' => $request->organization_id === 'null' ? null : $request->organization_id,
             ]);
 
             // Create a user-event record
@@ -438,11 +475,18 @@ class EventController extends Controller
     public function edit(Request $request, $id): View
     {
         // Find the event by its ID or fail
+        $user = Auth()->user();
         $event = Event::findOrFail($id);
-
+        $organizations = Organization::where('owner_id', $user->id)
+            ->orWhereHas('members', function ($query) use ($user) {
+                $query->where('user_id', $user->id)
+                    ->whereIn('org_role_id', [1, 2]);
+            })
+            ->get();
         // Return the edit view with the event data
         return view('event.edit', [
             'event' => $event,
+            'organizations' => $organizations
         ]);
     }
 
@@ -451,13 +495,16 @@ class EventController extends Controller
     public function update(EventUpdateRequest $request, $id): RedirectResponse
     {
         $event = Event::findOrFail($id);
-    
+        
         // Start a database transaction
         DB::beginTransaction();
     
         try {
             // Validate the request data
             $validatedData = $request->validated();
+            if ($validatedData['organization_id'] === 'null') {
+                $validatedData['organization_id'] = null;
+            }
             // Check if the remove event banner checkbox is checked
             if ($request->has('remove_event_banner') && $request->input('remove_event_banner') == true) {
                 $oldfile = $event->event_banner;

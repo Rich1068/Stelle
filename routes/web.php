@@ -12,6 +12,8 @@ use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\Auth\GoogleController;
 
+require __DIR__.'/auth.php';
+
 Route::get('/', function () {
     if (Auth::check()) {
         $user = Auth::user();
@@ -38,6 +40,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/get-provinces/{regionId}', [ProfileController::class, 'getProvinces']);
 });
 //check if logged in
+Route::middleware(['auth', 'checkRole:1,2', 'checkRegistrationStep'])->group(function () {
+    Route::get('/organization/create', [OrganizationController::class, 'create'])->name('organization.create');
+    Route::post('/organization/store', [OrganizationController::class, 'store'])->name('organization.store');
+    Route::patch('/organization/{id}/members/{memberId}/change-role', [OrganizationController::class, 'changeRole'])->name('organization.changeRole');
+    Route::patch('/organization/{id}/member/{memberId}/remove', [OrganizationController::class, 'removeMember'])->name('organization.member.remove');
+});
 Route::middleware(['auth', 'checkRegistrationStep'])->group(function () {
     Route::get('/get-events', [EventController::class, 'getCalendarEvents'])->name('events.get');
     Route::get('/get-adminevents', [EventController::class, 'getAdminOnlyEvents'])->name('adminevents.get');
@@ -52,13 +60,13 @@ Route::middleware(['auth', 'checkRegistrationStep'])->group(function () {
     //organization stuff
     Route::get('/organizations', [OrganizationController::class, 'list'])->name('organization.list');
     Route::get('/myorganizations', [OrganizationController::class, 'mylist'])->name('organization.mylist');
-    Route::get('/organization/create', [OrganizationController::class, 'create'])->name('organization.create');
     Route::get('/organization/{id}', [OrganizationController::class, 'view'])->name('organization.view');
     Route::post('/organization/{id}/join', [OrganizationController::class, 'join'])->name('organization.join');
 
 });
 
-require __DIR__.'/auth.php';
+
+
 
 Route::middleware(['auth', 'checkRegistrationStep', 'organizationOwner'])->group(function () {
 
@@ -81,7 +89,7 @@ Route::middleware(['auth','super_admin', 'checkRegistrationStep'])->group(functi
     Route::get('/super-admin/users/edit/{id}', [ProfileController::class, 'superadmin_edit'])->name('superadmin.editProfile');
     Route::patch('/super-admin/users/update/{id}', [ProfileController::class, 'superadmin_update'])->name('superadmin.updateProfile');
     Route::patch('/super-admin/users/delete/{id}', [ProfileController::class, 'superadmin_destroy'])->name('superadmin.destroyUser');
-    Route::patch('/super-admin/users/recpver/{id}', [ProfileController::class, 'superadmin_recover'])->name('superadmin.recoverUser');
+    Route::patch('/super-admin/users/recover/{id}', [ProfileController::class, 'superadmin_recover'])->name('superadmin.recoverUser');
     Route::patch('/super-admin/users/role-update/{id}', [ProfileController::class, 'updateRole'])->name('role.update');
     Route::get('/super-admin/events-data', [SuperAdminController::class, 'getEventsData']);
     Route::get('/super-admin/users-data', [SuperAdminController::class, 'getUsersDataByYear']);
@@ -155,9 +163,6 @@ Route::middleware(['auth', 'checkRole:1,2', 'checkRegistrationStep'])->group(fun
     Route::get('/event/{id}/certificates/viewCert/{certId}', [CertificateController::class, 'viewImage'])->name('certificates.view');
     Route::get('/event/{id}/certificates/{certId}/show', [CertificateController::class, 'showCertificateImage'])->name('certificates.show');
 
-
-    Route::get('/organization/create', [OrganizationController::class, 'create'])->name('organization.create');
-    Route::post('/organization/store', [OrganizationController::class, 'store'])->name('organization.store');
 });
 
 

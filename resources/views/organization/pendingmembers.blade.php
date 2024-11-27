@@ -25,9 +25,6 @@
         <h2 class="font-weight-bold mt-2" style="color: grey;">
             {{ $organization->name }}
         </h2>
-        <h5 id="participantCount" class="font-weight-bold mt-3" style="color: grey;">
-            <i class="fas fa-users"></i>{{$totalMembers}}
-        </h5>
     </div>
 </div>
 

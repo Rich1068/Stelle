@@ -58,6 +58,12 @@
                             <i class="fas fa-users"></i>
                             <span class="meta-text ms-1">{{ $event->current_participants }}/{{ $event->capacity }}</span>
                         </div>
+                        @if ($event->organization)
+                        <div class="meta-item organization d-flex align-items-center">
+                            <i class="fas fa-building"></i>
+                            <span class="meta-text ms-1">{{ $event->organization->name }}</span>
+                        </div>
+                        @endif
                     </div>
                     <div class="event-list-actions">
                         <a href="{{ route('event.view', $event->id) }}" class="event-list-view-btn">View</a>

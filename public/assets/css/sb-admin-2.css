@@ -342,7 +342,7 @@ th, td {
     margin-right: 0; /* Remove margin for better centering on mobile */
   }
   .search-wrapper {
-    width: 120%; /* Full width on smaller screens */
+    width: 100%; /* Full width on smaller screens */
     margin-right: 0; /* Remove margin for better centering on mobile */
   }
 }
@@ -1534,7 +1534,7 @@ w
 .event-list {
   max-width: 90%; /* Set a maximum width */
   margin: 0 auto; /* Center the container */
-  padding: 20px; /* Optional: add padding for inner spacing */
+  padding: 10px 20px 20px 20px; /* Optional: add padding for inner spacing */
 }
 
 .event-list-container {
@@ -1782,7 +1782,6 @@ margin: 10px 15px; /* Add horizontal margin to avoid text touching edges */
   border-radius: 12px;
   padding: 12px;
   background-color: #f0f0f0;
-  width: 100%; /* Full width inside container */
   box-sizing: border-box;
 }
 

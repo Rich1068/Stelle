@@ -15,8 +15,9 @@ class EventUpdateRequest extends FormRequest
      */
     public function rules(): array
     {
+        $eventId = $this->route('id');
         return [
-            'title' => ['required', 'string', 'max:255'],
+            'title' => ['required', 'string', 'max:255', Rule::unique('events', 'title')->ignore($eventId)],
             'description' => ['required', 'string', 'max:500'],
             'start_date' => ['required', 'date', 'date_format:Y-m-d'],
             'end_date' => ['required', 'date', 'date_format:Y-m-d', 'after_or_equal:start_date'],
@@ -27,6 +28,17 @@ class EventUpdateRequest extends FormRequest
             'capacity' => ['required', 'integer', 'min:1'],
             'event_banner' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
             'remove_event_banner' => ['nullable', 'boolean'],
+            'organization_id' => [
+                'nullable',
+                function ($attribute, $value, $fail) {
+                    if ($value === 'null') {
+                        return; // Allow "N/A" as valid input
+                    }
+                    if (!is_null($value) && !\App\Models\Organization::where('id', $value)->exists()) {
+                        $fail('The selected organization is invalid.');
+                    }
+                },
+            ],
         ];
     }
     

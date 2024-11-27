@@ -21,36 +21,21 @@
 
     <!-- Divider -->
     <hr class="sidebar-divider">
-
-    <!-- Nav Item - Events -->
-    <li class="nav-item">
-        <a href="{{ route('event.list') }}" class="nav-link {{ request()->routeIs('event.list') ? 'active' : '' }}">
-            <span>Events</span>
-            <i class="fas fa-calendar-alt"></i>
-        </a>
-    </li>
-
-    <!-- Divider -->
-    <hr class="sidebar-divider">
-
-    <!-- Nav Item - My Events -->
-    <li class="nav-item">
-        <a href="{{ route('event.myeventlist') }}" class="nav-link {{ request()->routeIs('event.myeventlist') ? 'active' : '' }}">
-            <span>My Events</span>
-            <i class="fas fa-calendar-check"></i>
-        </a>
-    </li>
-
-    <!-- Divider -->
-    <hr class="sidebar-divider">
-
-    <!-- Nav Item - Create Events -->
-    <li class="nav-item">
-        <a href="{{ route('event.create') }}" class="nav-link {{ request()->routeIs('event.create') ? 'active' : '' }}">
-            <span>Create Events</span>
-            <i class="fas fa-plus-circle"></i>
-        </a>
-    </li>
+        <li class="nav-item">
+            <a class="nav-link {{ request()->routeIs('event.list') || request()->routeIs('event.myeventlist') || request()->routeIs('event.create') ? '' : 'collapsed' }}" href="#" data-toggle="collapse" data-target="#collapseEvent" aria-expanded="{{ request()->routeIs('event.list') || request()->routeIs('event.myeventlist') || request()->routeIs('event.create') ? 'true' : 'false' }}" aria-controls="collapseEvent">
+                <span>Event</span>
+                <i class="fas fa-chevron-down float-right arrow-icon"></i>
+            </a>
+            <div id="collapseEvent" class="collapse {{ request()->routeIs('event.list') || request()->routeIs('event.myeventlist') || request()->routeIs('event.create') ? 'show' : '' }}" aria-labelledby="headingEvent" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a href="{{ route('event.list') }}" class="collapse-item {{ request()->routeIs('event.list') ? 'active-item' : '' }}">Events List</a>
+                    <div class="thick-divider"></div>
+                    <a href="{{ route('event.myeventlist') }}" class="collapse-item {{ request()->routeIs('event.myeventlist') ? 'active-item' : '' }}">My Events</a>
+                    <div class="thick-divider"></div>
+                    <a href="{{ route('event.create') }}" class="collapse-item {{ request()->routeIs('event.create') ? 'active-item' : '' }}">Create Events</a>
+                </div>
+            </div>
+        </li>
 
     <!-- Divider -->
     <hr class="sidebar-divider">
@@ -167,12 +152,12 @@
         transform: rotate(180deg);
     }
 
-    #collapseManagement, #collapseEvaluationCertificates, #collapseOrganization {
+    #collapseEvent, #collapseManagement, #collapseEvaluationCertificates, #collapseOrganization {
         position: relative;
     }
 
     @media (max-width: 768px) {
-        #collapseManagement, #collapseEvaluationCertificates, #collapseOrganization {
+        #collapseEvent, #collapseManagement, #collapseEvaluationCertificates, #collapseOrganization {
             position: static;
         }
         .collapse-inner {

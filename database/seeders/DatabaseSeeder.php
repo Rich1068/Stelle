@@ -37,6 +37,7 @@ class DatabaseSeeder extends Seeder
                 'birthdate' => '2003-10-13',
                 'gender' => 'male',
                 'role_id' => DB::table('roles')->where('role_name', 'Super Admin')->first()->id,
+                'profile_completed' => true,
             ],
             [
                 'first_name' => 'Super2',
@@ -47,6 +48,7 @@ class DatabaseSeeder extends Seeder
                 'birthdate' => '1988-02-22',
                 'gender' => 'female',
                 'role_id' => DB::table('roles')->where('role_name', 'Super Admin')->first()->id,
+                'profile_completed' => false,
             ],
             [
                 'first_name' => 'Admin1',
@@ -57,6 +59,7 @@ class DatabaseSeeder extends Seeder
                 'birthdate' => '1998-03-12',
                 'gender' => 'male',
                 'role_id' => DB::table('roles')->where('role_name', 'Admin')->first()->id,
+                'profile_completed' => true,
             ],
             [
                 'first_name' => 'Admin2',
@@ -67,6 +70,7 @@ class DatabaseSeeder extends Seeder
                 'birthdate' => '1978-05-03',
                 'gender' => 'female',
                 'role_id' => DB::table('roles')->where('role_name', 'Admin')->first()->id,
+                'profile_completed' => false,
             ],
             [
                 'first_name' => 'Admin3',
@@ -77,6 +81,7 @@ class DatabaseSeeder extends Seeder
                 'birthdate' => '1990-07-21',
                 'gender' => null,
                 'role_id' => DB::table('roles')->where('role_name', 'Admin')->first()->id,
+                'profile_completed' => false,
             ],
             [
                 'first_name' => 'John',
@@ -87,6 +92,7 @@ class DatabaseSeeder extends Seeder
                 'birthdate' => '2001-12-12',
                 'gender' => 'male',
                 'role_id' => DB::table('roles')->where('role_name', 'User')->first()->id,
+                'profile_completed' => true,
             ],
             [
                 'first_name' => 'Jane',
@@ -97,6 +103,7 @@ class DatabaseSeeder extends Seeder
                 'birthdate' => '2000-08-09',
                 'gender' => 'female',
                 'role_id' => DB::table('roles')->where('role_name', 'User')->first()->id,
+                'profile_completed' => false,
             ],
             [
                 'first_name' => 'Juan',
@@ -107,6 +114,7 @@ class DatabaseSeeder extends Seeder
                 'birthdate' => '2000-08-09',
                 'gender' => null,
                 'role_id' => DB::table('roles')->where('role_name', 'User')->first()->id,
+                'profile_completed' => false,
             ],
         ]);
         DB::table('participant_statuses')->insert([
@@ -146,6 +154,11 @@ class DatabaseSeeder extends Seeder
                 'status_id' => '1',
                 'created_at' => now(),
             ],
+        ]);
+        DB::table('organization_roles')->insert([
+            ['role' => 'Owner'],
+            ['role' => 'Organizer'],
+            ['role' => 'Member'],
         ]);
 
         DB::table('regions')->insert([
