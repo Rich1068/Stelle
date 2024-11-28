@@ -33,8 +33,18 @@
 
         <!-- Sort and date input inside the same container -->
         <div class="d-flex align-items-center sort-date-wrapper" style="margin-right:1.5%;">
-            <input type="date" name="date" class="form-control date-input" id="date-input">
-            <button class="btn btn-outline-secondary ms-2" id="clear-date-btn" type="button">Clear Date</button>
+            <select id="filterType" class="me-2" style="border-color:#FFF;">
+                <option value="date" selected>{{ __('Date') }}</option>
+                <option value="month">{{ __('Month') }}</option>
+            </select>
+
+            <!-- Date Input -->
+            <input type="date" name="date" class="form-control date-input" id="date-input" placeholder="Filter by Date">
+
+            <!-- Month Input (hidden by default) -->
+            <input type="month" name="month" class="form-control month-input ms-2 d-none" id="month-input" placeholder="Filter by Month">
+
+            <button class="btn btn-outline-secondary ms-2" id="clear-filters-btn" type="button">Clear Filters</button>
         </div>
 
         <!-- Organization filter -->
@@ -73,6 +83,22 @@
 
 @section('scripts')
 <script>
+    document.getElementById('filterType').addEventListener('change', function () {
+        const filterType = this.value;
+
+        // Toggle visibility of inputs based on the selected filter type
+        if (filterType === 'date') {
+            document.getElementById('date-input').classList.remove('d-none');
+            document.getElementById('month-input').classList.add('d-none');
+            document.getElementById('month-input').value = ''; // Clear the month input
+        } else if (filterType === 'month') {
+            document.getElementById('month-input').classList.remove('d-none');
+            document.getElementById('date-input').classList.add('d-none');
+            document.getElementById('date-input').value = ''; // Clear the date input
+        }
+
+        fetchFilteredEvents(); // Fetch updated results
+    });
     document.getElementById('eventSearch').addEventListener('input', function () {
         const searchTerm = this.value.toLowerCase();
         const events = document.querySelectorAll('.event-list-item');
@@ -92,11 +118,28 @@
         toggleNoEventsMessage(hasResults);
     });
 
-    document.getElementById('date-input').addEventListener('change', fetchFilteredEvents);
-    document.getElementById('clear-date-btn').addEventListener('click', function() {
-        document.getElementById('date-input').value = '';
-
+    document.getElementById('date-input').addEventListener('change', function () {
+        // Clear the month filter when date filter is used
+        document.getElementById('month-input').value = '';
         fetchFilteredEvents();
+    });
+    document.getElementById('month-input').addEventListener('change', function () {
+        // Clear the date filter when month filter is used
+        document.getElementById('date-input').value = '';
+        fetchFilteredEvents();
+    });
+    document.getElementById('clear-filters-btn').addEventListener('click', function () {
+        // Reset the input fields
+        document.getElementById('date-input').value = '';
+        document.getElementById('month-input').value = '';
+        
+        // Reset the filter type to 'date'
+        document.getElementById('filterType').value = 'date';
+        document.getElementById('date-input').classList.remove('d-none');
+        document.getElementById('month-input').classList.add('d-none');
+
+        // Trigger the filtering function
+        fetchFilteredEvents(); // Ensure this function is implemented and working
     });
     document.getElementById('show-all-events').addEventListener('change', function() {
         document.getElementById('eventSearch').value = '';
@@ -105,6 +148,7 @@
 
     function fetchFilteredEvents() {
         const selectedDate = document.getElementById('date-input').value;
+        const selectedMonth = document.getElementById('month-input').value;
         const showAllEvents = document.getElementById('show-all-events').checked;
         const selectedOrganization = document.getElementById('organizationFilter').value;
         // Send AJAX request to filter events by date and toggle between ongoing/all events
@@ -113,6 +157,7 @@
             type: 'GET',
             data: {
                 date: selectedDate,
+                month: selectedMonth,
                 show_all: showAllEvents ? 'true' : 'false',
                 organization: selectedOrganization
             },

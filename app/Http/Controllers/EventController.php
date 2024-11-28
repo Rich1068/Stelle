@@ -71,12 +71,20 @@ class EventController extends Controller
         }
 
         // Apply date filter if selected
-        if ($request->has('date') && $request->date != '') {
+        if ($request->has('date') && !empty($request->date)) {
+            // Date filter takes precedence over month filter
             $selectedDate = Carbon::parse($request->date)->format('Y-m-d');
             $query->where(function ($query) use ($selectedDate) {
                 $query->whereDate('start_date', '<=', $selectedDate)
                       ->whereDate('end_date', '>=', $selectedDate);
             });
+        } elseif ($request->has('month') && !empty($request->month)) {
+            // Apply month filter if no date filter is provided
+            $month = Carbon::parse($request->month)->month;
+            $year = Carbon::parse($request->month)->year;
+            \Log::info('Filtering by Month and Year:', ['year' => $year, 'month' => $month]);
+            $query->whereYear('start_date', $year)
+                  ->whereMonth('start_date', $month);
         }
 
         // Order by start_date, end_date, and start_time
@@ -141,14 +149,18 @@ class EventController extends Controller
         }
     
         // Apply date filter if selected
-        if ($request->has('date') && $request->date != '') {
+        if ($request->has('date') && !empty($request->date)) {
+            // Apply date filter
             $selectedDate = Carbon::parse($request->date)->format('Y-m-d');
-            $query->where(function ($query) use ($selectedDate) {
-                $query->whereDate('start_date', '<=', $selectedDate)
-                      ->whereDate('end_date', '>=', $selectedDate);
-            });
+            $query->whereDate('start_date', '<=', $selectedDate)
+                  ->whereDate('end_date', '>=', $selectedDate);
+        } elseif ($request->has('month') && !empty($request->month)) {
+            // Apply month filter
+            $month = Carbon::parse($request->month)->month;
+            $year = Carbon::parse($request->month)->year;
+            $query->whereYear('start_date', $year)
+                  ->whereMonth('start_date', $month);
         }
-
             // Apply organization filter
         if ($request->has('organization') && $request->organization != '') {
             $organizationId = $request->organization === 'null' ? null : $request->organization;
