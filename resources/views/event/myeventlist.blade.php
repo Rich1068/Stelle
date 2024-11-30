@@ -8,6 +8,11 @@
         <i class="fas fa-list me-2"></i> <!-- List icon -->
         My Event List
     </h2>
+    <div style="display: flex; flex-direction: column; align-items: flex-start; margin-top:1%;">
+    <a href="{{ route('event.create') }}" class="btn custom-btn-primary" style="width: 100% !important; margin-bottom: 10px !important;">
+        <i class="fas fa-plus"></i> Add Event
+    </a>
+    </div>
 </div>
 
 <div class="d-flex justify-content-between align-items-center filter-container mb-3">
@@ -345,6 +350,38 @@
     .show-all-container {
         justify-content: center; /* Center the toggle switch */
     }
+}
+.custom-btn-primary {
+    background-color: #003366 !important; /* Dark blue background */
+    color: white !important; /* White text color */
+    border-radius: 15px !important; /* Rounded corners */
+    padding: 12px 20px !important; /* Adequate padding */
+    font-size: 16px !important; /* Font size */
+    font-weight: bold !important; /* Bold text */
+    text-align: center !important; /* Center the text */
+    display: flex !important; /* Flexbox for alignment */
+    align-items: center !important; /* Center items vertically */
+    justify-content: center !important; /* Center items horizontally */
+    border: none !important; /* Remove border */
+    transition: background-color 0.3s, transform 0.3s !important; /* Smooth transition for hover effect */
+    max-width: 200px !important; /* Limit maximum width for larger screens */
+}
+
+/* Ensure buttons fill their parent container */
+.custom-btn-primary {
+    width: 100% !important; /* Full width for mobile */
+}
+
+/* Hover effect for the button */
+.custom-btn-primary:hover {
+    background-color: #004080 !important; /* Darker shade for hover */
+    transform: translateY(-2px) !important; /* Slight lift effect on hover */
+    color: #ffff !important; 
+}
+
+/* Active state effect */
+.custom-btn-primary:active {
+    transform: translateY(1px) !important; /* Slight dip effect on click */
 }
 </style>
 @endsection

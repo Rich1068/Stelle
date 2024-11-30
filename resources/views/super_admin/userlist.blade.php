@@ -19,7 +19,7 @@
 
 <!-- Role Filter Dropdown -->
 <div class="input-group mb-3 custom-select-container">
-    <select id="roleFilter" class="custom-select" style="width: 200px; margin-bottom: 20px;">
+    <select id="roleFilter" class="custom-select" style="width: 200px; margin-bottom: 5px;">
         <option value="">All Roles</option>
         <option value="Super Admin">Super Admin</option>
         <option value="Admin">Admin</option>
@@ -27,7 +27,7 @@
     </select>
 </div>
 
-<div class="card mb-4" style="margin-top: 50px; border: none;">
+<div class="card mb-4" style="margin-top: 30px; border: none;">
     <div class="card-header py-3">
         <h6 class="m-0 font-weight-bold text-primary">Users List</h6>
     </div>
@@ -181,7 +181,7 @@
 
 .custom-btn-light,
 .custom-btn-primary {
-    background-color: #001e54 !important; /* Dark blue background */
+    background-color: #003366 !important; /* Dark blue background */
     color: white !important; /* White text color */
     border-radius: 15px !important; /* Rounded corners */
     padding: 12px 20px !important; /* Adequate padding */
