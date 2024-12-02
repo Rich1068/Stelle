@@ -79,7 +79,7 @@ class RegisteredUserController extends Controller
             'region_id' => ['nullable', 'int', 'required_if:country_id,177'], 
             'province_id' => ['nullable', 'int', 'required_if:country_id,177'], 
             'college' => ['required', 'string', 'max:255'],
-            'contact_number' => ['required', 'string', 'max:11', 'regex:/^[\d\-]+$/'],
+            'contact_number' => ['required', 'string', 'max:15', 'regex:/^[\d\-]+$/'],
             'birthdate' => ['required', 'date', 'before:today', 'after:1900-01-01'],
         ]);
         $user = Auth::user();

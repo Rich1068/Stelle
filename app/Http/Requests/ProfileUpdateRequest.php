@@ -26,7 +26,7 @@ class ProfileUpdateRequest extends FormRequest
             'region_id' => ['nullable', 'int'],
             'province_id' => ['nullable', 'int'],
             'college' => ['nullable', 'string', 'max:255'],
-            'contact_number' => ['required', 'string', 'max:11', 'regex:/^[\d\-]+$/'],
+            'contact_number' => ['required', 'string', 'max:15', 'regex:/^[\d\-]+$/'],
             'birthdate' => ['required', 'date', 'before:today', 'after:1900-01-01'],
         ];
     }
