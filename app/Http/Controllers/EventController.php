@@ -408,10 +408,13 @@ class EventController extends Controller
             'organization_id' => [
                 'nullable',
                 function ($attribute, $value, $fail) {
+                    // Allow "N/A" as valid input
                     if ($value === 'null') {
-                        return; // Allow "N/A" as valid input
+                        return;
                     }
-                    if (!is_null($value) && Organization::where('id', $value)->exists()) {
+                    
+                    // Check if the organization exists in the database
+                    if (!is_null($value) && !Organization::where('id', $value)->exists()) {
                         $fail('The selected organization is invalid.');
                     }
                 },
