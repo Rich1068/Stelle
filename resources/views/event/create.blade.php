@@ -175,7 +175,6 @@
                                 </label>
                                 <select id="organization" name="organization_id" class="block mt-1 w-full event-input" required>
                                     <option value="">{{ __('Select Organization') }}</option>
-                                    <option value="null" {{ old('organization_id') == 'null' ? 'selected' : '' }}>{{ __('N/A') }}</option>
                                     @foreach ($organizations as $organization)
                                         <option value="{{ $organization->id }}" {{ old('organization_id') == $organization->id ? 'selected' : '' }}>
                                             {{ $organization->name }}

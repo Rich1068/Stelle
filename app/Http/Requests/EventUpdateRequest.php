@@ -29,11 +29,9 @@ class EventUpdateRequest extends FormRequest
             'event_banner' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
             'remove_event_banner' => ['nullable', 'boolean'],
             'organization_id' => [
-                'nullable',
+                'required',
                 function ($attribute, $value, $fail) {
-                    if ($value === 'null') {
-                        return; // Allow "N/A" as valid input
-                    }
+
                     if (!is_null($value) && !\App\Models\Organization::where('id', $value)->exists()) {
                         $fail('The selected organization is invalid.');
                     }

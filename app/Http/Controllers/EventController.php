@@ -406,19 +406,14 @@ class EventController extends Controller
             'capacity' => ['required', 'integer', 'min:1'],
             'event_banner' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
             'organization_id' => [
-                'nullable',
-                function ($attribute, $value, $fail) {
-                    // Allow "N/A" as valid input
-                    if ($value === 'null') {
-                        return;
-                    }
-                    
-                    // Check if the organization exists in the database
-                    if (!is_null($value) && !Organization::where('id', $value)->exists()) {
-                        $fail('The selected organization is invalid.');
-                    }
-                },
-            ],
+                    'required', // Make it required
+                    function ($attribute, $value, $fail) {
+                        // Check if the organization exists in the database
+                        if (!Organization::where('id', $value)->exists()) {
+                            $fail('The selected organization is invalid.');
+                        }
+                    },
+                ],
         ]);
 
         // Add custom validation logic in the after method
