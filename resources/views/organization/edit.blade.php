@@ -70,7 +70,7 @@
                             <div class="event-field">
                                 <label for="icon" class="flex items-center">
                                     <i class="fas fa-image mr-2"></i>
-                                    <span class="font-bold">{{ __('Event Icon') }}</span>
+                                    <span class="font-bold">{{ __('Organization Icon') }}</span>
                                 </label>
                                 <!-- Hide the original file input -->
                                 <input id="icon" name="icon" type="file" accept="image/*" onchange="previewImage(event)" style="display: none;" />
@@ -89,7 +89,7 @@
                     </div>
                     <div class="flex items-center gap-4 mb-4">
                     <x-primary-button id="createEventButton" type="submit" class="btn-primary"  onclick="disableButton(this)">
-                        <i class="fas fa-save"></i> {{ __('Create Organization') }}
+                        <i class="fas fa-save"></i> {{ __('Update Organization') }}
                     </x-primary-button>
                 </div>
                 </div>
